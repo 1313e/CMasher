@@ -1,0 +1,13 @@
+include LICENSE
+include README.rst
+include MANIFEST.in
+include requirements*.txt
+recursive-include cmasher data/*
+recursive-exclude cmasher colormaps/*
+recursive-include cmasher cm_*
+
+exclude docs
+recursive-exclude docs *
+exclude *.yml
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
