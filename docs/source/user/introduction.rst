@@ -7,7 +7,7 @@ All colormaps presented here were made using the `viscm`_ package.
 If you cannot find your ideal colormap, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
 
 These colormaps can be accessed by simply importing *CMasher* (which automatically executes the :func:`~cmasher.utils.import_cmaps` function on the ``cmasher/colormaps`` directory).
-This makes them available in the :mod:`~cmasher.cm` module, in addition to registering them in the :mod:`~matplotlib.cm` module.
+This makes them available in *CMasher*'s :mod:`~cmasher.cm` module, in addition to registering them in *matplotlib*'s :mod:`~matplotlib.cm` module.
 So, for example, if one were to use the *rainforest* colormap, this could be done with::
 
     # Import CMasher to register colormaps

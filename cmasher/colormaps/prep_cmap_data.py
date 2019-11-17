@@ -36,9 +36,8 @@ if(__name__ == '__main__'):
                            cmtype=cmap.cmtype, method=cmap.method,
                            **cmap.params)
     rgb, _ = v.cmap_model.get_sRGB(num=256)
-    array_list = np.array2string(rgb, max_line_width=79,
-                                 prefix='cm_data = ',
-                                 separator=', ')
+    array_list = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
+                                 separator=', ', threshold=rgb.size)
     cm_py_file = dedent("""
         from matplotlib.colors import ListedColormap
 

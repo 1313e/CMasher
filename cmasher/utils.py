@@ -103,8 +103,7 @@ def import_cmaps(cmap_path):
 
             # Transform colorlist into a Colormap
             cmap = LSC.from_list(cm_name, colorlist, N=len(colorlist))
-            cmap_r = LSC.from_list(cm_name+'_r', list(reversed(colorlist)),
-                                   N=len(colorlist))
+            cmap_r = cmap.reversed()
 
             # Add cmap to matplotlib's cmap list
             mplcm.register_cmap(cmap=cmap)
