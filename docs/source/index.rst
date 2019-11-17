@@ -27,7 +27,9 @@ The documentation of *CMasher* is spread out over several sections:
     :caption: User Documentation
    
     user/getting_started
-    user/colormaps
+    user/introduction
+    user/sequential
+    user/diverging
     community_guidelines
    
 .. _api-docs:
