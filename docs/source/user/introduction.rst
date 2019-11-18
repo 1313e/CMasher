@@ -14,7 +14,6 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
     import cmasher
 
     # Import packages for plotting
-    from matplotlib import cm
     import matplotlib.pyplot as plt
     import numpy as np
 
@@ -22,7 +21,8 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
     cmap = cmasher.rainforest
 
     # Access rainforest colormap through MPL
-    cmap = cm.get_cmap('rainforest')
+    # This points to the last colormap registered with this name
+    cmap = 'rainforest'
 
     # Generate some data to plot
     x = np.random.rand(100)

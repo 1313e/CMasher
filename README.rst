@@ -7,6 +7,8 @@ The colormaps in CMasher are all designed to be perceptually uniform sequential,
 If you cannot find your ideal colormap here, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
 Let's get rid of all bad colormaps in the world together!
 
+*If you use CMasher for your work, then please star the repo, such that I can keep track of how many users it has and more easily raise awareness of bad colormaps.*
+
 .. _issue: https://github.com/1313e/CMasher/issues
 .. _online documentation: https://cmasher.readthedocs.io/en/latest
 
