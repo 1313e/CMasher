@@ -2,7 +2,7 @@
 
 Description
 ===========
-This package contains a collection of scientific colormaps for making stunning and smashing plots, showcased in the `online documentation`_.
+This package contains a collection of scientific colormaps for making stunning and *cmashing* plots, showcased in the `online documentation`_.
 The colormaps in CMasher are all designed to be perceptually uniform sequential, most of them are color vision deficiency (CVD; colorblind) friendly and they cover a wide range of different color combinations to accommodate for most applications.
 If you cannot find your ideal colormap here, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
 Let's get rid of all bad colormaps in the world together!

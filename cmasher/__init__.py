@@ -3,7 +3,7 @@
 """
 CMasher
 ========
-Scientific colormaps for making stunning and smashing plots.
+Scientific colormaps for making stunning and *cmashing* plots.
 
 """
 

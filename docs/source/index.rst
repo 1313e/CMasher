@@ -1,7 +1,7 @@
 *CMasher*; scientific colormaps for making stunning and smashing plots
 ======================================================================
 
-This is the documentation for the *CMasher* package, a collection of scientific colormaps for making stunning and smashing plots.
+This is the documentation for the *CMasher* package, a collection of scientific colormaps for making stunning and *cmashing* plots.
 It is written in pure `Python 2/3`_ and `publicly available on GitHub`_.
 
 The colormaps in *CMasher* are all designed to be perceptually uniform sequential, most of them are color vision deficiency (CVD; colorblind) friendly and they cover a wide range of different color combinations to accommodate for most applications.
