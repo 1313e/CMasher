@@ -67,11 +67,17 @@ def create_cmap_overview(cmap_list=None, savefig=None):
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
     # Create figure instance
-    fig, axes = plt.subplots(figsize=(0.5*len(cmap_list), 4.8),
+    height = 0.4*(len(cmap_list)+1)
+    fig, axes = plt.subplots(figsize=(6.4, height),
                              nrows=len(cmap_list), ncols=2)
-    fig.subplots_adjust(top=0.95, bottom=0.01, left=0.2, right=0.99,
+    w_pad, h_pad, wspace, hspace = fig.get_constrained_layout_pads()
+    fig.subplots_adjust(top=(1-0.24/height), bottom=0.01, left=0.2, right=0.99,
                         wspace=0.05)
     fig.suptitle("Colormap Overview", fontsize=14, y=1.0, x=0.6)
+
+    # If cmap_list only has a single element, make sure axes is a list
+    if(len(cmap_list) == 1):
+        axes = [axes]
 
     # Loop over all cmaps defined in cmap list
     for ax, cmap in zip(axes, cmap_list):
@@ -85,15 +91,13 @@ def create_cmap_overview(cmap_list=None, savefig=None):
 
         # Add subplots
         ax[0].imshow(gradient, aspect='auto', cmap=mplcm.get_cmap(cmap))
+        ax[0].set_axis_off()
         ax[1].imshow(L, aspect='auto', cmap='binary_r', vmin=0, vmax=100)
+        ax[1].set_axis_off()
         pos = list(ax[0].get_position().bounds)
         x_text = pos[0]-0.01
         y_text = pos[1]+pos[3]/2
         fig.text(x_text, y_text, cmap, va='center', ha='right', fontsize=10)
-
-    # Turn off the ticks in all subplots
-    for ax in axes.flat:
-        ax.set_axis_off()
 
     # If savefig is not None, save the figure
     if savefig is not None:

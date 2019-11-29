@@ -14,13 +14,29 @@ import pytest
 
 # CMasher imports
 from cmasher import cm
-from cmasher.utils import import_cmaps
+from cmasher.utils import create_cmap_overview, import_cmaps
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
+# Pytest class for create_cmap_overview
+class Test_create_cmap_overview(object):
+    # Test if default arguments work
+    def test_default(self):
+        create_cmap_overview()
+
+    # Test if providing a custom list of colormaps works
+    def test_custom_cmaps(self):
+        create_cmap_overview(['rainforest'])
+
+    # Test if the figure can be saved
+    def test_savefig(self):
+        create_cmap_overview(savefig="test.png")
+        assert path.exists("./test.png")
+
+
 # Pytest class for import_cmaps()-function
 class Test_import_cmaps(object):
     # Test if providing a cmap file works

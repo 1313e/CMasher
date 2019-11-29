@@ -1,6 +1,5 @@
 language: python
 dist: xenial
-sudo: true
 os: linux
 
 env:
@@ -8,7 +7,7 @@ env:
     - TWINE_USERNAME=1313e
     - secure: "i8vL+y1qXy37yXkaDx7gdJIgCRo+5ltmJIj3UZ76WVv2H/JG0fMH5aCYQO3ZS0LfIapXK3whA3wL3kN/D9uUjNOKj8lVVPYbs9ft/V0K3UwCYrTz+mGlXKp8lbWrOc3UI+79ABdKg6CgiVrKLaLan/+Oim8jUXa05XrV3qVwuxbe4HWAQIHOplMKq5K75vuviZsBiVe37AOx9Z3xJdK52U/AetUuphQgKxY4j7kE0bH+MItJqJWsZaJNCSAuk7FkeNNOl0wfX3tEsZ9Q0YtN4DAke95LFVLtmbbjmTshWmP2DnkeA1BWsqCOqTVEfLAfOUo+13s8QPFUQ/dAE11yAcZk95JN1ohNawMc/F+T3qKRFWOWrn/a6ZdQ/5fTtETDpMrp0198AjyhS0L+wBOVnIXq+bclgmpAQg6Jajk8HacnihjC/v5YIGgRc1LS5tiDMqm+NjLhnjWv/iC1YRQcE0gC1W+5vJ3gNyEDJmjDzdkkdlMqvGK8X8Ig+QWP9Wphl+4i6d9M41ohsH+ZgaEigUkLKNnwbHXQKteYZ1gFzKhFvoikwqpY8F7Oi6adyuMPzpBXRwBwPRNk/f3dTIOYlWW/S4Ziu7vTxDaLk/mF/NaBujY7tv+wHOHYTW+5JR3SpTRtgcXRiym/do5dKwE5StUybXbpzcNA/8FmZYzhb1A="
 
-matrix:
+jobs:
   include:
     - os: osx
       python: 2

@@ -2,6 +2,7 @@ include LICENSE
 include README.rst
 include MANIFEST.in
 include requirements*.txt
+include conftest.py
 recursive-include cmasher data/*
 recursive-exclude cmasher colormaps/*
 recursive-include cmasher cm_*

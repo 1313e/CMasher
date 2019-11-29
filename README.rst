@@ -3,7 +3,7 @@
 Description
 ===========
 This package contains a collection of scientific colormaps for making stunning and *cmashing* plots, showcased in the `online documentation`_.
-The colormaps in CMasher are all designed to be perceptually uniform sequential, most of them are color vision deficiency (CVD; colorblind) friendly and they cover a wide range of different color combinations to accommodate for most applications.
+The colormaps in *CMasher* are all designed to be perceptually uniform sequential, most of them are color vision deficiency (CVD; colorblind) friendly and they cover a wide range of different color combinations to accommodate for most applications.
 If you cannot find your ideal colormap here, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
 Let's get rid of all bad colormaps in the world together!
 
@@ -26,15 +26,7 @@ For more information, see the `online documentation`_.
 
 How to install
 ==============
-CMasher can be found in the PyPI system, so ``pip install cmasher`` should suffice.
-
-Dependencies
-------------
-CMasher requires:
-
-- ``python == 2.7`` or ``python >= 3.5``;
-- ``matplotlib >= 2.2.4``;
-- ``numpy >= 1.8``.
+*CMasher* can be found in the PyPI system, so ``pip install cmasher`` should suffice.
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI
