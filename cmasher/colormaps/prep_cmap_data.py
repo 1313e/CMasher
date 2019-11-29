@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import viscm
 
+# CMasher imports
+from cmasher.utils import create_cmap_overview, import_cmaps
+
 
 # %% MAIN SCRIPT
 if(__name__ == '__main__'):
@@ -71,6 +74,12 @@ if(__name__ == '__main__'):
 
     # Delete the created __pycache__ in the loaded cmap module
     shutil.rmtree("{0}/__pycache__".format(name), ignore_errors=True)
+
+    # Load in all colormaps currently defined
+    import_cmaps('.')
+
+    # Make new colormap overview
+    create_cmap_overview(savefig='cmap_overview.png')
 
     # Create viscm output figure
     viscm.gui.main(["view", "{0}/{0}.py".format(name), "--save",

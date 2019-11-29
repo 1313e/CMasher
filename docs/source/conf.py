@@ -60,7 +60,8 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
 
 # Autodoc configuration
 autodoc_default_options = {'members': None,
-                           'private-members': None}
+                           'private-members': None,
+                           'special-members': None}
 autodoc_member_order = 'groupwise'
 autodoc_inherit_docstrings = False
 

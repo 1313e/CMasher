@@ -17,18 +17,93 @@ import os
 from os import path
 
 # Package imports
+from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
 from matplotlib.colors import LinearSegmentedColormap as LSC
+import matplotlib.pyplot as plt
 import numpy as np
 
 # CMasher imports
 from cmasher import cm
 
 # All declaration
-__all__ = ['import_cmaps']
+__all__ = ['create_cmap_overview', 'import_cmaps']
 
 
 # %% FUNCTIONS
+# This function creates an overview plot of all colormaps specified
+def create_cmap_overview(cmap_list=None, savefig=None):
+    """
+    Creates an overview plot containing all colormaps defined in the provided
+    `cmap_list`.
+
+    Optional
+    --------
+    cmap_list : list of str or None. Default: None
+        A list of all colormap names that must be included in the overview
+        plot. If *None*, all colormaps defined in *CMasher* are used instead.
+    savefig : str or None. Default: None
+        If not *None*, the path to where the overview plot must be saved to.
+        Else, the plot will simply be shown.
+
+    """
+
+    # If cmap_list is None, use cmap_d.keys
+    if cmap_list is None:
+        cmap_list = cm.cmap_d.keys()
+
+    # Remove any reversed versions
+    cmap_list = [cmap for cmap in cmap_list if not cmap.endswith('_r')]
+    cmap_list.sort()
+
+    # Get array of all values for which a colormap value is requested
+    x = np.linspace(0.0, 1.0, 100)
+
+    # Obtain the gradient values that will be used for making the colormaps
+    gradient = np.linspace(0, 1, 256)
+    gradient = np.vstack((gradient, gradient))
+
+    # Obtain the colorspace converter for showing cmaps in grey-scale
+    cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
+
+    # Create figure instance
+    fig, axes = plt.subplots(figsize=(0.5*len(cmap_list), 4.8),
+                             nrows=len(cmap_list), ncols=2)
+    fig.subplots_adjust(top=0.95, bottom=0.01, left=0.2, right=0.99,
+                        wspace=0.05)
+    fig.suptitle("Colormap Overview", fontsize=14, y=1.0, x=0.6)
+
+    # Loop over all cmaps defined in cmap list
+    for ax, cmap in zip(axes, cmap_list):
+        # Get RGB values for colormap.
+        rgb = mplcm.get_cmap(cmap)(x)[np.newaxis, :, :3]
+
+        # Get lightness values of cmap
+        lab = cspace_convert(rgb)
+        L = lab[0, :, 0]
+        L = np.float32(np.vstack((L, L, L)))
+
+        # Add subplots
+        ax[0].imshow(gradient, aspect='auto', cmap=mplcm.get_cmap(cmap))
+        ax[1].imshow(L, aspect='auto', cmap='binary_r', vmin=0, vmax=100)
+        pos = list(ax[0].get_position().bounds)
+        x_text = pos[0]-0.01
+        y_text = pos[1]+pos[3]/2
+        fig.text(x_text, y_text, cmap, va='center', ha='right', fontsize=10)
+
+    # Turn off the ticks in all subplots
+    for ax in axes.flat:
+        ax.set_axis_off()
+
+    # If savefig is not None, save the figure
+    if savefig is not None:
+        plt.savefig(savefig, dpi=250)
+        plt.close(fig)
+    # Else, simply show it
+    else:
+        plt.show()
+
+
 # Function to import all custom colormaps in a file or directory
 def import_cmaps(cmap_path):
     """

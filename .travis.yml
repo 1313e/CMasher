@@ -19,14 +19,14 @@ matrix:
       env: PY=3
     - python: 2.7
     - python: 3.5
-    - python: 3.5-dev
     - python: 3.6
-    - python: 3.6-dev
     - python: 3.7
     - python: 3.7-dev
+    - python: 3.8
     - python: 3.8-dev
+    - python: 3.9-dev
   allow_failures:
-    - python: 3.8-dev
+    - python: 3.9-dev
 
 before_install:
   - python$PY -m pip install --upgrade pip setuptools wheel

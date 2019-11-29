@@ -12,6 +12,18 @@ Let's get rid of all bad colormaps in the world together!
 .. _issue: https://github.com/1313e/CMasher/issues
 .. _online documentation: https://cmasher.readthedocs.io/en/latest
 
+Colormap overview
+-----------------
+Below is an overview of all the colormaps that are currently in *CMasher*.
+For more information, see the `online documentation`_.
+
+.. image:: https://github.com/1313e/CMasher/raw/master/cmasher/colormaps/cmap_overview.png
+    :width: 100%
+    :align: center
+    :target: https://cmasher.readthedocs.io/en/latest
+    :alt: CMasher Colormap Overview
+
+
 How to install
 ==============
 CMasher can be found in the PyPI system, so ``pip install cmasher`` should suffice.
