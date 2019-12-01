@@ -19,7 +19,7 @@ from os import path
 # Package imports
 from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
-from matplotlib.colors import LinearSegmentedColormap as LSC
+from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -56,13 +56,6 @@ def create_cmap_overview(cmap_list=None, savefig=None):
     cmap_list = [cmap for cmap in cmap_list if not cmap.endswith('_r')]
     cmap_list.sort()
 
-    # Get array of all values for which a colormap value is requested
-    x = np.linspace(0.0, 1.0, 100)
-
-    # Obtain the gradient values that will be used for making the colormaps
-    gradient = np.linspace(0, 1, 256)
-    gradient = np.vstack((gradient, gradient))
-
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
@@ -81,23 +74,33 @@ def create_cmap_overview(cmap_list=None, savefig=None):
 
     # Loop over all cmaps defined in cmap list
     for ax, cmap in zip(axes, cmap_list):
+        # Get the colormap
+        cmap = mplcm.get_cmap(cmap)
+
+        # Get array of all values for which a colormap value is requested
+        x = np.linspace(0, 1, cmap.N)
+
+        # Obtain the gradient values that will be used for making the colormaps
+        gradient = np.vstack([x, x])
+
         # Get RGB values for colormap.
-        rgb = mplcm.get_cmap(cmap)(x)[np.newaxis, :, :3]
+        rgb = cmap(x)[np.newaxis, :, :3]
 
         # Get lightness values of cmap
         lab = cspace_convert(rgb)
         L = lab[0, :, 0]
-        L = np.float32(np.vstack((L, L, L)))
+        L = np.vstack([L, L])
 
         # Add subplots
-        ax[0].imshow(gradient, aspect='auto', cmap=mplcm.get_cmap(cmap))
+        ax[0].imshow(gradient, aspect='auto', cmap=cmap)
         ax[0].set_axis_off()
-        ax[1].imshow(L, aspect='auto', cmap='binary_r', vmin=0, vmax=100)
+        ax[1].imshow(L/99.99871678, aspect='auto', cmap=cm.neutral)
         ax[1].set_axis_off()
         pos = list(ax[0].get_position().bounds)
         x_text = pos[0]-0.01
         y_text = pos[1]+pos[3]/2
-        fig.text(x_text, y_text, cmap, va='center', ha='right', fontsize=10)
+        fig.text(x_text, y_text, cmap.name, va='center', ha='right',
+                 fontsize=10)
 
     # If savefig is not None, save the figure
     if savefig is not None:
@@ -181,7 +184,7 @@ def import_cmaps(cmap_path):
                 colorlist = np.genfromtxt(cm_file_path).tolist()
 
             # Transform colorlist into a Colormap
-            cmap = LSC.from_list(cm_name, colorlist, N=len(colorlist))
+            cmap = ListedColormap(colorlist, cm_name, N=len(colorlist))
             cmap_r = cmap.reversed()
 
             # Add cmap to matplotlib's cmap list

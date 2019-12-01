@@ -47,10 +47,11 @@ if(__name__ == '__main__'):
         cm_type = "{0}"
 
         cm_data = {1}
+
         test_cm = ListedColormap(cm_data, name="{2}")
         """).format(v.cmtype, array_list, name)
     with open("{0}/{0}.py".format(name), 'w') as f:
-        f.write(cm_py_file)
+        f.write(cm_py_file[1:])
 
     # Import created .py-file as a module
     # Functions as a test to see if it can be imported and accessed correctly
