@@ -187,6 +187,10 @@ def import_cmaps(cmap_path):
             cmap = ListedColormap(colorlist, cm_name, N=len(colorlist))
             cmap_r = cmap.reversed()
 
+            # Test that the colormaps can be called
+            cmap(1)
+            cmap_r(1)
+
             # Add cmap to matplotlib's cmap list
             mplcm.register_cmap(cmap=cmap)
             setattr(cm, cm_name, cmap)
