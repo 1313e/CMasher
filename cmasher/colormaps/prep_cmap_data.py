@@ -82,6 +82,28 @@ if(__name__ == '__main__'):
     # Make new colormap overview
     create_cmap_overview(savefig='cmap_overview.png')
 
+    # Make string with the docs entry and print it
+    docs_entry = dedent("""
+        {0}
+        {2}
+        .. figure:: ../../../cmasher/colormaps/{1}/{1}.png
+            :alt: Visual representation of the *{1}* colormap.
+            :width: 100%
+            :align: center
+            :name: {1}_cmap
+
+        .. figure:: ../../../cmasher/colormaps/{1}/{1}_viscm.png
+            :alt: Statistics of the *{1}* colormap.
+            :width: 100%
+            :align: center
+            :name: {1}_viscm
+
+        The *{1}* colormap is <visual representation>.
+        <Lightness range><colors>
+        <Recommended use>
+        """).format(name.capitalize(), name, '-'*len(name))
+    print(docs_entry)
+
     # Create viscm output figure
     viscm.gui.main(["view", "{0}/{0}.py".format(name), "--save",
                     "{0}/{0}_viscm.png".format(name), "--quit"])
