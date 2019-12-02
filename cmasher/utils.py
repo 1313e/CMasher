@@ -80,21 +80,20 @@ def create_cmap_overview(cmap_list=None, savefig=None):
         # Get array of all values for which a colormap value is requested
         x = np.linspace(0, 1, cmap.N)
 
-        # Obtain the gradient values that will be used for making the colormaps
-        gradient = np.vstack([x, x])
-
         # Get RGB values for colormap.
         rgb = cmap(x)[np.newaxis, :, :3]
 
         # Get lightness values of cmap
         lab = cspace_convert(rgb)
         L = lab[0, :, 0]
-        L = np.vstack([L, L])
+
+        # Get corresponding RGB values for lightness values using cm.neutral
+        rgb_L = cm.neutral(L/99.99871678)[np.newaxis, :, :3]
 
         # Add subplots
-        ax[0].imshow(gradient, aspect='auto', cmap=cmap)
+        ax[0].imshow(rgb, aspect='auto')
         ax[0].set_axis_off()
-        ax[1].imshow(L/99.99871678, aspect='auto', cmap=cm.neutral)
+        ax[1].imshow(rgb_L, aspect='auto')
         ax[1].set_axis_off()
         pos = list(ax[0].get_position().bounds)
         x_text = pos[0]-0.01

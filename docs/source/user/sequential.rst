@@ -69,6 +69,44 @@ It covers the full lightness range and has the colors blue and orange as its mai
 It features a greyish area in the middle, making it great for representing ordered information where the extremes should be the main focus of the image.
 
 
+Eclipse
+-------
+.. figure:: ../../../cmasher/colormaps/eclipse/eclipse.png
+    :alt: Visual representation of the *eclipse* colormap.
+    :width: 100%
+    :align: center
+    :name: eclipse_cmap
+
+.. figure:: ../../../cmasher/colormaps/eclipse/eclipse_viscm.png
+    :alt: Statistics of the *eclipse* colormap.
+    :width: 100%
+    :align: center
+    :name: eclipse_viscm
+
+The *eclipse* colormap is a visual representation of a solar eclipse.
+It covers almost the full lightness range (:math:`[0, 95]`) and uses the colors blue and yellow.
+It is excellent for representing information where the upper half should be the focus.
+
+
+Ember
+-----
+.. figure:: ../../../cmasher/colormaps/ember/ember.png
+    :alt: Visual representation of the *ember* colormap.
+    :width: 100%
+    :align: center
+    :name: ember_cmap
+
+.. figure:: ../../../cmasher/colormaps/ember/ember_viscm.png
+    :alt: Statistics of the *ember* colormap.
+    :width: 100%
+    :align: center
+    :name: ember_viscm
+
+The *ember* colormap is a visual representation of coal embers.
+It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors red and yellow.
+As with some other colormaps in *CMasher*, its smoothly varying colors make it a good choice for representing intensity maps.
+
+
 Flamingo
 --------
 .. figure:: ../../../cmasher/colormaps/flamingo/flamingo.png
@@ -239,3 +277,22 @@ Sunburst
 The *sunburst* colormap is a visual representation of a sunburst or solar flare.
 It covers the full lightness range and uses the colors red and orange.
 Its smoothly varying coloring makes it a good choice for representing data that varies smoothly as well (like intensity or temperature maps).
+
+
+Voltage
+-------
+.. figure:: ../../../cmasher/colormaps/voltage/voltage.png
+    :alt: Visual representation of the *voltage* colormap.
+    :width: 100%
+    :align: center
+    :name: voltage_cmap
+
+.. figure:: ../../../cmasher/colormaps/voltage/voltage_viscm.png
+    :alt: Statistics of the *voltage* colormap.
+    :width: 100%
+    :align: center
+    :name: voltage_viscm
+
+The *voltage* colormap is a visual representation of the high voltage electricity in a tesla coil or lightning strike.
+It covers the full lightness range and uses the colors purple and blue.
+As with *arctic* and *freeze*, it is excellent at representing information that is smooth.
