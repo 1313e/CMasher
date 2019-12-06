@@ -1,4 +1,5 @@
 colorspacious>=1.1.0
 matplotlib>=2.2.4
 numpy>=1.8
+six>=1.11.0
 

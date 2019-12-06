@@ -29,7 +29,7 @@ class Test_create_cmap_overview(object):
 
     # Test if providing a custom list of colormaps works
     def test_custom_cmaps(self):
-        create_cmap_overview(['rainforest'])
+        create_cmap_overview(['cmr.rainforest'])
 
     # Test if the figure can be saved
     def test_savefig(self):
@@ -55,11 +55,11 @@ class Test_import_cmaps(object):
         # Add the reversed versions to the list as well
         cm_names.extend([cm_name+'_r' for cm_name in cm_names])
 
-        # Check if all names in cm_names are registered in CMasher
+        # Check if all names in cm_names are registered in CMasher and MPL
         for cm_name in cm_names:
             assert hasattr(cm, cm_name)
-            assert getattr(cm, cm_name) is mplcm.get_cmap(cm_name)
-            assert cm_name in mplcm.cmap_d
+            assert cm_name not in mplcm.cmap_d
+            assert 'cmr.'+cm_name in mplcm.cmap_d
 
     # Test if providing a non-existing directory raises an error
     def test_non_existing_dir(self):

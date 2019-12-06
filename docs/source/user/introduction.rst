@@ -6,23 +6,34 @@ The *CMasher* package provides a collection of scientific colormaps to be used b
 All colormaps presented here were made using the `viscm`_ package.
 If you cannot find your ideal colormap, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
 
-These colormaps can be accessed by simply importing *CMasher* (which automatically executes the :func:`~cmasher.utils.import_cmaps` function on the ``cmasher/colormaps`` directory).
-This makes them available in *CMasher*'s :mod:`~cmasher.cm` module, in addition to registering them in *matplotlib*'s :mod:`~matplotlib.cm` module.
+Colormap overview
+-----------------
+Below is an overview of all the colormaps that are currently in *CMasher*.
+
+.. image:: ../../../cmasher/colormaps/cmap_overview.png
+    :width: 100%
+    :align: center
+    :alt: CMasher Colormap Overview
+
+Example use
+-----------
+The colormaps shown above can be accessed by simply importing *CMasher* (which automatically executes the :func:`~cmasher.utils.import_cmaps` function on the ``cmasher/colormaps`` directory).
+This makes them available in *CMasher*'s :mod:`~cmasher.cm` module, in addition to registering them in *matplotlib*'s :mod:`~matplotlib.cm` module (with added :pycode:`'cmr.'` prefix to avoid name clashes).
 So, for example, if one were to use the *rainforest* colormap, this could be done with::
 
     # Import CMasher to register colormaps
-    import cmasher
+    import cmasher as cmr
 
     # Import packages for plotting
     import matplotlib.pyplot as plt
     import numpy as np
 
     # Access rainforest colormap through CMasher
-    cmap = cmasher.rainforest
+    cmap = cmr.rainforest
 
     # Access rainforest colormap through MPL
-    # This points to the last colormap registered with this name
-    cmap = 'rainforest'
+    # CMasher colormaps in MPL have an added 'cmr.' prefix
+    cmap = 'cmr.rainforest'
 
     # Generate some data to plot
     x = np.random.rand(100)
@@ -35,7 +46,6 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
 
 Accessing the colormaps in other packages than *matplotlib* would require reading in the text-files in the ``cmasher/colormaps`` directory, which contain the normalized RGB values (multiply by `255` for regular 8-bit values) of every colormap, and registering them in the package manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
-
 
 Background
 ----------

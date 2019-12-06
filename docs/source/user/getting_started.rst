@@ -14,7 +14,7 @@ or by installing it directly from `PyPI`_ with::
 
     $ pip install cmasher
 
-*CMasher* can now be imported as a package with :pycode:`import cmasher`.
+*CMasher* can now be imported as a package with :pycode:`import cmasher as cmr`.
 
 .. _repository: https://github.com/1313e/CMasher
 .. _PyPI: https://pypi.org/project/CMasher
