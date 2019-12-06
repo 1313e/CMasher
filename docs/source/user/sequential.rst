@@ -11,6 +11,25 @@ These colormaps are shown below.
 
 .. _PRISM: https://github.com/1313e/PRISM
 
+Amethyst
+--------
+.. figure:: ../../../cmasher/colormaps/amethyst/amethyst.png
+    :alt: Visual representation of the *amethyst* colormap.
+    :width: 100%
+    :align: center
+    :name: amethyst_cmap
+
+.. figure:: ../../../cmasher/colormaps/amethyst/amethyst_viscm.png
+    :alt: Statistics of the *amethyst* colormap.
+    :width: 100%
+    :align: center
+    :name: amethyst_viscm
+
+The *amethyst* colormap is a visual representation of the quartz with the same name.
+It covers the full lightness range and uses the colors blue/purple.
+Its very distinctive colors make it useful for representing dense information while not overloading on distractive colors.
+
+
 Arctic
 ------
 .. figure:: ../../../cmasher/colormaps/arctic/arctic.png
