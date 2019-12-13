@@ -24,9 +24,47 @@ For more information, see the `online documentation`_.
     :alt: CMasher Colormap Overview
 
 
+Installation & Use
+==================
 How to install
-==============
+--------------
 *CMasher* can be found in the PyPI system, so ``pip install cmasher`` should suffice.
+
+Example use
+-----------
+The colormaps shown above can be accessed by simply importing *CMasher* (which automatically executes the `import_cmaps` function on the `cmasher/colormaps`_ directory).
+This makes them available in *CMasher*'s `cm` module, in addition to registering them in *matplotlib*'s `cm` module (with added `'cmr.'` prefix to avoid name clashes).
+So, for example, if one were to use the *rainforest* colormap, this could be done with:
+
+.. code:: python
+
+    # Import CMasher to register colormaps
+    import cmasher as cmr
+
+    # Import packages for plotting
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # Access rainforest colormap through CMasher
+    cmap = cmr.rainforest
+
+    # Access rainforest colormap through MPL
+    # CMasher colormaps in MPL have an added 'cmr.' prefix
+    cmap = 'cmr.rainforest'
+
+    # Generate some data to plot
+    x = np.random.rand(100)
+    y = np.random.rand(100)
+    z = x**2+y**2
+
+    # Make scatter plot of data with colormap
+    plt.scatter(x, y, c=z, cmap=cmap, s=300)
+    plt.show()
+
+Accessing the colormaps in other packages than *matplotlib* would require reading in the text-files in the `cmasher/colormaps`_ directory, which contain the normalized RGB values (multiply by :math:`255` for regular 8-bit values) of every colormap, and registering them in the package manually.
+For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
+
+.. _cmasher/colormaps: https://github.com/1313e/CMasher/tree/master/cmasher/colormaps
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI

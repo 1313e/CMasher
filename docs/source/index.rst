@@ -4,12 +4,6 @@
 This is the documentation for the *CMasher* package, a collection of scientific colormaps for making stunning and *cmashing* plots.
 It is written in pure `Python 2/3`_ and `publicly available on GitHub`_.
 
-The colormaps in *CMasher* are all designed to be perceptually uniform sequential, most of them are color vision deficiency (CVD; colorblind) friendly and they cover a wide range of different color combinations to accommodate for most applications.
-If you cannot find your ideal colormap here, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
-Let's get rid of all bad colormaps in the world together!
-
-*If you use CMasher for your work, then please star the repo, such that I can keep track of how many users it has and more easily raise awareness of bad colormaps.*
-
 .. _@1313e: https://github.com/1313e
 .. _Python 2/3: https://www.python.org
 .. _publicly available on GitHub: https://github.com/1313e/CMasher
@@ -28,8 +22,8 @@ The documentation of *CMasher* is spread out over several sections:
     :maxdepth: 3
     :caption: User Documentation
    
-    user/getting_started
     user/introduction
+    user/background
     user/sequential
     user/diverging
     community_guidelines

@@ -40,7 +40,7 @@ def create_cmap_overview(cmaps=None, savefig=None):
 
     Optional
     --------
-    cmaps : list of {str, :obj:`~matplotlib.colors.Colormap` objects} or \
+    cmaps : list of {str; :obj:`~matplotlib.colors.Colormap` objects} or \
         None. Default: None
         A list of all colormaps that must be included in the overview plot.
         If *None*, all colormaps defined in *CMasher* are used instead.
