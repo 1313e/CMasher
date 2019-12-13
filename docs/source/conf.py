@@ -133,7 +133,8 @@ html_theme_options = {
     'collapse_navigation': False,
     'sticky_navigation': False,
     'includehidden': False,
-    'titles_only': False
+    'titles_only': False,
+    'display_version': False
 }
 
 # Title formatting
@@ -148,7 +149,7 @@ html_last_updated_fmt = '%a %d %b %Y'
 html_static_path = ['_static']
 
 # OpenSearch. Requires documentation to be online.
-html_use_opensearch = 'https://cmasher.readthedocs.io/en/latest'
+html_use_opensearch = 'https://cmasher.readthedocs.io'
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -162,7 +163,7 @@ html_use_opensearch = 'https://cmasher.readthedocs.io/en/latest'
 
 html_split_index = True
 
-html_baseurl = 'https://cmasher.readthedocs.io/en/latest'
+html_baseurl = 'https://cmasher.readthedocs.io'
 
 html_extra_path = ['_static/google3ccf0e77d0aa4c22.html']
 

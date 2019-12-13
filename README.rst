@@ -10,7 +10,7 @@ Let's get rid of all bad colormaps in the world together!
 *If you use CMasher for your work, then please star the repo, such that I can keep track of how many users it has and more easily raise awareness of bad colormaps.*
 
 .. _issue: https://github.com/1313e/CMasher/issues
-.. _online documentation: https://cmasher.readthedocs.io/en/latest
+.. _online documentation: https://cmasher.readthedocs.io
 
 Colormap overview
 -----------------
@@ -20,7 +20,7 @@ For more information, see the `online documentation`_.
 .. image:: https://github.com/1313e/CMasher/raw/master/cmasher/colormaps/cmap_overview.png
     :width: 100%
     :align: center
-    :target: https://cmasher.readthedocs.io/en/latest
+    :target: https://cmasher.readthedocs.io
     :alt: CMasher Colormap Overview
 
 
@@ -61,7 +61,7 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
     plt.scatter(x, y, c=z, cmap=cmap, s=300)
     plt.show()
 
-Accessing the colormaps in other packages than *matplotlib* would require reading in the text-files in the `cmasher/colormaps`_ directory, which contain the normalized RGB values (multiply by :math:`255` for regular 8-bit values) of every colormap, and registering them in the package manually.
+Accessing the colormaps in other packages than *matplotlib* would require reading in the text-files in the `cmasher/colormaps`_ directory, which contain the normalized RGB values (multiply by `255` for regular 8-bit values) of every colormap, and registering them in the package manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
 
 .. _cmasher/colormaps: https://github.com/1313e/CMasher/tree/master/cmasher/colormaps
@@ -80,7 +80,7 @@ For those that are interested, the *viscm* source files that were used for creat
    :target: https://ci.appveyor.com/project/1313e/CMasher
    :alt: AppVeyor - Build Status
 .. |ReadTheDocs| image:: https://img.shields.io/readthedocs/cmasher/latest.svg?logo=read%20the%20docs&logoColor=white&label=Docs
-    :target: https://cmasher.readthedocs.io/en/latest
+    :target: https://cmasher.readthedocs.io
     :alt: ReadTheDocs - Build Status
 .. |Coverage| image:: https://img.shields.io/codecov/c/github/1313e/CMasher/master.svg?logo=codecov&logoColor=white&label=Coverage
     :target: https://codecov.io/gh/1313e/CMasher/branches/master
