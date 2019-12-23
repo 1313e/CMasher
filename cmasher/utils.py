@@ -45,7 +45,7 @@ def create_cmap_overview(cmaps=None, savefig=None):
         A list of all colormaps that must be included in the overview plot.
         If *None*, all colormaps defined in *CMasher* are used instead.
     savefig : str or None. Default: None
-        If not *None*, the path to where the overview plot must be saved to.
+        If not *None*, the path where the overview plot must be saved to.
         Else, the plot will simply be shown.
 
     Note
@@ -62,9 +62,8 @@ def create_cmap_overview(cmaps=None, savefig=None):
     # Make list containing all requested colormaps without reversed versions
     cmaps_list = []
     for cmap in cmaps:
-        if isinstance(cmap, string_types):
-            if not cmap.endswith('_r'):
-                cmaps_list.append(mplcm.get_cmap(cmap))
+        if isinstance(cmap, string_types) and not cmap.endswith('_r'):
+            cmaps_list.append(mplcm.get_cmap(cmap))
         elif not cmap.name.endswith('_r'):
             cmaps_list.append(cmap)
 

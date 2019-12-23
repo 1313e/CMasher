@@ -26,7 +26,7 @@ Fusion
     :name: fusion_viscm
 
 The *fusion* colormap is a visual representation of two particles fusing together.
-It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors blue/purple and orange/red.
+It covers almost the full lightness range (:math:`[10, 100]`) and uses the colors blue/purple and orange/red.
 It reaches its highest lightness value in the center and is therefore ideal for representing information where the distance to the common center should be highlighted, like in probability density maps.
 
 
@@ -67,3 +67,22 @@ Redshift
 The *redshift* colormap is a visual representation of the (mostly) astronomical phenomenon with the same name, where electromagnetic radiation (such as light) undergoes an increase in wavelength.
 It covers almost the full lightness range (i.e., :math:`[0, 90]`) and uses red and blue as its main colors.
 As with the *iceburn* colormap, this colormap reaches its lowest lightness value in the center.
+
+
+Waterlily
+---------
+.. figure:: ../../../cmasher/colormaps/waterlily/waterlily.png
+    :alt: Visual representation of the *waterlily* colormap.
+    :width: 100%
+    :align: center
+    :name: waterlily_cmap
+
+.. figure:: ../../../cmasher/colormaps/waterlily/waterlily_viscm.png
+    :alt: Statistics of the *waterlily* colormap.
+    :width: 100%
+    :align: center
+    :name: waterlily_viscm
+
+The *waterlily* colormap is a visual representation of the water flower with the same name.
+Like *fusion*, it covers the :math:`[10, 100]` lightness range and it uses the colors blue and green.
+It reaches its highest lightness value in the center, making it great for density maps.

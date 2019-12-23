@@ -20,25 +20,62 @@ from cmasher.utils import create_cmap_overview, import_cmaps
 
 # %% MAIN SCRIPT
 if(__name__ == '__main__'):
-    # Define name of colormap
-    jscm_path = path.abspath(sys.argv[1])
-    name = path.splitext(path.basename(jscm_path))[0]
+    # Check how many arguments were given
+    if(len(sys.argv) == 2):
+        # If only a single argument, then a sequential colormap is given
+        jscm_path = path.abspath(sys.argv[1])
+        name = path.splitext(path.basename(jscm_path))[0]
 
-    # Make a directory for the colormap files
-    os.mkdir(name)
+        # Make a directory for the colormap files
+        os.mkdir(name)
 
-    # Copy the .jscm-file to it
-    shutil.move(jscm_path, name)
+        # Copy the .jscm-file to it
+        shutil.move(jscm_path, name)
 
-    # Load colormap from .jscm-file
-    cmap = viscm.gui.Colormap(None, None, None)
-    cmap.load("{0}/{0}.jscm".format(name))
+        # Load colormap from .jscm-file
+        cmap = viscm.gui.Colormap(None, None, None)
+        cmap.load("{0}/{0}.jscm".format(name))
+
+        # Obtain RGB values of colormap
+        v = viscm.viscm_editor(uniform_space=cmap.uniform_space,
+                               cmtype=cmap.cmtype, method=cmap.method,
+                               **cmap.params)
+        rgb, _ = v.cmap_model.get_sRGB(num=256)
+        cmtype = cmap.cmtype
+
+    elif(len(sys.argv) == 3):
+        # Else, a diverging colormap is provided
+        jscm_paths = [path.abspath(arg) for arg in sys.argv[1:]]
+        name = path.basename(path.commonprefix(jscm_paths))[:-1]
+
+        # Make a directory for the colormap files
+        os.mkdir(name)
+
+        # Copy the .jscm-files to it
+        for jscm_path in jscm_paths:
+            shutil.move(jscm_path, name)
+
+        # Load colormaps from .jscm-file
+        cmap1 = viscm.gui.Colormap(None, None, None)
+        cmap1.load("{0}/{1}".format(name, path.basename(jscm_paths[0])))
+        cmap2 = viscm.gui.Colormap(None, None, None)
+        cmap2.load("{0}/{1}".format(name, path.basename(jscm_paths[1])))
+
+        # Obtain RGB values from both colormaps
+        v1 = viscm.viscm_editor(uniform_space=cmap1.uniform_space,
+                                cmtype=cmap1.cmtype, method=cmap1.method,
+                                **cmap1.params)
+        rgb1, _ = v1.cmap_model.get_sRGB(num=256)
+        v2 = viscm.viscm_editor(uniform_space=cmap2.uniform_space,
+                                cmtype=cmap2.cmtype, method=cmap2.method,
+                                **cmap2.params)
+        rgb2, _ = v2.cmap_model.get_sRGB(num=256)
+        cmtype = cmap1.cmtype
+
+        # Combine both RGB value lists into one
+        rgb = np.concatenate([rgb1, rgb2[1:]], axis=0)
 
     # Export as .py-file
-    v = viscm.viscm_editor(uniform_space=cmap.uniform_space,
-                           cmtype=cmap.cmtype, method=cmap.method,
-                           **cmap.params)
-    rgb, _ = v.cmap_model.get_sRGB(num=256)
     array_list = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
                                  separator=', ', threshold=rgb.size)
     cm_py_file = dedent("""
@@ -49,7 +86,7 @@ if(__name__ == '__main__'):
         cm_data = {1}
 
         test_cm = ListedColormap(cm_data, name="{2}")
-        """).format(v.cmtype, array_list, name)
+        """).format(cmtype, array_list, name)
     with open("{0}/{0}.py".format(name), 'w') as f:
         f.write(cm_py_file[1:])
 
