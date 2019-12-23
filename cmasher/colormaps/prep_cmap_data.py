@@ -75,9 +75,16 @@ if(__name__ == '__main__'):
         # Combine both RGB value lists into one
         rgb = np.concatenate([rgb1, rgb2[1:]], axis=0)
 
-    # Export as .py-file
+    # Convert RGB values to string
     array_list = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
                                  separator=', ', threshold=rgb.size)
+
+    # Remove all whitespaces before commas
+    for i in range(8, 0, -1):
+        array_list = array_list.replace(' '*i+', ', '0'*i+', ')
+        array_list = array_list.replace(' '*i+']', '0'*i+']')
+
+    # Export as .py-file
     cm_py_file = dedent("""
         from matplotlib.colors import ListedColormap
 
