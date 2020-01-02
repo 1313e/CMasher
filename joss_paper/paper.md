@@ -59,7 +59,7 @@ An overview of all current colormaps in *CMasher* is shown in Fig. 2.
 
 ![Overview of all current colormaps in *CMasher*.](https://raw.githubusercontent.com/1313e/CMasher/cmasher/colormaps/cmap_overview.png)
 
-*CMasher* has already been used in several scientific studies, including *PRISM*'s model emulations [@PRISM_JOSS; @PRISM_ApJS]; galaxy kinematics (Džudžar et al. In prep); and redshift estimations for fast radio bursts [@Fruitbat].
+*CMasher* has already been used in several scientific studies, including *PRISM*'s model emulations [@PRISM_JOSS; @PRISM_ApJS]; galaxy kinematics (Džudžar et al. in prep); and redshift estimations for fast radio bursts [@Fruitbat].
 Due to the number of different color sequences and the perceptual uniform sequential nature of most colormaps, *CMasher* is also great for representing discrete data.
 Users are encouraged to request for specific colormaps to be designed if they cannot find the perfect one.
 The source code for *CMasher* (including the ``viscm`` source files) can be found at https://github.com/1313e/CMasher, whereas all the available colormaps with their descriptions (and recommended use-cases) can be found at https://cmasher.readthedocs.io
