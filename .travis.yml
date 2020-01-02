@@ -9,13 +9,6 @@ env:
 
 jobs:
   include:
-    - os: osx
-      python: 2
-      language: generic
-    - os: osx
-      python: 3
-      language: generic
-      env: PY=3
     - python: 2.7
     - python: 3.5
     - python: 3.6
@@ -28,11 +21,11 @@ jobs:
     - python: 3.9-dev
 
 before_install:
-  - python$PY -m pip install --upgrade pip setuptools wheel
-  - pip$PY install -r requirements_dev.txt
+  - python -m pip install --upgrade pip setuptools wheel
+  - pip install -r requirements_dev.txt
 install:
   - check-manifest
-  - python$PY setup.py sdist bdist_wheel
+  - python setup.py sdist bdist_wheel
   - twine check dist/*
 script:
   - pytest
