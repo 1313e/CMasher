@@ -1,5 +1,6 @@
 -e .
 check-manifest
+pyqt5==5.12.*;python_version>='3'
 pytest>=3.8.0
 pytest-cov
 pytest-mpl
@@ -7,4 +8,5 @@ pytest-pep8
 readme_renderer[md]
 setuptools>=38.6.0
 twine>=1.13.0
+viscm>=0.9;python_version>='3'
 wheel>=0.31.0

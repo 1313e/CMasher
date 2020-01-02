@@ -70,7 +70,7 @@ if(__name__ == '__main__'):
                                 cmtype=cmap2.cmtype, method=cmap2.method,
                                 **cmap2.params)
         rgb2, _ = v2.cmap_model.get_sRGB(num=256)
-        cmtype = cmap1.cmtype
+        cmtype = 'diverging'
 
         # Combine both RGB value lists into one
         rgb = np.concatenate([rgb1, rgb2[1:]], axis=0)

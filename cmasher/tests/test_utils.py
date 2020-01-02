@@ -11,6 +11,7 @@ from os import path
 # Package imports
 from matplotlib import cm as mplcm
 import pytest
+from six import PY2
 
 # CMasher imports
 from cmasher import cm
@@ -28,8 +29,22 @@ class Test_create_cmap_overview(object):
         create_cmap_overview()
 
     # Test if providing a custom list of colormaps works
-    def test_custom_cmaps(self):
+    def test_custom_cmaps_list_no_cat(self):
+        create_cmap_overview([cm.rainforest], categorize=0)
+        create_cmap_overview(['cmr.rainforest'], categorize=0)
+
+    # Test if providing a custom list of colormaps works
+    def test_custom_cmaps_list_cat(self):
         create_cmap_overview(['cmr.rainforest'])
+
+    # Test if providing all MPL colormaps works
+    def test_custom_cmaps_mpl(self):
+        create_cmap_overview(mplcm.cmap_d.values())
+
+    # Test if providing a custom dict of colormaps works
+    def test_custom_cmaps_dict(self):
+        create_cmap_overview({'test1': [cm.rainforest],
+                              'test2': ['cmr.rainforest']})
 
     # Test if the figure can be saved
     def test_savefig(self):
@@ -39,9 +54,17 @@ class Test_create_cmap_overview(object):
 
 # Pytest class for import_cmaps()-function
 class Test_import_cmaps(object):
-    # Test if providing a cmap file works
-    def test_cmap_file(self):
+    # Test if providing a cmap .txt-file works
+    def test_cmap_file_txt(self):
         import_cmaps(path.join(dirpath, '../colormaps/cm_rainforest.txt'))
+
+    # Test if providing a cmap .jscm-file works (Py3) or errors (Py2)
+    def test_cmap_file_jscm(self):
+        if PY2:
+            with pytest.raises(ValueError):
+                import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
+        else:
+            import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
 
     # Test if all colormaps in cmasher/colormaps are loaded into MPL
     def test_MPL_cmaps(self):

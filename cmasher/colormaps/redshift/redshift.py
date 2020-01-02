@@ -1,7 +1,7 @@
 
 from matplotlib.colors import ListedColormap
 
-cm_type = "linear"
+cm_type = "diverging"
 
 cm_data = [[5.78692840e-01, 9.47004534e-01, 9.53835089e-01],
            [5.73300958e-01, 9.42448134e-01, 9.52185844e-01],

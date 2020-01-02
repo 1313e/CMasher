@@ -16,3 +16,9 @@ __all__ = []
 # %% GLOBALS
 # Initialize empty dict to hold colormaps in
 cmap_d = {}
+cmap_cd = {
+    'sequential': {},
+    'diverging': {},
+    'cyclic': {},
+    'qualitative': {},
+    'misc': {}}

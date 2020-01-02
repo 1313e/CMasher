@@ -13,6 +13,7 @@ Utility functions required for registering all defined scientific colormaps.
 from __future__ import absolute_import, division, print_function
 
 # Built-in imports
+from collections import OrderedDict as odict
 import os
 from os import path
 
@@ -31,22 +32,108 @@ from cmasher import cm as cmrcm
 __all__ = ['create_cmap_overview', 'import_cmaps']
 
 
+# %% HELPER FUNCTIONS
+# This function determines the colormap type of a given colormap
+def _get_cm_type(cmap):
+    """
+    Checks what the colormap type (sequential; diverging; cyclic; qualitative;
+    misc) of the provided `cmap` is and returns it.
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in MPL or its corresponding
+        :obj:`~matplotlib.colors.Colormap` object.
+
+    Returns
+    -------
+    cm_type : {'sequential'; 'diverging'; 'cyclic'; 'qualitative'; 'misc'}
+        A string stating which of the defined colormap types the provided
+        `cmap` has.
+
+    """
+
+    # Obtain the colormap
+    cmap = mplcm.get_cmap(cmap)
+
+    # Get array of all values for which a colormap value is requested
+    x = np.linspace(0, 1, cmap.N)
+
+    # Get RGB values for colormap.
+    rgb = cmap(x)[:, :3]
+
+    # Get lightness values of cmap
+    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+    L = lab[:, 0]
+    diff_L = np.diff(L)
+
+    # Obtain central values of lightness
+    N = cmap.N-1
+    central_i = [int(np.floor(N/2)), int(np.ceil(N/2))]
+    diff_L0 = np.diff(L[:central_i[0]+1])
+    diff_L1 = np.diff(L[central_i[1]:])
+
+    # Obtain perceptual differences of last two and first two values
+    lab_red = np.concatenate([lab[-2:], lab[:2]], axis=0)
+    deltas = np.sqrt(np.sum(np.diff(lab_red, axis=0)**2, axis=-1))
+
+    # Check the statistics of cmap and determine the colormap type
+    # QUALITATIVE
+    # If the colormap has less than 40 values, assume it is qualitative
+    if(cmap.N < 40):
+        return('qualitative')
+
+    # MISC 1
+    # If the colormap has plateaus in lightness, it is misc
+    elif np.any(np.isclose(diff_L, 0)):
+        return('misc')
+
+    # SEQUENTIAL
+    # If the lightness values always increase or decrease, it is sequential
+    elif np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))):
+        return('sequential')
+
+    # DIVERGING
+    # If the lightness values have a central extrema and is sequential
+    # Then it is diverging
+    elif (np.isclose(np.abs(np.sum(diff_L0)), np.sum(np.abs(diff_L0))) and
+          np.isclose(np.abs(np.sum(diff_L1)), np.sum(np.abs(diff_L1)))):
+        # If the perceptual difference between the last and first value is
+        # comparable to the other perceptual differences, it is cyclic
+        if np.all(np.diff(deltas) < deltas[::2]):
+            return('cyclic')
+
+        # Otherwise, it is a normal diverging colormap
+        else:
+            return('diverging')
+
+    # MISC 2
+    # If none of the criteria above apply, it is misc
+    else:
+        return('misc')
+
+
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
-def create_cmap_overview(cmaps=None, savefig=None):
+def create_cmap_overview(cmaps=None, savefig=None, categorize=True):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
 
     Optional
     --------
-    cmaps : list of {str; :obj:`~matplotlib.colors.Colormap` objects} or \
-        None. Default: None
+    cmaps : list of {str; :obj:`~matplotlib.colors.Colormap` objects}, dict \
+        of lists or None. Default: None
         A list of all colormaps that must be included in the overview plot.
+        If dict of lists, the keys define categories for the colormaps.
         If *None*, all colormaps defined in *CMasher* are used instead.
     savefig : str or None. Default: None
         If not *None*, the path where the overview plot must be saved to.
         Else, the plot will simply be shown.
+    categorize : bool. Default: True
+        Whether all colormaps in `cmaps` should be categorized into their
+        colormap types (sequential; diverging; cyclic; qualitative; misc).
+        If `cmaps` is a dict, this value is ignored.
 
     Note
     ----
@@ -55,20 +142,79 @@ def create_cmap_overview(cmaps=None, savefig=None):
 
     """
 
-    # If cmap_list is None, use cmap_d.values
+    # If cmaps is None, use cmap_d.values
     if cmaps is None:
         cmaps = cmrcm.cmap_d.values()
 
-    # Make list containing all requested colormaps without reversed versions
-    cmaps_list = []
-    for cmap in cmaps:
-        if isinstance(cmap, string_types) and not cmap.endswith('_r'):
-            cmaps_list.append(mplcm.get_cmap(cmap))
-        elif not cmap.name.endswith('_r'):
-            cmaps_list.append(cmap)
+    # Save provided cmaps as something else
+    input_cmaps = cmaps
 
-    # Sort the cmaps in cmaps_list
-    cmaps_list.sort(key=lambda x: x.name)
+    # Create empty list of cmaps
+    cmaps_list = []
+
+    # If input_cmaps is a dict, it has categories defined
+    if isinstance(input_cmaps, dict):
+        # Define empty dict of colormaps
+        cmaps_dict = odict()
+
+        # Loop over all categories
+        for category, cmaps in input_cmaps.items():
+            # Add empty list of colormaps to cmaps_dict with this category
+            cmaps_dict[category] = []
+            cat_lst = cmaps_dict[category]
+
+            # Loop over all cmaps and remove reversed versions
+            for cmap in cmaps:
+                if isinstance(cmap, string_types) and not cmap.endswith('_r'):
+                    cat_lst.append(mplcm.get_cmap(cmap))
+                elif not cmap.name.endswith('_r'):
+                    cat_lst.append(cmap)
+
+            # Sort the colormaps in this category
+            cat_lst.sort(key=lambda x: x.name)
+
+        # Convert entire cmaps_dict into a list again
+        for key, value in cmaps_dict.items():
+            # If this category has at least 1 colormap, add them
+            if value:
+                cmaps_list.append(key)
+                cmaps_list.extend(value)
+
+    # Else, it is a list with no categories
+    else:
+        # If categories are requested
+        if categorize:
+            # Define empty dict with the base categories
+            categories = ['sequential', 'diverging', 'cyclic', 'qualitative',
+                          'misc']
+            cmaps_dict = odict([[category, []] for category in categories])
+
+            # Loop over all cmaps and remove reversed versions
+            for cmap in cmaps:
+                category = _get_cm_type(cmap)
+                if isinstance(cmap, string_types) and not cmap.endswith('_r'):
+                    cmaps_dict[category].append(mplcm.get_cmap(cmap))
+                elif not cmap.name.endswith('_r'):
+                    cmaps_dict[category].append(cmap)
+
+            # Loop over all categories and sort their colormaps
+            for category in categories:
+                cmaps_dict[category].sort(key=lambda x: x.name)
+
+            # Convert entire cmaps_dict into a list again
+            for key, value in cmaps_dict.items():
+                # If this category has at least 1 colormap, add them
+                if value:
+                    cmaps_list.append(key)
+                    cmaps_list.extend(value)
+        else:
+            # Loop over all cmaps and remove reversed versions
+            for cmap in cmaps:
+                if isinstance(cmap, string_types) and not cmap.endswith('_r'):
+                    cmaps_list.append(mplcm.get_cmap(cmap))
+                elif not cmap.name.endswith('_r'):
+                    cmaps_list.append(cmap)
+            cmaps_list.sort(key=lambda x: x.name)
 
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
@@ -80,7 +226,7 @@ def create_cmap_overview(cmaps=None, savefig=None):
     w_pad, h_pad, wspace, hspace = fig.get_constrained_layout_pads()
     fig.subplots_adjust(top=(1-0.24/height), bottom=0.01, left=0.2, right=0.99,
                         wspace=0.05)
-    fig.suptitle("Colormap Overview", fontsize=14, y=1.0, x=0.6)
+    fig.suptitle("Colormap Overview", fontsize=16, y=1.0, x=0.595)
 
     # If cmaps_list only has a single element, make sure axes is a list
     if(len(cmaps_list) == 1):
@@ -88,34 +234,45 @@ def create_cmap_overview(cmaps=None, savefig=None):
 
     # Loop over all cmaps defined in cmaps list
     for ax, cmap in zip(axes, cmaps_list):
-        # Get array of all values for which a colormap value is requested
-        x = np.linspace(0, 1, cmap.N)
-
-        # Get RGB values for colormap.
-        rgb = cmap(x)[np.newaxis, :, :3]
-
-        # Get lightness values of cmap
-        lab = cspace_convert(rgb)
-        L = lab[0, :, 0]
-
-        # Get corresponding RGB values for lightness values using cm.neutral
-        rgb_L = cmrcm.neutral(L/99.99871678)[np.newaxis, :, :3]
-
-        # Add subplots
-        ax[0].imshow(rgb, aspect='auto')
+        # Turn axes off
         ax[0].set_axis_off()
-        ax[1].imshow(rgb_L, aspect='auto')
         ax[1].set_axis_off()
-        pos = list(ax[0].get_position().bounds)
-        x_text = pos[0]-0.01
-        y_text = pos[1]+pos[3]/2
-        fig.text(x_text, y_text, cmap.name, va='center', ha='right',
-                 fontsize=10)
+
+        # If cmap is a string, it defines a category
+        if isinstance(cmap, string_types):
+            # Write the category as text in the correct position
+            fig.text(0.595, ax[0].get_position().bounds[1], cmap,
+                     va='bottom', ha='center', fontsize=14)
+
+        # Else, this is a colormap
+        else:
+            # Get array of all values for which a colormap value is requested
+            x = np.linspace(0, 1, cmap.N)
+
+            # Get RGB values for colormap.
+            rgb = cmap(x)[:, :3]
+
+            # Get lightness values of cmap
+            lab = cspace_convert(rgb)
+            L = lab[:, 0]
+
+            # Get corresponding RGB values for lightness values using neutral
+            rgb_L = cmrcm.neutral(L/99.99871678)[:, :3]
+
+            # Add subplots
+            ax[0].imshow(rgb[np.newaxis, ...], aspect='auto')
+            ax[1].imshow(rgb_L[np.newaxis, ...], aspect='auto')
+            pos = list(ax[0].get_position().bounds)
+            x_text = pos[0]-0.01
+            y_text = pos[1]+pos[3]/2
+            fig.text(x_text, y_text, cmap.name, va='center', ha='right',
+                     fontsize=10)
 
     # If savefig is not None, save the figure
     if savefig is not None:
         plt.savefig(savefig, dpi=250)
         plt.close(fig)
+
     # Else, simply show it
     else:
         plt.show()
@@ -134,7 +291,7 @@ def import_cmaps(cmap_path):
     cmap_path : str
         Relative or absolute path to a custom colormap file or directory that
         contains custom colormap files. A colormap file can be a NumPy binary
-        file ('.npy' or '.npz') or any text file.
+        file ('.npy'); a viscm source file ('.jscm'); or any text file.
 
     Notes
     -----
@@ -182,17 +339,40 @@ def import_cmaps(cmap_path):
         base_str, ext_str = path.splitext(cm_file)
         cm_name = base_str[3:]
 
+        # Obtain absolute path to colormap data file
+        cm_file_path = path.join(cmap_dir, cm_file)
+
         # Process colormap files
         try:
-            # Obtain absolute path to colormap data file
-            cm_file_path = path.join(cmap_dir, cm_file)
-
-            # Read in colormap data
-            if ext_str in ('.npy', '.npz'):
-                # If file is a NumPy binary file
+            # If file is a NumPy binary file
+            if(ext_str == '.npy'):
                 colorlist = np.load(cm_file_path).tolist()
+
+            # If file is viscm source file
+            elif(ext_str == '.jscm'):
+                # Check if viscm is available
+                try:
+                    import viscm
+                # If that fails, raise error
+                except ImportError:
+                    raise ImportError("The 'viscm' package is required to read"
+                                      " '.jscm' files!")
+                # If that succeeds, load RGB values from source file
+                else:
+                    # Load colormap
+                    cmap = viscm.gui.Colormap(None, None, None)
+                    cmap.load(cm_file_path)
+
+                    # Create editor and obtain RGB values
+                    v = viscm.viscm_editor(uniform_space=cmap.uniform_space,
+                                           cmtype=cmap.cmtype,
+                                           method=cmap.method,
+                                           **cmap.params)
+                    rgb, _ = v.cmap_model.get_sRGB(num=256)
+                    colorlist = rgb.tolist()
+
+            # If file is anything else
             else:
-                # If file is anything else
                 colorlist = np.genfromtxt(cm_file_path).tolist()
 
             # Transform colorlist into a Colormap
@@ -205,17 +385,24 @@ def import_cmaps(cmap_path):
             cmap_mpl(1)
             cmap_mpl_r(1)
 
+            # Determine the cm_type of the colormap
+            cm_type = _get_cm_type(cmap_mpl)
+
             # Add cmap to matplotlib's cmap list
             mplcm.register_cmap(cmap=cmap_mpl)
             setattr(cmrcm, cmap_cmr.name, cmap_cmr)
             cmrcm.__all__.append(cmap_cmr.name)
             cmrcm.cmap_d[cmap_cmr.name] = cmap_cmr
+            cmrcm.cmap_cd[cm_type][cmap_cmr.name] = cmap_cmr
 
             # Add reversed cmap to matplotlib's cmap list
             mplcm.register_cmap(cmap=cmap_mpl_r)
             setattr(cmrcm, cmap_cmr_r.name, cmap_cmr_r)
             cmrcm.__all__.append(cmap_cmr_r.name)
             cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
+            cmrcm.cmap_cd[cm_type][cmap_cmr_r.name] = cmap_cmr_r
+
+        # If any error is raised, reraise it
         except Exception as error:
             raise ValueError("Provided colormap %r is invalid! (%s)"
                              % (cm_name, error))
