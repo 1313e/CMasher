@@ -115,7 +115,7 @@ def _get_cm_type(cmap):
 
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
-def create_cmap_overview(cmaps=None, savefig=None, categorize=True):
+def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -130,7 +130,7 @@ def create_cmap_overview(cmaps=None, savefig=None, categorize=True):
     savefig : str or None. Default: None
         If not *None*, the path where the overview plot must be saved to.
         Else, the plot will simply be shown.
-    categorize : bool. Default: True
+    use_types : bool. Default: True
         Whether all colormaps in `cmaps` should be categorized into their
         colormap types (sequential; diverging; cyclic; qualitative; misc).
         If `cmaps` is a dict, this value is ignored.
@@ -152,16 +152,16 @@ def create_cmap_overview(cmaps=None, savefig=None, categorize=True):
     # Create empty list of cmaps
     cmaps_list = []
 
-    # If input_cmaps is a dict, it has categories defined
+    # If input_cmaps is a dict, it has cm_types defined
     if isinstance(input_cmaps, dict):
         # Define empty dict of colormaps
         cmaps_dict = odict()
 
-        # Loop over all categories
-        for category, cmaps in input_cmaps.items():
-            # Add empty list of colormaps to cmaps_dict with this category
-            cmaps_dict[category] = []
-            cat_lst = cmaps_dict[category]
+        # Loop over all cm_types
+        for cm_type, cmaps in input_cmaps.items():
+            # Add empty list of colormaps to cmaps_dict with this cm_type
+            cmaps_dict[cm_type] = []
+            cat_lst = cmaps_dict[cm_type]
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
@@ -170,40 +170,40 @@ def create_cmap_overview(cmaps=None, savefig=None, categorize=True):
                 elif not cmap.name.endswith('_r'):
                     cat_lst.append(cmap)
 
-            # Sort the colormaps in this category
+            # Sort the colormaps in this cm_type
             cat_lst.sort(key=lambda x: x.name)
 
         # Convert entire cmaps_dict into a list again
         for key, value in cmaps_dict.items():
-            # If this category has at least 1 colormap, add them
+            # If this cm_type has at least 1 colormap, add them
             if value:
                 cmaps_list.append(key)
                 cmaps_list.extend(value)
 
-    # Else, it is a list with no categories
+    # Else, it is a list with no cm_types
     else:
-        # If categories are requested
-        if categorize:
-            # Define empty dict with the base categories
-            categories = ['sequential', 'diverging', 'cyclic', 'qualitative',
-                          'misc']
-            cmaps_dict = odict([[category, []] for category in categories])
+        # If cm_types are requested
+        if use_types:
+            # Define empty dict with the base cm_types
+            cm_types = ['sequential', 'diverging', 'cyclic', 'qualitative',
+                        'misc']
+            cmaps_dict = odict([[cm_type, []] for cm_type in cm_types])
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                category = _get_cm_type(cmap)
+                cm_type = _get_cm_type(cmap)
                 if isinstance(cmap, string_types) and not cmap.endswith('_r'):
-                    cmaps_dict[category].append(mplcm.get_cmap(cmap))
+                    cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
-                    cmaps_dict[category].append(cmap)
+                    cmaps_dict[cm_type].append(cmap)
 
-            # Loop over all categories and sort their colormaps
-            for category in categories:
-                cmaps_dict[category].sort(key=lambda x: x.name)
+            # Loop over all cm_types and sort their colormaps
+            for cm_type in cm_types:
+                cmaps_dict[cm_type].sort(key=lambda x: x.name)
 
             # Convert entire cmaps_dict into a list again
             for key, value in cmaps_dict.items():
-                # If this category has at least 1 colormap, add them
+                # If this cm_type has at least 1 colormap, add them
                 if value:
                     cmaps_list.append(key)
                     cmaps_list.extend(value)
@@ -238,9 +238,9 @@ def create_cmap_overview(cmaps=None, savefig=None, categorize=True):
         ax[0].set_axis_off()
         ax[1].set_axis_off()
 
-        # If cmap is a string, it defines a category
+        # If cmap is a string, it defines a cm_type
         if isinstance(cmap, string_types):
-            # Write the category as text in the correct position
+            # Write the cm_type as text in the correct position
             fig.text(0.595, ax[0].get_position().bounds[1], cmap,
                      va='bottom', ha='center', fontsize=14)
 
