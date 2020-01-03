@@ -59,10 +59,10 @@ def _get_cm_type(cmap):
     # Get array of all values for which a colormap value is requested
     x = np.linspace(0, 1, cmap.N)
 
-    # Get RGB values for colormap.
+    # Get RGB values for colormap
     rgb = cmap(x)[:, :3]
 
-    # Get lightness values of cmap
+    # Get lightness values of colormap
     lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
     L = lab[:, 0]
     diff_L = np.diff(L)
@@ -94,13 +94,13 @@ def _get_cm_type(cmap):
         return('sequential')
 
     # DIVERGING
-    # If the lightness values have a central extrema and is sequential
+    # If the lightness values have a central extreme and sequential sides
     # Then it is diverging
     elif (np.isclose(np.abs(np.sum(diff_L0)), np.sum(np.abs(diff_L0))) and
           np.isclose(np.abs(np.sum(diff_L1)), np.sum(np.abs(diff_L1)))):
         # If the perceptual difference between the last and first value is
         # comparable to the other perceptual differences, it is cyclic
-        if np.all(np.diff(deltas) < deltas[::2]):
+        if np.all(np.abs(np.diff(deltas)) < deltas[::2]):
             return('cyclic')
 
         # Otherwise, it is a normal diverging colormap
@@ -139,6 +139,8 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
     ----
     The colormaps in `cmaps` can either be provided as their registered name in
     MPL, or their corresponding :obj:`~matplotlib.colors.Colormap` object.
+    Any provided reversed colormaps (colormaps that end their name with '_r')
+    are ignored.
 
     """
 
@@ -146,32 +148,32 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
     if cmaps is None:
         cmaps = cmrcm.cmap_d.values()
 
-    # Save provided cmaps as something else
-    input_cmaps = cmaps
-
     # Create empty list of cmaps
     cmaps_list = []
 
-    # If input_cmaps is a dict, it has cm_types defined
-    if isinstance(input_cmaps, dict):
+    # If cmaps is a dict, it has cm_types defined
+    if isinstance(cmaps, dict):
         # Define empty dict of colormaps
         cmaps_dict = odict()
+
+        # Save provided cmaps as something else
+        input_cmaps = cmaps
 
         # Loop over all cm_types
         for cm_type, cmaps in input_cmaps.items():
             # Add empty list of colormaps to cmaps_dict with this cm_type
             cmaps_dict[cm_type] = []
-            cat_lst = cmaps_dict[cm_type]
+            type_lst = cmaps_dict[cm_type]
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
                 if isinstance(cmap, string_types) and not cmap.endswith('_r'):
-                    cat_lst.append(mplcm.get_cmap(cmap))
+                    type_lst.append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
-                    cat_lst.append(cmap)
+                    type_lst.append(cmap)
 
             # Sort the colormaps in this cm_type
-            cat_lst.sort(key=lambda x: x.name)
+            type_lst.sort(key=lambda x: x.name)
 
         # Convert entire cmaps_dict into a list again
         for key, value in cmaps_dict.items():
@@ -249,10 +251,10 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
             # Get array of all values for which a colormap value is requested
             x = np.linspace(0, 1, cmap.N)
 
-            # Get RGB values for colormap.
+            # Get RGB values for colormap
             rgb = cmap(x)[:, :3]
 
-            # Get lightness values of cmap
+            # Get lightness values of colormap
             lab = cspace_convert(rgb)
             L = lab[:, 0]
 

@@ -14,7 +14,7 @@ import pytest
 from six import PY2
 
 # CMasher imports
-from cmasher import cm
+from cmasher import cm as cmrcm
 from cmasher.utils import create_cmap_overview, import_cmaps
 
 # Save the path to this directory
@@ -30,7 +30,7 @@ class Test_create_cmap_overview(object):
 
     # Test if providing a custom list of colormaps works
     def test_custom_cmaps_list_no_types(self):
-        create_cmap_overview([cm.rainforest], use_types=0)
+        create_cmap_overview([cmrcm.rainforest], use_types=0)
         create_cmap_overview(['cmr.rainforest'], use_types=0)
 
     # Test if providing a custom list of colormaps works
@@ -43,7 +43,7 @@ class Test_create_cmap_overview(object):
 
     # Test if providing a custom dict of colormaps works
     def test_custom_cmaps_dict(self):
-        create_cmap_overview({'test1': [cm.rainforest],
+        create_cmap_overview({'test1': [cmrcm.rainforest],
                               'test2': ['cmr.rainforest']})
 
     # Test if the figure can be saved
@@ -80,7 +80,7 @@ class Test_import_cmaps(object):
 
         # Check if all names in cm_names are registered in CMasher and MPL
         for cm_name in cm_names:
-            assert hasattr(cm, cm_name)
+            assert hasattr(cmrcm, cm_name)
             assert cm_name not in mplcm.cmap_d
             assert 'cmr.'+cm_name in mplcm.cmap_d
 
