@@ -29,9 +29,9 @@ class Test_create_cmap_overview(object):
         create_cmap_overview()
 
     # Test if providing a custom list of colormaps works
-    def test_custom_cmaps_list_no_cat(self):
-        create_cmap_overview([cm.rainforest], categorize=0)
-        create_cmap_overview(['cmr.rainforest'], categorize=0)
+    def test_custom_cmaps_list_no_types(self):
+        create_cmap_overview([cm.rainforest], use_types=0)
+        create_cmap_overview(['cmr.rainforest'], use_types=0)
 
     # Test if providing a custom list of colormaps works
     def test_custom_cmaps_list_cat(self):
