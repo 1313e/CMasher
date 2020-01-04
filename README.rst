@@ -33,8 +33,8 @@ How to install
 
 Example use
 -----------
-The colormaps shown above can be accessed by simply importing *CMasher* (which automatically executes the `import_cmaps` function on the `cmasher/colormaps`_ directory).
-This makes them available in *CMasher*'s `cm` module, in addition to registering them in *matplotlib*'s `cm` module (with added `'cmr.'` prefix to avoid name clashes).
+The colormaps shown above can be accessed by simply importing *CMasher* (which automatically executes the ``import_cmaps`` function on the `cmasher/colormaps`_ directory).
+This makes them available in *CMasher*'s ``cm`` module, in addition to registering them in *matplotlib*'s ``cm`` module (with added ``'cmr.'`` prefix to avoid name clashes).
 So, for example, if one were to use the *rainforest* colormap, this could be done with:
 
 .. code:: python

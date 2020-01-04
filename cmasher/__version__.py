@@ -10,4 +10,4 @@ Stores the different versions of the *CMasher* package.
 
 # %% VERSIONS
 # Default/Latest/Current version
-__version__ = '1.1.3'
+__version__ = '1.1.4'

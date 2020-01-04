@@ -11,23 +11,23 @@ These colormaps are shown below.
 
 .. _PRISM: https://github.com/1313e/PRISM
 
-Amethyst
---------
-.. figure:: ../../../cmasher/colormaps/amethyst/amethyst.png
-    :alt: Visual representation of the *amethyst* colormap.
+Amber
+-----
+.. figure:: ../../../cmasher/colormaps/amber/amber.png
+    :alt: Visual representation of the *amber* colormap.
     :width: 100%
     :align: center
-    :name: amethyst_cmap
+    :name: amber_cmap
 
-.. figure:: ../../../cmasher/colormaps/amethyst/amethyst_viscm.png
-    :alt: Statistics of the *amethyst* colormap.
+.. figure:: ../../../cmasher/colormaps/amber/amber_viscm.png
+    :alt: Statistics of the *amber* colormap.
     :width: 100%
     :align: center
-    :name: amethyst_viscm
+    :name: amber_viscm
 
-The *amethyst* colormap is a visual representation of the quartz with the same name.
-It covers the full lightness range and uses the colors blue/purple.
-Its very distinctive colors make it useful for representing dense information while not overloading on distractive colors.
+The *amber* colormap is a visual representation of the gemstone with the same name.
+It covers almost the full lightness range (:math:`[0, 95]`) and uses the color orange/yellow.
+Its smoothly varying colors make it great for representing smooth information.
 
 
 Arctic
@@ -162,6 +162,25 @@ Freeze
 The *freeze* colormap is one of the two main colormaps used in `PRISM`_, and is a visual representation of a large body of water freezing over.
 It covers the full lightness range and solely uses the color blue.
 As it only uses a single color, this colormap is excellent for representing information that varies smoothly, like density/intensity values in a scientific plot.
+
+
+Gem
+---
+.. figure:: ../../../cmasher/colormaps/gem/gem.png
+    :alt: Visual representation of the *gem* colormap.
+    :width: 100%
+    :align: center
+    :name: gem_cmap
+
+.. figure:: ../../../cmasher/colormaps/gem/gem_viscm.png
+    :alt: Statistics of the *gem* colormap.
+    :width: 100%
+    :align: center
+    :name: gem_viscm
+
+The *gem* colormap is a visual representation of the amethyst and aquamarine gemstones.
+It covers the full lightness range and uses the colors purple and blue.
+Its very distinctive colors make it useful for representing dense information while not overloading on distractive colors.
 
 
 Gothic

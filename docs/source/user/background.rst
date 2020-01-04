@@ -26,7 +26,7 @@ However, we can clearly see that this introduces multiple problems, as the color
 This is an example of a colormap where it would be necessary to have a colorbar/legend, and it is overall a bad colormap to use.
 
 Despite all of these problems, the *jet* colormap is still a very commonly used colormap.
-An often cited reason for this (besides the general _"Everyone else uses it."_), is that *jet* has a high perceptual range, making it easier to distinguish adjacent values (it has a higher perceptual range than any colormap in *CMasher*, including the diverging colormaps).
+An often cited reason for this (besides the general *"Everyone else uses it."*), is that *jet* has a high perceptual range, making it easier to distinguish adjacent values (it has a higher perceptual range than any colormap in *CMasher*, including the diverging colormaps).
 Although this can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
 In order to solve the problem of not knowing when to use what colormap, on the following pages, the different colormaps in *CMasher* are introduced and described what they should be used for, such that others can use them properly for their own projects.
 
