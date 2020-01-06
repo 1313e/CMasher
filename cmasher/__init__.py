@@ -2,8 +2,8 @@
 
 """
 CMasher
-========
-Scientific colormaps for making stunning and *cmashing* plots.
+=======
+Scientific colormaps for making accessible, informative and *cmashing* plots.
 
 """
 

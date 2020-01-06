@@ -218,8 +218,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, project, html_title,
-     author, project, ("Scientific colormaps for making stunning and "
-                       "'cmashing' plots"),
+     author, project, ("Scientific colormaps for making accessible, "
+                       "informative and 'cmashing' plots"),
      'Miscellaneous'),
 ]
 

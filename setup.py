@@ -36,8 +36,8 @@ setup(name="cmasher",
       version=version,
       author="Ellert van der Velden",
       author_email='ellert_vandervelden@outlook.com',
-      description=("Scientific colormaps for making stunning and 'cmashing' "
-                   "plots"),
+      description=("Scientific colormaps for making accessible, informative "
+                   "and 'cmashing' plots"),
       long_description=long_description,
       url='https://www.github.com/1313e/CMasher',
       license='BSD-3',

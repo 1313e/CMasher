@@ -7,8 +7,7 @@ Basically, it should be possible to infer how every color relates in terms of va
 
 Although this may sound easy enough, there are many colormaps out there that do this incorrectly.
 The main problem usually is that humans do not perceive every color equally (e.g., small variations in the color green are not perceived as it is such a natural color, while small variations in the colors red and blue are perceived).
-Therefore, if one were to make a colormap that linearly increases in color wavelength, it would not be perceived as uniformly changing at all.
-A good example of this is a colormap that is very commonly used in many different applications, the *jet* colormap:
+A good example of a colormap that illustrates this, is the commonly used *jet* colormap:
 
 .. figure:: images/jet_viscm.png
     :alt: Statistics of the *jet* colormap.
@@ -17,11 +16,11 @@ A good example of this is a colormap that is very commonly used in many differen
     :name: jet_viscm
 
     Output of the *viscm* package showing the statistics and performance of the *jet* colormap.
-    The various different plots show how the colormap changes in perceived color and lightness, as well as how well the colormap converts to different types of color-vision deficiency (color blindness) and grey-scale.
+    The various different plots show how the colormap changes in perceived color and lightness, as well as how well the colormap converts to different types of color-vision deficiency (CVD; color blindness) and grey-scale.
     In case of a perceptually uniform sequential colormap, the two derivative plots should show a straight horizontal line; the colorspace diagram should be smooth; and the lines in the right-bottom corner plots should be visible up to the same depth across the entire colormap.
 
 In :numref:`jet_viscm`, one can view the statistics output of the *jet* colormap, made with the `viscm`_ package.
-As you can probably see, the *jet* colormap shows the spectrum of visible light, which trivially increases linearly in wavelength.
+This colormap shows the spectrum of visible light, which trivially increases linearly in wavelength.
 However, we can clearly see that this introduces multiple problems, as the color green for example is perceived as the brightest of the visible colors due to its very natural occurance, and the colormap is absolutely not CVD-friendly.
 This is an example of a colormap where it would be necessary to have a colorbar/legend, and it is overall a bad colormap to use.
 
