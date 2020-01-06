@@ -1,1 +1,0 @@
-.. automodule:: cmasher.utils

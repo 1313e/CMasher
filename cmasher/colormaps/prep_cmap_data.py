@@ -29,7 +29,7 @@ if(__name__ == '__main__'):
         # Make a directory for the colormap files
         os.mkdir(name)
 
-        # Copy the .jscm-file to it
+        # Move the .jscm-file to it
         shutil.move(jscm_path, name)
 
         # Load colormap from .jscm-file
@@ -51,17 +51,17 @@ if(__name__ == '__main__'):
         # Make a directory for the colormap files
         os.mkdir(name)
 
-        # Copy the .jscm-files to it
+        # Move the .jscm-files to it
         for jscm_path in jscm_paths:
             shutil.move(jscm_path, name)
 
-        # Load colormaps from .jscm-file
+        # Load colormaps from .jscm-files
         cmap1 = viscm.gui.Colormap(None, None, None)
         cmap1.load("{0}/{1}".format(name, path.basename(jscm_paths[0])))
         cmap2 = viscm.gui.Colormap(None, None, None)
         cmap2.load("{0}/{1}".format(name, path.basename(jscm_paths[1])))
 
-        # Obtain RGB values from both colormaps
+        # Obtain RGB values of both colormaps
         v1 = viscm.viscm_editor(uniform_space=cmap1.uniform_space,
                                 cmtype=cmap1.cmtype, method=cmap1.method,
                                 **cmap1.params)
@@ -72,17 +72,17 @@ if(__name__ == '__main__'):
         rgb2, _ = v2.cmap_model.get_sRGB(num=256)
         cmtype = 'diverging'
 
-        # Combine both RGB value lists into one
+        # Combine both RGB values lists into one
         rgb = np.concatenate([rgb1, rgb2[1:]], axis=0)
 
     # Convert RGB values to string
-    array_list = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
-                                 separator=', ', threshold=rgb.size)
+    array_str = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
+                                separator=', ', threshold=rgb.size)
 
     # Remove all whitespaces before commas
     for i in range(8, 0, -1):
-        array_list = array_list.replace(' '*i+', ', '0'*i+', ')
-        array_list = array_list.replace(' '*i+']', '0'*i+']')
+        array_str = array_str.replace(' '*i+', ', '0'*i+', ')
+        array_str = array_str.replace(' '*i+']', '0'*i+']')
 
     # Export as .py-file
     cm_py_file = dedent("""
@@ -93,20 +93,21 @@ if(__name__ == '__main__'):
         cm_data = {1}
 
         test_cm = ListedColormap(cm_data, name="{2}")
-        """).format(cmtype, array_list, name)
+        """).format(cmtype, array_str, name)
     with open("{0}/{0}.py".format(name), 'w') as f:
         f.write(cm_py_file[1:])
 
     # Import created .py-file as a module
     # Functions as a test to see if it can be imported and accessed correctly
     cmap_mod = import_module("{0}.{0}".format(name))
+    cmap = cmap_mod.test_cm
 
     # Create colormap figure
-    x = np.linspace(0, 1, 256)
-    rgb = cmap_mod.test_cm(x)[np.newaxis, :, :3]
+    x = np.linspace(0, 1, cmap.N)
+    rgb = cmap(x)[:, :3]
     fig, ax = plt.subplots(frameon=False, figsize=(12.8, 3.2))
     fig.subplots_adjust(wspace=0)
-    ax.imshow(rgb, aspect='auto')
+    ax.imshow(rgb[np.newaxis, ...], aspect='auto')
     ax.set_axis_off()
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)

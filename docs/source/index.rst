@@ -33,7 +33,7 @@ The documentation of *CMasher* is spread out over several sections:
     :maxdepth: 4
     :caption: API Reference
    
-    api/cmasher.utils
+    api/cmasher
 
 .. role:: pycode(code)
     :language: python3

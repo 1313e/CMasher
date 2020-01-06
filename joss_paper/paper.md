@@ -53,7 +53,7 @@ In order to solve the problem of not knowing when to use what colormap, I introd
 # CMasher
 
 The *CMasher* package provides a collection of scientific colormaps to be used by different Python packages and projects, mainly in combination with ``matplotlib`` [@MPL].
-The colormaps in *CMasher* are all designed to be perceptually uniform sequential using the ``viscm`` package [@viscm], most of them are CVD-friendly and they cover a wide range of different color combinations to accommodate for most applications.
+The colormaps in *CMasher* are all designed to be perceptually uniform sequential using the ``viscm`` package [@viscm]; most of them are CVD-friendly; and they cover a wide range of different color combinations to accommodate for most applications.
 It offers several alternatives to commonly used colormaps, like *chroma* and *rainforest* for *jet*; *sunburst* for *hot*; *neutral* for *binary*; and *fusion* and *redshift* for *coolwarm*.
 Users are encouraged to request for specific colormaps to be designed if they cannot find the perfect one.
 An overview of all current colormaps in *CMasher* is shown in Fig. 2.

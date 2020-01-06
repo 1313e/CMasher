@@ -42,7 +42,7 @@ def _get_cm_type(cmap):
     Parameters
     ----------
     cmap : str or :obj:`~matplotlib.colors.Colormap` object
-        The registered name of the colormap in MPL or its corresponding
+        The registered name of the colormap in *MPL* or its corresponding
         :obj:`~matplotlib.colors.Colormap` object.
 
     Returns
@@ -138,7 +138,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
     Note
     ----
     The colormaps in `cmaps` can either be provided as their registered name in
-    MPL, or their corresponding :obj:`~matplotlib.colors.Colormap` object.
+    *MPL*, or their corresponding :obj:`~matplotlib.colors.Colormap` object.
     Any provided reversed colormaps (colormaps that end their name with '_r')
     are ignored.
 
@@ -283,17 +283,20 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
 # Function to import all custom colormaps in a file or directory
 def import_cmaps(cmap_path):
     """
-    Reads in custom colormaps from a provided file or directory `cmap_path`,
-    transforms them into :obj:`~matplotlib.colors.ListedColormap` objects and
-    registers them in the :mod:`matplotlib.cm` and :mod:`cmasher.cm` modules.
+    Reads in custom colormaps from a provided file or directory `cmap_path`;
+    transforms them into :obj:`~matplotlib.colors.ListedColormap` objects; and
+    makes them available in the :mod:`cmasher.cm` module, in addition to
+    registering them in the :mod:`matplotlib.cm` module.
     Both the imported colormap and its reversed version will be registered.
 
     Parameters
     ----------
     cmap_path : str
-        Relative or absolute path to a custom colormap file or directory that
-        contains custom colormap files. A colormap file can be a NumPy binary
-        file ('.npy'); a viscm source file ('.jscm'); or any text file.
+        Relative or absolute path to a custom colormap file; or directory that
+        contains custom colormap files. A colormap file can be a *NumPy* binary
+        file ('.npy'); a *viscm* source file ('.jscm'); or any text file.
+        If the file is not a JSCM-file, it must contain the normalized RGB
+        values that define the colormap.
 
     Notes
     -----
@@ -301,8 +304,20 @@ def import_cmaps(cmap_path):
     resulting colormaps will have the name of their file without the prefix and
     extension.
 
-    In MPL, the colormaps will have the added 'cmr.' prefix to avoid name
+    In *MPL*, the colormaps will have the added 'cmr.' prefix to avoid name
     clashes.
+
+    Example
+    -------
+    Importing a colormap named 'test' can be done by saving its normalized RGB
+    values in a file called 'cm_test.txt' and executing
+
+        >>> import_cmaps('/path/to/dir/cm_test.txt')
+
+    The 'test' colormap is now available in *CMasher* and *MPL* using
+
+        >>> cmr.cm.test                 # CMasher
+        >>> plt.get_cmap('cmr.test')    # MPL
 
     """
 
