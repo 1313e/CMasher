@@ -33,7 +33,7 @@ This allows for the data values of a plot to be interpreted correctly by the vie
 It also often allows for a plot to be converted properly to grey-scale without losing information.
 Basically, it should be possible to infer how every color relates in terms of value to every other color, by simply looking at it (so, a legend or colorbar should NOT be necessary for this task).
 
-Although there are many works out there that describe the optimal way to do this [@Kindlmann02; @Birch12; @Brychtova16; @Szafir18] and there are tools readily available to test the performance of a colormap [@cmaputil; @colorspacious; @viscm], bad/misleading colormaps are still very commonly used.
+Although there are many works out there that describe the optimal way to do this [@Rogowitz96; @Sharpe99; @Kindlmann02; @Birch12; @Brychtova16; @Szafir18] and there are tools readily available to test the performance of a colormap [@cmaputil; @colorspacious; @viscm], bad/misleading colormaps are still very commonly used.
 The main problem usually is that humans do not perceive every color equally (e.g., small variations in the color green are not perceived as it is such a natural color, while small variations in the colors red and blue are perceived).
 A good example of a colormap that illustrates this, is the commonly used *jet* colormap:
 
