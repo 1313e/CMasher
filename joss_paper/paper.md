@@ -21,33 +21,40 @@ bibliography: paper.bib
 
 # Introduction
 
-The use of colorizations in the visualization of scientific results is a common sight nowadays.
-It allows for more (complex) data to be plotted in the same figure without having to resort to difficult-to-read 3D plots or subplots; online material; or interactive applications.
-However, an often underappreciated aspect of the choice of colormap, is how colorization affects the way the visualized data is interpreted.
+The use of colors in the visualization of scientific results is a common sight nowadays.
+Color allows for more (complex) data to be plotted in the same figure without resorting to difficult-to-interpret 3D plots or subplots; online material; or interactive applications.
+However, an often underappreciated aspect of data visualization, is how color affects the way the visualized data is interpreted, making it crucial to pick the correct colormap.
+In order to help with picking a scientific colormap, I introduce the *CMasher* package.
 
 
 # Background summary
 
-A good scientific colormap is often described/characterized as _perceptually uniform sequential_ [@Rogowitz96; @Sharpe99], which means that it is perceived as uniformly changing in lightness and saturation, mostly at the same hue.
+A good scientific colormap is often described/characterized as _perceptually uniform sequential_, which means that the colormap is perceived as uniformly changing in lightness and saturation, mostly at the same hue [@Rogowitz96; @Sharpe99].
 This allows for the data values of a plot to be interpreted correctly by the viewer without giving false information.
-It also often allows for a plot to be converted properly to grey-scale without losing information.
-Basically, it should be possible to infer how every color relates in terms of value to every other color, by simply looking at it (so, a legend or colorbar should NOT be necessary for this task).
+Such a colormap also often allows for a plot to be converted properly to grey-scale without losing information.
+A perceptually uniform sequential colormap allows us to properly infer the relative order of the represented numerical values, without requiring a legend or colorbar.
 
 Although there are many works out there that describe the optimal way to do this [@Rogowitz96; @Sharpe99; @Kindlmann02; @Birch12; @Brychtova16; @Szafir18] and there are tools readily available to test the performance of a colormap [@cmaputil; @colorspacious; @viscm], bad/misleading colormaps are still very commonly used.
-The main problem usually is that humans do not perceive every color equally (e.g., small variations in the color green are not perceived as it is such a natural color, while small variations in the colors red and blue are perceived).
-A good example of a colormap that illustrates this, is the commonly used *jet* colormap:
+The main issue usually is that humans do not perceive every color equally (e.g., small variations in the color green are not perceived as green is a common natural color, while small variations in the colors red and blue are perceived).
+Here, we use the *jet* colormap to illustrate this issue:
 
-![Output of the ``viscm`` package showing the statistics and performance of the *jet* colormap. The various different plots show how the colormap changes in perceived color and lightness, as well as how well the colormap converts to different types of color-vision deficiency (CVD; color blindness) and grey-scale. In case of a perceptually uniform sequential colormap, the two derivative plots should show a straight horizontal line; the colorspace diagram should be smooth; and the lines in the right-bottom corner plots should be visible up to the same depth across the entire colormap.](https://raw.githubusercontent.com/1313e/CMasher/master/docs/source/user/images/jet_viscm.png)
+![Output of the ``viscm`` [@viscm] package showing the statistics and performance of the *jet* colormap. The various different plots show how the colormap changes in perceived color and lightness, as well as how well the colormap converts to different types of color-vision deficiency and grey-scale. In case of a perceptually uniform sequential colormap, the two derivative plots should show a straight horizontal line; the colorspace diagram should be smooth; and the lines in the bottom-right corner plots should be visible up to the same depth across the entire colormap.](https://raw.githubusercontent.com/1313e/CMasher/master/docs/source/user/images/jet_viscm.png)
 
-In Fig. 1, you can view the statistics output of the *jet* colormap, made with the ``viscm`` package [@viscm].
-This colormap shows the spectrum of visible light, which trivially increases linearly in wavelength.
-However, we can clearly see that this introduces multiple problems, as the color green is perceived as the brightest of the visible colors due to its very natural occurance, and the colormap is absolutely not CVD-friendly.
-This is an example of a colormap where it would be necessary to have a colorbar/legend, and it is overall a bad colormap to use.
+In Fig. 1, one can view the performance output of the *jet* colormap, made with the ``viscm`` package [@viscm].
+For perceptually uniform sequential colormaps, the two derivative plots in the top-left should show a straight horizontal line, indicating that the colormap changes uniformly in both perceived saturation and lightness.
+Consequently, the colorspace diagram in the bottom-left should be smooth.
+Finally, the lines in the bottom-right plots should be visible up to the same depth across the entire colormap, otherwise it can create artificial features as would be shown by the sample images in the top-right plots.
+If the colormap is also required to be color-vision deficiency (CVD; color blindness) friendly, the requirements above apply to the deuteranomaly/protanomaly and deuteranopia/protanopia statistics as well.
 
-Despite all of these problems, the *jet* colormap is still a very commonly used colormap.
-An often cited reason for this (besides the general _"Everyone else uses it."_), is that *jet* has a high perceptual range, making it easier to distinguish adjacent values (it has a higher perceptual range than any colormap in *CMasher*, including the diverging colormaps).
-Although this can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
-In order to solve the problem of not knowing when to use what colormap, I introduce the *CMasher* package.
+Using this information, we can check the performance of the *jet* colormap as shown in Fig. 1.
+The *jet* colormap shows the spectrum of visible light, which trivially increases linearly in wavelength.
+However, in Fig. 1, we can see that this introduces multiple problems, as the color green is perceived as the brightest of the visible colors due to its natural occurance, and the colormap is absolutely not CVD-friendly.
+This is an example of a colormap where it would be necessary to have a colorbar/legend, and it is a poor choice for representing numerical values.
+
+Despite all of these shortcomings, *jet* is still a commonly used colormap in the scientific literature.
+An often cited reason for this (besides the general _"Everyone else uses it."_), is that *jet* has a high perceptual range, making it easier to distinguish adjacent values (*jet* has a higher perceptual range than any colormap in *CMasher*, including the diverging colormaps).
+Although a high perceptual range can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
+This is where *CMasher* comes in.
 
 
 # CMasher
