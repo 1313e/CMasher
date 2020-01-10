@@ -4,6 +4,7 @@
 # Package imports
 import matplotlib as mpl
 from py.path import local
+import _pytest
 import pytest
 
 
@@ -29,7 +30,8 @@ def pytest_configure(config):
 # This introduces a marker that auto-fails tests if a previous one failed
 def pytest_runtest_makereport(item, call):
     if "incremental" in item.keywords:
-        if call.excinfo is not None:
+        if(call.excinfo is not None and
+           call.excinfo.type is not _pytest.outcomes.Skipped):
             parent = item.parent
             parent._previousfailed = item
 
