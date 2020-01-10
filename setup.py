@@ -39,7 +39,11 @@ setup(name="cmasher",
       description=("Scientific colormaps for making accessible, informative "
                    "and 'cmashing' plots"),
       long_description=long_description,
-      url='https://www.github.com/1313e/CMasher',
+      url="https://cmasher.readthedocs.io",
+      project_urls={
+          'Documentation': "https://cmasher.readthedocs.io",
+          'Source Code': "https://github.com/1313e/CMasher",
+          },
       license='BSD-3',
       platforms=["Windows", "Linux", "Unix"],
       classifiers=[
@@ -60,7 +64,8 @@ setup(name="cmasher",
           'Topic :: Scientific/Engineering :: Visualization',
           'Topic :: Utilities',
           ],
-      keywords=('cmasher colormaps plotting python visualization'),
+      keywords=("cmasher perceptually uniform sequential colormaps plotting "
+                "python visualization"),
       python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
       packages=find_packages(),
       package_dir={'cmasher': "cmasher"},

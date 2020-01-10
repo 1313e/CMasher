@@ -38,7 +38,7 @@ Although there are many works out there that describe the optimal way to do this
 The main issue usually is that humans do not perceive every color equally (e.g., small variations in the color green are not perceived as green is a common natural color, while small variations in the colors red and blue are perceived).
 Here, we use the *jet* colormap to illustrate this issue:
 
-![Output of the ``viscm`` [@viscm] package showing the statistics and performance of the *jet* colormap. The various different plots show how the colormap changes in perceived color and lightness, as well as how well the colormap converts to different types of color-vision deficiency and grey-scale. In case of a perceptually uniform sequential colormap, the two derivative plots should show a straight horizontal line; the colorspace diagram should be smooth; and the lines in the bottom-right corner plots should be visible up to the same depth across the entire colormap.](https://raw.githubusercontent.com/1313e/CMasher/master/docs/source/user/images/jet_viscm.png)
+![Output of the ``viscm`` package [@viscm] showing the statistics and performance of the *jet* colormap. The various different plots show how the colormap changes in perceived saturation and lightness, as well as how well the colormap converts to different types of color-vision deficiency and grey-scale. In case of a perceptually uniform sequential colormap, the two derivative plots should show a straight horizontal line; the colorspace diagram should be smooth; and the lines in the bottom-right corner plots should be visible up to the same depth across the entire colormap.](https://raw.githubusercontent.com/1313e/CMasher/master/docs/source/user/images/jet_viscm.png)
 
 In Fig. 1, one can view the performance output of the *jet* colormap, made with the ``viscm`` package [@viscm].
 For perceptually uniform sequential colormaps, the two derivative plots in the top-left should show a straight horizontal line, indicating that the colormap changes uniformly in both perceived saturation and lightness.
@@ -68,7 +68,7 @@ An overview of all current colormaps in *CMasher* is shown in Fig. 2.
 ![Overview of all current colormaps in *CMasher*.](https://raw.githubusercontent.com/1313e/CMasher/master/cmasher/colormaps/cmap_overview.png)
 
 *CMasher* has already been used in several scientific studies, including model emulations [@PRISM_JOSS; @PRISM_ApJS]; galaxy kinematics (Džudžar et al., in prep); and redshift estimations for fast radio bursts [@Fruitbat].
-Due to the number of different color sequences and the perceptual uniform sequential nature of most colormaps, *CMasher* is also great for representing discrete data.
+Due to the number of different color sequences and the perceptual uniform sequential nature of the colormaps, *CMasher* is also great for representing qualitative data.
 The source code for *CMasher* (including the ``viscm`` source files) can be found at https://github.com/1313e/CMasher, whereas the descriptions of all available colormaps can be found at https://cmasher.readthedocs.io with their recommended use-cases.
 
 

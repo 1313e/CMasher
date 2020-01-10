@@ -16,7 +16,7 @@ An example of a colormap that illustrates this issue, is the *jet* colormap:
     :name: jet_viscm
 
     Output of the *viscm* package showing the statistics and performance of the *jet* colormap.
-    The various different plots show how the colormap changes in perceived color and lightness, as well as how well the colormap converts to different types of color-vision deficiency (CVD; color blindness) and grey-scale.
+    The various different plots show how the colormap changes in perceived saturation and lightness, as well as how well the colormap converts to different types of color-vision deficiency and grey-scale.
     In case of a perceptually uniform sequential colormap, the two derivative plots should show a straight horizontal line; the colorspace diagram should be smooth; and the lines in the bottom-right corner plots should be visible up to the same depth across the entire colormap.
 
 In :numref:`jet_viscm`, one can view the performance output of the *jet* colormap, made with the `viscm`_ package.

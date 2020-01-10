@@ -4,7 +4,7 @@ Diverging
 =========
 A different category or class of colormaps, is the group of *diverging* colormaps.
 Unlike sequential colormaps, diverging colormaps start at their lowest (or highest) lightness value at both ends and monotonically/linearly increase (decrease) to the highest (lowest) lightness value in the center.
-They could be seen as two sequential colormaps combined together, that share the same lightness range and the same central color.
+They could be seen as two sequential colormaps combined together, that share the same lightness range and end/begin with the same color.
 This makes them very useful to represent information that has a critical middle value or when data deviates around a common center (usually zero), like topographical maps.
 The *matplotlib* package has quite a few diverging colormaps, but none of them starts and ends at the same lightness value; and most do not change perceptually uniform.
 Therefore, a few alternatives are introduced here.

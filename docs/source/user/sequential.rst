@@ -5,8 +5,8 @@ Sequential
 Sequential colormaps (that are perceptually uniform of course) are basic colormaps that start at a reasonably low lightness value and uniformly increase to a higher value.
 They are commonly used to represent information that is ordered.
 The *matplotlib* package already has a few great sequential colormaps readily available for the user, mainly the colormaps named *viridis*; *plasma*; *inferno*; *magma*; and *cividis*.
-However, three of these colormaps use the color red as its main color and none of them uses the full lightness range.
-As it might sometimes be desirable to use a different main color or maximize the perceptual range of the colormap, *CMasher* provides a few sequential colormaps that do exactly that.
+However, three of these colormaps use the color red as their main color and none of them uses the full lightness range.
+As it might sometimes be desirable to use a different main color or maximize the lightness range of the colormap, *CMasher* provides a few sequential colormaps that do exactly that.
 These colormaps are shown below.
 
 .. _PRISM: https://github.com/1313e/PRISM
@@ -65,8 +65,8 @@ Chroma
 
 The *chroma* colormap is a visual representation of all major colors.
 It covers the full lightness range and shows all major colors in roughly equal ratio.
-Because it uses all major colors, this colormap is excellent for representing information where small adjacent differences should be clearly visible.
-Keep in mind that the *chroma* colormap is not as colorblind-friendly as the other colormaps.
+Because it uses all major colors, this colormap has a very high perceptual range, making it excellent for representing information where small adjacent differences should be clearly visible.
+Keep in mind that the *chroma* colormap is not as CVD-friendly as the other colormaps.
 
 
 Dusk
@@ -294,8 +294,8 @@ Rainforest
 
 The *rainforest* colormap is one of the two main colormaps used in `PRISM`_, and is a visual representation of Mother Nature, in particular a dense rainforest (with blue representing the water; green the trees/plants; and yellow/red the Sun).
 It covers the full lightness range and uses basically all major colors (red might be hard to see) as it was created by an attempt to improve the *jet* colormap.
-Because it uses all major colors, this colormap is excellent for representing information where small adjacent differences should be clearly visible.
-This also makes *rainforest* a good standard colormap choice as it treats all information as equally important, in addition to being colorblind-friendly.
+Because it uses all major colors, this colormap has a high perceptual range, making it excellent for representing information where small adjacent differences should be clearly visible.
+This also makes *rainforest* a good standard colormap choice as it treats all information as equally important, in addition to being CVD-friendly.
 
 
 Sunburst
