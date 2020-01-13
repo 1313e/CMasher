@@ -167,8 +167,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                if isinstance(cmap, string_types) and not cmap.endswith('_r'):
-                    type_lst.append(mplcm.get_cmap(cmap))
+                if isinstance(cmap, string_types):
+                    if not cmap.endswith('_r'):
+                        type_lst.append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
                     type_lst.append(cmap)
 
@@ -194,8 +195,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
                 cm_type = _get_cm_type(cmap)
-                if isinstance(cmap, string_types) and not cmap.endswith('_r'):
-                    cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
+                if isinstance(cmap, string_types):
+                    if not cmap.endswith('_r'):
+                        cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
                     cmaps_dict[cm_type].append(cmap)
 
@@ -212,8 +214,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
         else:
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                if isinstance(cmap, string_types) and not cmap.endswith('_r'):
-                    cmaps_list.append(mplcm.get_cmap(cmap))
+                if isinstance(cmap, string_types):
+                    if not cmap.endswith('_r'):
+                        cmaps_list.append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
                     cmaps_list.append(cmap)
             cmaps_list.sort(key=lambda x: x.name)
