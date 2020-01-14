@@ -74,7 +74,7 @@ def _get_cm_type(cmap):
     diff_L1 = np.diff(L[central_i[1]:])
 
     # Obtain perceptual differences of last two and first two values
-    lab_red = np.concatenate([lab[-2:], lab[:2]], axis=0)
+    lab_red = lab[[-2, -1, 0, 1]]
     deltas = np.sqrt(np.sum(np.diff(lab_red, axis=0)**2, axis=-1))
 
     # Check the statistics of cmap and determine the colormap type
@@ -113,9 +113,73 @@ def _get_cm_type(cmap):
         return('misc')
 
 
+# Define function for obtaining the sorting order for lightness ranking
+def _get_cmap_lightness_rank(cmap):
+    """
+    Returns a tuple of objects used for sorting the provided `cmap` based
+    on its lightness profile.
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in *MPL* or its corresponding
+        :obj:`~matplotlib.colors.Colormap` object.
+
+    Returns
+    -------
+    L_start : float
+        The starting lightness value of `cmap`.
+    L_rmse : float
+        The RMSE of the lightness profile of `cmap`.
+        For diverging colormaps, this is the max RMSE of either half.
+    L_rng : float
+        The lightness range (L_max-L_min) of `cmap`.
+    name : str
+        The name of `cmap`.
+
+    """
+
+    # Obtain the colormap
+    cmap = mplcm.get_cmap(cmap)
+
+    # Get array of all values for which a colormap value is requested
+    x = np.linspace(0, 1, cmap.N)
+
+    # Get RGB values for colormap
+    rgb = cmap(x)[:, :3]
+
+    # Get lightness values of colormap
+    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+    L = lab[:, 0]
+
+    # Determine the deltas of the lightness profile
+    deltas = np.diff(L)
+    derivs = (cmap.N-1)*deltas
+
+    # Determine the RMSE of the lightness profile
+    if _get_cm_type(cmap) in ('diverging', 'cyclic'):
+        # If cmap is diverging, calculate RMSE of both halves
+        central_i = [int(np.floor(cmap.N/2)), int(np.ceil(cmap.N/2))]
+        L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
+                         np.around(np.std(derivs[central_i[1]:]), 1)])
+    else:
+        # Else, take RMSE of entire lightness profile
+        L_rmse = np.around(np.std(derivs), 1)
+
+    # Determine start and range
+    L_start = np.around(L[0], 1)
+    L_min = np.around(np.min(L), 1)
+    L_max = np.around(np.max(L), 1)
+    L_rng = np.around(np.abs(L_max-L_min), 1)
+
+    # Return contributions to the rank
+    return(L_start, L_rmse, L_rng, cmap.name)
+
+
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
-def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
+def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
+                         sort='alphabetical'):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -134,6 +198,12 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
         Whether all colormaps in `cmaps` should be categorized into their
         colormap types (sequential; diverging; cyclic; qualitative; misc).
         If `cmaps` is a dict, this value is ignored.
+    sort : {'alphabetical'/'name'; 'lightness'}. Default: 'alphabetical'
+        String indicating how the colormaps should be sorted in the overview.
+        If 'alphabetical', the colormaps are sorted alphabetically on their
+        name.
+        If 'lightness', the colormaps are sorted on their starting lightness
+        and their lightness range.
 
     Note
     ----
@@ -153,6 +223,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
 
     # If cmaps is a dict, it has cm_types defined
     if isinstance(cmaps, dict):
+        # Set use_types to True
+        use_types = True
+
         # Define empty dict of colormaps
         cmaps_dict = odict()
 
@@ -163,25 +236,14 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
         for cm_type, cmaps in input_cmaps.items():
             # Add empty list of colormaps to cmaps_dict with this cm_type
             cmaps_dict[cm_type] = []
-            type_lst = cmaps_dict[cm_type]
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
                 if isinstance(cmap, string_types):
                     if not cmap.endswith('_r'):
-                        type_lst.append(mplcm.get_cmap(cmap))
+                        cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
-                    type_lst.append(cmap)
-
-            # Sort the colormaps in this cm_type
-            type_lst.sort(key=lambda x: x.name)
-
-        # Convert entire cmaps_dict into a list again
-        for key, value in cmaps_dict.items():
-            # If this cm_type has at least 1 colormap, add them
-            if value:
-                cmaps_list.append(key)
-                cmaps_list.extend(value)
+                    cmaps_dict[cm_type].append(cmap)
 
     # Else, it is a list with no cm_types
     else:
@@ -200,17 +262,6 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
                         cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
                     cmaps_dict[cm_type].append(cmap)
-
-            # Loop over all cm_types and sort their colormaps
-            for cm_type in cm_types:
-                cmaps_dict[cm_type].sort(key=lambda x: x.name)
-
-            # Convert entire cmaps_dict into a list again
-            for key, value in cmaps_dict.items():
-                # If this cm_type has at least 1 colormap, add them
-                if value:
-                    cmaps_list.append(key)
-                    cmaps_list.extend(value)
         else:
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
@@ -219,7 +270,31 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True):
                         cmaps_list.append(mplcm.get_cmap(cmap))
                 elif not cmap.name.endswith('_r'):
                     cmaps_list.append(cmap)
-            cmaps_list.sort(key=lambda x: x.name)
+
+    # If use_types is True, a dict is currently used
+    if use_types:
+        # Convert entire cmaps_dict into a list again
+        for key, value in cmaps_dict.items():
+            # If this cm_type has at least 1 colormap, sort and add them
+            if value:
+                # Sort this cm_type on name
+                value.sort(key=lambda x: x.name)
+
+                # Sort on lightness if requested and this cm_type is compatible
+                if((sort.lower() == 'lightness') and
+                   (key not in ('qualitative', 'misc'))):
+                    value.sort(key=_get_cmap_lightness_rank)
+
+                # Add to list
+                cmaps_list.append(key)
+                cmaps_list.extend(value)
+
+    # Else, a list is used
+    else:
+        # Sort the colormaps
+        cmaps_list.sort(key=lambda x: x.name)
+        if(sort.lower() == 'lightness'):
+            cmaps_list.sort(key=_get_cmap_lightness_rank)
 
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")

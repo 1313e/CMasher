@@ -1,4 +1,3 @@
-
 from matplotlib.colors import ListedColormap
 
 cm_type = "diverging"
@@ -514,4 +513,5 @@ cm_data = [[5.78692840e-01, 9.47004534e-01, 9.53835089e-01],
            [9.82569839e-01, 7.92418797e-01, 9.77759126e-01],
            [9.84606361e-01, 7.97880156e-01, 9.83181927e-01],
            [9.86659787e-01, 8.03346807e-01, 9.88607269e-01]]
+
 test_cm = ListedColormap(cm_data, name="redshift")

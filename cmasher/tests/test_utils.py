@@ -30,8 +30,8 @@ class Test_create_cmap_overview(object):
 
     # Test if providing a custom list of colormaps works
     def test_list_no_types(self):
-        create_cmap_overview([cmrcm.rainforest], use_types=0)
-        create_cmap_overview(['cmr.rainforest'], use_types=0)
+        create_cmap_overview([cmrcm.rainforest], use_types=0, sort='lightness')
+        create_cmap_overview(['cmr.rainforest'], use_types=0, sort='lightness')
 
     # Test if providing a custom list of colormaps works
     def test_list_cat(self):
@@ -39,11 +39,11 @@ class Test_create_cmap_overview(object):
 
     # Test if providing all MPL colormap objects works
     def test_mpl_cmaps_objs(self):
-        create_cmap_overview(mplcm.cmap_d.values())
+        create_cmap_overview(mplcm.cmap_d.values(), sort='alphabetical')
 
     # Test if providing all MPL colormap names works
     def test_mpl_cmaps_names(self):
-        create_cmap_overview(mplcm.cmap_d.keys())
+        create_cmap_overview(mplcm.cmap_d.keys(), sort='lightness')
 
     # Test if providing a custom dict of colormaps works
     def test_dict(self):

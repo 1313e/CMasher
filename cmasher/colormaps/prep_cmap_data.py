@@ -125,7 +125,7 @@ if(__name__ == '__main__'):
     import_cmaps('.')
 
     # Make new colormap overview
-    create_cmap_overview(savefig='cmap_overview.png')
+    create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
 
     # Make string with the docs entry and print it
     docs_entry = dedent("""
