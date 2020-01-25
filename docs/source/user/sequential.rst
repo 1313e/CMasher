@@ -259,6 +259,25 @@ It covers the full lightness range and solely uses the color green.
 As with the other single-color colormaps, this colormap is excellent for representing smooth information.
 
 
+Lavender
+--------
+.. figure:: ../../../cmasher/colormaps/lavender/lavender.png
+    :alt: Visual representation of the *lavender* colormap.
+    :width: 100%
+    :align: center
+    :name: lavender_cmap
+
+.. figure:: ../../../cmasher/colormaps/lavender/lavender_viscm.png
+    :alt: Statistics of the *lavender* colormap.
+    :width: 100%
+    :align: center
+    :name: lavender_viscm
+
+The *lavender* colormap is a visual representation of the flower with the same name.
+It covers the :math:`[0, 80]` lightness range and uses the colors green and purple.
+Its soft and very distinctive coloring makes it great for representing dense information.
+
+
 Neutral
 -------
 .. figure:: ../../../cmasher/colormaps/neutral/neutral.png
@@ -276,6 +295,26 @@ Neutral
 The *neutral* colormap is a neutral, colorless colormap.
 It covers the full lightness range and uses no colors.
 Whereas MPL's *binary* colormap changes uniformly in colorspace, *neutral* changes uniformly in lightness space.
+
+
+Nuclear
+-------
+.. figure:: ../../../cmasher/colormaps/nuclear/nuclear.png
+    :alt: Visual representation of the *nuclear* colormap.
+    :width: 100%
+    :align: center
+    :name: nuclear_cmap
+
+.. figure:: ../../../cmasher/colormaps/nuclear/nuclear_viscm.png
+    :alt: Statistics of the *nuclear* colormap.
+    :width: 100%
+    :align: center
+    :name: nuclear_viscm
+
+The *nuclear* colormap is a visual representation of the colors commonly associated with nuclear radiation.
+Keep in mind that this is a misconception, as the nuclear/Cherenkov radiation coming from a nuclear reactor is usually bright blue.
+It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors blue and green.
+As with `lavender` and `gem`, it is great at representing dense information.
 
 
 Rainforest
