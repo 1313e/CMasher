@@ -31,7 +31,20 @@ Installation & Use
 ==================
 How to install
 --------------
-*CMasher* can be found in the PyPI system, so ``pip install cmasher`` should suffice.
+*CMasher* can be easily installed by either cloning the `repository`_ and installing it manually::
+
+    $ git clone https://github.com/1313e/CMasher
+    $ cd CMasher
+    $ pip install .
+
+or by installing it directly from `PyPI`_ with::
+
+    $ pip install cmasher
+
+*CMasher* can now be imported as a package with ``import cmasher as cmr``.
+
+.. _repository: https://github.com/1313e/CMasher
+.. _PyPI: https://pypi.org/project/CMasher
 
 Example use
 -----------
@@ -67,7 +80,7 @@ For those that are interested, the *viscm* source files that were used for creat
 Using custom colormaps
 ----------------------
 *CMasher* allows for custom colormaps to be imported with the ``cmr.import_cmaps`` function (which is executed automatically on the `cmasher/colormaps`_ directory when *CMasher* is imported).
-This function takes the path to a colormap file named ``cm_<cmap_name>`` (or the path to a directory containing such files); creates a *matplotlib* ``Colormap`` object using the data in the file; and registers it in *matplotlib* with the name ``'cmr.<cmap_name>'`` (it will also be available in the ``cmasher.cm`` module without the prefix).
+This function takes the path to a colormap file named ``cm_<cmap_name>`` (or the path to a directory containing such files); creates a *matplotlib* ``Colormap`` object using the data in the file; and registers it in *matplotlib* with the name ``'cmr.<cmap_name>'`` (it will also be available in *CMasher* as ``cmr.cm.<cmap_name>``).
 A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the normalized RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
 
 Note that colormaps imported this way cannot be accessed through *CMasher* using ``cmr.<cmap_name>``, unlike *CMasher*'s own colormaps, but solely using ``cmr.cm.<cmap_name>`` (access through *matplotlib* is unchanged).
@@ -77,17 +90,17 @@ This is to keep official and unofficial colormaps separated in *CMasher*.
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI
-   :target: https://pypi.python.org/pypi/CMasher
-   :alt: PyPI - Latest Release
+    :target: https://pypi.python.org/pypi/CMasher
+    :alt: PyPI - Latest Release
 .. |Python| image:: https://img.shields.io/pypi/pyversions/CMasher.svg?logo=python&logoColor=white&label=Python
-   :target: https://pypi.python.org/pypi/CMasher
-   :alt: PyPI - Python Versions
+    :target: https://pypi.python.org/pypi/CMasher
+    :alt: PyPI - Python Versions
 .. |Travis| image:: https://img.shields.io/travis/com/1313e/CMasher/master.svg?logo=travis%20ci&logoColor=white&label=Travis%20CI
-   :target: https://travis-ci.com/1313e/CMasher
-   :alt: Travis CI - Build Status
+    :target: https://travis-ci.com/1313e/CMasher
+    :alt: Travis CI - Build Status
 .. |AppVeyor| image:: https://img.shields.io/appveyor/ci/1313e/CMasher/master.svg?logo=appveyor&logoColor=white&label=AppVeyor
-   :target: https://ci.appveyor.com/project/1313e/CMasher
-   :alt: AppVeyor - Build Status
+    :target: https://ci.appveyor.com/project/1313e/CMasher
+    :alt: AppVeyor - Build Status
 .. |ReadTheDocs| image:: https://img.shields.io/readthedocs/cmasher/latest.svg?logo=read%20the%20docs&logoColor=white&label=Docs
     :target: https://cmasher.readthedocs.io
     :alt: ReadTheDocs - Build Status
