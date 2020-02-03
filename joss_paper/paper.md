@@ -56,7 +56,7 @@ An often cited reason for this (besides the general _"Everyone else uses it."_),
 Although a high perceptual range can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
 This is where *CMasher* comes in.
 
-![Overview of all current colormaps in *CMasher*.](https://raw.githubusercontent.com/1313e/CMasher/master/cmasher/colormaps/cmap_overview.png)
+![Overview of all current colormaps in *CMasher* (v1.2.2).](https://raw.githubusercontent.com/1313e/CMasher/master/cmasher/colormaps/cmap_overview.png)
 
 
 # CMasher
@@ -65,7 +65,7 @@ The *CMasher* package provides a collection of scientific colormaps to be used b
 The colormaps in *CMasher* are all designed to be perceptually uniform sequential using the ``viscm`` package [@viscm]; most of them are CVD-friendly; and they cover a wide range of different color combinations to accommodate for most applications.
 It offers several alternatives to commonly used colormaps, like *chroma* and *rainforest* for *jet*; *sunburst* for *hot*; *neutral* for *binary*; and *fusion* and *redshift* for *coolwarm*.
 Users are encouraged to request for specific colormaps to be designed if they cannot find the perfect one.
-An overview of all current colormaps in *CMasher* is shown in Fig. 2.
+An overview of all current colormaps in *CMasher* (as of v1.2.2) is shown in Fig. 2.
 
 *CMasher* has already been used in several scientific studies, including model emulations [@PRISM_JOSS; @PRISM_ApJS]; galaxy kinematics (Džudžar et al., in prep); and redshift estimations for fast radio bursts [@Fruitbat].
 Due to the number of different color sequences and the perceptual uniform sequential nature of the colormaps, *CMasher* is also great for representing qualitative data.
