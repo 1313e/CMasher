@@ -32,7 +32,7 @@ script:
 after_success:
   - curl -s https://codecov.io/bash | bash
   - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_PULL_REQUEST" == false ]]; then
       twine upload --skip-existing dist/*
     fi
 
