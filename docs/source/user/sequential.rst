@@ -30,6 +30,26 @@ It covers almost the full lightness range (:math:`[0, 95]`) and uses the color o
 Its smoothly varying colors make it great for representing smooth information.
 
 
+Apple
+-----
+.. figure:: ../../../cmasher/colormaps/apple/apple.png
+    :alt: Visual representation of the *apple* colormap.
+    :width: 100%
+    :align: center
+    :name: apple_cmap
+
+.. figure:: ../../../cmasher/colormaps/apple/apple_viscm.png
+    :alt: Statistics of the *apple* colormap.
+    :width: 100%
+    :align: center
+    :name: apple_viscm
+
+The *apple* colormap is a visual representation of the fruit with the same name, in particular an 'Elstar' apple.
+It covers the full lightness range and uses the colors red and green.
+Its bright colors near the maximum make it great for representing information where higher values should be the main focus.
+Despite *apple* using red and green, the colors are far enough apart from each other to still be relatively CVD-friendly.
+
+
 Arctic
 ------
 .. figure:: ../../../cmasher/colormaps/arctic/arctic.png
@@ -102,7 +122,7 @@ Eclipse
     :align: center
     :name: eclipse_viscm
 
-The *eclipse* colormap is a visual representation of a solar eclipse.
+The *eclipse* colormap is a visual representation of a solar eclipse (with the black/blue representing the Moon and the yellow the Sun's corona).
 It covers almost the full lightness range (:math:`[0, 95]`) and uses the colors blue and yellow.
 It is excellent for representing information where the upper half should be the focus.
 
