@@ -1,4 +1,4 @@
-|PyPI| |Python| |Travis| |AppVeyor| |ReadTheDocs| |Coverage|
+|PyPI| |Python| |Travis| |AppVeyor| |ReadTheDocs| |Coverage| |JOSS|
 
 *CMasher*: Scientific colormaps for making accessible, informative and *cmashing* plots
 =======================================================================================
@@ -92,7 +92,7 @@ This is to keep official and unofficial colormaps separated in *CMasher*.
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Latest Release
-.. |Python| image:: https://img.shields.io/pypi/pyversions/CMasher.svg?logo=python&logoColor=white&label=Python
+.. |Python| image:: https://img.shields.io/badge/Python-2.7%20%7C%203.5%2B-blue?logo=python&logoColor=white
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Python Versions
 .. |Travis| image:: https://img.shields.io/travis/com/1313e/CMasher/master.svg?logo=travis%20ci&logoColor=white&label=Travis%20CI
@@ -107,3 +107,6 @@ This is to keep official and unofficial colormaps separated in *CMasher*.
 .. |Coverage| image:: https://img.shields.io/codecov/c/github/1313e/CMasher/master.svg?logo=codecov&logoColor=white&label=Coverage
     :target: https://codecov.io/gh/1313e/CMasher/branches/master
     :alt: CodeCov - Coverage Status
+.. |JOSS| image:: https://joss.theoj.org/papers/10.21105/joss.02004/status.svg
+   :target: https://doi.org/10.21105/joss.02004
+   :alt: JOSS - Submission Status
