@@ -7,9 +7,17 @@ They are commonly used to represent information that is ordered.
 The *matplotlib* package already has a few great sequential colormaps readily available for the user, mainly the colormaps named *viridis*; *plasma*; *inferno*; *magma*; and *cividis*.
 However, three of these colormaps use the color red as their main color and none of them uses the full lightness range.
 As it might sometimes be desirable to use a different main color or maximize the lightness range of the colormap, *CMasher* provides a few sequential colormaps that do exactly that.
-These colormaps are shown below.
+These colormaps are shown in an overview and described individually below.
+
+.. figure:: images/seq_cmaps.png
+    :width: 100%
+    :align: center
+    :alt: CMasher Sequential Colormap Overview
+
+    Overview of all sequential colormaps in *CMasher*.
 
 .. _PRISM: https://github.com/1313e/PRISM
+
 
 Amber
 -----

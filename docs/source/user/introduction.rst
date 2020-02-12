@@ -15,10 +15,12 @@ Colormap overview
 -----------------
 Below is an overview of all the colormaps that are currently in *CMasher* (made with the :func:`~cmasher.create_cmap_overview` function).
 
-.. image:: ../../../cmasher/colormaps/cmap_overview.png
+.. figure:: ../../../cmasher/colormaps/cmap_overview.png
     :width: 100%
     :align: center
     :alt: CMasher Colormap Overview
+
+    Overview of all colormaps in *CMasher*.
 
 How to install
 --------------

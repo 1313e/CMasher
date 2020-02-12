@@ -15,6 +15,7 @@ import numpy as np
 import viscm
 
 # CMasher imports
+from cmasher.cm import cmap_cd
 from cmasher.utils import create_cmap_overview, import_cmaps
 
 
@@ -126,6 +127,16 @@ if(__name__ == '__main__'):
 
     # Make new colormap overview
     create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
+
+    # Make new colormap type overviews
+    if(cmtype == 'linear'):
+        create_cmap_overview(
+            cmap_cd['sequential'].values(), sort='lightness',
+            savefig='../../docs/source/user/images/seq_cmaps.png')
+    elif(cmtype == 'diverging'):
+        create_cmap_overview(
+            cmap_cd['diverging'].values(), sort='lightness',
+            savefig='../../docs/source/user/images/div_cmaps.png')
 
     # Make string with the docs entry and print it
     docs_entry = dedent("""
