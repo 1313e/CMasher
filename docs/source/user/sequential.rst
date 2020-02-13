@@ -21,13 +21,13 @@ These colormaps are shown in an overview and described individually below.
 
 Amber
 -----
-.. figure:: ../../../cmasher/colormaps/amber/amber.png
+.. image:: ../../../cmasher/colormaps/amber/amber.png
     :alt: Visual representation of the *amber* colormap.
     :width: 100%
     :align: center
     :name: amber_cmap
 
-.. figure:: ../../../cmasher/colormaps/amber/amber_viscm.png
+.. image:: ../../../cmasher/colormaps/amber/amber_viscm.png
     :alt: Statistics of the *amber* colormap.
     :width: 100%
     :align: center
@@ -40,13 +40,13 @@ Its smoothly varying colors make it great for representing smooth information.
 
 Apple
 -----
-.. figure:: ../../../cmasher/colormaps/apple/apple.png
+.. image:: ../../../cmasher/colormaps/apple/apple.png
     :alt: Visual representation of the *apple* colormap.
     :width: 100%
     :align: center
     :name: apple_cmap
 
-.. figure:: ../../../cmasher/colormaps/apple/apple_viscm.png
+.. image:: ../../../cmasher/colormaps/apple/apple_viscm.png
     :alt: Statistics of the *apple* colormap.
     :width: 100%
     :align: center
@@ -60,13 +60,13 @@ Despite *apple* using red and green, the colors are far enough apart from each o
 
 Arctic
 ------
-.. figure:: ../../../cmasher/colormaps/arctic/arctic.png
+.. image:: ../../../cmasher/colormaps/arctic/arctic.png
     :alt: Visual representation of the *arctic* colormap.
     :width: 100%
     :align: center
     :name: arctic_cmap
 
-.. figure:: ../../../cmasher/colormaps/arctic/arctic_viscm.png
+.. image:: ../../../cmasher/colormaps/arctic/arctic_viscm.png
     :alt: Statistics of the *arctic* colormap.
     :width: 100%
     :align: center
@@ -79,13 +79,13 @@ As the *arctic* colormap uses softer colors, it can be used as an alternative to
 
 Chroma
 ------
-.. figure:: ../../../cmasher/colormaps/chroma/chroma.png
+.. image:: ../../../cmasher/colormaps/chroma/chroma.png
     :alt: Visual representation of the *chroma* colormap.
     :width: 100%
     :align: center
     :name: chroma_cmap
 
-.. figure:: ../../../cmasher/colormaps/chroma/chroma_viscm.png
+.. image:: ../../../cmasher/colormaps/chroma/chroma_viscm.png
     :alt: Statistics of the *chroma* colormap.
     :width: 100%
     :align: center
@@ -99,13 +99,13 @@ Keep in mind that the *chroma* colormap is not as CVD-friendly as the other colo
 
 Dusk
 ----
-.. figure:: ../../../cmasher/colormaps/dusk/dusk.png
+.. image:: ../../../cmasher/colormaps/dusk/dusk.png
     :alt: Visual representation of the *dusk* colormap.
     :width: 100%
     :align: center
     :name: dusk_cmap
 
-.. figure:: ../../../cmasher/colormaps/dusk/dusk_viscm.png
+.. image:: ../../../cmasher/colormaps/dusk/dusk_viscm.png
     :alt: Statistics of the *dusk* colormap.
     :width: 100%
     :align: center
@@ -118,13 +118,13 @@ It features a greyish area in the middle, making it great for representing order
 
 Eclipse
 -------
-.. figure:: ../../../cmasher/colormaps/eclipse/eclipse.png
+.. image:: ../../../cmasher/colormaps/eclipse/eclipse.png
     :alt: Visual representation of the *eclipse* colormap.
     :width: 100%
     :align: center
     :name: eclipse_cmap
 
-.. figure:: ../../../cmasher/colormaps/eclipse/eclipse_viscm.png
+.. image:: ../../../cmasher/colormaps/eclipse/eclipse_viscm.png
     :alt: Statistics of the *eclipse* colormap.
     :width: 100%
     :align: center
@@ -137,13 +137,13 @@ It is excellent for representing information where the upper half should be the 
 
 Ember
 -----
-.. figure:: ../../../cmasher/colormaps/ember/ember.png
+.. image:: ../../../cmasher/colormaps/ember/ember.png
     :alt: Visual representation of the *ember* colormap.
     :width: 100%
     :align: center
     :name: ember_cmap
 
-.. figure:: ../../../cmasher/colormaps/ember/ember_viscm.png
+.. image:: ../../../cmasher/colormaps/ember/ember_viscm.png
     :alt: Statistics of the *ember* colormap.
     :width: 100%
     :align: center
@@ -156,13 +156,13 @@ As with some other colormaps in *CMasher*, its smoothly varying colors make it a
 
 Flamingo
 --------
-.. figure:: ../../../cmasher/colormaps/flamingo/flamingo.png
+.. image:: ../../../cmasher/colormaps/flamingo/flamingo.png
     :alt: Visual representation of the *flamingo* colormap.
     :width: 100%
     :align: center
     :name: flamingo_cmap
 
-.. figure:: ../../../cmasher/colormaps/flamingo/flamingo_viscm.png
+.. image:: ../../../cmasher/colormaps/flamingo/flamingo_viscm.png
     :alt: Statistics of the *flamingo* colormap.
     :width: 100%
     :align: center
@@ -175,13 +175,13 @@ It is the most useful for representing information where the center should be th
 
 Freeze
 ------
-.. figure:: ../../../cmasher/colormaps/freeze/freeze.png
+.. image:: ../../../cmasher/colormaps/freeze/freeze.png
     :alt: Visual representation of the *freeze* colormap.
     :width: 100%
     :align: center
     :name: freeze_cmap
 
-.. figure:: ../../../cmasher/colormaps/freeze/freeze_viscm.png
+.. image:: ../../../cmasher/colormaps/freeze/freeze_viscm.png
     :alt: Statistics of the *freeze* colormap.
     :width: 100%
     :align: center
@@ -194,13 +194,13 @@ As it only uses a single color, this colormap is excellent for representing info
 
 Gem
 ---
-.. figure:: ../../../cmasher/colormaps/gem/gem.png
+.. image:: ../../../cmasher/colormaps/gem/gem.png
     :alt: Visual representation of the *gem* colormap.
     :width: 100%
     :align: center
     :name: gem_cmap
 
-.. figure:: ../../../cmasher/colormaps/gem/gem_viscm.png
+.. image:: ../../../cmasher/colormaps/gem/gem_viscm.png
     :alt: Statistics of the *gem* colormap.
     :width: 100%
     :align: center
@@ -213,13 +213,13 @@ Its very distinctive colors make it useful for representing dense information wh
 
 Gothic
 ------
-.. figure:: ../../../cmasher/colormaps/gothic/gothic.png
+.. image:: ../../../cmasher/colormaps/gothic/gothic.png
     :alt: Visual representation of the *gothic* colormap.
     :width: 100%
     :align: center
     :name: gothic_cmap
 
-.. figure:: ../../../cmasher/colormaps/gothic/gothic_viscm.png
+.. image:: ../../../cmasher/colormaps/gothic/gothic_viscm.png
     :alt: Statistics of the *gothic* colormap.
     :width: 100%
     :align: center
@@ -232,13 +232,13 @@ As with the *freeze* colormap, this colormap is excellent for representing infor
 
 Heat
 ----
-.. figure:: ../../../cmasher/colormaps/heat/heat.png
+.. image:: ../../../cmasher/colormaps/heat/heat.png
     :alt: Visual representation of the *heat* colormap.
     :width: 100%
     :align: center
     :name: heat_cmap
 
-.. figure:: ../../../cmasher/colormaps/heat/heat_viscm.png
+.. image:: ../../../cmasher/colormaps/heat/heat_viscm.png
     :alt: Statistics of the *heat* colormap.
     :width: 100%
     :align: center
@@ -251,13 +251,13 @@ It should mainly be used for representing information where the center values ar
 
 Horizon
 -------
-.. figure:: ../../../cmasher/colormaps/horizon/horizon.png
+.. image:: ../../../cmasher/colormaps/horizon/horizon.png
     :alt: Visual representation of the *horizon* colormap.
     :width: 100%
     :align: center
     :name: horizon_cmap
 
-.. figure:: ../../../cmasher/colormaps/horizon/horizon_viscm.png
+.. image:: ../../../cmasher/colormaps/horizon/horizon_viscm.png
     :alt: Statistics of the *horizon* colormap.
     :width: 100%
     :align: center
@@ -270,13 +270,13 @@ It features a brownish area close to the minimum, making it great for representi
 
 Jungle
 ------
-.. figure:: ../../../cmasher/colormaps/jungle/jungle.png
+.. image:: ../../../cmasher/colormaps/jungle/jungle.png
     :alt: Visual representation of the *jungle* colormap.
     :width: 100%
     :align: center
     :name: jungle_cmap
 
-.. figure:: ../../../cmasher/colormaps/jungle/jungle_viscm.png
+.. image:: ../../../cmasher/colormaps/jungle/jungle_viscm.png
     :alt: Statistics of the *jungle* colormap.
     :width: 100%
     :align: center
@@ -289,13 +289,13 @@ As with the other single-color colormaps, this colormap is excellent for represe
 
 Lavender
 --------
-.. figure:: ../../../cmasher/colormaps/lavender/lavender.png
+.. image:: ../../../cmasher/colormaps/lavender/lavender.png
     :alt: Visual representation of the *lavender* colormap.
     :width: 100%
     :align: center
     :name: lavender_cmap
 
-.. figure:: ../../../cmasher/colormaps/lavender/lavender_viscm.png
+.. image:: ../../../cmasher/colormaps/lavender/lavender_viscm.png
     :alt: Statistics of the *lavender* colormap.
     :width: 100%
     :align: center
@@ -308,13 +308,13 @@ Its soft and very distinctive coloring makes it great for representing dense inf
 
 Neutral
 -------
-.. figure:: ../../../cmasher/colormaps/neutral/neutral.png
+.. image:: ../../../cmasher/colormaps/neutral/neutral.png
     :alt: Visual representation of the *neutral* colormap.
     :width: 100%
     :align: center
     :name: neutral_cmap
 
-.. figure:: ../../../cmasher/colormaps/neutral/neutral_viscm.png
+.. image:: ../../../cmasher/colormaps/neutral/neutral_viscm.png
     :alt: Statistics of the *neutral* colormap.
     :width: 100%
     :align: center
@@ -327,13 +327,13 @@ Whereas MPL's *binary* colormap changes uniformly in colorspace, *neutral* chang
 
 Nuclear
 -------
-.. figure:: ../../../cmasher/colormaps/nuclear/nuclear.png
+.. image:: ../../../cmasher/colormaps/nuclear/nuclear.png
     :alt: Visual representation of the *nuclear* colormap.
     :width: 100%
     :align: center
     :name: nuclear_cmap
 
-.. figure:: ../../../cmasher/colormaps/nuclear/nuclear_viscm.png
+.. image:: ../../../cmasher/colormaps/nuclear/nuclear_viscm.png
     :alt: Statistics of the *nuclear* colormap.
     :width: 100%
     :align: center
@@ -347,13 +347,13 @@ As with `lavender` and `gem`, it is great at representing dense information.
 
 Rainforest
 ----------
-.. figure:: ../../../cmasher/colormaps/rainforest/rainforest.png
+.. image:: ../../../cmasher/colormaps/rainforest/rainforest.png
     :alt: Visual representation of the *rainforest* colormap.
     :width: 100%
     :align: center
     :name: rainforest_cmap
 
-.. figure:: ../../../cmasher/colormaps/rainforest/rainforest_viscm.png
+.. image:: ../../../cmasher/colormaps/rainforest/rainforest_viscm.png
     :alt: Statistics of the *rainforest* colormap.
     :width: 100%
     :align: center
@@ -367,13 +367,13 @@ This also makes *rainforest* a good standard colormap choice as it treats all in
 
 Sunburst
 --------
-.. figure:: ../../../cmasher/colormaps/sunburst/sunburst.png
+.. image:: ../../../cmasher/colormaps/sunburst/sunburst.png
     :alt: Visual representation of the *sunburst* colormap.
     :width: 100%
     :align: center
     :name: sunburst_cmap
 
-.. figure:: ../../../cmasher/colormaps/sunburst/sunburst_viscm.png
+.. image:: ../../../cmasher/colormaps/sunburst/sunburst_viscm.png
     :alt: Statistics of the *sunburst* colormap.
     :width: 100%
     :align: center
@@ -386,13 +386,13 @@ Its smoothly varying coloring makes it a good choice for representing data that 
 
 Voltage
 -------
-.. figure:: ../../../cmasher/colormaps/voltage/voltage.png
+.. image:: ../../../cmasher/colormaps/voltage/voltage.png
     :alt: Visual representation of the *voltage* colormap.
     :width: 100%
     :align: center
     :name: voltage_cmap
 
-.. figure:: ../../../cmasher/colormaps/voltage/voltage_viscm.png
+.. image:: ../../../cmasher/colormaps/voltage/voltage_viscm.png
     :alt: Statistics of the *voltage* colormap.
     :width: 100%
     :align: center

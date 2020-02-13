@@ -142,17 +142,15 @@ if(__name__ == '__main__'):
     docs_entry = dedent("""
         {0}
         {2}
-        .. figure:: ../../../cmasher/colormaps/{1}/{1}.png
+        .. image:: ../../../cmasher/colormaps/{1}/{1}.png
             :alt: Visual representation of the *{1}* colormap.
             :width: 100%
             :align: center
-            :name: {1}_cmap
 
-        .. figure:: ../../../cmasher/colormaps/{1}/{1}_viscm.png
+        .. image:: ../../../cmasher/colormaps/{1}/{1}_viscm.png
             :alt: Statistics of the *{1}* colormap.
             :width: 100%
             :align: center
-            :name: {1}_viscm
 
         The *{1}* colormap is <visual representation>.
         <Lightness range><colors>
