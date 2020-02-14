@@ -86,12 +86,13 @@ def _get_cm_type(cmap):
 
     # MISC 1
     # If the colormap has plateaus in lightness, it is misc
-    elif np.any(np.isclose(diff_L, 0)):
+    elif np.any(np.isclose(diff_L0, 0)) or np.any(np.isclose(diff_L1, 0)):
         return('misc')
 
     # SEQUENTIAL
     # If the lightness values always increase or decrease, it is sequential
-    elif np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))):
+    elif (np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))) and
+          not np.any(np.isclose(diff_L, 0))):
         return('sequential')
 
     # DIVERGING
