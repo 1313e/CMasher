@@ -1,7 +1,7 @@
 .. _sequential:
 
-Sequential
-==========
+Sequential colormaps
+====================
 Sequential colormaps (that are perceptually uniform of course) are basic colormaps that start at a reasonably low lightness value and uniformly increase to a higher value.
 They are commonly used to represent information that is ordered.
 The *matplotlib* package already has a few great sequential colormaps readily available for the user, mainly the colormaps named *viridis*; *plasma*; *inferno*; *magma*; and *cividis*.
@@ -52,7 +52,7 @@ Apple
     :align: center
     :name: apple_viscm
 
-The *apple* colormap is a visual representation of the fruit with the same name, in particular an 'Elstar' apple.
+The *apple* colormap is a visual representation of the fruit with the same name, in particular an `Elstar <https://en.wikipedia.org/wiki/Elstar>`_ apple.
 It covers the full lightness range and uses the colors red and green.
 Its bright colors near the maximum make it great for representing information where higher values should be the main focus.
 Despite *apple* using red and green, the colors are far enough apart from each other to still be relatively CVD-friendly.
@@ -343,6 +343,24 @@ The *nuclear* colormap is a visual representation of the colors commonly associa
 Keep in mind that this is a misconception, as the nuclear/Cherenkov radiation coming from a nuclear reactor is usually bright blue.
 It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors blue and green.
 As with `lavender` and `gem`, it is great at representing dense information.
+
+
+Ocean
+-----
+.. image:: ../../../cmasher/colormaps/ocean/ocean.png
+    :alt: Visual representation of the *ocean* colormap.
+    :width: 100%
+    :align: center
+
+.. image:: ../../../cmasher/colormaps/ocean/ocean_viscm.png
+    :alt: Statistics of the *ocean* colormap.
+    :width: 100%
+    :align: center
+
+The *ocean* colormap is a visual representation of an ocean wave.
+It covers almost the full lightness range (:math:`[10, 100]`) and uses the color green-blue.
+Its calming, non-distracting colors make it great for representing background information in a plot.
+Note that unlike most other colormaps, `ocean` does not start at :math:`0` lightness.
 
 
 Rainforest

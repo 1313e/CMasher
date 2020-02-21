@@ -25,6 +25,12 @@ if(__name__ == '__main__'):
     if(len(sys.argv) == 2):
         # If only a single argument, then a sequential colormap is given
         jscm_path = path.abspath(sys.argv[1])
+
+        # If this path does not exist, try again with added 'PROJECTS'
+        if not path.exists(jscm_path):
+            jscm_path = path.abspath(path.join('PROJECTS', sys.argv[1]))
+
+        # Get colormap name
         name = path.splitext(path.basename(jscm_path))[0]
 
         # Make a directory for the colormap files
@@ -47,6 +53,13 @@ if(__name__ == '__main__'):
     elif(len(sys.argv) == 3):
         # Else, a diverging colormap is provided
         jscm_paths = [path.abspath(arg) for arg in sys.argv[1:]]
+
+        # If these paths do not exist, try again with added 'PROJECTS'
+        if not all(map(path.exists, jscm_paths)):
+            jscm_paths = [path.abspath(path.join('PROJECTS', arg))
+                          for arg in sys.argv[1:]]
+
+        # Get colormap name
         name = path.basename(path.commonprefix(jscm_paths))[:-1]
 
         # Make a directory for the colormap files

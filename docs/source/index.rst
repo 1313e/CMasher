@@ -1,6 +1,6 @@
 *CMasher*: Scientific colormaps for making accessible, informative and *cmashing* plots
 =======================================================================================
-This is the documentation for the *CMasher* package, a collection of scientific colormaps for making accessible, informative and *cmashing* plots.
+This is the documentation for the *CMasher* package, a collection of scientific colormaps for making accessible, informative and *cmashing* plots in Python.
 It is written in pure `Python 2/3`_ and `publicly available on GitHub`_.
 
 .. _@1313e: https://github.com/1313e
