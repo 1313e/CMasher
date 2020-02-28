@@ -153,22 +153,24 @@ if(__name__ == '__main__'):
 
     # Make string with the docs entry and print it
     docs_entry = dedent("""
-        {0}
+        .. _{0}:
+
+        {1}
         {2}
-        .. image:: ../../../cmasher/colormaps/{1}/{1}.png
-            :alt: Visual representation of the *{1}* colormap.
+        .. image:: ../../../cmasher/colormaps/{0}/{0}.png
+            :alt: Visual representation of the *{0}* colormap.
             :width: 100%
             :align: center
 
-        .. image:: ../../../cmasher/colormaps/{1}/{1}_viscm.png
-            :alt: Statistics of the *{1}* colormap.
+        .. image:: ../../../cmasher/colormaps/{0}/{0}_viscm.png
+            :alt: Statistics of the *{0}* colormap.
             :width: 100%
             :align: center
 
-        The *{1}* colormap is <visual representation>.
+        The *{0}* colormap is <visual representation>.
         <Lightness range><colors>
         <Recommended use>
-        """).format(name.capitalize(), name, '-'*len(name))
+        """).format(name, name.capitalize(), '-'*len(name))
     print(docs_entry)
 
     # Create viscm output figure
