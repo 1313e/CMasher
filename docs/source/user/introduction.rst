@@ -20,7 +20,7 @@ Below is an overview of all the colormaps that are currently in *CMasher* (made 
     :align: center
     :alt: CMasher Colormap Overview
 
-    Overview of all colormaps in *CMasher*.
+    Overview of all colormaps in *CMasher* for Python.
 
 How to install
 --------------

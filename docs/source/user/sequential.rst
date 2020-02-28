@@ -14,7 +14,7 @@ These colormaps are shown in an overview and described individually below.
     :align: center
     :alt: CMasher Sequential Colormap Overview
 
-    Overview of all sequential colormaps in *CMasher*.
+    Overview of all sequential colormaps in *CMasher* for Python.
 
 .. _PRISM: https://github.com/1313e/PRISM
 

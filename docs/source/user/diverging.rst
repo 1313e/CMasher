@@ -14,7 +14,7 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
     :align: center
     :alt: CMasher Diverging Colormap Overview
 
-    Overview of all diverging colormaps in *CMasher*.
+    Overview of all diverging colormaps in *CMasher* for Python.
 
 .. _PRISM: https://github.com/1313e/PRISM
 
