@@ -10,15 +10,31 @@ from os import path
 
 # Package imports
 from matplotlib import cm as mplcm
+from matplotlib.colors import ListedColormap as LC
+import numpy as np
 import pytest
 from six import PY2
 
 # CMasher imports
+import cmasher as cmr
 from cmasher import cm as cmrcm
-from cmasher.utils import create_cmap_overview, import_cmaps
+from cmasher.utils import create_cmap_overview, get_bibtex, import_cmaps
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
+
+
+# %% GLOBALS
+# Obtain path to directory with colormaps
+cmap_dir = path.abspath(path.join(dirpath, '../colormaps'))
+
+# Obtain list of all colormaps defined in CMasher
+# As all colormaps have their own directories, save them instead
+cm_names = sorted(next(os.walk(cmap_dir))[1])
+
+# Make sure that the 'PROJECTS' folder is removed
+if 'PROJECTS' in cm_names:
+    cm_names.remove('PROJECTS')
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
@@ -56,8 +72,26 @@ class Test_create_cmap_overview(object):
         assert path.exists("./test.png")
 
 
+# Pytest for the get_bibtex function
+def test_get_bibtex():
+    # Print the output of the get_bibtex() function
+    get_bibtex()
+
+
 # Pytest class for import_cmaps()-function
 class Test_import_cmaps(object):
+    # Test if all colormaps in cmasher/colormaps are loaded into CMasher/MPL
+    @pytest.mark.parametrize('cm_name', cm_names)
+    def test_CMasher_cmaps(self, cm_name):
+        # Check if provided cm_name is registered in CMasher and MPL
+        for name in (cm_name, cm_name+'_r'):
+            cmr_cmap = getattr(cmr, name, None)
+            mpl_cmap = mplcm.cmap_d.get('cmr.'+name, None)
+            assert isinstance(cmr_cmap, LC)
+            assert isinstance(mpl_cmap, LC)
+            assert getattr(cmrcm, name, None) is cmr_cmap
+            assert np.allclose(cmr_cmap.colors, mpl_cmap.colors)
+
     # Test if providing a cmap .txt-file works
     def test_cmap_file_txt(self):
         import_cmaps(path.join(dirpath, '../colormaps/cm_rainforest.txt'))
@@ -69,24 +103,6 @@ class Test_import_cmaps(object):
                 import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
         else:
             import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
-
-    # Test if all colormaps in cmasher/colormaps are loaded into MPL
-    def test_MPL_cmaps(self):
-        # Obtain path to directory with colormaps
-        cmap_dir = path.abspath(path.join(dirpath, '../colormaps'))
-
-        # Obtain list of all colormaps defined in CMasher
-        # As all colormaps have their own directories, save them instead
-        cm_names = next(os.walk(cmap_dir))[1]
-
-        # Add the reversed versions to the list as well
-        cm_names.extend([cm_name+'_r' for cm_name in cm_names])
-
-        # Check if all names in cm_names are registered in CMasher and MPL
-        for cm_name in cm_names:
-            assert hasattr(cmrcm, cm_name)
-            assert cm_name not in mplcm.cmap_d
-            assert 'cmr.'+cm_name in mplcm.cmap_d
 
     # Test if providing a non-existing directory raises an error
     def test_non_existing_dir(self):

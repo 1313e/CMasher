@@ -1,7 +1,7 @@
 .. _sequential:
 
-Sequential
-==========
+Sequential colormaps
+====================
 Sequential colormaps (that are perceptually uniform of course) are basic colormaps that start at a reasonably low lightness value and uniformly increase to a higher value.
 They are commonly used to represent information that is ordered.
 The *matplotlib* package already has a few great sequential colormaps readily available for the user, mainly the colormaps named *viridis*; *plasma*; *inferno*; *magma*; and *cividis*.
@@ -14,10 +14,12 @@ These colormaps are shown in an overview and described individually below.
     :align: center
     :alt: CMasher Sequential Colormap Overview
 
-    Overview of all sequential colormaps in *CMasher*.
+    Overview of all sequential colormaps in *CMasher* for Python.
 
 .. _PRISM: https://github.com/1313e/PRISM
 
+
+.. _amber:
 
 Amber
 -----
@@ -38,6 +40,8 @@ It covers almost the full lightness range (:math:`[0, 95]`) and uses the color o
 Its smoothly varying colors make it great for representing smooth information.
 
 
+.. _apple:
+
 Apple
 -----
 .. image:: ../../../cmasher/colormaps/apple/apple.png
@@ -52,11 +56,13 @@ Apple
     :align: center
     :name: apple_viscm
 
-The *apple* colormap is a visual representation of the fruit with the same name, in particular an 'Elstar' apple.
+The *apple* colormap is a visual representation of the fruit with the same name, in particular an `Elstar <https://en.wikipedia.org/wiki/Elstar>`_ apple.
 It covers the full lightness range and uses the colors red and green.
 Its bright colors near the maximum make it great for representing information where higher values should be the main focus.
 Despite *apple* using red and green, the colors are far enough apart from each other to still be relatively CVD-friendly.
 
+
+.. _arctic:
 
 Arctic
 ------
@@ -76,6 +82,8 @@ The *arctic* colormap is a visual representation of the cold landscape of the Ar
 It covers the full lightness range and solely uses the color blue.
 As the *arctic* colormap uses softer colors, it can be used as an alternative to the *freeze* colormap.
 
+
+.. _chroma:
 
 Chroma
 ------
@@ -97,6 +105,8 @@ Because it uses all major colors, this colormap has a very high perceptual range
 Keep in mind that the *chroma* colormap is not as CVD-friendly as the other colormaps.
 
 
+.. _dusk:
+
 Dusk
 ----
 .. image:: ../../../cmasher/colormaps/dusk/dusk.png
@@ -115,6 +125,8 @@ The *dusk* colormap is a visual representation of what the sky looks like during
 It covers the full lightness range and has the colors blue and orange as its main colors.
 It features a greyish area in the middle, making it great for representing ordered information where the extremes should be the main focus of the image.
 
+
+.. _eclipse:
 
 Eclipse
 -------
@@ -135,6 +147,8 @@ It covers almost the full lightness range (:math:`[0, 95]`) and uses the colors 
 It is excellent for representing information where the upper half should be the focus.
 
 
+.. _ember:
+
 Ember
 -----
 .. image:: ../../../cmasher/colormaps/ember/ember.png
@@ -153,6 +167,8 @@ The *ember* colormap is a visual representation of coal embers.
 It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors red and yellow.
 As with some other colormaps in *CMasher*, its smoothly varying colors make it a good choice for representing intensity maps.
 
+
+.. _flamingo:
 
 Flamingo
 --------
@@ -173,6 +189,8 @@ It covers the full lightness range and solely uses the color red.
 It is the most useful for representing information where the center should be the main focus, but is also great for smoothly varying information.
 
 
+.. _freeze:
+
 Freeze
 ------
 .. image:: ../../../cmasher/colormaps/freeze/freeze.png
@@ -191,6 +209,8 @@ The *freeze* colormap is one of the two main colormaps used in `PRISM`_, and is 
 It covers the full lightness range and solely uses the color blue.
 As it only uses a single color, this colormap is excellent for representing information that varies smoothly, like density/intensity values in a scientific plot.
 
+
+.. _gem:
 
 Gem
 ---
@@ -211,6 +231,8 @@ It covers the full lightness range and uses the colors purple and blue.
 Its very distinctive colors make it useful for representing dense information while not overloading on distractive colors.
 
 
+.. _gothic:
+
 Gothic
 ------
 .. image:: ../../../cmasher/colormaps/gothic/gothic.png
@@ -229,6 +251,8 @@ The *gothic* colormap is a visual representation of the stereotypical gothic col
 It covers the full lightness range and solely uses the color purple.
 As with the *freeze* colormap, this colormap is excellent for representing information that varies smoothly.
 
+
+.. _heat:
 
 Heat
 ----
@@ -249,6 +273,8 @@ It covers the full lightness range and mainly uses the colors blue/purple and or
 It should mainly be used for representing information where the center values are important.
 
 
+.. _horizon:
+
 Horizon
 -------
 .. image:: ../../../cmasher/colormaps/horizon/horizon.png
@@ -267,6 +293,8 @@ The *horizon* colormap is a visual representation of the horizon, from the green
 It covers the full lightness range and has the colors green and blue as its main colors.
 It features a brownish area close to the minimum, making it great for representing ordered information where the minimum is not important.
 
+
+.. _jungle:
 
 Jungle
 ------
@@ -287,6 +315,8 @@ It covers the full lightness range and solely uses the color green.
 As with the other single-color colormaps, this colormap is excellent for representing smooth information.
 
 
+.. _lavender:
+
 Lavender
 --------
 .. image:: ../../../cmasher/colormaps/lavender/lavender.png
@@ -306,6 +336,8 @@ It covers the :math:`[0, 80]` lightness range and uses the colors green and purp
 Its soft and very distinctive coloring makes it great for representing dense information.
 
 
+.. _neutral:
+
 Neutral
 -------
 .. image:: ../../../cmasher/colormaps/neutral/neutral.png
@@ -324,6 +356,8 @@ The *neutral* colormap is a neutral, colorless colormap.
 It covers the full lightness range and uses no colors.
 Whereas MPL's *binary* colormap changes uniformly in colorspace, *neutral* changes uniformly in lightness space.
 
+
+.. _nuclear:
 
 Nuclear
 -------
@@ -345,6 +379,28 @@ It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors 
 As with `lavender` and `gem`, it is great at representing dense information.
 
 
+.. _ocean:
+
+Ocean
+-----
+.. image:: ../../../cmasher/colormaps/ocean/ocean.png
+    :alt: Visual representation of the *ocean* colormap.
+    :width: 100%
+    :align: center
+
+.. image:: ../../../cmasher/colormaps/ocean/ocean_viscm.png
+    :alt: Statistics of the *ocean* colormap.
+    :width: 100%
+    :align: center
+
+The *ocean* colormap is a visual representation of an ocean wave.
+It covers almost the full lightness range (:math:`[10, 100]`) and uses the color green-blue.
+Its calming, non-distracting colors make it great for representing background information in a plot.
+Note that unlike most other colormaps, `ocean` does not start at :math:`0` lightness.
+
+
+.. _rainforest:
+
 Rainforest
 ----------
 .. image:: ../../../cmasher/colormaps/rainforest/rainforest.png
@@ -365,6 +421,8 @@ Because it uses all major colors, this colormap has a high perceptual range, mak
 This also makes *rainforest* a good standard colormap choice as it treats all information as equally important, in addition to being CVD-friendly.
 
 
+.. _sunburst:
+
 Sunburst
 --------
 .. image:: ../../../cmasher/colormaps/sunburst/sunburst.png
@@ -383,6 +441,8 @@ The *sunburst* colormap is a visual representation of a sunburst or solar flare.
 It covers the full lightness range and uses the colors red and orange.
 Its smoothly varying coloring makes it a good choice for representing data that varies smoothly as well (like intensity or temperature maps).
 
+
+.. _voltage:
 
 Voltage
 -------

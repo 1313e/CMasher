@@ -1,11 +1,11 @@
 .. _diverging:
 
-Diverging
-=========
+Diverging colormaps
+===================
 A different category or class of colormaps, is the group of *diverging* colormaps.
 Unlike sequential colormaps, diverging colormaps start at their lowest (or highest) lightness value at both ends and monotonically/linearly increase (decrease) to the highest (lowest) lightness value in the center.
 They could be seen as two sequential colormaps combined together, that share the same lightness range and end/begin with the same color.
-This makes them very useful to represent information that has a critical middle value or when data deviates around a common center (usually zero), like topographical maps.
+This makes them very useful to represent information that has a critical middle value or when data deviates around a common center (usually zero), like topographical maps; radial velocity plots or probability distributions.
 The *matplotlib* package has quite a few diverging colormaps, but none of them starts and ends at the same lightness value; and most do not change perceptually uniform.
 Therefore, a few alternatives are introduced here, with a full overview being shown below.
 
@@ -14,10 +14,12 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
     :align: center
     :alt: CMasher Diverging Colormap Overview
 
-    Overview of all diverging colormaps in *CMasher*.
+    Overview of all diverging colormaps in *CMasher* for Python.
 
 .. _PRISM: https://github.com/1313e/PRISM
 
+
+.. _fusion:
 
 Fusion
 ------
@@ -35,8 +37,10 @@ Fusion
 
 The *fusion* colormap is a visual representation of two particles fusing together.
 It covers almost the full lightness range (:math:`[10, 100]`) and uses the colors blue/purple and orange/red.
-It reaches its highest lightness value in the center and is therefore ideal for representing information where the distance to the common center should be highlighted, like in probability density maps.
+It reaches its highest lightness value in the center and is therefore ideal for representing information where the distance to the common center should be highlighted, like in probability distribution maps.
 
+
+.. _iceburn:
 
 Iceburn
 -------
@@ -58,6 +62,8 @@ It is special in that, unlike most other diverging colormaps, it reaches its low
 This makes it ideal for representing information where the deviation from the common center should be highlighted or when plotting data values where the sign of a value is used as an indicator, like in a radial velocity or rotation measure map (where the sign is an indicator of direction).
 
 
+.. _redshift:
+
 Redshift
 --------
 .. image:: ../../../cmasher/colormaps/redshift/redshift.png
@@ -76,6 +82,8 @@ The *redshift* colormap is a visual representation of the (mostly) astronomical 
 It covers almost the full lightness range (i.e., :math:`[0, 90]`) and uses red and blue as its main colors.
 As with the *iceburn* colormap, this colormap reaches its lowest lightness value in the center.
 
+
+.. _waterlily:
 
 Waterlily
 ---------

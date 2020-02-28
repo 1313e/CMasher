@@ -16,6 +16,7 @@ from __future__ import absolute_import, division, print_function
 from collections import OrderedDict as odict
 import os
 from os import path
+from textwrap import dedent
 
 # Package imports
 from colorspacious import cspace_converter
@@ -29,7 +30,7 @@ from six import string_types
 from cmasher import cm as cmrcm
 
 # All declaration
-__all__ = ['create_cmap_overview', 'import_cmaps']
+__all__ = ['create_cmap_overview', 'get_bibtex', 'import_cmaps']
 
 
 # %% HELPER FUNCTIONS
@@ -85,12 +86,13 @@ def _get_cm_type(cmap):
 
     # MISC 1
     # If the colormap has plateaus in lightness, it is misc
-    elif np.any(np.isclose(diff_L, 0)):
+    elif np.any(np.isclose(diff_L0, 0)) or np.any(np.isclose(diff_L1, 0)):
         return('misc')
 
     # SEQUENTIAL
     # If the lightness values always increase or decrease, it is sequential
-    elif np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))):
+    elif (np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))) and
+          not np.any(np.isclose(diff_L, 0))):
         return('sequential')
 
     # DIVERGING
@@ -356,6 +358,40 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     # Else, simply show it
     else:
         plt.show()
+
+
+# Define function that prints a string with the BibTeX entry to CMasher's paper
+def get_bibtex():
+    """
+    Prints a string that gives the BibTeX entry for citing the *CMasher* paper
+    (Van der Velden et al. 2020, JOSS, 5, 2004).
+
+    """
+
+    # Create string with BibTeX entry
+    bibtex = dedent(
+        r"""
+        @ARTICLE{2020JOSS....5.2004V,
+            author = {{van der Velden}, Ellert},
+            title = "{CMasher: Scientific colormaps for making accessible,
+                informative and 'cmashing' plots}",
+            journal = {The Journal of Open Source Software},
+            keywords = {Python, colormaps, data visualization, plotting,
+                science},
+            year = "2020",
+            month = "Feb",
+            volume = {5},
+            number = {46},
+            eid = {2004},
+            pages = {2004},
+            doi = {10.21105/joss.02004},
+            adsurl = {https://ui.adsabs.harvard.edu/abs/2020JOSS....5.2004V},
+            adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+        }
+        """)
+
+    # Print the string
+    print(bibtex.strip())
 
 
 # Function to import all custom colormaps in a file or directory
