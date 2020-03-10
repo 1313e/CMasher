@@ -1,4 +1,3 @@
-
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +258,5 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.78527005e-01, 9.93823530e-01, 9.86441171e-01],
            [9.89471812e-01, 9.96813902e-01, 9.93334732e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
+
 test_cm = ListedColormap(cm_data, name="chroma")

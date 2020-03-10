@@ -1,4 +1,3 @@
-
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +258,5 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.91501542e-01, 9.88053082e-01, 9.93277974e-01],
            [9.95835534e-01, 9.93982453e-01, 9.96596527e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
+
 test_cm = ListedColormap(cm_data, name="horizon")

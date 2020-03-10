@@ -305,9 +305,8 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     height = 0.4*(len(cmaps_list)+1)
     fig, axes = plt.subplots(figsize=(6.4, height),
                              nrows=len(cmaps_list), ncols=2)
-    w_pad, h_pad, wspace, hspace = fig.get_constrained_layout_pads()
-    fig.subplots_adjust(top=(1-0.24/height), bottom=0.01, left=0.2, right=0.99,
-                        wspace=0.05)
+    fig.subplots_adjust(top=(1-0.24/height), bottom=0.048/height, left=0.2,
+                        right=0.99, wspace=0.05)
     fig.suptitle("Colormap Overview", fontsize=16, y=1.0, x=0.595)
 
     # If cmaps_list only has a single element, make sure axes is a list
@@ -352,7 +351,8 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
     # If savefig is not None, save the figure
     if savefig is not None:
-        plt.savefig(savefig, dpi=250)
+        dpi = 100 if (path.splitext(savefig)[1] == '.svg') else 250
+        plt.savefig(savefig, dpi=dpi)
         plt.close(fig)
 
     # Else, simply show it

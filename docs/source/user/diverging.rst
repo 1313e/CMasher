@@ -9,7 +9,7 @@ This makes them very useful to represent information that has a critical middle 
 The *matplotlib* package has quite a few diverging colormaps, but none of them starts and ends at the same lightness value; and most do not change perceptually uniform.
 Therefore, a few alternatives are introduced here, with a full overview being shown below.
 
-.. figure:: images/div_cmaps.png
+.. figure:: images/div_cmaps.svg
     :width: 100%
     :align: center
     :alt: CMasher Diverging Colormap Overview
@@ -23,13 +23,13 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
 
 Fusion
 ------
-.. image:: ../../../cmasher/colormaps/fusion/fusion.png
+.. image:: ../../../cmasher/colormaps/fusion/fusion.svg
     :alt: Visual representation of the *fusion* colormap.
     :width: 100%
     :align: center
     :name: fusion_cmap
 
-.. image:: ../../../cmasher/colormaps/fusion/fusion_viscm.png
+.. image:: ../../../cmasher/colormaps/fusion/fusion_viscm.svg
     :alt: Statistics of the *fusion* colormap.
     :width: 100%
     :align: center
@@ -44,13 +44,13 @@ It reaches its highest lightness value in the center and is therefore ideal for 
 
 Iceburn
 -------
-.. image:: ../../../cmasher/colormaps/iceburn/iceburn.png
+.. image:: ../../../cmasher/colormaps/iceburn/iceburn.svg
     :alt: Visual representation of the *iceburn* colormap.
     :width: 100%
     :align: center
     :name: iceburn_cmap
 
-.. image:: ../../../cmasher/colormaps/iceburn/iceburn_viscm.png
+.. image:: ../../../cmasher/colormaps/iceburn/iceburn_viscm.svg
     :alt: Statistics of the *iceburn* colormap.
     :width: 100%
     :align: center
@@ -66,13 +66,13 @@ This makes it ideal for representing information where the deviation from the co
 
 Redshift
 --------
-.. image:: ../../../cmasher/colormaps/redshift/redshift.png
+.. image:: ../../../cmasher/colormaps/redshift/redshift.svg
     :alt: Visual representation of the *redshift* colormap.
     :width: 100%
     :align: center
     :name: redshift_cmap
 
-.. image:: ../../../cmasher/colormaps/redshift/redshift_viscm.png
+.. image:: ../../../cmasher/colormaps/redshift/redshift_viscm.svg
     :alt: Statistics of the *redshift* colormap.
     :width: 100%
     :align: center
@@ -87,13 +87,13 @@ As with the *iceburn* colormap, this colormap reaches its lowest lightness value
 
 Waterlily
 ---------
-.. image:: ../../../cmasher/colormaps/waterlily/waterlily.png
+.. image:: ../../../cmasher/colormaps/waterlily/waterlily.svg
     :alt: Visual representation of the *waterlily* colormap.
     :width: 100%
     :align: center
     :name: waterlily_cmap
 
-.. image:: ../../../cmasher/colormaps/waterlily/waterlily_viscm.png
+.. image:: ../../../cmasher/colormaps/waterlily/waterlily_viscm.svg
     :alt: Statistics of the *waterlily* colormap.
     :width: 100%
     :align: center

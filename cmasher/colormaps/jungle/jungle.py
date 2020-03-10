@@ -1,4 +1,3 @@
-
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +258,5 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.88467899e-01, 9.90016592e-01, 9.85908738e-01],
            [9.94270146e-01, 9.94978692e-01, 9.92951959e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
+
 test_cm = ListedColormap(cm_data, name="jungle")

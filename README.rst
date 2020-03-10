@@ -20,7 +20,7 @@ Colormap overview
 Below is an overview of all the colormaps that are currently in *CMasher* (made with the ``cmr.create_cmap_overview()`` function).
 For more information, see the `online documentation`_.
 
-.. image:: https://github.com/1313e/CMasher/raw/master/cmasher/colormaps/cmap_overview.png
+.. image:: https://github.com/1313e/CMasher/raw/master/cmasher/colormaps/cmap_overview.svg
     :width: 100%
     :align: center
     :target: https://cmasher.readthedocs.io
@@ -107,6 +107,6 @@ This is to keep official and unofficial colormaps separated in *CMasher*.
 .. |Coverage| image:: https://img.shields.io/codecov/c/github/1313e/CMasher/master.svg?logo=codecov&logoColor=white&label=Coverage
     :target: https://codecov.io/gh/1313e/CMasher/branches/master
     :alt: CodeCov - Coverage Status
-.. |JOSS| image:: https://img.shields.io/badge/JOSS-Published-brightgreen
+.. |JOSS| image:: https://img.shields.io/badge/JOSS-published-brightgreen
    :target: https://doi.org/10.21105/joss.02004
    :alt: JOSS - Submission Status

@@ -1,4 +1,3 @@
-
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +258,5 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.92618443e-01, 9.87826429e-01, 9.91235239e-01],
            [9.96348727e-01, 9.93881649e-01, 9.95628664e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
+
 test_cm = ListedColormap(cm_data, name="flamingo")

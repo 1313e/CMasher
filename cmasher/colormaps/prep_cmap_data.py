@@ -125,7 +125,7 @@ if(__name__ == '__main__'):
     ax.set_axis_off()
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)
-    plt.savefig("{0}/{0}.png".format(name), dpi=200, bbox_inches='tight',
+    plt.savefig("{0}/{0}.svg".format(name), dpi=100, bbox_inches='tight',
                 pad_inches=0)
     plt.close(fig)
 
@@ -139,17 +139,17 @@ if(__name__ == '__main__'):
     import_cmaps('.')
 
     # Make new colormap overview
-    create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
+    create_cmap_overview(savefig='cmap_overview.svg', sort='lightness')
 
     # Make new colormap type overviews
     if(cmtype == 'linear'):
         create_cmap_overview(
             cmap_cd['sequential'].values(), sort='lightness',
-            savefig='../../docs/source/user/images/seq_cmaps.png')
+            savefig='../../docs/source/user/images/seq_cmaps.svg')
     elif(cmtype == 'diverging'):
         create_cmap_overview(
             cmap_cd['diverging'].values(), sort='lightness',
-            savefig='../../docs/source/user/images/div_cmaps.png')
+            savefig='../../docs/source/user/images/div_cmaps.svg')
 
     # Make string with the docs entry and print it
     docs_entry = dedent("""
@@ -157,12 +157,12 @@ if(__name__ == '__main__'):
 
         {1}
         {2}
-        .. image:: ../../../cmasher/colormaps/{0}/{0}.png
+        .. image:: ../../../cmasher/colormaps/{0}/{0}.svg
             :alt: Visual representation of the *{0}* colormap.
             :width: 100%
             :align: center
 
-        .. image:: ../../../cmasher/colormaps/{0}/{0}_viscm.png
+        .. image:: ../../../cmasher/colormaps/{0}/{0}_viscm.svg
             :alt: Statistics of the *{0}* colormap.
             :width: 100%
             :align: center
@@ -175,4 +175,4 @@ if(__name__ == '__main__'):
 
     # Create viscm output figure
     viscm.gui.main(["view", "{0}/{0}.py".format(name), "--save",
-                    "{0}/{0}_viscm.png".format(name), "--quit"])
+                    "{0}/{0}_viscm.svg".format(name), "--quit"])
