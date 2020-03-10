@@ -139,7 +139,10 @@ if(__name__ == '__main__'):
     import_cmaps('.')
 
     # Make new colormap overview
-    create_cmap_overview(savefig='cmap_overview.svg', sort='lightness')
+    create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
+    create_cmap_overview(
+        savefig='../../docs/source/user/images/cmap_overview.svg',
+        sort='lightness')
 
     # Make new colormap type overviews
     if(cmtype == 'linear'):
