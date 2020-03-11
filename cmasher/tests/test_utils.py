@@ -61,6 +61,10 @@ class Test_create_cmap_overview(object):
     def test_mpl_cmaps_names(self):
         create_cmap_overview(mplcm.cmap_d.keys(), sort='lightness')
 
+    # Test if the lightness profiles can be plotted
+    def test_lightness_profiles(self):
+        create_cmap_overview(mplcm.cmap_d.keys(), plot_profile=1)
+
     # Test if providing a custom dict of colormaps works
     def test_dict(self):
         create_cmap_overview({'test1': [cmrcm.rainforest],

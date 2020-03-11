@@ -21,6 +21,7 @@ from textwrap import dedent
 # Package imports
 from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
+from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap as LC
 import matplotlib.pyplot as plt
 import numpy as np
@@ -181,7 +182,7 @@ def _get_cmap_lightness_rank(cmap):
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
-                         sort='alphabetical'):
+                         sort='alphabetical', plot_profile=False):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -206,13 +207,22 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         name.
         If 'lightness', the colormaps are sorted on their starting lightness
         and their lightness range.
+    plot_profile : bool. Default: False
+        Whether the lightness profiles of all colormaps should be plotted. If
+        *True*, the lightness profile of a colormap is plotted on top of its
+        gray-scale version.
 
-    Note
-    ----
+    Notes
+    -----
     The colormaps in `cmaps` can either be provided as their registered name in
     *MPL*, or their corresponding :obj:`~matplotlib.colors.Colormap` object.
     Any provided reversed colormaps (colormaps that end their name with '_r')
     are ignored.
+
+    If `plot_profile` is set to *True*, the lightness profiles are plotted on
+    top of the gray-scale colormap versions, where the y-axis ranges from 0%
+    lightness to 100% lightness.
+    The lightness profile transitions between black and white at 50% lightness.
 
     """
 
@@ -313,6 +323,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     if(len(cmaps_list) == 1):
         axes = [axes]
 
+    # Set the current cm_type to None
+    cm_type = None
+
     # Loop over all cmaps defined in cmaps list
     for ax, cmap in zip(axes, cmaps_list):
         # Turn axes off
@@ -324,6 +337,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             # Write the cm_type as text in the correct position
             fig.text(0.595, ax[0].get_position().bounds[1], cmap,
                      va='bottom', ha='center', fontsize=14)
+
+            # Save what the current cm_type is
+            cm_type = cmap
 
         # Else, this is a colormap
         else:
@@ -337,12 +353,44 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             lab = cspace_convert(rgb)
             L = lab[:, 0]
 
-            # Get corresponding RGB values for lightness values using neutral
-            rgb_L = cmrcm.neutral(L/99.99871678)[:, :3]
+            # Normalize lightness values
+            L /= 99.99871678
 
-            # Add subplots
+            # Get corresponding RGB values for lightness values using neutral
+            rgb_L = cmrcm.neutral(L)[:, :3]
+
+            # Add colormap subplot
             ax[0].imshow(rgb[np.newaxis, ...], aspect='auto')
+
+            # Check if the lightness profile was requested
+            if plot_profile and (cm_type != 'qualitative'):
+                # Determine the values that need to be plotted
+                plot_x = np.array(list(range(cmap.N)))
+                plot_L = -(L-0.5)
+
+                # Convert these valeus to segments
+                points = np.array([plot_x, plot_L]).T.reshape(-1, 1, 2)
+                segments = np.concatenate([points[:-1], points[1:]], axis=1)
+
+                # Determine the colors that each segment must have
+                # Use black for L >= 0.5 and white for L <= 0.5.
+                colors = np.zeros_like(plot_L, dtype=int)
+                colors[plot_L >= 0] = 1
+
+                # Create an MPL LineCollection object with these segments
+                lc = LineCollection(segments, cmap=cmrcm.neutral, alpha=0.5)
+                lc.set_linewidth(1)
+
+                # Set the values of the line-collection to be the colors
+                lc.set_array(colors)
+
+                # Add line-collection to this subplot
+                ax[1].add_collection(lc)
+
+            # Add gray-scale colormap subplot
             ax[1].imshow(rgb_L[np.newaxis, ...], aspect='auto')
+
+            # Plot the name of the colormap as text
             pos = list(ax[0].get_position().bounds)
             x_text = pos[0]-0.01
             y_text = pos[1]+pos[3]/2
