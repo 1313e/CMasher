@@ -412,7 +412,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 def get_bibtex():
     """
     Prints a string that gives the BibTeX entry for citing the *CMasher* paper
-    (Van der Velden et al. 2020, JOSS, 5, 2004).
+    (Van der Velden 2020, JOSS, 5, 2004).
 
     """
 
@@ -424,15 +424,20 @@ def get_bibtex():
             title = "{CMasher: Scientific colormaps for making accessible,
                 informative and 'cmashing' plots}",
             journal = {The Journal of Open Source Software},
-            keywords = {Python, colormaps, data visualization, plotting,
-                science},
-            year = "2020",
-            month = "Feb",
+            keywords = {Python, science, colormaps, data visualization,
+                plotting, Electrical Engineering and Systems Science - Image
+                and Video Processing, Physics - Data Analysis, Statistics and
+                Probability},
+            year = 2020,
+            month = feb,
             volume = {5},
             number = {46},
             eid = {2004},
             pages = {2004},
             doi = {10.21105/joss.02004},
+            archivePrefix = {arXiv},
+            eprint = {2003.01069},
+            primaryClass = {eess.IV},
             adsurl = {https://ui.adsabs.harvard.edu/abs/2020JOSS....5.2004V},
             adsnote = {Provided by the SAO/NASA Astrophysics Data System}
         }
