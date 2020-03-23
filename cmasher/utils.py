@@ -207,10 +207,12 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         name.
         If 'lightness', the colormaps are sorted on their starting lightness
         and their lightness range.
-    plot_profile : bool. Default: False
+    plot_profile : bool or int. Default: False
         Whether the lightness profiles of all colormaps should be plotted. If
-        *True*, the lightness profile of a colormap is plotted on top of its
-        gray-scale version.
+        not *False*, the lightness profile of a colormap is plotted on top of
+        its gray-scale version and `plot_profile` is used for setting the alpha
+        (opacity) value.
+        If `plot_profile` is *True*, it will be set to `0.25`.
 
     Notes
     -----
@@ -219,12 +221,16 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     Any provided reversed colormaps (colormaps that end their name with '_r')
     are ignored.
 
-    If `plot_profile` is set to *True*, the lightness profiles are plotted on
-    top of the gray-scale colormap versions, where the y-axis ranges from 0%
+    If `plot_profile` is not set to *False*, the lightness profiles are plotted
+    on top of the gray-scale colormap versions, where the y-axis ranges from 0%
     lightness to 100% lightness.
     The lightness profile transitions between black and white at 50% lightness.
 
     """
+
+    # If plot_profile is True, set it to its default value
+    if plot_profile is True:
+        plot_profile = 0.25
 
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
@@ -364,25 +370,45 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
             # Check if the lightness profile was requested
             if plot_profile and (cm_type != 'qualitative'):
-                # Determine the values that need to be plotted
-                plot_x = np.array(list(range(cmap.N)))
+                # Determine the points that need to be plotted
+                plot_x = np.arange(cmap.N)
                 plot_L = -(L-0.5)
+                points = np.stack([plot_x, plot_L], axis=1)
 
-                # Convert these valeus to segments
-                points = np.array([plot_x, plot_L]).T.reshape(-1, 1, 2)
-                segments = np.concatenate([points[:-1], points[1:]], axis=1)
-
-                # Determine the colors that each segment must have
+                # Determine the colors that each point must have
                 # Use black for L >= 0.5 and white for L <= 0.5.
                 colors = np.zeros_like(plot_L, dtype=int)
                 colors[plot_L >= 0] = 1
 
+                # Split points up into segments with the same color
+                s_idx = np.nonzero(np.diff(colors))[0]+1
+                segments = np.split(points, s_idx)
+
+                # Loop over all pairs of adjacent segments
+                for i, (seg1, seg2) in enumerate(zip(segments[:-1],
+                                                     segments[1:])):
+                    # Determine the point in the center of these segments
+                    central_point = (seg1[-1]+seg2[0])/2
+
+                    # Add this point to the ends of these segments
+                    # This ensures that the color changes in between segments
+                    segments[i] = np.concatenate(
+                        [segments[i], [central_point]], axis=0)
+                    segments[i+1] = np.concatenate(
+                        [[central_point], segments[i+1]], axis=0)
+
                 # Create an MPL LineCollection object with these segments
-                lc = LineCollection(segments, cmap=cmrcm.neutral, alpha=0.5)
+                lc = LineCollection(segments, cmap=cmrcm.neutral,
+                                    alpha=plot_profile)
                 lc.set_linewidth(1)
 
-                # Set the values of the line-collection to be the colors
-                lc.set_array(colors)
+                # Determine the colors of each segment
+                s_colors = [colors[0]]
+                s_colors.extend(colors[s_idx])
+                s_colors = np.array(s_colors)
+
+                # Set the values of the line-collection to be these colors
+                lc.set_array(s_colors)
 
                 # Add line-collection to this subplot
                 ax[1].add_collection(lc)
