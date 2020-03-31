@@ -62,25 +62,25 @@ It is special in that, unlike most other diverging colormaps, it reaches its low
 This makes it ideal for representing information where the deviation from the common center should be highlighted or when plotting data values where the sign of a value is used as an indicator, like in a radial velocity or rotation measure map (where the sign is an indicator of direction).
 
 
-.. _primary:
+.. _pride:
 
-primary
+pride
 -------
-.. image:: ../../../cmasher/colormaps/primary/primary.svg
-    :alt: Visual representation of the *primary* colormap.
+.. image:: ../../../cmasher/colormaps/pride/pride.svg
+    :alt: Visual representation of the *pride* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../cmasher/colormaps/primary/primary_viscm.svg
-    :alt: Statistics of the *primary* colormap.
+.. image:: ../../../cmasher/colormaps/pride/pride_viscm.svg
+    :alt: Statistics of the *pride* colormap.
     :width: 100%
     :align: center
 
-The *primary* colormap is a visual representation of the three primary colors (blue, yellow, red).
+The *pride* colormap is a visual representation of the equality of all communities.
 It covers the special lightness range of :math:`[10, 90]` and uses all major colors.
-<Recommended use>
-Note that unlike most other colormaps, *primary* does not feature a black or white area, making it easier to write annotations on top of it.
-Also note that, like the :ref:`chroma` sequential colormap, *primary* is not as CVD-friendly as other colormaps in *CMasher*.
+Like the :ref:`fusion` colormap, this colormap has an exceptionally high perceptual range, making it ideal for dense information plots where the distance to the common center should be highlighted.
+Note that unlike most other colormaps, *pride* does not feature a black or white area, making it easier to write annotations on top of it.
+Also note that, like the :ref:`chroma` sequential colormap, *pride* is not as CVD-friendly as other colormaps in *CMasher*.
 
 
 .. _redshift:

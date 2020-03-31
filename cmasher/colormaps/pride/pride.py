@@ -514,4 +514,4 @@ cm_data = [[0.08752792, 0.05445008, 0.15633391],
            [0.12810517, 0.04181228, 0.10831071],
            [0.12337357, 0.04004903, 0.10343270]]
 
-test_cm = ListedColormap(cm_data, name="primary")
+test_cm = ListedColormap(cm_data, name="pride")
