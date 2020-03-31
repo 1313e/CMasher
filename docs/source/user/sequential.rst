@@ -21,7 +21,7 @@ These colormaps are shown in an overview and described individually below.
 
 .. _amber:
 
-Amber
+amber
 -----
 .. image:: ../../../cmasher/colormaps/amber/amber.svg
     :alt: Visual representation of the *amber* colormap.
@@ -42,7 +42,7 @@ Its smoothly varying colors make it great for representing smooth information.
 
 .. _apple:
 
-Apple
+apple
 -----
 .. image:: ../../../cmasher/colormaps/apple/apple.svg
     :alt: Visual representation of the *apple* colormap.
@@ -64,7 +64,7 @@ Despite *apple* using red and green, the colors are far enough apart from each o
 
 .. _arctic:
 
-Arctic
+arctic
 ------
 .. image:: ../../../cmasher/colormaps/arctic/arctic.svg
     :alt: Visual representation of the *arctic* colormap.
@@ -80,12 +80,12 @@ Arctic
 
 The *arctic* colormap is a visual representation of the cold landscape of the Arctic.
 It covers the full lightness range and solely uses the color blue.
-As the *arctic* colormap uses softer colors, it can be used as an alternative to the *freeze* colormap.
+As the *arctic* colormap uses softer colors, it can be used as an alternative to the :ref:`freeze` colormap.
 
 
 .. _chroma:
 
-Chroma
+chroma
 ------
 .. image:: ../../../cmasher/colormaps/chroma/chroma.svg
     :alt: Visual representation of the *chroma* colormap.
@@ -107,7 +107,7 @@ Keep in mind that the *chroma* colormap is not as CVD-friendly as the other colo
 
 .. _dusk:
 
-Dusk
+dusk
 ----
 .. image:: ../../../cmasher/colormaps/dusk/dusk.svg
     :alt: Visual representation of the *dusk* colormap.
@@ -128,7 +128,7 @@ It features a greyish area in the middle, making it great for representing order
 
 .. _eclipse:
 
-Eclipse
+eclipse
 -------
 .. image:: ../../../cmasher/colormaps/eclipse/eclipse.svg
     :alt: Visual representation of the *eclipse* colormap.
@@ -149,7 +149,7 @@ It is excellent for representing information where the upper half should be the 
 
 .. _ember:
 
-Ember
+ember
 -----
 .. image:: ../../../cmasher/colormaps/ember/ember.svg
     :alt: Visual representation of the *ember* colormap.
@@ -170,7 +170,7 @@ As with some other colormaps in *CMasher*, its smoothly varying colors make it a
 
 .. _flamingo:
 
-Flamingo
+flamingo
 --------
 .. image:: ../../../cmasher/colormaps/flamingo/flamingo.svg
     :alt: Visual representation of the *flamingo* colormap.
@@ -191,7 +191,7 @@ It is the most useful for representing information where the center should be th
 
 .. _freeze:
 
-Freeze
+freeze
 ------
 .. image:: ../../../cmasher/colormaps/freeze/freeze.svg
     :alt: Visual representation of the *freeze* colormap.
@@ -212,7 +212,7 @@ As it only uses a single color, this colormap is excellent for representing info
 
 .. _gem:
 
-Gem
+gem
 ---
 .. image:: ../../../cmasher/colormaps/gem/gem.svg
     :alt: Visual representation of the *gem* colormap.
@@ -233,7 +233,7 @@ Its very distinctive colors make it useful for representing dense information wh
 
 .. _gothic:
 
-Gothic
+gothic
 ------
 .. image:: ../../../cmasher/colormaps/gothic/gothic.svg
     :alt: Visual representation of the *gothic* colormap.
@@ -249,12 +249,12 @@ Gothic
 
 The *gothic* colormap is a visual representation of the stereotypical gothic colors.
 It covers the full lightness range and solely uses the color purple.
-As with the *freeze* colormap, this colormap is excellent for representing information that varies smoothly.
+As with the :ref:`freeze` colormap, this colormap is excellent for representing information that varies smoothly.
 
 
 .. _heat:
 
-Heat
+heat
 ----
 .. image:: ../../../cmasher/colormaps/heat/heat.svg
     :alt: Visual representation of the *heat* colormap.
@@ -275,7 +275,7 @@ It should mainly be used for representing information where the center values ar
 
 .. _horizon:
 
-Horizon
+horizon
 -------
 .. image:: ../../../cmasher/colormaps/horizon/horizon.svg
     :alt: Visual representation of the *horizon* colormap.
@@ -296,7 +296,7 @@ It features a brownish area close to the minimum, making it great for representi
 
 .. _jungle:
 
-Jungle
+jungle
 ------
 .. image:: ../../../cmasher/colormaps/jungle/jungle.svg
     :alt: Visual representation of the *jungle* colormap.
@@ -317,7 +317,7 @@ As with the other single-color colormaps, this colormap is excellent for represe
 
 .. _lavender:
 
-Lavender
+lavender
 --------
 .. image:: ../../../cmasher/colormaps/lavender/lavender.svg
     :alt: Visual representation of the *lavender* colormap.
@@ -338,7 +338,7 @@ Its soft and very distinctive coloring makes it great for representing dense inf
 
 .. _neutral:
 
-Neutral
+neutral
 -------
 .. image:: ../../../cmasher/colormaps/neutral/neutral.svg
     :alt: Visual representation of the *neutral* colormap.
@@ -359,7 +359,7 @@ Whereas MPL's *binary* colormap changes uniformly in colorspace, *neutral* chang
 
 .. _nuclear:
 
-Nuclear
+nuclear
 -------
 .. image:: ../../../cmasher/colormaps/nuclear/nuclear.svg
     :alt: Visual representation of the *nuclear* colormap.
@@ -376,12 +376,12 @@ Nuclear
 The *nuclear* colormap is a visual representation of the colors commonly associated with nuclear radiation.
 Keep in mind that this is a misconception, as the nuclear/Cherenkov radiation coming from a nuclear reactor is usually bright blue.
 It covers almost the full lightness range (:math:`[0, 90]`) and uses the colors blue and green.
-As with `lavender` and `gem`, it is great at representing dense information.
+As with :ref:`lavender` and :ref:`gem`, it is great at representing dense information.
 
 
 .. _ocean:
 
-Ocean
+ocean
 -----
 .. image:: ../../../cmasher/colormaps/ocean/ocean.svg
     :alt: Visual representation of the *ocean* colormap.
@@ -396,12 +396,12 @@ Ocean
 The *ocean* colormap is a visual representation of an ocean wave.
 It covers almost the full lightness range (:math:`[10, 100]`) and uses the color green-blue.
 Its calming, non-distracting colors make it great for representing background information in a plot.
-Note that unlike most other colormaps, `ocean` does not start at :math:`0` lightness.
+Note that unlike most other colormaps, *ocean* does not start at :math:`0` lightness.
 
 
 .. _rainforest:
 
-Rainforest
+rainforest
 ----------
 .. image:: ../../../cmasher/colormaps/rainforest/rainforest.svg
     :alt: Visual representation of the *rainforest* colormap.
@@ -421,9 +421,29 @@ Because it uses all major colors, this colormap has a high perceptual range, mak
 This also makes *rainforest* a good standard colormap choice as it treats all information as equally important, in addition to being CVD-friendly.
 
 
+.. _savanna:
+
+savanna
+-------
+.. image:: ../../../cmasher/colormaps/savanna/savanna.svg
+    :alt: Visual representation of the *savanna* colormap.
+    :width: 100%
+    :align: center
+
+.. image:: ../../../cmasher/colormaps/savanna/savanna_viscm.svg
+    :alt: Statistics of the *savanna* colormap.
+    :width: 100%
+    :align: center
+
+The *savanna* colormap is a visual representation of the tropical savanna ecosystems.
+It covers the full lightness range and uses the colors green and orange.
+As with a few other colormaps, its smoothly varying colors makes *savanna* great for intensity maps.
+Note that the colors in *savanna* are chosen such to still be CVD-friendly.
+
+
 .. _sunburst:
 
-Sunburst
+sunburst
 --------
 .. image:: ../../../cmasher/colormaps/sunburst/sunburst.svg
     :alt: Visual representation of the *sunburst* colormap.
@@ -444,7 +464,7 @@ Its smoothly varying coloring makes it a good choice for representing data that 
 
 .. _voltage:
 
-Voltage
+voltage
 -------
 .. image:: ../../../cmasher/colormaps/voltage/voltage.svg
     :alt: Visual representation of the *voltage* colormap.
@@ -460,4 +480,4 @@ Voltage
 
 The *voltage* colormap is a visual representation of the high voltage electricity in a tesla coil or lightning strike.
 It covers the full lightness range and uses the colors purple and blue.
-As with *arctic* and *freeze*, it is excellent at representing information that is smooth.
+As with :ref:`arctic` and :ref:`freeze`, it is excellent at representing information that is smooth.

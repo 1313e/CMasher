@@ -21,7 +21,7 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
 
 .. _fusion:
 
-Fusion
+fusion
 ------
 .. image:: ../../../cmasher/colormaps/fusion/fusion.svg
     :alt: Visual representation of the *fusion* colormap.
@@ -42,7 +42,7 @@ It reaches its highest lightness value in the center and is therefore ideal for 
 
 .. _iceburn:
 
-Iceburn
+iceburn
 -------
 .. image:: ../../../cmasher/colormaps/iceburn/iceburn.svg
     :alt: Visual representation of the *iceburn* colormap.
@@ -62,9 +62,30 @@ It is special in that, unlike most other diverging colormaps, it reaches its low
 This makes it ideal for representing information where the deviation from the common center should be highlighted or when plotting data values where the sign of a value is used as an indicator, like in a radial velocity or rotation measure map (where the sign is an indicator of direction).
 
 
+.. _primary:
+
+primary
+-------
+.. image:: ../../../cmasher/colormaps/primary/primary.svg
+    :alt: Visual representation of the *primary* colormap.
+    :width: 100%
+    :align: center
+
+.. image:: ../../../cmasher/colormaps/primary/primary_viscm.svg
+    :alt: Statistics of the *primary* colormap.
+    :width: 100%
+    :align: center
+
+The *primary* colormap is a visual representation of the three primary colors (blue, yellow, red).
+It covers the special lightness range of :math:`[10, 90]` and uses all major colors.
+<Recommended use>
+Note that unlike most other colormaps, *primary* does not feature a black or white area, making it easier to write annotations on top of it.
+Also note that, like the :ref:`chroma` sequential colormap, *primary* is not as CVD-friendly as other colormaps in *CMasher*.
+
+
 .. _redshift:
 
-Redshift
+redshift
 --------
 .. image:: ../../../cmasher/colormaps/redshift/redshift.svg
     :alt: Visual representation of the *redshift* colormap.
@@ -80,12 +101,31 @@ Redshift
 
 The *redshift* colormap is a visual representation of the (mostly) astronomical phenomenon with the same name, where electromagnetic radiation (such as light) undergoes an increase in wavelength.
 It covers almost the full lightness range (i.e., :math:`[0, 90]`) and uses red and blue as its main colors.
-As with the *iceburn* colormap, this colormap reaches its lowest lightness value in the center.
+As with the :ref:`iceburn` colormap, this colormap reaches its lowest lightness value in the center.
+
+
+.. _viola:
+
+viola
+-----
+.. image:: ../../../cmasher/colormaps/viola/viola.svg
+    :alt: Visual representation of the *viola* colormap.
+    :width: 100%
+    :align: center
+
+.. image:: ../../../cmasher/colormaps/viola/viola_viscm.svg
+    :alt: Statistics of the *viola* colormap.
+    :width: 100%
+    :align: center
+
+The *viola* colormap is a visual representation of the flower family with the same name.
+It covers the :math:`[10, 100]` lightness range and uses the colors blue and pink/purple.
+It reaches its highest lightness value in the center, making it great for density maps.
 
 
 .. _waterlily:
 
-Waterlily
+waterlily
 ---------
 .. image:: ../../../cmasher/colormaps/waterlily/waterlily.svg
     :alt: Visual representation of the *waterlily* colormap.
@@ -100,5 +140,5 @@ Waterlily
     :name: waterlily_viscm
 
 The *waterlily* colormap is a visual representation of the water flower with the same name.
-Like *fusion*, it covers the :math:`[10, 100]` lightness range and it uses the colors blue and green.
-It reaches its highest lightness value in the center, making it great for density maps.
+Like :ref:`fusion` and :ref:`viola`, it covers the :math:`[10, 100]` lightness range and it uses the colors blue and green.
+As with those two colormaps, *waterlily* is great for use in density maps.

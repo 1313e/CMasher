@@ -117,8 +117,8 @@ if(__name__ == '__main__'):
     docs_entry = dedent("""
         .. _{0}:
 
+        {0}
         {1}
-        {2}
         .. image:: ../../../cmasher/colormaps/{0}/{0}.svg
             :alt: Visual representation of the *{0}* colormap.
             :width: 100%
@@ -132,7 +132,7 @@ if(__name__ == '__main__'):
         The *{0}* colormap is <visual representation>.
         <Lightness range><colors>
         <Recommended use>
-        """).format(name, name.capitalize(), '-'*len(name))
+        """).format(name, '-'*len(name))
     print(docs_entry)
 
     # Create viscm output figure
