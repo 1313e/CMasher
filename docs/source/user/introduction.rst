@@ -64,6 +64,7 @@ So, for example, if one were to use the :ref:`rainforest` colormap, this could b
 
 Accessing the colormaps in other packages than *matplotlib* would require reading in the text files in the `cmasher/colormaps`_ directory, which contain the normalized RGB values (multiply by :math:`255` for regular 8-bit values) of every colormap, and registering them in the package manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
+Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
 
 Using custom colormaps
 ----------------------
