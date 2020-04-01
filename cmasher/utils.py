@@ -21,6 +21,7 @@ from textwrap import dedent
 # Package imports
 from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
+from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap as LC
 import matplotlib.pyplot as plt
 import numpy as np
@@ -181,7 +182,7 @@ def _get_cmap_lightness_rank(cmap):
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
-                         sort='alphabetical'):
+                         sort='alphabetical', plot_profile=False):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -206,15 +207,30 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         name.
         If 'lightness', the colormaps are sorted on their starting lightness
         and their lightness range.
+    plot_profile : bool or int. Default: False
+        Whether the lightness profiles of all colormaps should be plotted. If
+        not *False*, the lightness profile of a colormap is plotted on top of
+        its gray-scale version and `plot_profile` is used for setting the alpha
+        (opacity) value.
+        If `plot_profile` is *True*, it will be set to `0.25`.
 
-    Note
-    ----
+    Notes
+    -----
     The colormaps in `cmaps` can either be provided as their registered name in
     *MPL*, or their corresponding :obj:`~matplotlib.colors.Colormap` object.
     Any provided reversed colormaps (colormaps that end their name with '_r')
     are ignored.
 
+    If `plot_profile` is not set to *False*, the lightness profiles are plotted
+    on top of the gray-scale colormap versions, where the y-axis ranges from 0%
+    lightness to 100% lightness.
+    The lightness profile transitions between black and white at 50% lightness.
+
     """
+
+    # If plot_profile is True, set it to its default value
+    if plot_profile is True:
+        plot_profile = 0.25
 
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
@@ -313,6 +329,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     if(len(cmaps_list) == 1):
         axes = [axes]
 
+    # Set the current cm_type to None
+    cm_type = None
+
     # Loop over all cmaps defined in cmaps list
     for ax, cmap in zip(axes, cmaps_list):
         # Turn axes off
@@ -324,6 +343,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             # Write the cm_type as text in the correct position
             fig.text(0.595, ax[0].get_position().bounds[1], cmap,
                      va='bottom', ha='center', fontsize=14)
+
+            # Save what the current cm_type is
+            cm_type = cmap
 
         # Else, this is a colormap
         else:
@@ -337,12 +359,64 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             lab = cspace_convert(rgb)
             L = lab[:, 0]
 
-            # Get corresponding RGB values for lightness values using neutral
-            rgb_L = cmrcm.neutral(L/99.99871678)[:, :3]
+            # Normalize lightness values
+            L /= 99.99871678
 
-            # Add subplots
+            # Get corresponding RGB values for lightness values using neutral
+            rgb_L = cmrcm.neutral(L)[:, :3]
+
+            # Add colormap subplot
             ax[0].imshow(rgb[np.newaxis, ...], aspect='auto')
+
+            # Check if the lightness profile was requested
+            if plot_profile and (cm_type != 'qualitative'):
+                # Determine the points that need to be plotted
+                plot_x = np.arange(cmap.N)
+                plot_L = -(L-0.5)
+                points = np.stack([plot_x, plot_L], axis=1)
+
+                # Determine the colors that each point must have
+                # Use black for L >= 0.5 and white for L <= 0.5.
+                colors = np.zeros_like(plot_L, dtype=int)
+                colors[plot_L >= 0] = 1
+
+                # Split points up into segments with the same color
+                s_idx = np.nonzero(np.diff(colors))[0]+1
+                segments = np.split(points, s_idx)
+
+                # Loop over all pairs of adjacent segments
+                for i, (seg1, seg2) in enumerate(zip(segments[:-1],
+                                                     segments[1:])):
+                    # Determine the point in the center of these segments
+                    central_point = (seg1[-1]+seg2[0])/2
+
+                    # Add this point to the ends of these segments
+                    # This ensures that the color changes in between segments
+                    segments[i] = np.concatenate(
+                        [segments[i], [central_point]], axis=0)
+                    segments[i+1] = np.concatenate(
+                        [[central_point], segments[i+1]], axis=0)
+
+                # Create an MPL LineCollection object with these segments
+                lc = LineCollection(segments, cmap=cmrcm.neutral,
+                                    alpha=plot_profile)
+                lc.set_linewidth(1)
+
+                # Determine the colors of each segment
+                s_colors = [colors[0]]
+                s_colors.extend(colors[s_idx])
+                s_colors = np.array(s_colors)
+
+                # Set the values of the line-collection to be these colors
+                lc.set_array(s_colors)
+
+                # Add line-collection to this subplot
+                ax[1].add_collection(lc)
+
+            # Add gray-scale colormap subplot
             ax[1].imshow(rgb_L[np.newaxis, ...], aspect='auto')
+
+            # Plot the name of the colormap as text
             pos = list(ax[0].get_position().bounds)
             x_text = pos[0]-0.01
             y_text = pos[1]+pos[3]/2
@@ -364,7 +438,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 def get_bibtex():
     """
     Prints a string that gives the BibTeX entry for citing the *CMasher* paper
-    (Van der Velden et al. 2020, JOSS, 5, 2004).
+    (Van der Velden 2020, JOSS, 5, 2004).
 
     """
 
@@ -376,15 +450,20 @@ def get_bibtex():
             title = "{CMasher: Scientific colormaps for making accessible,
                 informative and 'cmashing' plots}",
             journal = {The Journal of Open Source Software},
-            keywords = {Python, colormaps, data visualization, plotting,
-                science},
-            year = "2020",
-            month = "Feb",
+            keywords = {Python, science, colormaps, data visualization,
+                plotting, Electrical Engineering and Systems Science - Image
+                and Video Processing, Physics - Data Analysis, Statistics and
+                Probability},
+            year = 2020,
+            month = feb,
             volume = {5},
             number = {46},
             eid = {2004},
             pages = {2004},
             doi = {10.21105/joss.02004},
+            archivePrefix = {arXiv},
+            eprint = {2003.01069},
+            primaryClass = {eess.IV},
             adsurl = {https://ui.adsabs.harvard.edu/abs/2020JOSS....5.2004V},
             adsnote = {Provided by the SAO/NASA Astrophysics Data System}
         }
