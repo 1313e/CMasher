@@ -9,7 +9,7 @@ Although this may sound easy enough, there are many colormaps out there that do 
 The main issue usually is that humans do not perceive every color equally (e.g., small variations in the color green are not perceived as green is a common natural color, while small variations in the colors red and blue are perceived).
 An example of a colormap that illustrates this issue, is the *jet* colormap:
 
-.. figure:: images/jet_viscm.svg
+.. figure:: images/jet_viscm.png
     :alt: Statistics of the *jet* colormap.
     :width: 100%
     :align: center

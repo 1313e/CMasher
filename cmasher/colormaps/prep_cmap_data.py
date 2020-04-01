@@ -19,6 +19,11 @@ from cmasher.cm import cmap_cd
 from cmasher.utils import create_cmap_overview, import_cmaps
 
 
+# %% GLOBALS
+docs_dir = path.abspath(path.join(path.dirname(__file__),
+                                  '../../docs/source/user'))
+
+
 # %% MAIN SCRIPT
 if(__name__ == '__main__'):
     # Obtain path to .jscm-file
@@ -84,7 +89,7 @@ if(__name__ == '__main__'):
     ax.set_axis_off()
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)
-    plt.savefig("{0}/{0}.svg".format(name), dpi=100, bbox_inches='tight',
+    plt.savefig("{0}/{0}.png".format(name), dpi=100, bbox_inches='tight',
                 pad_inches=0)
     plt.close(fig)
 
@@ -100,41 +105,73 @@ if(__name__ == '__main__'):
     # Make new colormap overview
     create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
     create_cmap_overview(
-        savefig='../../docs/source/user/images/cmap_overview.svg',
+        savefig=path.join(docs_dir, 'images', 'cmap_overview.png'),
         sort='lightness')
 
-    # Make new colormap type overviews
-    if(cmtype == 'linear'):
-        create_cmap_overview(
-            cmap_cd['sequential'].values(), sort='lightness',
-            savefig='../../docs/source/user/images/seq_cmaps.svg')
-    elif(cmtype == 'diverging'):
-        create_cmap_overview(
-            cmap_cd['diverging'].values(), sort='lightness',
-            savefig='../../docs/source/user/images/div_cmaps.svg')
-
-    # Make string with the docs entry and print it
+    # Make string with the docs entry
     docs_entry = dedent("""
         .. _{0}:
 
         {0}
         {1}
-        .. image:: ../../../cmasher/colormaps/{0}/{0}.svg
+        .. image:: ../../../../cmasher/colormaps/{0}/{0}.png
             :alt: Visual representation of the *{0}* colormap.
             :width: 100%
             :align: center
 
-        .. image:: ../../../cmasher/colormaps/{0}/{0}_viscm.svg
+        .. image:: ../../../../cmasher/colormaps/{0}/{0}_viscm.png
             :alt: Statistics of the *{0}* colormap.
             :width: 100%
             :align: center
 
         The *{0}* colormap is <visual representation>.
         <Lightness range><colors>
-        <Recommended use>
-        """).format(name, '-'*len(name))
-    print(docs_entry)
+        <Recommended use>""").format(name, '-'*len(name))
+
+    # Make new colormap type overviews
+    if(cmtype == 'linear'):
+        create_cmap_overview(
+            cmap_cd['sequential'].values(), sort='lightness',
+            savefig=path.join(docs_dir, 'images/seq_cmaps.png'))
+        cmtype = 'sequential'
+    elif(cmtype == 'diverging'):
+        create_cmap_overview(
+            cmap_cd['diverging'].values(), sort='lightness',
+            savefig=path.join(docs_dir, 'images/div_cmaps.png'))
+
+    # Create docs entry for this colormap
+    with open(path.join(docs_dir, cmtype, "{0}.rst".format(name)), 'w') as f:
+        f.write(docs_entry[1:])
+
+    # Read the corresponding docs overview page
+    with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'r') as f:
+        docs_overview = f.read()
+
+    # Set the string used to start the toctree with
+    toctree_header = ".. toctree::\n    :caption: Individual colormaps\n\n"
+
+    # Split the page at where the toctree is located
+    desc, _, toctree = docs_overview.partition(toctree_header)
+
+    # Split toctree up into individual lines
+    toctree = toctree.splitlines()
+
+    # Add the new entry to toctree
+    toctree.append("    {0}/{1}".format(cmtype, name))
+
+    # Sort toctree
+    toctree.sort()
+
+    # Combine toctree into a single string again
+    toctree = '\n'.join(toctree)
+
+    # Combine everything together again
+    docs_overview = ''.join([desc, toctree_header, toctree])
+
+    # Save this as the new docs_overview
+    with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'w') as f:
+        f.write(docs_overview)
 
     # Create viscm output figure
     viscm.gui.main(["view", "{0}/{0}.py".format(name), "--save",
-                    "{0}/{0}_viscm.svg".format(name), "--quit"])
+                    "{0}/{0}_viscm.png".format(name), "--quit"])

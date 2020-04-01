@@ -15,7 +15,7 @@ Colormap overview
 -----------------
 Below is an overview of all the colormaps that are currently in *CMasher* (made with the :func:`~cmasher.create_cmap_overview` function).
 
-.. figure:: images/cmap_overview.svg
+.. figure:: images/cmap_overview.png
     :width: 100%
     :align: center
     :alt: CMasher Colormap Overview
