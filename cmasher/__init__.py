@@ -9,6 +9,7 @@ Scientific colormaps for making accessible, informative and *cmashing* plots.
 
 
 # %% IMPORTS AND DECLARATIONS
+# Future imports
 from __future__ import absolute_import, division, print_function
 
 # CMasher imports
