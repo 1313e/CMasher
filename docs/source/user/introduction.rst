@@ -18,9 +18,9 @@ Below is an overview of all the colormaps that are currently in *CMasher* (made 
 .. figure:: images/cmap_overview.png
     :width: 100%
     :align: center
-    :alt: CMasher Colormap Overview
+    :alt: Overview of all colormaps in *CMasher* for Python.
 
-    Overview of all colormaps in *CMasher* for Python.
+    Overview of all colormaps in *CMasher*.
 
 How to install
 --------------

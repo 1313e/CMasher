@@ -12,9 +12,9 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
 .. figure:: images/div_cmaps.png
     :width: 100%
     :align: center
-    :alt: CMasher Diverging Colormap Overview
+    :alt: Overview of all diverging colormaps in *CMasher* for Python.
 
-    Overview of all diverging colormaps in *CMasher* for Python.
+    Overview of all diverging colormaps in *CMasher*.
 
 .. _PRISM: https://github.com/1313e/PRISM
 

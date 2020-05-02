@@ -578,7 +578,7 @@ def import_cmaps(cmap_path):
                                            cmtype=cmap.cmtype,
                                            method=cmap.method,
                                            **cmap.params)
-                    rgb, _ = v.cmap_model.get_sRGB(num=256)
+                    rgb, _ = v.cmap_model.get_sRGB()
                     colorlist = rgb.tolist()
 
             # If file is anything else
