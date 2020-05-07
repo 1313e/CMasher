@@ -4,8 +4,8 @@ include MANIFEST.in
 include requirements*.txt
 include conftest.py
 recursive-include cmasher data/*
-recursive-exclude cmasher colormaps/*
-recursive-include cmasher cm_*
+recursive-exclude cmasher/colormaps *
+recursive-include cmasher/colormaps cm_*
 
 exclude docs joss_paper .github
 recursive-exclude docs *
