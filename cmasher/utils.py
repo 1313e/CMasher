@@ -103,7 +103,8 @@ def _get_cm_type(cmap):
           np.isclose(np.abs(np.sum(diff_L1)), np.sum(np.abs(diff_L1)))):
         # If the perceptual difference between the last and first value is
         # comparable to the other perceptual differences, it is cyclic
-        if np.all(np.abs(np.diff(deltas)) < deltas[::2]):
+        if(np.all(np.abs(np.diff(deltas)) < deltas[::2]) and
+           np.diff(deltas[::2])):
             return('cyclic')
 
         # Otherwise, it is a normal diverging colormap
@@ -482,6 +483,9 @@ def import_cmaps(cmap_path):
     registering them in the :mod:`matplotlib.cm` module.
     Both the imported colormap and its reversed version will be registered.
 
+    If a provided colormap is a 'cyclic' colormap, its shifted version will
+    also be registered.
+
     Parameters
     ----------
     cmap_path : str
@@ -586,8 +590,9 @@ def import_cmaps(cmap_path):
                 colorlist = np.genfromtxt(cm_file_path).tolist()
 
             # Transform colorlist into a Colormap
-            cmap_mpl = LC(colorlist, 'cmr.'+cm_name, N=len(colorlist))
-            cmap_cmr = LC(colorlist, cm_name, N=len(colorlist))
+            cmap_N = len(colorlist)
+            cmap_mpl = LC(colorlist, 'cmr.'+cm_name, N=cmap_N)
+            cmap_cmr = LC(colorlist, cm_name, N=cmap_N)
             cmap_mpl_r = cmap_mpl.reversed()
             cmap_cmr_r = cmap_cmr.reversed()
 
@@ -611,6 +616,37 @@ def import_cmaps(cmap_path):
             cmrcm.__all__.append(cmap_cmr_r.name)
             cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
             cmrcm.cmap_cd[cm_type][cmap_cmr_r.name] = cmap_cmr_r
+
+            # Check if provided cmap is a cyclic colormap
+            # If so, obtain its shifted (reversed) versions as well
+            if(cm_type == 'cyclic'):
+                # Determine the central value index of the colormap
+                idx = cmap_N//2
+
+                # Shift the entire colormap by this index
+                colorlist_s = np.concatenate(
+                    [colorlist[idx:], colorlist[:idx]], axis=0).tolist()
+
+                # Transform shifted colorlist into a Colormap
+                cmap_mpl_s = LC(colorlist_s, 'cmr.'+cm_name+'_shifted',
+                                N=cmap_N)
+                cmap_cmr_s = LC(colorlist_s, cm_name+'_shifted', N=cmap_N)
+                cmap_mpl_sr = cmap_mpl_s.reversed()
+                cmap_cmr_sr = cmap_cmr_s.reversed()
+
+                # Add shifted cmap to matplotlib's cmap list
+                mplcm.register_cmap(cmap=cmap_mpl_s)
+                setattr(cmrcm, cmap_cmr_s.name, cmap_cmr_s)
+                cmrcm.__all__.append(cmap_cmr_s.name)
+                cmrcm.cmap_d[cmap_cmr_s.name] = cmap_cmr_s
+                cmrcm.cmap_cd[cm_type][cmap_cmr_s.name] = cmap_cmr_s
+
+                # Add shifted reversed cmap to matplotlib's cmap list
+                mplcm.register_cmap(cmap=cmap_mpl_sr)
+                setattr(cmrcm, cmap_cmr_sr.name, cmap_cmr_sr)
+                cmrcm.__all__.append(cmap_cmr_sr.name)
+                cmrcm.cmap_d[cmap_cmr_sr.name] = cmap_cmr_sr
+                cmrcm.cmap_cd[cm_type][cmap_cmr_sr.name] = cmap_cmr_sr
 
         # If any error is raised, reraise it
         except Exception as error:
