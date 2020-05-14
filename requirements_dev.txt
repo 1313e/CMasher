@@ -1,5 +1,6 @@
 -e .
 check-manifest
+cmocean>=2.0
 pyqt5==5.12.*;python_version>='3'
 pytest>=3.8.0
 pytest-cov

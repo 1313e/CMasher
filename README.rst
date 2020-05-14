@@ -82,9 +82,10 @@ Using custom colormaps
 ----------------------
 *CMasher* allows for custom colormaps to be imported with the ``cmr.import_cmaps`` function (which is executed automatically on the `cmasher/colormaps`_ directory when *CMasher* is imported).
 This function takes the path to a colormap file named ``cm_<cmap_name>`` (or the path to a directory containing such files); creates a *matplotlib* ``Colormap`` object using the data in the file; and registers it in *matplotlib* with the name ``'cmr.<cmap_name>'`` (it will also be available in *CMasher* as ``cmr.cm.<cmap_name>``).
-A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the normalized RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
+A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the (normalized) RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
+If one wishes to register a colormap using (normalized) RGB values that are already in memory, the ``cmr.register_cmap`` function can be used for this.
 
-Note that colormaps imported this way cannot be accessed through *CMasher* using ``cmr.<cmap_name>``, unlike *CMasher*'s own colormaps, but solely using ``cmr.cm.<cmap_name>`` (access through *matplotlib* is unchanged).
+Note that colormaps imported/registered this way cannot be accessed through *CMasher* using ``cmr.<cmap_name>``, unlike *CMasher*'s own colormaps, but solely using ``cmr.cm.<cmap_name>`` (access through *matplotlib* is unchanged).
 This is to keep official and unofficial colormaps separated in *CMasher*.
 
 .. _cmasher/colormaps: https://github.com/1313e/CMasher/tree/master/cmasher/colormaps

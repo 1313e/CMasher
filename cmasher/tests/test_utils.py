@@ -9,6 +9,7 @@ import os
 from os import path
 
 # Package imports
+import cmocean as cmo
 from matplotlib import cm as mplcm
 from matplotlib.colors import ListedColormap as LC
 import numpy as np
@@ -99,6 +100,10 @@ class Test_import_cmaps(object):
     # Test if providing a cmap .txt-file works
     def test_cmap_file_txt(self):
         import_cmaps(path.join(dirpath, '../colormaps/cm_rainforest.txt'))
+
+    # Test if providing a cmap .txt-file with 8-bit values works
+    def test_cmap_file_8bit(self):
+        import_cmaps(path.join(dirpath, 'data/cm_8bit.txt'))
 
     # Test if providing a cmap .jscm-file works (Py3) or errors (Py2)
     def test_cmap_file_jscm(self):

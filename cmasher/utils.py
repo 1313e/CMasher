@@ -31,7 +31,8 @@ from six import string_types
 from cmasher import cm as cmrcm
 
 # All declaration
-__all__ = ['create_cmap_overview', 'get_bibtex', 'import_cmaps']
+__all__ = ['create_cmap_overview', 'get_bibtex', 'import_cmaps',
+           'register_cmap']
 
 
 # %% HELPER FUNCTIONS
@@ -86,14 +87,13 @@ def _get_cm_type(cmap):
         return('qualitative')
 
     # MISC 1
-    # If the colormap has plateaus in lightness, it is misc
-    elif np.any(np.isclose(diff_L0, 0)) or np.any(np.isclose(diff_L1, 0)):
+    # If the colormap has only a single lightness, it is misc
+    elif np.allclose(diff_L, 0):
         return('misc')
 
     # SEQUENTIAL
     # If the lightness values always increase or decrease, it is sequential
-    elif (np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))) and
-          not np.any(np.isclose(diff_L, 0))):
+    elif np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))):
         return('sequential')
 
     # DIVERGING
@@ -560,7 +560,7 @@ def import_cmaps(cmap_path):
         try:
             # If file is a NumPy binary file
             if(ext_str == '.npy'):
-                colorlist = np.load(cm_file_path).tolist()
+                rgb = np.load(cm_file_path)
 
             # If file is viscm source file
             elif(ext_str == '.jscm'):
@@ -583,70 +583,25 @@ def import_cmaps(cmap_path):
                                            method=cmap.method,
                                            **cmap.params)
                     rgb, _ = v.cmap_model.get_sRGB()
-                    colorlist = rgb.tolist()
 
             # If file is anything else
             else:
-                colorlist = np.genfromtxt(cm_file_path).tolist()
+                rgb = np.genfromtxt(cm_file_path, dtype=None, encoding=None)
 
-            # Transform colorlist into a Colormap
-            cmap_N = len(colorlist)
-            cmap_mpl = LC(colorlist, 'cmr.'+cm_name, N=cmap_N)
-            cmap_cmr = LC(colorlist, cm_name, N=cmap_N)
-            cmap_mpl_r = cmap_mpl.reversed()
-            cmap_cmr_r = cmap_cmr.reversed()
-
-            # Test that the colormaps can be called
-            cmap_mpl(1)
-            cmap_mpl_r(1)
-
-            # Determine the cm_type of the colormap
-            cm_type = _get_cm_type(cmap_mpl)
-
-            # Add cmap to matplotlib's cmap list
-            mplcm.register_cmap(cmap=cmap_mpl)
-            setattr(cmrcm, cmap_cmr.name, cmap_cmr)
-            cmrcm.__all__.append(cmap_cmr.name)
-            cmrcm.cmap_d[cmap_cmr.name] = cmap_cmr
-            cmrcm.cmap_cd[cm_type][cmap_cmr.name] = cmap_cmr
-
-            # Add reversed cmap to matplotlib's cmap list
-            mplcm.register_cmap(cmap=cmap_mpl_r)
-            setattr(cmrcm, cmap_cmr_r.name, cmap_cmr_r)
-            cmrcm.__all__.append(cmap_cmr_r.name)
-            cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
-            cmrcm.cmap_cd[cm_type][cmap_cmr_r.name] = cmap_cmr_r
+            # Register colormap
+            register_cmap(cm_name, rgb)
 
             # Check if provided cmap is a cyclic colormap
             # If so, obtain its shifted (reversed) versions as well
-            if(cm_type == 'cyclic'):
+            if(_get_cm_type('cmr.'+cm_name) == 'cyclic'):
                 # Determine the central value index of the colormap
-                idx = cmap_N//2
+                idx = len(rgb)//2
 
                 # Shift the entire colormap by this index
-                colorlist_s = np.concatenate(
-                    [colorlist[idx:], colorlist[:idx]], axis=0).tolist()
+                rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
 
-                # Transform shifted colorlist into a Colormap
-                cmap_mpl_s = LC(colorlist_s, 'cmr.'+cm_name+'_shifted',
-                                N=cmap_N)
-                cmap_cmr_s = LC(colorlist_s, cm_name+'_shifted', N=cmap_N)
-                cmap_mpl_sr = cmap_mpl_s.reversed()
-                cmap_cmr_sr = cmap_cmr_s.reversed()
-
-                # Add shifted cmap to matplotlib's cmap list
-                mplcm.register_cmap(cmap=cmap_mpl_s)
-                setattr(cmrcm, cmap_cmr_s.name, cmap_cmr_s)
-                cmrcm.__all__.append(cmap_cmr_s.name)
-                cmrcm.cmap_d[cmap_cmr_s.name] = cmap_cmr_s
-                cmrcm.cmap_cd[cm_type][cmap_cmr_s.name] = cmap_cmr_s
-
-                # Add shifted reversed cmap to matplotlib's cmap list
-                mplcm.register_cmap(cmap=cmap_mpl_sr)
-                setattr(cmrcm, cmap_cmr_sr.name, cmap_cmr_sr)
-                cmrcm.__all__.append(cmap_cmr_sr.name)
-                cmrcm.cmap_d[cmap_cmr_sr.name] = cmap_cmr_sr
-                cmrcm.cmap_cd[cm_type][cmap_cmr_sr.name] = cmap_cmr_sr
+                # Register this colormap as well
+                register_cmap(cm_name+'_shifted', rgb_s)
 
         # If any error is raised, reraise it
         except Exception as error:
@@ -654,5 +609,70 @@ def import_cmaps(cmap_path):
                              % (cm_name, error))
 
 
+# Function to register a custom colormap in MPL and CMasher
+def register_cmap(name, data):
+    """
+    Creates a :obj:`~matplotlib.colors.ListedColormap` object using the
+    provided `name` and `data`, and registers the colormap in the
+    :mod:`cmasher.cm` and :mod:`matplotlib.cm` modules.
+    A reversed version of the colormap will be registered as well.
+
+    Parameters
+    ----------
+    name : str
+        The name that this colormap must have.
+    data : 2D array_like of {float; int} with shape `(N, 3)`
+        An array containing the RGB values of all segments in the colormap.
+        If int, the array contains 8-bit RGB values.
+        If float, the array contains normalized RGB values.
+
+    Note
+    ----
+    In *MPL*, the colormap will have the added 'cmr.' prefix to avoid name
+    clashes.
+
+    """
+
+    # Convert provided data to a NumPy array
+    cm_data = np.array(data, ndmin=2)
+
+    # Check the type of the data
+    if issubclass(cm_data.dtype.type, np.integer):
+        # If the values are integers, divide them by 255
+        cm_data = cm_data/255
+
+    # Convert cm_data to a list
+    colorlist = cm_data.tolist()
+
+    # Transform colorlist into a Colormap
+    cmap_N = len(colorlist)
+    cmap_mpl = LC(colorlist, 'cmr.'+name, N=cmap_N)
+    cmap_cmr = LC(colorlist, name, N=cmap_N)
+    cmap_mpl_r = cmap_mpl.reversed()
+    cmap_cmr_r = cmap_cmr.reversed()
+
+    # Test that the colormaps can be called
+    cmap_mpl(1)
+    cmap_mpl_r(1)
+
+    # Determine the cm_type of the colormap
+    cm_type = _get_cm_type(cmap_mpl)
+
+    # Add cmap to matplotlib's cmap list
+    mplcm.register_cmap(cmap=cmap_mpl)
+    setattr(cmrcm, cmap_cmr.name, cmap_cmr)
+    cmrcm.__all__.append(cmap_cmr.name)
+    cmrcm.cmap_d[cmap_cmr.name] = cmap_cmr
+    cmrcm.cmap_cd[cm_type][cmap_cmr.name] = cmap_cmr
+
+    # Add reversed cmap to matplotlib's cmap list
+    mplcm.register_cmap(cmap=cmap_mpl_r)
+    setattr(cmrcm, cmap_cmr_r.name, cmap_cmr_r)
+    cmrcm.__all__.append(cmap_cmr_r.name)
+    cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
+    cmrcm.cmap_cd[cm_type][cmap_cmr_r.name] = cmap_cmr_r
+
+
+# %% IMPORT SCRIPT
 # Import all colormaps defined in './colormaps'
 import_cmaps(path.join(path.dirname(__file__), 'colormaps'))
