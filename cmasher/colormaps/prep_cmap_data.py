@@ -94,7 +94,11 @@ if(__name__ == '__main__'):
     plt.close(fig)
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), cmap_mod.cm_data)
+    np.savetxt("cm_{0}.txt".format(name), rgb)
+
+    # Create txt-file with 8-bit colormap data
+    rgb_8bit = np.rint(rgb*255)
+    np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
 
     # Delete the created __pycache__ in the loaded cmap module
     shutil.rmtree("{0}/__pycache__".format(name), ignore_errors=True)
