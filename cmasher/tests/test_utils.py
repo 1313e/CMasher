@@ -108,6 +108,15 @@ class Test_import_cmaps(object):
         else:
             import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
 
+    # Test if providing a cyclic colormap works
+    def test_cyclic_cmap(self):
+        name = 'cyclic'
+        import_cmaps(path.join(dirpath, 'data/cm_{0}.txt'.format(name)))
+        for cmap in [name, name+'_r', name+'_shifted', name+'_shifted_r']:
+            assert 'cmr.'+cmap in mplcm.cmap_d
+            assert cmap in cmrcm.cmap_d
+            assert cmap in cmrcm.cmap_cd['cyclic']
+
     # Test if providing a non-existing directory raises an error
     def test_non_existing_dir(self):
         with pytest.raises(OSError):
