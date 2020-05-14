@@ -94,7 +94,11 @@ if(__name__ == '__main__'):
     plt.close(fig)
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), cmap_mod.cm_data)
+    np.savetxt("cm_{0}.txt".format(name), rgb)
+
+    # Create txt-file with 8-bit colormap data
+    rgb_8bit = np.rint(rgb*255)
+    np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
 
     # Delete the created __pycache__ in the loaded cmap module
     shutil.rmtree("{0}/__pycache__".format(name), ignore_errors=True)
@@ -139,38 +143,45 @@ if(__name__ == '__main__'):
             cmap_cd['diverging'].values(), sort='lightness',
             savefig=path.join(docs_dir, 'images/div_cmaps.png'))
 
-    # Create docs entry for this colormap
-    with open(path.join(docs_dir, cmtype, "{0}.rst".format(name)), 'w') as f:
-        f.write(docs_entry[1:])
+    # Create docs entry for this colormap if possible
+    try:
+        # Create docs entry
+        with open(path.join(docs_dir, cmtype,
+                            "{0}.rst".format(name)), 'x') as f:
+            f.write(docs_entry[1:])
+    # If this file already exists, then skip
+    except FileExistsError:
+        pass
+    # If the file did not exist yet, add it to the corresponding overview
+    else:
+        # Read the corresponding docs overview page
+        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'r') as f:
+            docs_overview = f.read()
 
-    # Read the corresponding docs overview page
-    with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'r') as f:
-        docs_overview = f.read()
+        # Set the string used to start the toctree with
+        toctree_header = ".. toctree::\n    :caption: Individual colormaps\n\n"
 
-    # Set the string used to start the toctree with
-    toctree_header = ".. toctree::\n    :caption: Individual colormaps\n\n"
+        # Split the page at where the toctree is located
+        desc, _, toctree = docs_overview.partition(toctree_header)
 
-    # Split the page at where the toctree is located
-    desc, _, toctree = docs_overview.partition(toctree_header)
+        # Split toctree up into individual lines
+        toctree = toctree.splitlines()
 
-    # Split toctree up into individual lines
-    toctree = toctree.splitlines()
+        # Add the new entry to toctree
+        toctree.append("    {0}/{1}".format(cmtype, name))
 
-    # Add the new entry to toctree
-    toctree.append("    {0}/{1}".format(cmtype, name))
+        # Sort toctree
+        toctree.sort()
 
-    # Sort toctree
-    toctree.sort()
+        # Combine toctree into a single string again
+        toctree = '\n'.join(toctree)
 
-    # Combine toctree into a single string again
-    toctree = '\n'.join(toctree)
+        # Combine everything together again
+        docs_overview = ''.join([desc, toctree_header, toctree])
 
-    # Combine everything together again
-    docs_overview = ''.join([desc, toctree_header, toctree])
-
-    # Save this as the new docs_overview
-    with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'w') as f:
-        f.write(docs_overview)
+        # Save this as the new docs_overview
+        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'w') as f:
+            f.write(docs_overview)
 
     # Create viscm output figure
     viscm.gui.main(["view", "{0}/{0}.py".format(name), "--save",

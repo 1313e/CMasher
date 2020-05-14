@@ -9,6 +9,7 @@ import os
 from os import path
 
 # Package imports
+import cmocean as cmo
 from matplotlib import cm as mplcm
 from matplotlib.colors import ListedColormap as LC
 import numpy as np
@@ -100,6 +101,10 @@ class Test_import_cmaps(object):
     def test_cmap_file_txt(self):
         import_cmaps(path.join(dirpath, '../colormaps/cm_rainforest.txt'))
 
+    # Test if providing a cmap .txt-file with 8-bit values works
+    def test_cmap_file_8bit(self):
+        import_cmaps(path.join(dirpath, 'data/cm_8bit.txt'))
+
     # Test if providing a cmap .jscm-file works (Py3) or errors (Py2)
     def test_cmap_file_jscm(self):
         if PY2:
@@ -107,6 +112,15 @@ class Test_import_cmaps(object):
                 import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
         else:
             import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
+
+    # Test if providing a cyclic colormap works
+    def test_cyclic_cmap(self):
+        name = 'cyclic'
+        import_cmaps(path.join(dirpath, 'data/cm_{0}.txt'.format(name)))
+        for cmap in [name, name+'_r', name+'_shifted', name+'_shifted_r']:
+            assert 'cmr.'+cmap in mplcm.cmap_d
+            assert cmap in cmrcm.cmap_d
+            assert cmap in cmrcm.cmap_cd['cyclic']
 
     # Test if providing a non-existing directory raises an error
     def test_non_existing_dir(self):

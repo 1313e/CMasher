@@ -12,9 +12,9 @@ These colormaps are shown in an overview and described individually below.
 .. figure:: images/seq_cmaps.png
     :width: 100%
     :align: center
-    :alt: CMasher Sequential Colormap Overview
+    :alt: Overview of all sequential colormaps in *CMasher* for Python.
 
-    Overview of all sequential colormaps in *CMasher* for Python.
+    Overview of all sequential colormaps in *CMasher*.
 
 .. _PRISM: https://github.com/1313e/PRISM
 

@@ -18,9 +18,9 @@ Below is an overview of all the colormaps that are currently in *CMasher* (made 
 .. figure:: images/cmap_overview.png
     :width: 100%
     :align: center
-    :alt: CMasher Colormap Overview
+    :alt: Overview of all colormaps in *CMasher* for Python.
 
-    Overview of all colormaps in *CMasher* for Python.
+    Overview of all colormaps in *CMasher*.
 
 How to install
 --------------
@@ -62,7 +62,7 @@ So, for example, if one were to use the :ref:`rainforest` colormap, this could b
     plt.scatter(x, y, c=z, cmap=cmap, s=300)
     plt.show()
 
-Accessing the colormaps in other packages than *matplotlib* would require reading in the text files in the `cmasher/colormaps`_ directory, which contain the normalized RGB values (multiply by :math:`255` for regular 8-bit values) of every colormap, and registering them in the package manually.
+Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>_8bit.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit RGB values of every colormap, and registering them in the appropriate package in the language manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
 Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
 
@@ -70,9 +70,10 @@ Using custom colormaps
 ----------------------
 *CMasher* allows for custom colormaps to be imported with the :func:`~cmasher.import_cmaps` function (which is executed automatically on the `cmasher/colormaps`_ directory when *CMasher* is imported).
 This function takes the path to a colormap file named ``cm_<cmap_name>`` (or the path to a directory containing such files); creates a :obj:`~matplotlib.colors.ListedColormap` object using the data in the file; and registers it in *matplotlib* with the name ``'cmr.<cmap_name>'`` (it will also be available in *CMasher* as :pycode:`cmr.cm.<cmap_name>`).
-A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the normalized RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
+A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the (normalized) RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
+If one wishes to register a colormap using (normalized) RGB values that are already in memory, the :func:`~cmasher.register_cmap` function can be used for this.
 
-Note that colormaps imported this way cannot be accessed through *CMasher* using :pycode:`cmr.<cmap_name>`, unlike *CMasher*'s own colormaps, but solely using :pycode:`cmr.cm.<cmap_name>` (access through *matplotlib* is unchanged).
+Note that colormaps imported/registered this way cannot be accessed through *CMasher* using :pycode:`cmr.<cmap_name>`, unlike *CMasher*'s own colormaps, but solely using :pycode:`cmr.cm.<cmap_name>` (access through *matplotlib* is unchanged).
 This is to keep official and unofficial colormaps separated in *CMasher*.
 
 
