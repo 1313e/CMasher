@@ -59,11 +59,8 @@ def _get_cm_type(cmap):
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
-    # Get array of all values for which a colormap value is requested
-    x = np.linspace(0, 1, cmap.N)
-
     # Get RGB values for colormap
-    rgb = cmap(x)[:, :3]
+    rgb = cmap(np.arange(cmap.N))[:, :3]
 
     # Get lightness values of colormap
     lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
@@ -146,11 +143,8 @@ def _get_cmap_lightness_rank(cmap):
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
-    # Get array of all values for which a colormap value is requested
-    x = np.linspace(0, 1, cmap.N)
-
     # Get RGB values for colormap
-    rgb = cmap(x)[:, :3]
+    rgb = cmap(np.arange(cmap.N))[:, :3]
 
     # Get lightness values of colormap
     lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
@@ -351,7 +345,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         # Else, this is a colormap
         else:
             # Get array of all values for which a colormap value is requested
-            x = np.linspace(0, 1, cmap.N)
+            x = np.arange(cmap.N)
 
             # Get RGB values for colormap
             rgb = cmap(x)[:, :3]
@@ -372,9 +366,8 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             # Check if the lightness profile was requested
             if plot_profile and (cm_type != 'qualitative'):
                 # Determine the points that need to be plotted
-                plot_x = np.arange(cmap.N)
                 plot_L = -(L-0.5)
-                points = np.stack([plot_x, plot_L], axis=1)
+                points = np.stack([x, plot_L], axis=1)
 
                 # Determine the colors that each point must have
                 # Use black for L >= 0.5 and white for L <= 0.5.

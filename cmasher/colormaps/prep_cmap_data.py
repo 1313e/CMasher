@@ -2,7 +2,6 @@
 
 # %% Imports
 # Built-in imports
-from importlib import import_module
 import os
 from os import path
 import shutil
@@ -75,14 +74,7 @@ if(__name__ == '__main__'):
     with open("{0}/{0}.py".format(name), 'w') as f:
         f.write(cm_py_file[1:])
 
-    # Import created .py-file as a module
-    # Functions as a test to see if it can be imported and accessed correctly
-    cmap_mod = import_module("{0}.{0}".format(name))
-    cmap = cmap_mod.test_cm
-
     # Create colormap figure
-    x = np.linspace(0, 1, cmap.N)
-    rgb = cmap(x)[:, :3]
     fig, ax = plt.subplots(frameon=False, figsize=(12.8, 3.2))
     fig.subplots_adjust(wspace=0)
     ax.imshow(rgb[np.newaxis, ...], aspect='auto')
@@ -99,9 +91,6 @@ if(__name__ == '__main__'):
     # Create txt-file with 8-bit colormap data
     rgb_8bit = np.rint(rgb*255)
     np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
-
-    # Delete the created __pycache__ in the loaded cmap module
-    shutil.rmtree("{0}/__pycache__".format(name), ignore_errors=True)
 
     # Load in all colormaps currently defined
     import_cmaps('.')
