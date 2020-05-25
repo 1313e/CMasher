@@ -22,7 +22,7 @@ from textwrap import dedent
 from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
 from matplotlib.collections import LineCollection
-from matplotlib.colors import ListedColormap as LC
+from matplotlib.colors import ListedColormap as LC, to_hex, to_rgb
 import matplotlib.pyplot as plt
 import numpy as np
 from six import string_types
@@ -31,8 +31,8 @@ from six import string_types
 from cmasher import cm as cmrcm
 
 # All declaration
-__all__ = ['create_cmap_overview', 'get_bibtex', 'import_cmaps',
-           'register_cmap']
+__all__ = ['create_cmap_overview', 'get_bibtex', 'get_sub_cmap',
+           'import_cmaps', 'register_cmap', 'take_cmap_colors']
 
 
 # %% HELPER FUNCTIONS
@@ -45,8 +45,8 @@ def _get_cm_type(cmap):
     Parameters
     ----------
     cmap : str or :obj:`~matplotlib.colors.Colormap` object
-        The registered name of the colormap in *MPL* or its corresponding
-        :obj:`~matplotlib.colors.Colormap` object.
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
 
     Returns
     -------
@@ -123,8 +123,8 @@ def _get_cmap_lightness_rank(cmap):
     Parameters
     ----------
     cmap : str or :obj:`~matplotlib.colors.Colormap` object
-        The registered name of the colormap in *MPL* or its corresponding
-        :obj:`~matplotlib.colors.Colormap` object.
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
 
     Returns
     -------
@@ -212,7 +212,8 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     Notes
     -----
     The colormaps in `cmaps` can either be provided as their registered name in
-    *MPL*, or their corresponding :obj:`~matplotlib.colors.Colormap` object.
+    :mod:`matplotlib.cm`, or their corresponding
+    :obj:`~matplotlib.colors.Colormap` object.
     Any provided reversed colormaps (colormaps that end their name with '_r')
     are ignored.
 
@@ -467,6 +468,72 @@ def get_bibtex():
     print(bibtex.strip())
 
 
+# Function create a colormap using a subset of the colors in an existing one
+def get_sub_cmap(cmap, start, stop):
+    """
+    Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
+    the range `[start, stop]` of the provided `cmap` and returns it.
+
+    This function can be used to create a colormap that only uses a portion of
+    an existing colormap.
+
+    .. versionadded:: 1.3.2
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
+    start, stop : float
+        The normalized range of the colors in `cmap` that must be in the sub
+        colormap.
+
+    Returns
+    -------
+    sub_cmap : :obj:`~matplotlib.colors.ListedColormap`
+        The created colormap that uses a subset of the colors in `cmap`.
+
+    Example
+    -------
+    Creating a colormap using the first 80% of the 'rainforest' colormap::
+
+        >>> get_sub_cmap('cmr.rainforest', 0, 0.8)
+
+    Notes
+    -----
+    As it can create artifacts, this function does not interpolate between the
+    colors in `cmap` to fill up the space. Therefore, using values for `start`
+    and `stop` that are too close to each other, may result in a colormap that
+    contains too few different colors to be smooth.
+    It is recommended to use at least 50% of a colormap for optimal results.
+
+    Any colormaps created using this function is not registered in either
+    *CMasher* or *MPL*.
+
+    """
+
+    # Obtain the colormap
+    cmap = mplcm.get_cmap(cmap)
+
+    # Check if provided start and stop are valid
+    if not ((0 <= start <= 1) and (0 <= stop <= 1)):
+        raise ValueError("Input arguments 'start' and 'stop' do not contain "
+                         "normalized values!")
+
+    # Convert start and stop to their integer indices
+    start = int(np.floor(start*cmap.N))
+    stop = int(np.ceil(stop*cmap.N))
+
+    # Obtain all colors that are required for the new colormap
+    colors = cmap(np.arange(start, stop+1)).tolist()
+
+    # Create new colormap
+    sub_cmap = LC(colors, cmap.name+'_sub', N=stop-start+1)
+
+    # Return sub_cmap
+    return(sub_cmap)
+
+
 # Function to import all custom colormaps in a file or directory
 def import_cmaps(cmap_path):
     """
@@ -664,6 +731,86 @@ def register_cmap(name, data):
     cmrcm.__all__.append(cmap_cmr_r.name)
     cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
     cmrcm.cmap_cd[cm_type][cmap_cmr_r.name] = cmap_cmr_r
+
+
+# Function to take N equally spaced colors from a colormap
+def take_cmap_colors(cmap, N, cmap_range=(0, 1), return_hex=False):
+    """
+    Takes `N` equally spaced colors from the provided colormap `cmap` and
+    returns them.
+
+    .. versionadded:: 1.3.2
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
+    N : int
+        The number of colors to take from the provided `cmap`.
+
+    Optional
+    --------
+    cmap_range : tuple of float. Default: (0, 1)
+        The normalized value range in the colormap from which colors should be
+        taken.
+        By default, colors are taken from the entire colormap.
+    return_hex : bool. Default: False
+        If *True*, the colors are returned using their hexadecimal string
+        representations.
+        If *False*, they are instead returned as normalized RGB tuples.
+
+    Returns
+    -------
+    colors : list of tuple, str
+        The colors that were taken from the provided `cmap`.
+
+    Example
+    -------
+    Taking five equally spaced colors from the 'rainforest' colormap::
+
+        >>> take_cmap_colors('cmr.rainforest', 5)
+        [(0.0, 0.0, 0.0),
+         (0.226123592, 0.124584033, 0.562997277),
+         (0.0548210513, 0.515835251, 0.45667819),
+         (0.721499953, 0.724215908, 0.100549931),
+         (1.0, 1.0, 1.0)]
+
+    Requesting their HEX-code values instead::
+
+        >>> take_cmap_colors('cmr.rainforest', 5, return_hex=True)
+        ['#000000', '#3a2090', '#0e8474', '#b8b91a', '#ffffff']
+
+    Requesting colors in a specific range::
+
+        >>> take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), return_hex=True)
+        ['#3e0374', '#10528a', '#0e8474', '#5cad3c', '#d6bf4a']
+
+    Note
+    ----
+    Using this function on a perceptually uniform sequential colormap, like
+    those in *CMasher*, allows one to pick a number of line colors that are
+    different but still sequential. This is useful when plotting a set of lines
+    that describe the same property, but have a different initial state.
+
+    """
+
+    # Obtain the colormap
+    cmap = mplcm.get_cmap(cmap)
+
+    # Check if provided cmap_range is valid
+    if not ((0 <= cmap_range[0] <= 1) and (0 <= cmap_range[1] <= 1)):
+        raise ValueError("Input argument 'cmap_range' does not contain "
+                         "normalized values!")
+
+    # Pick colors
+    colors = cmap(np.linspace(*cmap_range, num=N))
+
+    # Convert colors to RGB tuples or hex
+    colors = list(map(to_hex if return_hex else to_rgb, colors))
+
+    # Return colors
+    return(colors)
 
 
 # %% IMPORT SCRIPT
