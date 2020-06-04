@@ -129,11 +129,12 @@ class Test_import_cmaps(object):
 
     # Test if providing a cmap .jscm-file works (Py3) or errors (Py2)
     def test_cmap_file_jscm(self):
+        cmap_path = path.join(dirpath, 'data/cm_rainforest_jscm.jscm')
         if PY2:
             with pytest.raises(ValueError):
-                import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
+                import_cmaps(cmap_path)
         else:
-            import_cmaps(path.join(dirpath, 'data/cm_rainforest.jscm'))
+            import_cmaps(cmap_path)
 
     # Test if providing a cyclic colormap works
     def test_cyclic_cmap(self):
