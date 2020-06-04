@@ -96,8 +96,8 @@ class Test_get_sub_cmap(object):
     def test_rainforest_sub(self):
         sub_cmap = get_sub_cmap('cmr.rainforest', 0.2, 0.8)
         assert np.allclose(sub_cmap(0.0), cmrcm.rainforest(51))
-        assert np.allclose(sub_cmap(1.0), cmrcm.rainforest(205))
-        assert (sub_cmap.N == 155)
+        assert np.allclose(sub_cmap(1.0), cmrcm.rainforest(204))
+        assert (sub_cmap.N == 154)
 
     # Test if providing an incorrect range raises an error
     def test_invalid_range(self):
@@ -173,13 +173,13 @@ class Test_take_cmap_colors(object):
                            [(0.0, 0.0, 0.0),
                             (0.226123592, 0.124584033, 0.562997277),
                             (0.0548210513, 0.515835251, 0.45667819),
-                            (0.721499953, 0.724215908, 0.100549931),
+                            (0.709615979, 0.722863985, 0.0834727592),
                             (1.0, 1.0, 1.0)])
 
     # Test if their HEX-code values can be requested as well
     def test_rainforest_five_hex(self):
         assert (take_cmap_colors('cmr.rainforest', 5, return_hex=True) ==
-                ['#000000', '#3a2090', '#0e8474', '#b8b91a', '#ffffff'])
+                ['#000000', '#3a2090', '#0e8474', '#b5b815', '#ffffff'])
 
     # Test if only a subrange can be used for picking colors
     def test_rainforest_sub_five(self):

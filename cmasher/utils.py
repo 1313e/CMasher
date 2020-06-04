@@ -525,10 +525,10 @@ def get_sub_cmap(cmap, start, stop):
     stop = int(np.ceil(stop*cmap.N))
 
     # Obtain all colors that are required for the new colormap
-    colors = cmap(np.arange(start, stop+1)).tolist()
+    colors = cmap(np.arange(start, stop))[:, :3].tolist()
 
     # Create new colormap
-    sub_cmap = LC(colors, cmap.name+'_sub', N=stop-start+1)
+    sub_cmap = LC(colors, cmap.name+'_sub', N=stop-start)
 
     # Return sub_cmap
     return(sub_cmap)
@@ -773,13 +773,13 @@ def take_cmap_colors(cmap, N, cmap_range=(0, 1), return_hex=False):
         [(0.0, 0.0, 0.0),
          (0.226123592, 0.124584033, 0.562997277),
          (0.0548210513, 0.515835251, 0.45667819),
-         (0.721499953, 0.724215908, 0.100549931),
+         (0.709615979, 0.722863985, 0.0834727592),
          (1.0, 1.0, 1.0)]
 
     Requesting their HEX-code values instead::
 
         >>> take_cmap_colors('cmr.rainforest', 5, return_hex=True)
-        ['#000000', '#3a2090', '#0e8474', '#b8b91a', '#ffffff']
+        ['#000000', '#3a2090', '#0e8474', '#b5b815', '#ffffff']
 
     Requesting colors in a specific range::
 
@@ -804,7 +804,9 @@ def take_cmap_colors(cmap, N, cmap_range=(0, 1), return_hex=False):
                          "normalized values!")
 
     # Pick colors
-    colors = cmap(np.linspace(*cmap_range, num=N))
+    cmap_range = np.array(cmap_range)*(cmap.N-1)
+    index = np.array(np.rint(np.linspace(*cmap_range, num=N)), dtype=int)
+    colors = cmap(index)
 
     # Convert colors to RGB tuples or hex
     colors = list(map(to_hex if return_hex else to_rgb, colors))
