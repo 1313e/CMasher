@@ -14,6 +14,7 @@ from __future__ import absolute_import, division, print_function
 
 # Built-in imports
 from collections import OrderedDict as odict
+from glob import glob
 import os
 from os import path
 from textwrap import dedent
@@ -599,12 +600,9 @@ def import_cmaps(cmap_path):
         # Set cm_files to be the sole read-in file
         cm_files = [cmap_file]
     else:
-        # If directory, obtain the names of all files in cmap_path
+        # If directory, obtain the names of all colormap files in cmap_path
         cmap_dir = cmap_path
-        filenames = next(os.walk(cmap_dir))[2]
-
-        # Extract the files with defined colormaps
-        cm_files = [name for name in filenames if name.startswith('cm_')]
+        cm_files = list(map(path.basename, glob("%s/cm_*" % (cmap_dir))))
         cm_files.sort()
 
     # Read in all the defined colormaps, transform and register them
