@@ -15,7 +15,6 @@ from __future__ import absolute_import, division, print_function
 # Built-in imports
 from collections import OrderedDict as odict
 from glob import glob
-import os
 from os import path
 from textwrap import dedent
 
