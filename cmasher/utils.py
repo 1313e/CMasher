@@ -37,7 +37,7 @@ __all__ = ['create_cmap_overview', 'get_bibtex', 'get_sub_cmap',
 
 # %% HELPER FUNCTIONS
 # This function determines the colormap type of a given colormap
-def _get_cm_type(cmap):
+def _get_cmap_type(cmap):
     """
     Checks what the colormap type (sequential; diverging; cyclic; qualitative;
     misc) of the provided `cmap` is and returns it.
@@ -130,11 +130,12 @@ def _get_cmap_lightness_rank(cmap):
     -------
     L_start : float
         The starting lightness value of `cmap`.
+        For diverging colormaps, this is the central lightness value.
+    L_rng : float
+        The lightness range (L_max-L_min) of `cmap`.
     L_rmse : float
         The RMSE of the lightness profile of `cmap`.
         For diverging colormaps, this is the max RMSE of either half.
-    L_rng : float
-        The lightness range (L_max-L_min) of `cmap`.
     name : str
         The name of `cmap`.
 
@@ -155,23 +156,28 @@ def _get_cmap_lightness_rank(cmap):
     derivs = (cmap.N-1)*deltas
 
     # Determine the RMSE of the lightness profile
-    if _get_cm_type(cmap) in ('diverging', 'cyclic'):
+    if _get_cmap_type(cmap) in ('diverging', 'cyclic'):
         # If cmap is diverging, calculate RMSE of both halves
         central_i = [int(np.floor(cmap.N/2)), int(np.ceil(cmap.N/2))]
         L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
                          np.around(np.std(derivs[central_i[1]:]), 1)])
+
+        # Calculate central lightness value
+        L_start = np.around(np.average(L[central_i]), 1)
     else:
         # Else, take RMSE of entire lightness profile
         L_rmse = np.around(np.std(derivs), 1)
 
-    # Determine start and range
-    L_start = np.around(L[0], 1)
+        # Calculate starting lightness value
+        L_start = np.around(L[0], 1)
+
+    # Determine range
     L_min = np.around(np.min(L), 1)
     L_max = np.around(np.max(L), 1)
     L_rng = np.around(np.abs(L_max-L_min), 1)
 
     # Return contributions to the rank
-    return(L_start, L_rmse, L_rng, cmap.name)
+    return(L_start, L_rng, L_rmse, cmap.name)
 
 
 # %% FUNCTIONS
@@ -270,7 +276,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                cm_type = _get_cm_type(cmap)
+                cm_type = _get_cmap_type(cmap)
                 if isinstance(cmap, string_types):
                     if not cmap.endswith('_r'):
                         cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
@@ -650,7 +656,7 @@ def import_cmaps(cmap_path):
 
             # Check if provided cmap is a cyclic colormap
             # If so, obtain its shifted (reversed) versions as well
-            if(_get_cm_type('cmr.'+cm_name) == 'cyclic'):
+            if(_get_cmap_type('cmr.'+cm_name) == 'cyclic'):
                 # Determine the central value index of the colormap
                 idx = len(rgb)//2
 
@@ -713,7 +719,7 @@ def register_cmap(name, data):
     cmap_mpl_r(1)
 
     # Determine the cm_type of the colormap
-    cm_type = _get_cm_type(cmap_mpl)
+    cm_type = _get_cmap_type(cmap_mpl)
 
     # Add cmap to matplotlib's cmap list
     mplcm.register_cmap(cmap=cmap_mpl)
