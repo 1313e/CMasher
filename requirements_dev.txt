@@ -2,7 +2,7 @@
 check-manifest
 cmocean>=2.0
 pyqt5==5.12.*;python_version>='3'
-pytest>=3.8.0
+pytest>=4.6.0
 pytest-cov
 pytest-mpl
 pytest-pep8
