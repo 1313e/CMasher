@@ -10,8 +10,10 @@ from os import path
 
 # Package imports
 import cmocean as cmo
+import matplotlib.pyplot as plt
 from matplotlib import cm as mplcm
 from matplotlib.colors import ListedColormap as LC
+from matplotlib.legend import Legend
 import numpy as np
 import pytest
 from six import PY2
@@ -21,7 +23,7 @@ import cmasher as cmr
 from cmasher import cm as cmrcm
 from cmasher.utils import (
     create_cmap_overview, get_bibtex, get_sub_cmap, import_cmaps,
-    take_cmap_colors)
+    set_cmap_legend_entry, take_cmap_colors)
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
@@ -164,6 +166,39 @@ class Test_import_cmaps(object):
     def test_invalid_cmap_dir(self):
         with pytest.raises(ValueError):
             import_cmaps(path.join(dirpath, 'data'))
+
+
+# Pytest class for set_cmap_legend_entry()-function
+class Test_set_cmap_legend_entry(object):
+    # Test if providing a PathCollection object works
+    def test_path_collection(self):
+        # Create a small scatter plot
+        plot = plt.scatter([1, 2, 3], [2, 3, 4], c=[3, 4, 5],
+                           cmap=cmr.rainforest)
+
+        # Add a cmap legend entry
+        set_cmap_legend_entry(plot, 'Test')
+
+        # Check if the plot now has a special handler
+        assert plot in Legend.get_default_handler_map()
+
+        # Create a legend
+        plt.legend()
+
+        # Close the plot
+        plt.close()
+
+    # Test if providing a Line2D object does not work
+    def test_line2d(self):
+        # Create a small line plot
+        plot = plt.plot([1, 2, 3], [2, 3, 4])
+
+        # Attempt to add the cmap legend entry
+        with pytest.raises(ValueError):
+            set_cmap_legend_entry(plot, 'Test')
+
+        # Close the plot
+        plt.close()
 
 
 # Pytest class for take_cmap_colors()-function
