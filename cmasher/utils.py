@@ -14,7 +14,7 @@ from __future__ import absolute_import, division, print_function
 
 # Built-in imports
 from collections import OrderedDict as odict
-import os
+from glob import glob
 from os import path
 from textwrap import dedent
 
@@ -23,6 +23,8 @@ from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap as LC, to_hex, to_rgb
+from matplotlib.legend import Legend
+from matplotlib.legend_handler import HandlerBase
 import matplotlib.pyplot as plt
 import numpy as np
 from six import string_types
@@ -31,89 +33,42 @@ from six import string_types
 from cmasher import cm as cmrcm
 
 # All declaration
-__all__ = ['create_cmap_overview', 'get_bibtex', 'get_sub_cmap',
-           'import_cmaps', 'register_cmap', 'take_cmap_colors']
+__all__ = ['create_cmap_overview', 'get_bibtex', 'get_cmap_type',
+           'get_sub_cmap', 'import_cmaps', 'register_cmap',
+           'set_cmap_legend_entry', 'take_cmap_colors']
+
+
+# %% HELPER CLASSES
+# Define legend handler class for artists that use colormaps
+class _HandlerColorPolyCollection(HandlerBase):
+    # Override create_artists to create a LineCollection resembling a colormap
+    def create_artists(self, legend, artist, xdescent, ydescent, width, height,
+                       fontsize, trans):
+        # Obtain the colormap of the artist
+        cmap = artist.cmap
+
+        # Determine the points of each different color in the colormap
+        x = np.linspace(0, width, cmap.N)
+        y = np.zeros(cmap.N)+height/2-ydescent
+        points = np.stack([x, y], axis=1)
+
+        # Determine the segments that every color will take up
+        segments = np.stack([points[:-1], points[1:]], axis=1)
+
+        # Create a LineCollection that uses a different line for every color
+        lc = LineCollection(segments, cmap=cmap, transform=trans)
+
+        # Set the values to be used for the lines
+        lc.set_array(np.arange(cmap.N))
+
+        # Set the linewidth as 5
+        lc.set_linewidth(5)
+
+        # Return the LineCollection object
+        return([lc])
 
 
 # %% HELPER FUNCTIONS
-# This function determines the colormap type of a given colormap
-def _get_cm_type(cmap):
-    """
-    Checks what the colormap type (sequential; diverging; cyclic; qualitative;
-    misc) of the provided `cmap` is and returns it.
-
-    Parameters
-    ----------
-    cmap : str or :obj:`~matplotlib.colors.Colormap` object
-        The registered name of the colormap in :mod:`matplotlib.cm` or its
-        corresponding :obj:`~matplotlib.colors.Colormap` object.
-
-    Returns
-    -------
-    cm_type : {'sequential'; 'diverging'; 'cyclic'; 'qualitative'; 'misc'}
-        A string stating which of the defined colormap types the provided
-        `cmap` has.
-
-    """
-
-    # Obtain the colormap
-    cmap = mplcm.get_cmap(cmap)
-
-    # Get RGB values for colormap
-    rgb = cmap(np.arange(cmap.N))[:, :3]
-
-    # Get lightness values of colormap
-    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
-    L = lab[:, 0]
-    diff_L = np.diff(L)
-
-    # Obtain central values of lightness
-    N = cmap.N-1
-    central_i = [int(np.floor(N/2)), int(np.ceil(N/2))]
-    diff_L0 = np.diff(L[:central_i[0]+1])
-    diff_L1 = np.diff(L[central_i[1]:])
-
-    # Obtain perceptual differences of last two and first two values
-    lab_red = lab[[-2, -1, 0, 1]]
-    deltas = np.sqrt(np.sum(np.diff(lab_red, axis=0)**2, axis=-1))
-
-    # Check the statistics of cmap and determine the colormap type
-    # QUALITATIVE
-    # If the colormap has less than 40 values, assume it is qualitative
-    if(cmap.N < 40):
-        return('qualitative')
-
-    # MISC 1
-    # If the colormap has only a single lightness, it is misc
-    elif np.allclose(diff_L, 0):
-        return('misc')
-
-    # SEQUENTIAL
-    # If the lightness values always increase or decrease, it is sequential
-    elif np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))):
-        return('sequential')
-
-    # DIVERGING
-    # If the lightness values have a central extreme and sequential sides
-    # Then it is diverging
-    elif (np.isclose(np.abs(np.sum(diff_L0)), np.sum(np.abs(diff_L0))) and
-          np.isclose(np.abs(np.sum(diff_L1)), np.sum(np.abs(diff_L1)))):
-        # If the perceptual difference between the last and first value is
-        # comparable to the other perceptual differences, it is cyclic
-        if(np.all(np.abs(np.diff(deltas)) < deltas[::2]) and
-           np.diff(deltas[::2])):
-            return('cyclic')
-
-        # Otherwise, it is a normal diverging colormap
-        else:
-            return('diverging')
-
-    # MISC 2
-    # If none of the criteria above apply, it is misc
-    else:
-        return('misc')
-
-
 # Define function for obtaining the sorting order for lightness ranking
 def _get_cmap_lightness_rank(cmap):
     """
@@ -130,11 +85,12 @@ def _get_cmap_lightness_rank(cmap):
     -------
     L_start : float
         The starting lightness value of `cmap`.
+        For diverging colormaps, this is the central lightness value.
+    L_rng : float
+        The lightness range (L_max-L_min) of `cmap`.
     L_rmse : float
         The RMSE of the lightness profile of `cmap`.
         For diverging colormaps, this is the max RMSE of either half.
-    L_rng : float
-        The lightness range (L_max-L_min) of `cmap`.
     name : str
         The name of `cmap`.
 
@@ -155,23 +111,28 @@ def _get_cmap_lightness_rank(cmap):
     derivs = (cmap.N-1)*deltas
 
     # Determine the RMSE of the lightness profile
-    if _get_cm_type(cmap) in ('diverging', 'cyclic'):
+    if get_cmap_type(cmap) in ('diverging', 'cyclic'):
         # If cmap is diverging, calculate RMSE of both halves
         central_i = [int(np.floor(cmap.N/2)), int(np.ceil(cmap.N/2))]
         L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
                          np.around(np.std(derivs[central_i[1]:]), 1)])
+
+        # Calculate central lightness value
+        L_start = np.around(np.average(L[central_i]), 1)
     else:
         # Else, take RMSE of entire lightness profile
         L_rmse = np.around(np.std(derivs), 1)
 
-    # Determine start and range
-    L_start = np.around(L[0], 1)
+        # Calculate starting lightness value
+        L_start = np.around(L[0], 1)
+
+    # Determine range
     L_min = np.around(np.min(L), 1)
     L_max = np.around(np.max(L), 1)
     L_rng = np.around(np.abs(L_max-L_min), 1)
 
     # Return contributions to the rank
-    return(L_start, L_rmse, L_rng, cmap.name)
+    return(L_start, L_rng, L_rmse, cmap.name)
 
 
 # %% FUNCTIONS
@@ -270,7 +231,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                cm_type = _get_cm_type(cmap)
+                cm_type = get_cmap_type(cmap)
                 if isinstance(cmap, string_types):
                     if not cmap.endswith('_r'):
                         cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
@@ -468,6 +429,84 @@ def get_bibtex():
     print(bibtex.strip())
 
 
+# This function determines the colormap type of a given colormap
+def get_cmap_type(cmap):
+    """
+    Checks what the colormap type (sequential; diverging; cyclic; qualitative;
+    misc) of the provided `cmap` is and returns it.
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
+
+    Returns
+    -------
+    cm_type : {'sequential'; 'diverging'; 'cyclic'; 'qualitative'; 'misc'}
+        A string stating which of the defined colormap types the provided
+        `cmap` has.
+
+    """
+
+    # Obtain the colormap
+    cmap = mplcm.get_cmap(cmap)
+
+    # Get RGB values for colormap
+    rgb = cmap(np.arange(cmap.N))[:, :3]
+
+    # Get lightness values of colormap
+    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+    L = lab[:, 0]
+    diff_L = np.diff(L)
+
+    # Obtain central values of lightness
+    N = cmap.N-1
+    central_i = [int(np.floor(N/2)), int(np.ceil(N/2))]
+    diff_L0 = np.diff(L[:central_i[0]+1])
+    diff_L1 = np.diff(L[central_i[1]:])
+
+    # Obtain perceptual differences of last two and first two values
+    lab_red = lab[[-2, -1, 0, 1]]
+    deltas = np.sqrt(np.sum(np.diff(lab_red, axis=0)**2, axis=-1))
+
+    # Check the statistics of cmap and determine the colormap type
+    # QUALITATIVE
+    # If the colormap has less than 40 values, assume it is qualitative
+    if(cmap.N < 40):
+        return('qualitative')
+
+    # MISC 1
+    # If the colormap has only a single lightness, it is misc
+    elif np.allclose(diff_L, 0):
+        return('misc')
+
+    # SEQUENTIAL
+    # If the lightness values always increase or decrease, it is sequential
+    elif np.isclose(np.abs(np.sum(diff_L)), np.sum(np.abs(diff_L))):
+        return('sequential')
+
+    # DIVERGING
+    # If the lightness values have a central extreme and sequential sides
+    # Then it is diverging
+    elif (np.isclose(np.abs(np.sum(diff_L0)), np.sum(np.abs(diff_L0))) and
+          np.isclose(np.abs(np.sum(diff_L1)), np.sum(np.abs(diff_L1)))):
+        # If the perceptual difference between the last and first value is
+        # comparable to the other perceptual differences, it is cyclic
+        if(np.all(np.abs(np.diff(deltas)) < deltas[::2]) and
+           np.diff(deltas[::2])):
+            return('cyclic')
+
+        # Otherwise, it is a normal diverging colormap
+        else:
+            return('diverging')
+
+    # MISC 2
+    # If none of the criteria above apply, it is misc
+    else:
+        return('misc')
+
+
 # Function create a colormap using a subset of the colors in an existing one
 def get_sub_cmap(cmap, start, stop):
     """
@@ -599,12 +638,9 @@ def import_cmaps(cmap_path):
         # Set cm_files to be the sole read-in file
         cm_files = [cmap_file]
     else:
-        # If directory, obtain the names of all files in cmap_path
+        # If directory, obtain the names of all colormap files in cmap_path
         cmap_dir = cmap_path
-        filenames = next(os.walk(cmap_dir))[2]
-
-        # Extract the files with defined colormaps
-        cm_files = [name for name in filenames if name.startswith('cm_')]
+        cm_files = list(map(path.basename, glob("%s/cm_*" % (cmap_dir))))
         cm_files.sort()
 
     # Read in all the defined colormaps, transform and register them
@@ -653,7 +689,7 @@ def import_cmaps(cmap_path):
 
             # Check if provided cmap is a cyclic colormap
             # If so, obtain its shifted (reversed) versions as well
-            if(_get_cm_type('cmr.'+cm_name) == 'cyclic'):
+            if(get_cmap_type('cmr.'+cm_name) == 'cyclic'):
                 # Determine the central value index of the colormap
                 idx = len(rgb)//2
 
@@ -716,7 +752,7 @@ def register_cmap(name, data):
     cmap_mpl_r(1)
 
     # Determine the cm_type of the colormap
-    cm_type = _get_cm_type(cmap_mpl)
+    cm_type = get_cmap_type(cmap_mpl)
 
     # Add cmap to matplotlib's cmap list
     mplcm.register_cmap(cmap=cmap_mpl)
@@ -731,6 +767,46 @@ def register_cmap(name, data):
     cmrcm.__all__.append(cmap_cmr_r.name)
     cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
     cmrcm.cmap_cd[cm_type][cmap_cmr_r.name] = cmap_cmr_r
+
+
+# Function to set the legend label of an artist that uses a colormap
+def set_cmap_legend_entry(artist, label):
+    """
+    Sets the label of the provided `artist` to `label`, and creates a legend
+    entry using a miniature version of the colormap of `artist` as the legend
+    icon.
+
+    This function can be used to add legend entries for *MPL* artists that use
+    a colormap, like those made with :func:`~matplotlib.pyplot.hexbin`;
+    :func:`~matplotlib.pyplot.hist2d`; :func:`~matplotlib.pyplot.scatter`; or
+    any :mod:`~matplotlib.pyplot` function that takes `cmap` as an input
+    argument.
+    Keep in mind that using this function will override any legend entry that
+    already exists for `artist`.
+
+    Parameters
+    ----------
+    artist : :obj:`~matplotlib.artist.Artist` object
+        Any artist object that has the `cmap` attribute, for which a legend
+        entry must be made using its colormap as the icon.
+    label : str
+        The string that must be set as the label of `artist`.
+
+    """
+
+    # Obtain the colormap of the provided artist
+    cmap = getattr(artist, 'cmap', None)
+
+    # If cmap is None, raise error
+    if cmap is None:
+        raise ValueError("Input argument 'artist' does not have attribute "
+                         "'cmap'!")
+
+    # Set the label of this artist
+    artist.set_label(label)
+
+    # Add the HandlerColorPolyCollection to the default handler map for artist
+    Legend.get_default_handler_map()[artist] = _HandlerColorPolyCollection()
 
 
 # Function to take N equally spaced colors from a colormap
