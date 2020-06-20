@@ -25,6 +25,7 @@ from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap as LC, to_hex, to_rgb
 from matplotlib.legend import Legend
 from matplotlib.legend_handler import HandlerBase
+from matplotlib.image import AxesImage
 import matplotlib.pyplot as plt
 import numpy as np
 from six import string_types
@@ -41,31 +42,24 @@ __all__ = ['create_cmap_overview', 'get_bibtex', 'get_cmap_type',
 # %% HELPER CLASSES
 # Define legend handler class for artists that use colormaps
 class _HandlerColorPolyCollection(HandlerBase):
-    # Override create_artists to create a LineCollection resembling a colormap
+    # Override create_artists to create an AxesImage resembling a colormap
     def create_artists(self, legend, artist, xdescent, ydescent, width, height,
                        fontsize, trans):
+        # Obtain the Axes object of this legend
+        ax = legend.axes
+
         # Obtain the colormap of the artist
         cmap = artist.cmap
 
-        # Determine the points of each different color in the colormap
-        x = np.linspace(0, width, cmap.N)
-        y = np.zeros(cmap.N)+height/2-ydescent
-        points = np.stack([x, y], axis=1)
+        # Create an AxesImage to contain the colormap with proper dimensions
+        image = AxesImage(ax, cmap=cmap, transform=trans,
+                          extent=[xdescent, width, ydescent, height])
 
-        # Determine the segments that every color will take up
-        segments = np.stack([points[:-1], points[1:]], axis=1)
+        # Set the data of the image
+        image.set_data(np.arange(cmap.N)[np.newaxis, ...])
 
-        # Create a LineCollection that uses a different line for every color
-        lc = LineCollection(segments, cmap=cmap, transform=trans)
-
-        # Set the values to be used for the lines
-        lc.set_array(np.arange(cmap.N))
-
-        # Set the linewidth as 5
-        lc.set_linewidth(5)
-
-        # Return the LineCollection object
-        return([lc])
+        # Return the AxesImage object
+        return([image])
 
 
 # %% HELPER FUNCTIONS
