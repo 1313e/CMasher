@@ -358,7 +358,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
                 s_colors = np.array(s_colors)
 
                 # Set the values of the line-collection to be these colors
-                lc.set_data(s_colors)
+                lc.set_array(s_colors)
 
                 # Add line-collection to this subplot
                 ax[1].add_collection(lc)
