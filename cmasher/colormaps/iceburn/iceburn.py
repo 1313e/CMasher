@@ -1,3 +1,5 @@
+__author__ = "Ellert van der Velden (@1313e)"
+
 from matplotlib.colors import ListedColormap
 
 cm_type = "diverging"
@@ -514,4 +516,4 @@ cm_data = [[5.78692840e-01, 9.47004534e-01, 9.53835089e-01],
            [9.59462672e-01, 8.66691679e-01, 2.65060887e-01],
            [9.60767194e-01, 8.72539089e-01, 2.69357991e-01]]
 
-test_cm = ListedColormap(cm_data, name="iceburn")
+cmap = ListedColormap(cm_data, name="iceburn")

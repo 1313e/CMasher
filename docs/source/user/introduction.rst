@@ -62,7 +62,10 @@ So, for example, if one were to use the :ref:`rainforest` colormap, this could b
     plt.scatter(x, y, c=z, cmap=cmap, s=300)
     plt.show()
 
-Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>_8bit.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit RGB values of every colormap, and registering them in the appropriate package in the language manually.
+If one instead wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can find stand-alone versions of all colormaps, named ``<cmap_name>/<cmap_name>.py``, in the `cmasher/colormaps`_ directory.
+These Python modules can be placed in a local working directory, and can then be imported with :pycode:`from <cmap_name> import cmap` (e.g., :pycode:`from rainforest import cmap` to import the *rainforest* colormap).
+
+Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_8bit.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit RGB values of every colormap, and registering them in the appropriate package in the language manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
 Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
 

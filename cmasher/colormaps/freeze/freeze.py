@@ -1,3 +1,5 @@
+__author__ = "Ellert van der Velden (@1313e)"
+
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +261,4 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.92030980e-01, 9.95590254e-01, 9.95498132e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
 
-test_cm = ListedColormap(cm_data, name="freeze")
+cmap = ListedColormap(cm_data, name="freeze")

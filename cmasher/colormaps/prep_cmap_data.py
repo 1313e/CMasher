@@ -54,7 +54,8 @@ if(__name__ == '__main__'):
 
     # Convert RGB values to string
     array_str = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
-                                separator=', ', threshold=rgb.size)
+                                separator=', ', threshold=rgb.size,
+                                precision=8)
 
     # Remove all whitespaces before commas
     for i in range(8, 0, -1):
@@ -63,13 +64,15 @@ if(__name__ == '__main__'):
 
     # Export as .py-file
     cm_py_file = dedent("""
+        __author__ = "Ellert van der Velden (@1313e)"
+
         from matplotlib.colors import ListedColormap
 
         cm_type = "{0}"
 
         cm_data = {1}
 
-        test_cm = ListedColormap(cm_data, name="{2}")
+        cmap = ListedColormap(cm_data, name="{2}")
         """).format(cmtype, array_str, name)
     with open("{0}/{0}.py".format(name), 'w') as f:
         f.write(cm_py_file[1:])
@@ -86,7 +89,7 @@ if(__name__ == '__main__'):
     plt.close(fig)
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), rgb)
+    np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8e')
 
     # Create txt-file with 8-bit colormap data
     rgb_8bit = np.rint(rgb*255)
@@ -173,5 +176,5 @@ if(__name__ == '__main__'):
             f.write(docs_overview)
 
     # Create viscm output figure
-    viscm.gui.main(["view", "{0}/{0}.py".format(name), "--save",
+    viscm.gui.main(["view", "{0}/{0}.jscm".format(name), "--save",
                     "{0}/{0}_viscm.png".format(name), "--quit"])

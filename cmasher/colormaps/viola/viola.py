@@ -1,3 +1,5 @@
+__author__ = "Ellert van der Velden (@1313e)"
+
 from matplotlib.colors import ListedColormap
 
 cm_type = "diverging"
@@ -514,4 +516,4 @@ cm_data = [[0.11138401, 0.02669949, 0.18994576],
            [0.16105095, 0.01757931, 0.04843897],
            [0.15535642, 0.01629201, 0.04640560]]
 
-test_cm = ListedColormap(cm_data, name="viola")
+cmap = ListedColormap(cm_data, name="viola")

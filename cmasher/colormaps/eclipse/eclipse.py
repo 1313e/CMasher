@@ -1,3 +1,5 @@
+__author__ = "Ellert van der Velden (@1313e)"
+
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +261,4 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.93278187e-01, 9.43595566e-01, 3.33723115e-01],
            [9.94942662e-01, 9.50035812e-01, 3.33428313e-01]]
 
-test_cm = ListedColormap(cm_data, name="eclipse")
+cmap = ListedColormap(cm_data, name="eclipse")

@@ -1,3 +1,5 @@
+__author__ = "Ellert van der Velden (@1313e)"
+
 from matplotlib.colors import ListedColormap
 
 cm_type = "linear"
@@ -259,4 +261,4 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.82524379e-01, 9.47948818e-01, 3.36155254e-01],
            [9.83854395e-01, 9.54323974e-01, 3.40656523e-01]]
 
-test_cm = ListedColormap(cm_data, name="amber")
+cmap = ListedColormap(cm_data, name="amber")
