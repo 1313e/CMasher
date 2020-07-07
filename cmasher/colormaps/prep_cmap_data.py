@@ -64,15 +64,32 @@ if(__name__ == '__main__'):
 
     # Export as .py-file
     cm_py_file = dedent("""
+        # %% IMPORTS
+        # Package imports
+        from matplotlib.cm import register_cmap
         from matplotlib.colors import ListedColormap
 
+        # All declaration
+        __all__ = ['cmap']
+
+        # Author declaration
         __author__ = "Ellert van der Velden (@1313e)"
 
+
+        # %% GLOBALS AND DEFINITIONS
+        # Type of this colormap (according to viscm)
         cm_type = "{0}"
 
+        # RGB-values of this colormap
         cm_data = {1}
 
-        cmap = ListedColormap(cm_data, name="{2}")
+        # Create ListedColormap object for this colormap
+        cmap = ListedColormap(cm_data, name="cmr.{2}", N=len(cm_data))
+        cmap_r = cmap.reversed()
+
+        # Register (reversed) cmap in MPL
+        register_cmap(cmap=cmap)
+        register_cmap(cmap=cmap_r)
         """).format(cmtype, array_str, name)
     with open("{0}/{0}.py".format(name), 'w') as f:
         f.write(cm_py_file[1:])
