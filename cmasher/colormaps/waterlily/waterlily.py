@@ -1,6 +1,6 @@
-__author__ = "Ellert van der Velden (@1313e)"
-
 from matplotlib.colors import ListedColormap
+
+__author__ = "Ellert van der Velden (@1313e)"
 
 cm_type = "diverging"
 

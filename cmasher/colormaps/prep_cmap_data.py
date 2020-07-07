@@ -64,9 +64,9 @@ if(__name__ == '__main__'):
 
     # Export as .py-file
     cm_py_file = dedent("""
-        __author__ = "Ellert van der Velden (@1313e)"
-
         from matplotlib.colors import ListedColormap
+
+        __author__ = "Ellert van der Velden (@1313e)"
 
         cm_type = "{0}"
 
