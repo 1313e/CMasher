@@ -157,7 +157,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         name.
         If 'lightness', the colormaps are sorted on their starting lightness
         and their lightness range.
-    plot_profile : bool or int. Default: False
+    plot_profile : bool or float. Default: False
         Whether the lightness profiles of all colormaps should be plotted. If
         not *False*, the lightness profile of a colormap is plotted on top of
         its gray-scale version and `plot_profile` is used for setting the alpha
@@ -246,13 +246,13 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         for key, value in cmaps_dict.items():
             # If this cm_type has at least 1 colormap, sort and add them
             if value:
-                # Sort this cm_type on name
-                value.sort(key=lambda x: x.name)
-
                 # Sort on lightness if requested and this cm_type is compatible
                 if((sort.lower() == 'lightness') and
                    (key not in ('qualitative', 'misc'))):
                     value.sort(key=_get_cmap_lightness_rank)
+                # Else, sort on name
+                else:
+                    value.sort(key=lambda x: x.name)
 
                 # Add to list
                 cmaps_list.append(key)
@@ -261,9 +261,10 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     # Else, a list is used
     else:
         # Sort the colormaps
-        cmaps_list.sort(key=lambda x: x.name)
         if(sort.lower() == 'lightness'):
             cmaps_list.sort(key=_get_cmap_lightness_rank)
+        else:
+            cmaps_list.sort(key=lambda x: x.name)
 
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")

@@ -1,7 +1,20 @@
+# %% IMPORTS
+# Package imports
+from matplotlib.cm import register_cmap
 from matplotlib.colors import ListedColormap
 
+# All declaration
+__all__ = ['cmap']
+
+# Author declaration
+__author__ = "Ellert van der Velden (@1313e)"
+
+
+# %% GLOBALS AND DEFINITIONS
+# Type of this colormap (according to viscm)
 cm_type = "diverging"
 
+# RGB-values of this colormap
 cm_data = [[0.08752792, 0.05445008, 0.15633391],
            [0.09204695, 0.05639320, 0.16203897],
            [0.09650895, 0.05829607, 0.16786880],
@@ -514,4 +527,10 @@ cm_data = [[0.08752792, 0.05445008, 0.15633391],
            [0.12810517, 0.04181228, 0.10831071],
            [0.12337357, 0.04004903, 0.10343270]]
 
-test_cm = ListedColormap(cm_data, name="pride")
+# Create ListedColormap object for this colormap
+cmap = ListedColormap(cm_data, name="cmr.pride", N=len(cm_data))
+cmap_r = cmap.reversed()
+
+# Register (reversed) cmap in MPL
+register_cmap(cmap=cmap)
+register_cmap(cmap=cmap_r)

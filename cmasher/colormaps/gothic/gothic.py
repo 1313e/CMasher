@@ -1,7 +1,20 @@
+# %% IMPORTS
+# Package imports
+from matplotlib.cm import register_cmap
 from matplotlib.colors import ListedColormap
 
+# All declaration
+__all__ = ['cmap']
+
+# Author declaration
+__author__ = "Ellert van der Velden (@1313e)"
+
+
+# %% GLOBALS AND DEFINITIONS
+# Type of this colormap (according to viscm)
 cm_type = "linear"
 
+# RGB-values of this colormap
 cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [2.26447742e-04, 2.29091396e-04, 3.12051760e-04],
            [7.78233562e-04, 7.92865741e-04, 1.13478521e-03],
@@ -259,4 +272,10 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.93925162e-01, 9.94629095e-01, 9.97592784e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
 
-test_cm = ListedColormap(cm_data, name="gothic")
+# Create ListedColormap object for this colormap
+cmap = ListedColormap(cm_data, name="cmr.gothic", N=len(cm_data))
+cmap_r = cmap.reversed()
+
+# Register (reversed) cmap in MPL
+register_cmap(cmap=cmap)
+register_cmap(cmap=cmap_r)

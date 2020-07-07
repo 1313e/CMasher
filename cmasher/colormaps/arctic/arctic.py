@@ -1,7 +1,20 @@
+# %% IMPORTS
+# Package imports
+from matplotlib.cm import register_cmap
 from matplotlib.colors import ListedColormap
 
+# All declaration
+__all__ = ['cmap']
+
+# Author declaration
+__author__ = "Ellert van der Velden (@1313e)"
+
+
+# %% GLOBALS AND DEFINITIONS
+# Type of this colormap (according to viscm)
 cm_type = "linear"
 
+# RGB-values of this colormap
 cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [2.33171379e-04, 2.30277145e-04, 2.74527507e-04],
            [8.04618956e-04, 7.98357412e-04, 9.78696655e-04],
@@ -259,4 +272,10 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [9.92680732e-01, 9.95342843e-01, 9.95432977e-01],
            [1.00000000e+00, 1.00000000e+00, 1.00000000e+00]]
 
-test_cm = ListedColormap(cm_data, name="arctic")
+# Create ListedColormap object for this colormap
+cmap = ListedColormap(cm_data, name="cmr.arctic", N=len(cm_data))
+cmap_r = cmap.reversed()
+
+# Register (reversed) cmap in MPL
+register_cmap(cmap=cmap)
+register_cmap(cmap=cmap_r)
