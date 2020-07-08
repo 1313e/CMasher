@@ -9,6 +9,7 @@ If you cannot find your ideal colormap, then please open an `issue`_, provide th
 Let's get rid of all bad colormaps in the world together!
 
 *If you use CMasher for your work, then please star the repo, such that I can keep track of how many users it has and more easily raise awareness of bad colormaps.*
+*Additionally, if you use CMasher as part of your workflow in a scientific publication, please consider citing the CMasher paper* (*BibTeX:* ``cmr.get_bibtex``).
 
 .. _issue: https://github.com/1313e/CMasher/issues
 .. _online documentation: https://cmasher.readthedocs.io
