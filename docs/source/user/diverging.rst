@@ -28,3 +28,4 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
     diverging/redshift
     diverging/viola
     diverging/waterlily
+    diverging/wildfire

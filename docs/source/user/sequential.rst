@@ -29,6 +29,7 @@ These colormaps are shown in an overview and described individually below.
     sequential/dusk
     sequential/eclipse
     sequential/ember
+    sequential/fall
     sequential/flamingo
     sequential/freeze
     sequential/gem
@@ -43,4 +44,5 @@ These colormaps are shown in an overview and described individually below.
     sequential/rainforest
     sequential/savanna
     sequential/sunburst
+    sequential/swamp
     sequential/voltage
