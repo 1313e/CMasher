@@ -77,6 +77,9 @@ def _get_cmap_lightness_rank(cmap):
 
     Returns
     -------
+    L_type : int
+        The type of lightness profile of `cmap`.
+        This is only used for sequential colormaps.
     L_start : float
         The starting lightness value of `cmap`.
         For diverging colormaps, this is the central lightness value.
@@ -104,6 +107,9 @@ def _get_cmap_lightness_rank(cmap):
     deltas = np.diff(L)
     derivs = (cmap.N-1)*deltas
 
+    # Set lightness profile type to 0
+    L_type = 0
+
     # Determine the RMSE of the lightness profile
     if get_cmap_type(cmap) in ('diverging', 'cyclic'):
         # If cmap is diverging, calculate RMSE of both halves
@@ -120,13 +126,17 @@ def _get_cmap_lightness_rank(cmap):
         # Calculate starting lightness value
         L_start = np.around(L[0], 1)
 
+        # Determine type of lightness profile
+        L_type += ~(np.sum(rgb[0]) == 0)*2
+        L_type += ((np.sum(rgb[0]) == 0) == (np.sum(rgb[-1]) == 3))
+
     # Determine range
     L_min = np.around(np.min(L), 1)
     L_max = np.around(np.max(L), 1)
     L_rng = np.around(np.abs(L_max-L_min), 1)
 
     # Return contributions to the rank
-    return(L_start, L_rng, L_rmse, cmap.name)
+    return(L_type, L_start, L_rng, L_rmse, cmap.name)
 
 
 # %% FUNCTIONS

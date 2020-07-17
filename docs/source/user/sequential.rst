@@ -25,6 +25,7 @@ These colormaps are shown in an overview and described individually below.
     sequential/amber
     sequential/apple
     sequential/arctic
+    sequential/bubblegum
     sequential/chroma
     sequential/dusk
     sequential/eclipse
@@ -41,6 +42,7 @@ These colormaps are shown in an overview and described individually below.
     sequential/neutral
     sequential/nuclear
     sequential/ocean
+    sequential/pepper
     sequential/rainforest
     sequential/savanna
     sequential/sunburst
