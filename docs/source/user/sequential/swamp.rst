@@ -12,6 +12,6 @@ swamp
     :width: 100%
     :align: center
 
-The *swamp* colormap is <visual representation>.
-<Lightness range><colors>
-<Recommended use>
+The *swamp* colormap is a visual representation of the wet swamp ecosystems.
+It covers the full lightness range and uses the colors blue and green.
+Its smoothly varying colors makes it great for intensity maps.
