@@ -20,6 +20,7 @@ Below is an overview of all the colormaps that are currently in *CMasher* (made 
     :width: 100%
     :align: center
     :alt: Overview of all colormaps in *CMasher* for Python.
+    :name: cmr_cmaps
 
     Overview of all colormaps in *CMasher*.
 

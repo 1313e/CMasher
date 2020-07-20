@@ -4,8 +4,8 @@ Usage
 =====
 The following contains explanations on how the different functions in *CMasher* can be used to aid the creation of *cmashing* plots.
 
-Access
-------
+Accessing colormaps
+-------------------
 All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package, but *CMasher* also provides a few other ways of using the colormaps.
 
 If one wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can find stand-alone versions of all colormaps, named ``<cmap_name>/<cmap_name>.py``, in the `cmasher/colormaps`_ directory.
@@ -14,6 +14,28 @@ These Python modules can be placed in a local working directory, and can then be
 Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_8bit.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit RGB values of every colormap, and registering them in the appropriate package in the language manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
 Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
+
+
+Colormap overviews
+------------------
+To allow for colormaps to be more easily compared with each other, *CMasher* can create colormap overviews of a given collection of colormaps, like those shown on the :ref:`introduction`; :ref:`sequential`; and :ref:`diverging` pages.
+This is done with the :func:`~cmasher.create_cmap_overview` function, which takes a list of colormaps, and creates an overview with their colored and grey-scaled versions, sorted on type and name (by default).
+Colormap overview figures are ideal for webpages or documents, as their horizontal resolution is always the same (i.e., 640px for SVG, or 1,600px for other formats).
+Adding or removing colormaps from the overview solely affects its vertical resolution, which is adjusted automatically such that each entry always has the same resolution.
+
+The colormaps shown in an overview can be sorted/ordered in a number of different ways.
+By default, the colormaps are separated into their types (as determined by :func:`~cmasher.get_cmap_type`), and sorted on their name in alphabetical order.
+However, one can specify their own categories for colormaps (that are used instead of the colormap types) by providing a dict of lists, or sort the colormaps on their lightness profiles with :pycode:`sort='lightness'`.
+Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their grey-scaled versions, allowing for quick performance comparisons between colormaps.
+
+Below is a list of pages containing several colormap overview examples with their scripts.
+
+.. toctree::
+
+    cmap_overviews/cmr_cmaps
+    cmap_overviews/categories
+    cmap_overviews/mpl_cmaps
+    cmap_overviews/seq_mpl_cmaps
 
 
 Custom colormaps
