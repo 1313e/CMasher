@@ -549,7 +549,11 @@ def get_sub_cmap(cmap, start, stop):
     colors in `cmap` to fill up the space. Therefore, using values for `start`
     and `stop` that are too close to each other, may result in a colormap that
     contains too few different colors to be smooth.
-    It is recommended to use at least 50% of a colormap for optimal results.
+    It is recommended to use at least 128 different colors in a colormap for
+    optimal results (*CMasher* colormaps have 256 or 511 different colors, for
+    sequential or diverging colormaps respectively).
+    One can check the number of colors in a colormap with
+    :attr:`matplotlib.colors.Colormap.N`.
 
     Any colormaps created using this function is not registered in either
     *CMasher* or *MPL*.
