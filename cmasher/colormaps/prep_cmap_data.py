@@ -9,13 +9,14 @@ import sys
 from textwrap import dedent
 
 # Package imports
+from matplotlib.cm import cmap_d
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
 
 # CMasher imports
 from cmasher.cm import cmap_cd
-from cmasher.utils import create_cmap_overview, import_cmaps
+from cmasher.utils import create_cmap_overview, get_cmap_type, import_cmaps
 
 
 # %% GLOBALS
@@ -75,6 +76,9 @@ if(__name__ == '__main__'):
         # Author declaration
         __author__ = "Ellert van der Velden (@1313e)"
 
+        # Package declaration
+        __package__ = 'cmasher'
+
 
         # %% GLOBALS AND DEFINITIONS
         # Type of this colormap (according to viscm)
@@ -120,6 +124,9 @@ if(__name__ == '__main__'):
     create_cmap_overview(
         savefig=path.join(docs_dir, 'images', 'cmap_overview.png'),
         sort='lightness')
+    create_cmap_overview(
+        cmap_d.keys(), plot_profile=True, sort='lightness',
+        savefig=path.join(docs_dir, 'images', 'mpl_cmaps.png'))
 
     # Make string with the docs entry
     docs_entry = dedent("""
@@ -145,12 +152,16 @@ if(__name__ == '__main__'):
     if(cmtype == 'linear'):
         create_cmap_overview(
             cmap_cd['sequential'].values(), sort='lightness',
-            savefig=path.join(docs_dir, 'images/seq_cmaps.png'))
+            savefig=path.join(docs_dir, 'images', 'seq_cmaps.png'))
+        cmaps = [cm for cm in cmap_d if get_cmap_type(cm) == 'sequential']
+        create_cmap_overview(
+            cmaps, use_types=False,
+            savefig=path.join(docs_dir, 'images', 'mpl_seq_cmaps.png'))
         cmtype = 'sequential'
     elif(cmtype == 'diverging'):
         create_cmap_overview(
             cmap_cd['diverging'].values(), sort='lightness',
-            savefig=path.join(docs_dir, 'images/div_cmaps.png'))
+            savefig=path.join(docs_dir, 'images', 'div_cmaps.png'))
 
     # Create docs entry for this colormap if possible
     try:

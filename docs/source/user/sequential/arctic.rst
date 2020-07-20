@@ -15,3 +15,4 @@ arctic
 The *arctic* colormap is a visual representation of the cold landscape of the Arctic.
 It covers the full lightness range and solely uses the color blue.
 As the *arctic* colormap uses softer colors, it can be used as an alternative to the :ref:`freeze` colormap.
+This is useful for plots where the colormap is not the only/main focus.

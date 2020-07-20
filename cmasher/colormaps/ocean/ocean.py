@@ -9,6 +9,9 @@ __all__ = ['cmap']
 # Author declaration
 __author__ = "Ellert van der Velden (@1313e)"
 
+# Package declaration
+__package__ = 'cmasher'
+
 
 # %% GLOBALS AND DEFINITIONS
 # Type of this colormap (according to viscm)

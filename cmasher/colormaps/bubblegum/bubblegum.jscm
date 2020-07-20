@@ -1,0 +1,38 @@
+{
+    "content-type": "application/vnd.matplotlib.colormap-v1+json",
+    "name": "bubblegum",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "usage-hints": [
+        "red-green-colorblind-safe",
+        "greyscale-safe",
+        "sequential"
+    ],
+    "colorspace": "sRGB",
+    "domain": "continuous",
+    "colors": "07223807233a08233b09243c0a243e0b253f0c25410d26420e26440f274510274711284812284a13294c14294d15294f162a50172a52182b54192b551a2b571c2c581d2c5a1e2d5c1f2d5d202d5f212e61222e63232e64242e66252f68262f69282f6b292f6d2a306f2b30702c30722e30742f307630307731317933317b34317d35317e3631803831823931843a31863c31873d31893f318b40318d41318e4331904431924631934731954830974a30984b309a4d309c4e309d502f9f512fa1532fa2542fa4562ea5572ea7592ea85a2ea95c2dab5d2dac5f2dae602caf622cb0632cb1652bb3662bb4682bb5692ab66b2ab76d2ab86e29b97029ba7129bb7328bc7428bd7628be7727bf7927bf7a27c07c27c17d26c27e26c28026c38126c38325c48425c48625c58725c58925c68a25c68b25c78d25c78e25c79025c79125c89225c89425c89525c89725c89826c89926c89b26c99c26c99d27c99f27c9a027c8a128c8a328c8a429c8a529c8a629c8a82ac8a92ac7aa2bc7ac2bc7ad2cc7ae2dc6af2dc6b12ec6b22ec6b32fc5b430c5b530c4b731c4b832c4b933c3ba33c3bb34c2bc35c2be36c1bf37c1c037c0c138c0c239bfc33abfc43bbec53cbdc63dbdc73ebcc83fbcc940bbca41bacb42bacc43b9cd44b8ce45b8cf46b7d047b7d148b6d249b5d34ab5d44bb4d54cb3d64db3d74eb2d74fb1d851b1d952b0da53afdb54afdb55aedc56aedd58adde59acde5aacdf5babe05cabe05eaae15faae260a9e261a9e363a8e364a8e465a7e566a7e567a6e669a6e66aa5e76ba5e76ca5e86ea4e86fa4e970a3e972a3ea73a3ea74a3eb75a2eb77a2ec78a2ec79a1ec7aa1ed7ca1ed7da1ee7ea1ee7fa1ee81a0ef82a0ef83a0f084a0f086a0f087a0f188a0f189a0f18ba0f28ca0f28da0f28fa0f390a0f391a0f392a0f494a0f495a0f496a0f597a0f599a0f59aa0f59ba0f69ca0f69ea1f69fa1f6a0a1f7a1a1f7a3a1f7a4a1f8a5a1f8a6a2f8a8a2f8a9a2f9aaa2f9aba2f9aca3f9aea3faafa3fab0a3fab1a4fab3a4fab4a4fbb5a4fbb6a5fbb8a5fbb9a5fbbaa6fcbba6fcbda6",
+    "extensions": {
+        "https://matplotlib.org/viscm": {
+            "min_Jp": 15.0,
+            "max_Jp": 85.0,
+            "xp": [
+                -6.837368812602875,
+                7.257063886481006,
+                32.857155931755756,
+                45.801022696220514,
+                11.85932762495736
+            ],
+            "yp": [
+                -13.51483510951951,
+                -43.14190792596109,
+                -29.335116710532006,
+                -4.310307632566776,
+                10.071766550171873
+            ],
+            "fixed": -1,
+            "filter_k": 100,
+            "cmtype": "linear",
+            "uniform_colorspace": "CAM02-UCS",
+            "spline_method": "Bezier"
+        }
+    }
+}

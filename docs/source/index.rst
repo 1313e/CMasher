@@ -23,6 +23,7 @@ The documentation of *CMasher* is spread out over several sections:
    
     user/introduction
     user/background
+    user/usage
     user/sequential
     user/diverging
     community_guidelines
