@@ -47,4 +47,5 @@ These colormaps are shown in an overview and described individually below.
     sequential/savanna
     sequential/sunburst
     sequential/swamp
+    sequential/toxic
     sequential/voltage
