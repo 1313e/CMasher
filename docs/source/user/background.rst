@@ -31,7 +31,7 @@ However, in :numref:`jet_viscm`, we can see that this introduces multiple proble
 This is an example of a colormap where it would be necessary to have a colorbar/legend, and it is a poor choice for representing numerical values.
 
 Despite all of these shortcomings, *jet* is still a commonly used colormap in the scientific literature.
-An often cited reason for this (besides the general *"Everyone else uses it."*), is that *jet* has a high perceptual range, making it easier to distinguish adjacent values (*jet* has a higher perceptual range than all colormaps in *CMasher* except for :ref:`wildfire`, which is a diverging colormap).
+An often cited reason for this (besides the general *"Everyone else uses it."*), is that *jet* has a high perceptual range, making it easier to distinguish adjacent values (*jet* has a higher perceptual range than all colormaps in *CMasher* except for :ref:`seasons` and :ref:`wildfire`, which are diverging colormaps).
 Although a high perceptual range can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
 In order to solve the problem of not knowing when to use what colormap, on the :ref:`sequential` and :ref:`diverging` pages, the different colormaps in *CMasher* are introduced and described what they should be used for, such that others can use them properly for their own projects.
 
