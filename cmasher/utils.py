@@ -90,6 +90,8 @@ def _get_cmap_lightness_rank(cmap):
         For diverging colormaps, this is the max RMSE of either half.
     name : str
         The name of `cmap`.
+        For qualitative and miscellaneous colormaps, this is the only value
+        that is used.
 
     """
 
@@ -110,17 +112,9 @@ def _get_cmap_lightness_rank(cmap):
     # Set lightness profile type to 0
     L_type = 0
 
-    # Determine the RMSE of the lightness profile
-    if get_cmap_type(cmap) in ('diverging', 'cyclic'):
-        # If cmap is diverging, calculate RMSE of both halves
-        central_i = [int(np.floor(cmap.N/2)), int(np.ceil(cmap.N/2))]
-        L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
-                         np.around(np.std(derivs[central_i[1]:]), 1)])
-
-        # Calculate central lightness value
-        L_start = np.around(np.average(L[central_i]), 1)
-    else:
-        # Else, take RMSE of entire lightness profile
+    # Determine the RMSE of the lightness profile of a sequential colormap
+    if(get_cmap_type(cmap) == 'sequential'):
+        # Take RMSE of entire lightness profile
         L_rmse = np.around(np.std(derivs), 1)
 
         # Calculate starting lightness value
@@ -130,12 +124,27 @@ def _get_cmap_lightness_rank(cmap):
         L_type += ~(np.sum(rgb[0]) == 0)*2
         L_type += ((np.sum(rgb[0]) == 0) == (np.sum(rgb[-1]) == 3))
 
-    # Determine range
-    L_min = np.around(np.min(L), 1)
-    L_max = np.around(np.max(L), 1)
-    L_rng = np.around(np.abs(L_max-L_min), 1)
+    # Diverging/cyclic colormaps
+    elif get_cmap_type(cmap) in ('diverging', 'cyclic'):
+        # Calculate RMSE of both halves
+        central_i = [int(np.floor(cmap.N/2)), int(np.ceil(cmap.N/2))]
+        L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
+                         np.around(np.std(derivs[central_i[1]:]), 1)])
 
-    # Return contributions to the rank
+        # Calculate central lightness value
+        L_start = np.around(np.average(L[central_i]), 1)
+
+    # Determine lightness range for sequential/diverging/cyclic colormaps
+    if get_cmap_type(cmap) in ('sequential', 'diverging', 'cyclic'):
+        L_min = np.around(np.min(L), 1)
+        L_max = np.around(np.max(L), 1)
+        L_rng = np.around(np.abs(L_max-L_min), 1)
+
+    # For qualitative/misc colormaps, set all lightness values to zero
+    else:
+        L_type = L_start = L_rng = L_rmse = 0
+
+    # Return lightness contributions to the rank
     return(L_type, L_start, L_rng, L_rmse, cmap.name)
 
 
@@ -161,13 +170,17 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         Whether all colormaps in `cmaps` should be categorized into their
         colormap types (sequential; diverging; cyclic; qualitative; misc).
         If `cmaps` is a dict, this value is ignored.
-    sort : {'alphabetical'/'name'; 'lightness'} or None. Default: \
+    sort : {'alphabetical'/'name'; 'lightness'}, function or None. Default: \
         'alphabetical'
-        String indicating how the colormaps should be sorted in the overview.
+        String or function indicating how the colormaps should be sorted in the
+        overview.
         If 'alphabetical', the colormaps are sorted alphabetically on their
         name.
         If 'lightness', the colormaps are sorted on their starting lightness
         and their lightness range.
+        If function, a function definition that takes a
+        :obj:`~matplotlib.colors.Colormap` object and returns the sorted
+        position of that colormap.
         If *None*, the colormaps retain the order they were given in.
     plot_profile : bool or float. Default: False
         Whether the lightness profiles of all colormaps should be plotted. If
@@ -199,9 +212,17 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     if cmaps is None:
         cmaps = cmrcm.cmap_d.values()
 
-    # If sort is a string, convert to lowercase
+    # If sort is a string, obtain proper function
     if isinstance(sort, string_types):
+        # Convert sort to lowercase
         sort = sort.lower()
+
+        # Check what string was provided and obtain sorting function
+        if sort in ('alphabetical', 'name'):
+            def sort(x):
+                return(x.name)
+        elif(sort == 'lightness'):
+            sort = _get_cmap_lightness_rank
 
     # Create empty list of cmaps
     cmaps_list = []
@@ -262,13 +283,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         for key, value in cmaps_dict.items():
             # If this cm_type has at least 1 colormap, sort and add them
             if value:
-                # Sort on lightness if requested and this cm_type is compatible
-                if((sort == 'lightness') and
-                   (key not in ('qualitative', 'misc'))):
-                    value.sort(key=_get_cmap_lightness_rank)
-                # Else, sort on name
-                elif sort in ('alphabetical', 'name'):
-                    value.sort(key=lambda x: x.name)
+                # Sort the colormaps if requested
+                if sort is not None:
+                    value.sort(key=sort)
 
                 # Add to list
                 cmaps_list.append(key)
@@ -276,11 +293,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
     # Else, a list is used
     else:
-        # Sort the colormaps
-        if(sort == 'lightness'):
-            cmaps_list.sort(key=_get_cmap_lightness_rank)
-        elif sort in ('alphabetical', 'name'):
-            cmaps_list.sort(key=lambda x: x.name)
+        # Sort the colormaps if requested
+        if sort is not None:
+            cmaps_list.sort(key=sort)
 
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
