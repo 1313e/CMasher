@@ -156,7 +156,7 @@ if(__name__ == '__main__'):
         cmaps = [cm for cm in cmap_d if get_cmap_type(cm) == 'sequential']
         create_cmap_overview(
             cmaps, use_types=False, sort='alphabetical',
-            savefig=path.join(docs_dir, 'images', 'mpl_seq_cmaps.png'))
+            savefig=path.join(docs_dir, 'images', 'seq_mpl_cmaps.png'))
         cmtype = 'sequential'
     elif(cmtype == 'diverging'):
         create_cmap_overview(
