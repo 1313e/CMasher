@@ -161,12 +161,14 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         Whether all colormaps in `cmaps` should be categorized into their
         colormap types (sequential; diverging; cyclic; qualitative; misc).
         If `cmaps` is a dict, this value is ignored.
-    sort : {'alphabetical'/'name'; 'lightness'}. Default: 'alphabetical'
+    sort : {'alphabetical'/'name'; 'lightness'} or None. Default: \
+        'alphabetical'
         String indicating how the colormaps should be sorted in the overview.
         If 'alphabetical', the colormaps are sorted alphabetically on their
         name.
         If 'lightness', the colormaps are sorted on their starting lightness
         and their lightness range.
+        If *None*, the colormaps retain the order they were given in.
     plot_profile : bool or float. Default: False
         Whether the lightness profiles of all colormaps should be plotted. If
         not *False*, the lightness profile of a colormap is plotted on top of
@@ -196,6 +198,10 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
         cmaps = cmrcm.cmap_d.values()
+
+    # If sort is a string, convert to lowercase
+    if isinstance(sort, string_types):
+        sort = sort.lower()
 
     # Create empty list of cmaps
     cmaps_list = []
@@ -257,11 +263,11 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             # If this cm_type has at least 1 colormap, sort and add them
             if value:
                 # Sort on lightness if requested and this cm_type is compatible
-                if((sort.lower() == 'lightness') and
+                if((sort == 'lightness') and
                    (key not in ('qualitative', 'misc'))):
                     value.sort(key=_get_cmap_lightness_rank)
                 # Else, sort on name
-                else:
+                elif sort in ('alphabetical', 'name'):
                     value.sort(key=lambda x: x.name)
 
                 # Add to list
@@ -271,9 +277,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     # Else, a list is used
     else:
         # Sort the colormaps
-        if(sort.lower() == 'lightness'):
+        if(sort == 'lightness'):
             cmaps_list.sort(key=_get_cmap_lightness_rank)
-        else:
+        elif sort in ('alphabetical', 'name'):
             cmaps_list.sort(key=lambda x: x.name)
 
     # Obtain the colorspace converter for showing cmaps in grey-scale

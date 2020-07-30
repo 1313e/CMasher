@@ -24,8 +24,9 @@ Colormap overview figures are ideal for webpages or documents, as their horizont
 Adding or removing colormaps from the overview solely affects its vertical resolution, which is adjusted automatically such that each entry always has the same resolution.
 
 The colormaps shown in an overview can be sorted/ordered in a number of different ways.
-By default, the colormaps are separated into their types (as determined by :func:`~cmasher.get_cmap_type`), and sorted on their name in alphabetical order.
-However, one can specify their own categories for colormaps (that are used instead of the colormap types) by providing a dict of lists, or sort the colormaps on their lightness profiles with :pycode:`sort='lightness'`.
+By default, the colormaps are separated into their types (as determined by :func:`~cmasher.get_cmap_type`), and sorted on their name in alphabetical order (use :pycode:`sort=None` to not sort the colormaps).
+However, one can specify their own categories for colormaps (that are used instead of the colormap types) by providing a dict of lists, where the keys are used as the categories.
+As colormaps with different lightness profiles can cause perception issues when displayed near each other, colormaps can also be sorted on their lightness profiles with :pycode:`sort='lightness'` to avoid this problem.
 Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their grey-scaled versions, allowing for quick performance comparisons between colormaps.
 
 Below is a list of pages containing several colormap overview examples with their scripts.

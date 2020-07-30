@@ -1,7 +1,7 @@
 Colormap categories
 ===================
 This colormap overview shows a collection of selected colormaps, divided into specified categories (determined at v1.4.0).
-The colormaps are sorted on their name within each category.
+The colormaps are not sorted within each category.
 
 .. image:: ../images/cmap_categories.png
     :alt: Colormap overview of selected colormaps, divided into categories.
@@ -68,4 +68,4 @@ The colormaps are sorted on their name within each category.
             'hot']}
 
     # Create colormap overview of selected colormaps, divided into categories
-    cmr.create_cmap_overview(cmaps_dct)
+    cmr.create_cmap_overview(cmaps_dct, sort=None)
