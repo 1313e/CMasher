@@ -908,12 +908,12 @@ def take_cmap_colors(cmap, N, cmap_range=(0, 1), return_hex=False):
     Requesting their HEX-code values instead::
 
         >>> take_cmap_colors('cmr.rainforest', 5, return_hex=True)
-        ['#000000', '#3a2090', '#0e8474', '#b5b815', '#ffffff']
+        ['#000000', '#3A2090', '#0E8474', '#B5B815', '#FFFFFF']
 
     Requesting colors in a specific range::
 
         >>> take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), return_hex=True)
-        ['#3e0374', '#10528a', '#0e8474', '#5cad3c', '#d6bf4a']
+        ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A']
 
     Note
     ----

@@ -222,12 +222,12 @@ class Test_take_cmap_colors(object):
     # Test if their HEX-code values can be requested as well
     def test_rainforest_five_hex(self):
         assert (take_cmap_colors('cmr.rainforest', 5, return_hex=True) ==
-                ['#000000', '#3a2090', '#0e8474', '#b5b815', '#ffffff'])
+                ['#000000', '#3A2090', '#0E8474', '#B5B815', '#FFFFFF'])
 
     # Test if only a subrange can be used for picking colors
     def test_rainforest_sub_five(self):
         assert (take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), True) ==
-                ['#3e0374', '#10528a', '#0e8474', '#5cad3c', '#d6bf4a'])
+                ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A'])
 
     # Test if providing an incorrect range raises an error
     def test_invalid_range(self):
