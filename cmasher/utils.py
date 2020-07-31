@@ -151,7 +151,8 @@ def _get_cmap_lightness_rank(cmap):
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
-                         sort='alphabetical', plot_profile=False):
+                         sort='alphabetical', plot_profile=False,
+                         title="Colormap Overview"):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -188,6 +189,9 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         its gray-scale version and `plot_profile` is used for setting the alpha
         (opacity) value.
         If `plot_profile` is *True*, it will be set to `0.25`.
+    title : str or False. Default: "Colormap Overview"
+        String to be used as the title of the colormap overview.
+        If empty or *False*, no title will be used.
 
     Notes
     -----
@@ -195,7 +199,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     :mod:`matplotlib.cm`, or their corresponding
     :obj:`~matplotlib.colors.Colormap` object.
     Any provided reversed colormaps (colormaps that end their name with '_r')
-    are ignored.
+    are ignored if their normal versions were provided as well.
 
     If `plot_profile` is not set to *False*, the lightness profiles are plotted
     on top of the gray-scale colormap versions, where the y-axis ranges from 0%
@@ -246,9 +250,8 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
                 if isinstance(cmap, string_types):
-                    if not cmap.endswith('_r'):
-                        cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
-                elif not cmap.name.endswith('_r'):
+                    cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
+                else:
                     cmaps_dict[cm_type].append(cmap)
 
     # Else, it is a list with no cm_types
@@ -264,17 +267,15 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             for cmap in cmaps:
                 cm_type = get_cmap_type(cmap)
                 if isinstance(cmap, string_types):
-                    if not cmap.endswith('_r'):
-                        cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
-                elif not cmap.name.endswith('_r'):
+                    cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
+                else:
                     cmaps_dict[cm_type].append(cmap)
         else:
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
                 if isinstance(cmap, string_types):
-                    if not cmap.endswith('_r'):
-                        cmaps_list.append(mplcm.get_cmap(cmap))
-                elif not cmap.name.endswith('_r'):
+                    cmaps_list.append(mplcm.get_cmap(cmap))
+                else:
                     cmaps_list.append(cmap)
 
     # If use_types is True, a dict is currently used
@@ -283,6 +284,15 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         for key, value in cmaps_dict.items():
             # If this cm_type has at least 1 colormap, sort and add them
             if value:
+                # Obtain the names of all colormaps
+                names = [x.name for x in value]
+
+                # Remove all reversed colormaps that also have their original
+                off_dex = len(names)-1
+                for i, name in enumerate(reversed(names)):
+                    if name.endswith('_r') and name[:-2] in names:
+                        value.pop(off_dex-i)
+
                 # Sort the colormaps if requested
                 if sort is not None:
                     value.sort(key=sort)
@@ -293,6 +303,15 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
     # Else, a list is used
     else:
+        # Obtain the names of all colormaps
+        names = [x.name for x in cmaps_list]
+
+        # Remove all reversed colormaps that also have their original
+        off_dex = len(names)-1
+        for i, name in enumerate(reversed(names)):
+            if name.endswith('_r') and name[:-2] in names:
+                cmaps_list.pop(off_dex-i)
+
         # Sort the colormaps if requested
         if sort is not None:
             cmaps_list.sort(key=sort)
@@ -301,12 +320,16 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
     # Create figure instance
-    height = 0.4*(len(cmaps_list)+1)
-    fig, axes = plt.subplots(figsize=(6.4, height),
-                             nrows=len(cmaps_list), ncols=2)
-    fig.subplots_adjust(top=(1-0.24/height), bottom=0.048/height, left=0.2,
-                        right=0.99, wspace=0.05)
-    fig.suptitle("Colormap Overview", fontsize=16, y=1.0, x=0.595)
+    height = 0.4*(len(cmaps_list)+bool(title))
+    fig, axes = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
+                             ncols=2)
+    if title:
+        fig.subplots_adjust(top=(1-0.288/height), bottom=0.048/height,
+                            left=0.2, right=0.99, wspace=0.05)
+        fig.suptitle(title, fontsize=16, x=0.595, y=1.0-0.048/height)
+    else:
+        fig.subplots_adjust(top=(1-0.048/height), bottom=0.048/height,
+                            left=0.2, right=0.99, wspace=0.05)
 
     # If cmaps_list only has a single element, make sure axes is a list
     if(len(cmaps_list) == 1):
