@@ -211,15 +211,25 @@ class Test_take_cmap_colors(object):
                             (0.709615979, 0.722863985, 0.0834727592),
                             (1.0, 1.0, 1.0)])
 
+    # Test if their 8-bit RGB values can be requested as well
+    def test_rainforest_five_8bit(self):
+        assert np.allclose(take_cmap_colors('cmr.rainforest', 5,
+                                            return_fmt='int'),
+                           [(0, 0, 0),
+                            (58, 32, 144),
+                            (14, 132, 116),
+                            (181, 184, 21),
+                            (255, 255, 255)])
+
     # Test if their HEX-code values can be requested as well
     def test_rainforest_five_hex(self):
-        assert (take_cmap_colors('cmr.rainforest', 5, return_hex=True) ==
+        assert (take_cmap_colors('cmr.rainforest', 5, return_fmt='hex') ==
                 ['#000000', '#3A2090', '#0E8474', '#B5B815', '#FFFFFF'])
 
     # Test if only a subrange can be used for picking colors
     def test_rainforest_sub_five(self):
         assert (take_cmap_colors('cmr.rainforest', 5, cmap_range=(0.2, 0.8),
-                                 return_hex=True) ==
+                                 return_fmt='hex') ==
                 ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A'])
 
     # Test if providing an incorrect range raises an error

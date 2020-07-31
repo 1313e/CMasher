@@ -859,7 +859,7 @@ def set_cmap_legend_entry(artist, label):
 
 
 # Function to take N equally spaced colors from a colormap
-def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_hex=False):
+def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
     """
     Takes `N` equally spaced colors from the provided colormap `cmap` and
     returns them.
@@ -880,10 +880,12 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_hex=False):
         The normalized value range in the colormap from which colors should be
         taken.
         By default, colors are taken from the entire colormap.
-    return_hex : bool. Default: False
-        If *True*, the colors are returned using their hexadecimal string
+    return_fmt : {'float'/'norm'; 'str'/'hex'; 'int'/'8bit'}. Default: 'float'
+        The format of the requested colors.
+        If 'float'/'norm', the colors are returned as normalized RGB tuples.
+        If 'str'/'hex', the colors are returned using their hexadecimal string
         representations.
-        If *False*, they are instead returned as normalized RGB tuples.
+        If 'int'/'8bit', the colors are returned as 8-bit RGB tuples.
 
     Returns
     -------
@@ -901,14 +903,23 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_hex=False):
          (0.709615979, 0.722863985, 0.0834727592),
          (1.0, 1.0, 1.0)]
 
-    Requesting their HEX-code values instead::
+    Requesting their 8-bit RGB values instead::
 
-        >>> take_cmap_colors('cmr.rainforest', 5, return_hex=True)
+        >>> take_cmap_colors('cmr.rainforest', 5, return_fmt='int')
+        [(0, 0, 0),
+         (58, 32, 144),
+         (14, 132, 116),
+         (181, 184, 21),
+         (255, 255, 255)]
+
+    Requesting HEX-code values instead::
+
+        >>> take_cmap_colors('cmr.rainforest', 5, return_fmt='hex')
         ['#000000', '#3A2090', '#0E8474', '#B5B815', '#FFFFFF']
 
     Requesting colors in a specific range::
 
-        >>> take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), return_hex=True)
+        >>> take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), return_fmt='hex')
         ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A']
 
     Note
@@ -919,6 +930,9 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_hex=False):
     that describe the same property, but have a different initial state.
 
     """
+
+    # Convert provided fmt to lowercase
+    return_fmt = return_fmt.lower()
 
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
@@ -933,9 +947,14 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_hex=False):
     index = np.array(np.rint(np.linspace(*cmap_range, num=N)), dtype=int)
     colors = cmap(index)
 
-    # Convert colors to RGB tuples or hex
-    colors = list(map((lambda x: to_hex(x).upper()) if return_hex else to_rgb,
-                      colors))
+    # Convert colors to proper format
+    if return_fmt in ('float', 'norm', 'int', '8bit'):
+        colors = np.apply_along_axis(to_rgb, 1, colors)
+        if return_fmt in ('int', '8bit'):
+            colors = np.array(np.rint(colors*255), dtype=int)
+        colors = list(map(tuple, colors))
+    else:
+        colors = list(map((lambda x: to_hex(x).upper()), colors))
 
     # Return colors
     return(colors)

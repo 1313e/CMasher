@@ -85,11 +85,15 @@ def cli_take_cmap_colors():
     # Obtain the colors
     colors = cmr.take_cmap_colors(ARGS.cmap, ARGS.n_colors,
                                   cmap_range=ARGS.cmap_range,
-                                  return_hex=ARGS.return_hex)
+                                  return_fmt=ARGS.return_fmt)
 
     # Print the colors line-by-line
-    fmt = '%s' if ARGS.return_hex else '%.8f'
-    np.savetxt(sys.stdout, colors, fmt)
+    if ARGS.return_fmt in ('float', 'norm'):
+        np.savetxt(sys.stdout, colors, '%.8f')
+    elif ARGS.return_fmt in ('int', '8bit'):
+        np.savetxt(sys.stdout, colors, '%i')
+    else:
+        np.savetxt(sys.stdout, colors, '%s')
 
 
 # %% FUNCTION DEFINITIONS
@@ -199,12 +203,15 @@ def main():
         type=float,
         dest='cmap_range')
 
-    # Add 'return_hex' optional argument
+    # Add 'fmt' optional argument
     take_cmap_colors_parser.add_argument(
-        '--hex',
-        help="Whether to return the colors in HEX",
-        action=('store_true', 'store_false')[defaults['return_hex']],
-        dest='return_hex')
+        '--fmt',
+        help="Format to return colors in",
+        action='store',
+        default=defaults['return_fmt'],
+        choices=['float', 'norm', 'int', '8bit', 'hex', 'str'],
+        type=str,
+        dest='return_fmt')
 
     # Set defaults for take_cmap_colors_parser
     take_cmap_colors_parser.set_defaults(func=cli_take_cmap_colors)
