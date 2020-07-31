@@ -938,7 +938,8 @@ def take_cmap_colors(cmap, N, cmap_range=(0, 1), return_hex=False):
     colors = cmap(index)
 
     # Convert colors to RGB tuples or hex
-    colors = list(map(to_hex if return_hex else to_rgb, colors))
+    colors = list(map((lambda x: to_hex(x).upper()) if return_hex else to_rgb,
+                      colors))
 
     # Return colors
     return(colors)

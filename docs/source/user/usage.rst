@@ -155,7 +155,7 @@ The example below shows the script used to create a line plot with 5 colors take
     # Create 5 line plots, each using a different color
     for i, color in enumerate(colors):
         x = 0.1*(i+1)*np.linspace(0, 1, 100)**2
-        plt.plot(x, color=color, label=color.upper())
+        plt.plot(x, color=color, label=color)
 
     # Obtain axes object
     ax = fig.axes[0]

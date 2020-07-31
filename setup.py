@@ -70,6 +70,9 @@ setup(name="cmasher",
       python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
       packages=find_packages(),
       package_dir={'cmasher': "cmasher"},
+      entry_points={
+             'console_scripts': [
+                 "cmr = cmasher.cli_tools:main"]},
       include_package_data=True,
       install_requires=requirements,
       zip_safe=False,
