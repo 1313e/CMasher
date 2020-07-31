@@ -9,9 +9,6 @@ Utility functions required for registering all defined scientific colormaps.
 
 
 # %% IMPORTS
-# Future imports
-from __future__ import absolute_import, division, print_function
-
 # Built-in imports
 from collections import OrderedDict as odict
 from glob import glob
@@ -28,7 +25,6 @@ from matplotlib.legend_handler import HandlerBase
 from matplotlib.image import AxesImage
 import matplotlib.pyplot as plt
 import numpy as np
-from six import string_types
 
 # CMasher imports
 from cmasher import cm as cmrcm
@@ -150,7 +146,7 @@ def _get_cmap_lightness_rank(cmap):
 
 # %% FUNCTIONS
 # This function creates an overview plot of all colormaps specified
-def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
+def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                          sort='alphabetical', plot_profile=False,
                          title="Colormap Overview"):
     """
@@ -217,7 +213,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         cmaps = cmrcm.cmap_d.values()
 
     # If sort is a string, obtain proper function
-    if isinstance(sort, string_types):
+    if isinstance(sort, str):
         # Convert sort to lowercase
         sort = sort.lower()
 
@@ -249,7 +245,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
 
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                if isinstance(cmap, string_types):
+                if isinstance(cmap, str):
                     cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
                 else:
                     cmaps_dict[cm_type].append(cmap)
@@ -266,14 +262,14 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
                 cm_type = get_cmap_type(cmap)
-                if isinstance(cmap, string_types):
+                if isinstance(cmap, str):
                     cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
                 else:
                     cmaps_dict[cm_type].append(cmap)
         else:
             # Loop over all cmaps and remove reversed versions
             for cmap in cmaps:
-                if isinstance(cmap, string_types):
+                if isinstance(cmap, str):
                     cmaps_list.append(mplcm.get_cmap(cmap))
                 else:
                     cmaps_list.append(cmap)
@@ -345,7 +341,7 @@ def create_cmap_overview(cmaps=None, savefig=None, use_types=True,
         ax[1].set_axis_off()
 
         # If cmap is a string, it defines a cm_type
-        if isinstance(cmap, string_types):
+        if isinstance(cmap, str):
             # Write the cm_type as text in the correct position
             fig.text(0.595, ax[0].get_position().bounds[1], cmap,
                      va='bottom', ha='center', fontsize=14)
@@ -717,7 +713,7 @@ def import_cmaps(cmap_path):
                 try:
                     import viscm
                 # If that fails, raise error
-                except ImportError:
+                except ImportError:  # pragma: no cover
                     raise ImportError("The 'viscm' package is required to read"
                                       " '.jscm' files!")
                 # If that succeeds, load RGB values from source file
@@ -863,7 +859,7 @@ def set_cmap_legend_entry(artist, label):
 
 
 # Function to take N equally spaced colors from a colormap
-def take_cmap_colors(cmap, N, cmap_range=(0, 1), return_hex=False):
+def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_hex=False):
     """
     Takes `N` equally spaced colors from the provided colormap `cmap` and
     returns them.

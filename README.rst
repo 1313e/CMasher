@@ -81,7 +81,7 @@ For other use-cases, see the `online documentation`_.
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Latest Release
-.. |Python| image:: https://img.shields.io/badge/Python-2.7%20%7C%203.5%2B-blue?logo=python&logoColor=white
+.. |Python| image:: https://img.shields.io/badge/Python-3.5%2B-blue?logo=python&logoColor=white
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Python Versions
 .. |Travis| image:: https://img.shields.io/travis/com/1313e/CMasher/master.svg?logo=travis%20ci&logoColor=white&label=Travis%20CI

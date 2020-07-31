@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # %% IMPORTS
-# Future imports
-from __future__ import absolute_import, division, print_function
-
 # Built-in imports
 import argparse
 from importlib import import_module
@@ -86,8 +83,9 @@ def cli_cmap_type():
 # This function handles the 'take_cmap_colors' subcommand
 def cli_take_cmap_colors():
     # Obtain the colors
-    colors = cmr.take_cmap_colors(ARGS.cmap, ARGS.n_colors, ARGS.cmap_range,
-                                  ARGS.return_hex)
+    colors = cmr.take_cmap_colors(ARGS.cmap, ARGS.n_colors,
+                                  cmap_range=ARGS.cmap_range,
+                                  return_hex=ARGS.return_hex)
 
     # Print the colors line-by-line
     fmt = '%s' if ARGS.return_hex else '%.8f'
@@ -187,7 +185,7 @@ def main():
         type=int)
 
     # Obtain the optional default arguments
-    defaults = cmr.take_cmap_colors.__defaults__
+    defaults = cmr.take_cmap_colors.__kwdefaults__
 
     # Add 'cmap_range' optional argument
     take_cmap_colors_parser.add_argument(
@@ -197,7 +195,7 @@ def main():
         metavar=('LOWER', 'UPPER'),
         action='store',
         nargs=2,
-        default=defaults[0],
+        default=defaults['cmap_range'],
         type=float,
         dest='cmap_range')
 
@@ -205,7 +203,7 @@ def main():
     take_cmap_colors_parser.add_argument(
         '--hex',
         help="Whether to return the colors in HEX",
-        action=('store_true', 'store_false')[defaults[1]],
+        action=('store_true', 'store_false')[defaults['return_hex']],
         dest='return_hex')
 
     # Set defaults for take_cmap_colors_parser

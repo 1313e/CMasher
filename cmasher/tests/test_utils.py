@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # %% IMPORTS
-# Future imports
-from __future__ import absolute_import, division, print_function
-
 # Built-in imports
 import os
 from os import path
@@ -16,7 +13,6 @@ from matplotlib.colors import ListedColormap as LC
 from matplotlib.legend import Legend
 import numpy as np
 import pytest
-from six import PY2
 
 # CMasher imports
 import cmasher as cmr
@@ -135,14 +131,10 @@ class Test_import_cmaps(object):
     def test_cmap_file_8bit(self):
         import_cmaps(path.join(dirpath, 'data/cm_8bit.txt'))
 
-    # Test if providing a cmap .jscm-file works (Py3) or errors (Py2)
+    # Test if providing a cmap .jscm-file works
     def test_cmap_file_jscm(self):
         cmap_path = path.join(dirpath, 'data/cm_rainforest_jscm.jscm')
-        if PY2:
-            with pytest.raises(ValueError):
-                import_cmaps(cmap_path)
-        else:
-            import_cmaps(cmap_path)
+        import_cmaps(cmap_path)
 
     # Test if providing a cyclic colormap works
     def test_cyclic_cmap(self):
@@ -226,10 +218,11 @@ class Test_take_cmap_colors(object):
 
     # Test if only a subrange can be used for picking colors
     def test_rainforest_sub_five(self):
-        assert (take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), True) ==
+        assert (take_cmap_colors('cmr.rainforest', 5, cmap_range=(0.2, 0.8),
+                                 return_hex=True) ==
                 ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A'])
 
     # Test if providing an incorrect range raises an error
     def test_invalid_range(self):
         with pytest.raises(ValueError):
-            take_cmap_colors('cmr.rainforest', 5, (-1, 1.5))
+            take_cmap_colors('cmr.rainforest', 5, cmap_range=(-1, 1.5))
