@@ -155,7 +155,7 @@ if(__name__ == '__main__'):
             savefig=path.join(docs_dir, 'images', 'seq_cmaps.png'))
         cmaps = [cm for cm in cmap_d if get_cmap_type(cm) == 'sequential']
         create_cmap_overview(
-            cmaps, use_types=False, sort='alphabetical',
+            cmaps, use_types=False, title="Sequential Colormaps",
             savefig=path.join(docs_dir, 'images', 'seq_mpl_cmaps.png'))
         cmtype = 'sequential'
     elif(cmtype == 'diverging'):
