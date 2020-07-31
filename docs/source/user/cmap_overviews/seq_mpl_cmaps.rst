@@ -13,10 +13,11 @@ The overview has its title set to :pycode:`"Sequential Colormaps"` instead of th
 
     # Import packages
     import cmasher as cmr
-    import matplotlib as mpl
+    import matplotlib.pyplot as plt
 
     # Obtain all colormaps in MPL and CMasher that are sequential
-    cmaps = [cmap for cmap in mpl.cm.cmap_d if cmr.get_cmap_type(cmap) == 'sequential']
+    cmaps = [cmap for cmap in plt.colormaps()
+             if cmr.get_cmap_type(cmap) == 'sequential']
 
     # Create colormap overview of all sequential colormaps in MPL and CMasher
     cmr.create_cmap_overview(cmaps, use_types=False, title="Sequential Colormaps")

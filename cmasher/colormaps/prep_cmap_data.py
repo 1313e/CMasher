@@ -9,7 +9,6 @@ import sys
 from textwrap import dedent
 
 # Package imports
-from matplotlib.cm import cmap_d
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
@@ -125,7 +124,7 @@ if(__name__ == '__main__'):
         savefig=path.join(docs_dir, 'images', 'cmap_overview.png'),
         sort='lightness')
     create_cmap_overview(
-        cmap_d.keys(), plot_profile=True, sort='lightness',
+        plt.colormaps(), plot_profile=True, sort='lightness',
         savefig=path.join(docs_dir, 'images', 'mpl_cmaps.png'))
 
     # Make string with the docs entry
@@ -153,7 +152,8 @@ if(__name__ == '__main__'):
         create_cmap_overview(
             cmap_cd['sequential'].values(), sort='lightness',
             savefig=path.join(docs_dir, 'images', 'seq_cmaps.png'))
-        cmaps = [cm for cm in cmap_d if get_cmap_type(cm) == 'sequential']
+        cmaps = [cm for cm in plt.colormaps()
+                 if get_cmap_type(cm) == 'sequential']
         create_cmap_overview(
             cmaps, use_types=False, title="Sequential Colormaps",
             savefig=path.join(docs_dir, 'images', 'seq_mpl_cmaps.png'))

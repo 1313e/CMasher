@@ -41,6 +41,9 @@ cm_names = sorted(next(os.walk(cmap_dir))[1])
 if 'PROJECTS' in cm_names:
     cm_names.remove('PROJECTS')
 
+# Obtain list of all colormaps registered in MPL
+mpl_cmaps = plt.colormaps()
+
 
 # %% PYTEST CLASSES AND FUNCTIONS
 # Pytest class for create_cmap_overview
@@ -61,15 +64,16 @@ class Test_create_cmap_overview(object):
 
     # Test if providing all MPL colormap objects works
     def test_mpl_cmaps_objs(self):
-        create_cmap_overview(mplcm.cmap_d.values(), sort='alphabetical')
+        cmaps = map(mplcm.get_cmap, mpl_cmaps)
+        create_cmap_overview(cmaps, sort='alphabetical')
 
     # Test if providing all MPL colormap names works
     def test_mpl_cmaps_names(self):
-        create_cmap_overview(mplcm.cmap_d.keys(), sort='lightness')
+        create_cmap_overview(mpl_cmaps, sort='lightness')
 
     # Test if the lightness profiles can be plotted
     def test_lightness_profiles(self):
-        create_cmap_overview(mplcm.cmap_d.keys(), plot_profile=True)
+        create_cmap_overview(mpl_cmaps, plot_profile=True)
 
     # Test if providing a custom dict of colormaps works
     def test_dict(self):
@@ -115,11 +119,12 @@ class Test_import_cmaps(object):
     def test_CMasher_cmaps(self, cm_name):
         # Check if provided cm_name is registered in CMasher and MPL
         for name in (cm_name, cm_name+'_r'):
-            cmr_cmap = getattr(cmr, name, None)
-            mpl_cmap = mplcm.cmap_d.get('cmr.'+name, None)
+            cmr_cmap = getattr(cmr, name)
+            mpl_cmap = mplcm.get_cmap('cmr.'+name)
             assert isinstance(cmr_cmap, LC)
             assert isinstance(mpl_cmap, LC)
-            assert getattr(cmrcm, name, None) is cmr_cmap
+            assert getattr(cmrcm, name) is cmr_cmap
+            assert cmrcm.cmap_d.get(name) is cmr_cmap
             assert np.allclose(cmr_cmap.colors, mpl_cmap.colors)
 
     # Test if providing a cmap .txt-file works
@@ -144,7 +149,8 @@ class Test_import_cmaps(object):
         name = 'cyclic'
         import_cmaps(path.join(dirpath, 'data/cm_{0}.txt'.format(name)))
         for cmap in [name, name+'_r', name+'_shifted', name+'_shifted_r']:
-            assert 'cmr.'+cmap in mplcm.cmap_d
+            assert 'cmr.'+cmap in plt.colormaps()
+            assert getattr(cmrcm, cmap, None) is not None
             assert cmap in cmrcm.cmap_d
             assert cmap in cmrcm.cmap_cd['cyclic']
 

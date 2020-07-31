@@ -14,10 +14,10 @@ Note that perceptually uniform sequential colormaps should show no curves or cha
 
     # Import packages
     import cmasher as cmr
-    import matplotlib as mpl
+    import matplotlib.pyplot as plt
 
     # Obtain list of all colormaps in MPL
-    cmaps = list(mpl.cm.cmap_d.keys())
+    cmaps = plt.colormaps()
 
     # Create colormap overview of all colormaps in MPL
     cmr.create_cmap_overview(cmaps, plot_profile=True, sort='lightness')
