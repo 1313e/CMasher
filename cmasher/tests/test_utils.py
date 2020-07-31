@@ -202,6 +202,11 @@ class Test_set_cmap_legend_entry(object):
 
 # Pytest class for take_cmap_colors()-function
 class Test_take_cmap_colors(object):
+    # Test if all colors can be taken from the 'rainforest' colormap
+    def test_rainforest_all(self):
+        assert np.allclose(take_cmap_colors('cmr.rainforest', None),
+                           cmr.rainforest.colors)
+
     # Test if five colors can be taken from the 'rainforest' colormap
     def test_rainforest_five(self):
         assert np.allclose(take_cmap_colors('cmr.rainforest', 5),

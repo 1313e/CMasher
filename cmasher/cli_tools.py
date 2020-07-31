@@ -171,11 +171,41 @@ def main():
     # Set defaults for cmap_type_parser
     cmap_type_parser.set_defaults(func=cli_cmap_type)
 
+    # Obtain the optional default arguments of take_cmap_colors
+    defaults = cmr.take_cmap_colors.__kwdefaults__
+
+    # Create a return_fmt parser
+    return_fmt_parent_parser = argparse.ArgumentParser(add_help=False)
+
+    # Add 'fmt' optional argument
+    return_fmt_parent_parser.add_argument(
+        '--fmt',
+        help="Format to return colors in",
+        action='store',
+        default=defaults['return_fmt'],
+        choices=['float', 'norm', 'int', '8bit', 'str', 'hex'],
+        type=str,
+        dest='return_fmt')
+
+    # RGB_TABLE COMMAND
+    # Add rgb_table subparser
+    rgb_table_parser = subparsers.add_parser(
+        'rgb_table',
+        parents=[cmap_parent_parser, return_fmt_parent_parser],
+        description="Retrieve the RGB values of the provided `cmap`",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Set defaults for rgb_table_parser
+    rgb_table_parser.set_defaults(func=cli_take_cmap_colors,
+                                  n_colors=None,
+                                  cmap_range=defaults['cmap_range'])
+
     # TAKE_CMAP_COLORS COMMAND
     # Add take_cmap_colors subparser
     take_cmap_colors_parser = subparsers.add_parser(
         'take_cmap_colors',
-        parents=[cmap_parent_parser],
+        parents=[cmap_parent_parser, return_fmt_parent_parser],
         description=e13.get_main_desc(cmr.take_cmap_colors),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True)
@@ -188,9 +218,6 @@ def main():
         action='store',
         type=int)
 
-    # Obtain the optional default arguments
-    defaults = cmr.take_cmap_colors.__kwdefaults__
-
     # Add 'cmap_range' optional argument
     take_cmap_colors_parser.add_argument(
         '--range',
@@ -202,16 +229,6 @@ def main():
         default=defaults['cmap_range'],
         type=float,
         dest='cmap_range')
-
-    # Add 'fmt' optional argument
-    take_cmap_colors_parser.add_argument(
-        '--fmt',
-        help="Format to return colors in",
-        action='store',
-        default=defaults['return_fmt'],
-        choices=['float', 'norm', 'int', '8bit', 'hex', 'str'],
-        type=str,
-        dest='return_fmt')
 
     # Set defaults for take_cmap_colors_parser
     take_cmap_colors_parser.set_defaults(func=cli_take_cmap_colors)

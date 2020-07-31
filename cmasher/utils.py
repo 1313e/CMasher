@@ -871,8 +871,9 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
     cmap : str or :obj:`~matplotlib.colors.Colormap` object
         The registered name of the colormap in :mod:`matplotlib.cm` or its
         corresponding :obj:`~matplotlib.colors.Colormap` object.
-    N : int
+    N : int or None
         The number of colors to take from the provided `cmap`.
+        If *None*, take all colors in `cmap` within the provided `cmap_range`.
 
     Optional
     --------
@@ -944,7 +945,10 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
 
     # Pick colors
     cmap_range = np.array(cmap_range)*(cmap.N-1)
-    index = np.array(np.rint(np.linspace(*cmap_range, num=N)), dtype=int)
+    if N is None:
+        index = np.arange(cmap_range[0], cmap_range[1]+1, dtype=int)
+    else:
+        index = np.array(np.rint(np.linspace(*cmap_range, num=N)), dtype=int)
     colors = cmap(index)
 
     # Convert colors to proper format
