@@ -168,6 +168,11 @@ def create_cmap_mod(cmap, *, save_dir='.'):
         The path to the directory where the module must be saved.
         By default, the current directory is used.
 
+    Returns
+    -------
+    cmap_path : str
+        The path to the Python file containing the colormap module.
+
     Example
     -------
     Creating a standalone Python module of the 'rainforest' colormap::
@@ -186,8 +191,6 @@ def create_cmap_mod(cmap, *, save_dir='.'):
     """
 
     # Get absolute value to provided save_dir
-    if save_dir is None:
-        save_dir = '.'
     save_dir = path.abspath(save_dir)
 
     # Remove any 'cmr.' prefix from provided cmap
@@ -247,9 +250,15 @@ def create_cmap_mod(cmap, *, save_dir='.'):
         register_cmap(cmap=cmap_r)
         """).format(get_cmap_type(cmap), array_str, name)
 
+    # Obtain the path to the module
+    cmap_path = path.join(save_dir, "{0}.py".format(name))
+
     # Create Python module
-    with open(path.join(save_dir, "{0}.py".format(name)), 'w') as f:
+    with open(cmap_path, 'w') as f:
         f.write(cm_py_file[1:])
+
+    # Return cmap_path
+    return(cmap_path)
 
 
 # This function creates an overview plot of all colormaps specified

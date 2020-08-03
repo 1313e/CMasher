@@ -111,7 +111,12 @@ def cli_cmap_colors():
 
 # This function handles the 'mkcmod' subcommand
 def cli_mk_cmod():
-    cmr.create_cmap_mod(ARGS.cmap, save_dir=ARGS.dir)
+    # Create cmap module
+    cmap_path = cmr.create_cmap_mod(ARGS.cmap, save_dir=ARGS.dir)
+
+    # Print on commandline that module has been created
+    print("Created standalone colormap module of %r in %r."
+          % (ARGS.cmap, cmap_path))
 
 
 # %% FUNCTION DEFINITIONS

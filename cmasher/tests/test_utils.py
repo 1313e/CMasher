@@ -2,6 +2,7 @@
 
 # %% IMPORTS
 # Built-in imports
+from importlib.util import module_from_spec, spec_from_file_location
 import os
 from os import path
 
@@ -18,8 +19,8 @@ import pytest
 import cmasher as cmr
 from cmasher import cm as cmrcm
 from cmasher.utils import (
-    create_cmap_overview, get_bibtex, get_sub_cmap, import_cmaps,
-    set_cmap_legend_entry, take_cmap_colors)
+    create_cmap_mod, create_cmap_overview, get_bibtex, get_sub_cmap,
+    import_cmaps, set_cmap_legend_entry, take_cmap_colors)
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
@@ -42,6 +43,36 @@ mpl_cmaps = plt.colormaps()
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
+# Pytest class for create_cmap_mod
+class Test_create_cmap_mod(object):
+    # Test if a standalone module of rainforest can be created
+    def test_standalone_rainforest(self):
+        # Obtain the currently registered version of rainforest
+        cmap_old = mplcm.get_cmap('cmr.rainforest')
+
+        # Create standalone module for rainforest
+        cmap_path = create_cmap_mod('rainforest')
+
+        # Try to import this module
+        spec = spec_from_file_location('rainforest', cmap_path)
+        mod = module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        # Check if the colormap in MPL has been updated
+        cmap_new = mplcm.get_cmap('cmr.rainforest')
+        assert cmap_new is mod.cmap
+        assert cmap_old is not cmap_new
+
+        # Check if the values in both colormaps are the same
+        assert np.allclose(cmap_old.colors, cmap_new.colors)
+
+    # Test if providing an invalid colormap name fails
+    def test_invalid_cmap(self):
+        # Check if a ValueError is raised
+        with pytest.raises(ValueError):
+            create_cmap_mod('this is an incorrect colormap name')
+
+
 # Pytest class for create_cmap_overview
 class Test_create_cmap_overview(object):
     # Test if default arguments work
