@@ -603,20 +603,11 @@ def get_sub_cmap(cmap, start, stop):
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
-    # Check if provided start and stop are valid
-    if not ((0 <= start <= 1) and (0 <= stop <= 1)):
-        raise ValueError("Input arguments 'start' and 'stop' do not contain "
-                         "normalized values!")
-
-    # Convert start and stop to their integer indices
-    start = int(np.floor(start*cmap.N))
-    stop = int(np.ceil(stop*cmap.N))
-
-    # Obtain all colors that are required for the new colormap
-    colors = cmap(np.arange(start, stop))[:, :3].tolist()
+    # Obtain colors
+    colors = take_cmap_colors(cmap, None, cmap_range=(start, stop))
 
     # Create new colormap
-    sub_cmap = LC(colors, cmap.name+'_sub', N=stop-start)
+    sub_cmap = LC(colors, cmap.name+'_sub', N=len(colors))
 
     # Return sub_cmap
     return(sub_cmap)
@@ -920,7 +911,8 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
 
     Requesting colors in a specific range::
 
-        >>> take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), return_fmt='hex')
+        >>> take_cmap_colors('cmr.rainforest', 5, cmap_range=(0.2, 0.8),
+                             return_fmt='hex')
         ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A']
 
     Note
@@ -943,12 +935,15 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
         raise ValueError("Input argument 'cmap_range' does not contain "
                          "normalized values!")
 
+    # Extract and convert start and stop to their integer indices (inclusive)
+    start = int(np.floor(cmap_range[0]*cmap.N))
+    stop = int(np.ceil(cmap_range[1]*cmap.N))-1
+
     # Pick colors
-    cmap_range = np.array(cmap_range)*(cmap.N-1)
     if N is None:
-        index = np.arange(cmap_range[0], cmap_range[1]+1, dtype=int)
+        index = np.arange(start, stop+1, dtype=int)
     else:
-        index = np.array(np.rint(np.linspace(*cmap_range, num=N)), dtype=int)
+        index = np.array(np.rint(np.linspace(start, stop, num=N)), dtype=int)
     colors = cmap(index)
 
     # Convert colors to proper format
