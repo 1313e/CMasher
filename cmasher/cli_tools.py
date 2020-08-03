@@ -33,8 +33,14 @@ class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
         if action.help is not argparse.SUPPRESS:
             # Check if this action is a subparser's action
             if isinstance(action, argparse._SubParsersAction):
-                # If so, loop over all subcommands defined in the action
-                for name, subparser in action.choices.items():
+                # If so, sort action.choices on name
+                names = sorted(action.choices.keys())
+
+                # Loop over all subcommands defined in the action
+                for name in names:
+                    # Obtain corresponding subparser
+                    subparser = action.choices[name]
+
                     # Format the description of this subcommand and add it
                     self._add_item(self.format_subcommands,
                                    [name, subparser.description])
@@ -85,7 +91,7 @@ def cli_cmap_type():
 
 
 # This function handles the 'take_cmap_colors' subcommand
-def cli_take_cmap_colors():
+def cli_cmap_colors():
     # Import cmap packages
     import_cmap_pkgs()
 
@@ -101,6 +107,11 @@ def cli_take_cmap_colors():
         np.savetxt(sys.stdout, colors, '%i')
     else:
         np.savetxt(sys.stdout, colors, '%s')
+
+
+# This function handles the 'mkcmod' subcommand
+def cli_mk_cmod():
+    cmr.create_cmap_mod(ARGS.cmap, save_dir=ARGS.dir)
 
 
 # %% FUNCTION DEFINITIONS
@@ -151,7 +162,7 @@ def main():
     # Add 'cmap' argument
     cmap_parent_parser.add_argument(
         'cmap',
-        help="Name of colormap to use as registered in matplotlib",
+        help="Name of colormap to use, as registered in *matplotlib*",
         metavar='CMAP',
         action='store',
         type=str)
@@ -166,6 +177,18 @@ def main():
 
     # Set defaults for bibtex_parser
     bibtex_parser.set_defaults(func=cli_bibtex)
+
+    # CMAP_TYPE COMMAND
+    # Add cmap_type subparser
+    cmap_type_parser = subparsers.add_parser(
+        'cmtype',
+        parents=[cmap_parent_parser],
+        description=e13.get_main_desc(cmr.get_cmap_type),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Set defaults for cmap_type_parser
+    cmap_type_parser.set_defaults(func=cli_cmap_type)
 
     # CMAP_COLORS COMMAND
     # Obtain the optional default arguments of take_cmap_colors
@@ -186,7 +209,7 @@ def main():
 
     # Add cmap_colors subparser
     cmap_colors_parser = subparsers.add_parser(
-        'cmap_colors',
+        'cmcolors',
         parents=[cmap_parent_parser, return_fmt_parent_parser],
         description=e13.get_main_desc(cmr.take_cmap_colors),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -213,33 +236,48 @@ def main():
         dest='cmap_range')
 
     # Set defaults for cmap_colors_parser
-    cmap_colors_parser.set_defaults(func=cli_take_cmap_colors)
-
-    # CMAP_TYPE COMMAND
-    # Add cmap_type subparser
-    cmap_type_parser = subparsers.add_parser(
-        'cmap_type',
-        parents=[cmap_parent_parser],
-        description=e13.get_main_desc(cmr.get_cmap_type),
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        add_help=True)
-
-    # Set defaults for cmap_type_parser
-    cmap_type_parser.set_defaults(func=cli_cmap_type)
+    cmap_colors_parser.set_defaults(func=cli_cmap_colors)
 
     # RGB_TABLE COMMAND
     # Add rgb_table subparser
     rgb_table_parser = subparsers.add_parser(
-        'rgb_table',
+        'rgbtable',
         parents=[cmap_parent_parser, return_fmt_parent_parser],
         description="Retrieves the RGB values of the provided `cmap`.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True)
 
     # Set defaults for rgb_table_parser
-    rgb_table_parser.set_defaults(func=cli_take_cmap_colors,
+    rgb_table_parser.set_defaults(func=cli_cmap_colors,
                                   ncolors=None,
                                   cmap_range=defaults['cmap_range'])
+
+    # MK_CMOD COMMAND
+    # Add mk_cmod subparser
+    mk_cmod_parser = subparsers.add_parser(
+        'mkcmod',
+        description=e13.get_main_desc(cmr.create_cmap_mod),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Add 'cmap' argument
+    mk_cmod_parser.add_argument(
+        'cmap',
+        help="Name of *CMasher* colormap to create standalone module for",
+        metavar='CMAP',
+        action='store',
+        type=str)
+
+    # Add 'dir' optional argument
+    mk_cmod_parser.add_argument(
+        '-d', '--dir',
+        help="Path to directory where the module must be saved",
+        action='store',
+        default=cmr.create_cmap_mod.__kwdefaults__['save_dir'],
+        type=str)
+
+    # Set defaults for mk_cmod_parser
+    mk_cmod_parser.set_defaults(func=cli_mk_cmod)
 
     # Parse the arguments
     global ARGS

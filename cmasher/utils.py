@@ -30,8 +30,8 @@ import numpy as np
 from cmasher import cm as cmrcm
 
 # All declaration
-__all__ = ['create_cmap_overview', 'get_bibtex', 'get_cmap_type',
-           'get_sub_cmap', 'import_cmaps', 'register_cmap',
+__all__ = ['create_cmap_mod', 'create_cmap_overview', 'get_bibtex',
+           'get_cmap_type', 'get_sub_cmap', 'import_cmaps', 'register_cmap',
            'set_cmap_legend_entry', 'take_cmap_colors']
 
 
@@ -145,6 +145,113 @@ def _get_cmap_lightness_rank(cmap):
 
 
 # %% FUNCTIONS
+# This function creates a standalone module of a CMasher colormap
+def create_cmap_mod(cmap, *, save_dir='.'):
+    """
+    Creates a standalone Python module of the provided *CMasher* `cmap` and
+    saves it in the given `save_dir` as '`cmap`.py'.
+
+    A standalone colormap module can be used to quickly share a colormap with
+    someone without adding the *CMasher* dependency.
+    Importing the creating module allows the colormap to be used in the same
+    way as usual through *MPL* (including the 'cmr.' prefix).
+
+    Parameters
+    ----------
+    cmap : str
+        The name of the *CMasher* colormap a standalone Python module must be
+        made for. An added 'cmr.' prefix will be ignored.
+
+    Optional
+    --------
+    save_dir : str. Default: '.'
+        The path to the directory where the module must be saved.
+        By default, the current directory is used.
+
+    Example
+    -------
+    Creating a standalone Python module of the 'rainforest' colormap::
+
+        >>> create_cmap_mod('rainforest')
+
+    One can now import the 'rainforest' colormap in any script by moving the
+    created 'rainforest.py' file to the proper working directory and importing
+    it with ``import rainforest``.
+
+    Note
+    ----
+    Unlike other *CMasher* utility functions, `cmap` solely accepts names of
+    colormaps that are registered in *CMasher* (:mod:`cmasher.cm`).
+
+    """
+
+    # Get absolute value to provided save_dir
+    if save_dir is None:
+        save_dir = '.'
+    save_dir = path.abspath(save_dir)
+
+    # Remove any 'cmr.' prefix from provided cmap
+    name = cmap.replace('cmr.', '')
+
+    # Obtain the CMasher colormap associated with the provided cmap
+    cmap = cmrcm.cmap_d.get(name, None)
+
+    # If cmap is None, raise error
+    if cmap is None:
+        raise ValueError("Input argument 'cmap' is not a valid CMasher "
+                         "colormap (%r)!" % (name))
+
+    # Obtain the RGB tuples of provided cmap
+    rgb = np.array(cmap.colors)
+
+    # Convert RGB values to string
+    array_str = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
+                                separator=', ', threshold=rgb.size,
+                                precision=8)
+
+    # Remove all whitespaces before commas
+    for i in range(8, 0, -1):
+        array_str = array_str.replace(' '*i+', ', '0'*i+', ')
+        array_str = array_str.replace(' '*i+']', '0'*i+']')
+
+    # Create Python module template and add obtained RGB data to it
+    cm_py_file = dedent("""
+        # %% IMPORTS
+        # Package imports
+        from matplotlib.cm import register_cmap
+        from matplotlib.colors import ListedColormap
+
+        # All declaration
+        __all__ = ['cmap']
+
+        # Author declaration
+        __author__ = "Ellert van der Velden (@1313e)"
+
+        # Package declaration
+        __package__ = 'cmasher'
+
+
+        # %% GLOBALS AND DEFINITIONS
+        # Type of this colormap
+        cm_type = '{0}'
+
+        # RGB-values of this colormap
+        cm_data = {1}
+
+        # Create ListedColormap object for this colormap
+        cmap = ListedColormap(cm_data, name='cmr.{2}', N=len(cm_data))
+        cmap_r = cmap.reversed()
+
+        # Register (reversed) cmap in MPL
+        register_cmap(cmap=cmap)
+        register_cmap(cmap=cmap_r)
+        """).format(get_cmap_type(cmap), array_str, name)
+
+    # Create Python module
+    with open(path.join(save_dir, "{0}.py".format(name)), 'w') as f:
+        f.write(cm_py_file[1:])
+
+
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                          sort='alphabetical', plot_profile=False,
@@ -886,8 +993,8 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
     colors : list of tuple, str
         The colors that were taken from the provided `cmap`.
 
-    Example
-    -------
+    Examples
+    --------
     Taking five equally spaced colors from the 'rainforest' colormap::
 
         >>> take_cmap_colors('cmr.rainforest', 5)

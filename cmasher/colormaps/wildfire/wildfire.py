@@ -14,8 +14,8 @@ __package__ = 'cmasher'
 
 
 # %% GLOBALS AND DEFINITIONS
-# Type of this colormap (according to viscm)
-cm_type = "diverging"
+# Type of this colormap
+cm_type = 'diverging'
 
 # RGB-values of this colormap
 cm_data = [[5.74852627e-01, 9.92750637e-01, 1.64217519e-01],
@@ -531,7 +531,7 @@ cm_data = [[5.74852627e-01, 9.92750637e-01, 1.64217519e-01],
            [9.89372931e-01, 8.63015909e-01, 1.23333213e-01]]
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name="cmr.wildfire", N=len(cm_data))
+cmap = ListedColormap(cm_data, name='cmr.wildfire', N=len(cm_data))
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL

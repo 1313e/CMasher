@@ -15,7 +15,8 @@ import viscm
 
 # CMasher imports
 from cmasher.cm import cmap_cd
-from cmasher.utils import create_cmap_overview, get_cmap_type, import_cmaps
+from cmasher.utils import (
+    create_cmap_mod, create_cmap_overview, get_cmap_type, register_cmap)
 
 
 # %% GLOBALS
@@ -52,50 +53,11 @@ if(__name__ == '__main__'):
     rgb, _ = v.cmap_model.get_sRGB()
     cmtype = cmap.cmtype
 
-    # Convert RGB values to string
-    array_str = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
-                                separator=', ', threshold=rgb.size,
-                                precision=8)
-
-    # Remove all whitespaces before commas
-    for i in range(8, 0, -1):
-        array_str = array_str.replace(' '*i+', ', '0'*i+', ')
-        array_str = array_str.replace(' '*i+']', '0'*i+']')
+    # Register this colormap in CMasher
+    register_cmap(name, rgb)
 
     # Export as .py-file
-    cm_py_file = dedent("""
-        # %% IMPORTS
-        # Package imports
-        from matplotlib.cm import register_cmap
-        from matplotlib.colors import ListedColormap
-
-        # All declaration
-        __all__ = ['cmap']
-
-        # Author declaration
-        __author__ = "Ellert van der Velden (@1313e)"
-
-        # Package declaration
-        __package__ = 'cmasher'
-
-
-        # %% GLOBALS AND DEFINITIONS
-        # Type of this colormap (according to viscm)
-        cm_type = "{0}"
-
-        # RGB-values of this colormap
-        cm_data = {1}
-
-        # Create ListedColormap object for this colormap
-        cmap = ListedColormap(cm_data, name="cmr.{2}", N=len(cm_data))
-        cmap_r = cmap.reversed()
-
-        # Register (reversed) cmap in MPL
-        register_cmap(cmap=cmap)
-        register_cmap(cmap=cmap_r)
-        """).format(cmtype, array_str, name)
-    with open("{0}/{0}.py".format(name), 'w') as f:
-        f.write(cm_py_file[1:])
+    create_cmap_mod(name, save_dir=name)
 
     # Create colormap figure
     fig, ax = plt.subplots(frameon=False, figsize=(12.8, 3.2))
@@ -114,9 +76,6 @@ if(__name__ == '__main__'):
     # Create txt-file with 8-bit colormap data
     rgb_8bit = np.rint(rgb*255)
     np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
-
-    # Load in all colormaps currently defined
-    import_cmaps('.')
 
     # Make new colormap overview
     create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
