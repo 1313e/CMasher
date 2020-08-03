@@ -77,11 +77,18 @@ def cli_bibtex():
 
 # This function handles the 'cmap_type' subcommand
 def cli_cmap_type():
+    # Import cmap packages
+    import_cmap_pkgs()
+
+    # Print cmap type
     print(cmr.get_cmap_type(ARGS.cmap))
 
 
 # This function handles the 'take_cmap_colors' subcommand
 def cli_take_cmap_colors():
+    # Import cmap packages
+    import_cmap_pkgs()
+
     # Obtain the colors
     colors = cmr.take_cmap_colors(ARGS.cmap, ARGS.ncolors,
                                   cmap_range=ARGS.cmap_range,
@@ -97,16 +104,8 @@ def cli_take_cmap_colors():
 
 
 # %% FUNCTION DEFINITIONS
-
-
-# %% MAIN FUNCTION
-def main():
-    """
-    This is the main function of the CLI and is called whenever `cmr` is
-    invoked from the command-line.
-
-    """
-
+# This function attempts to import a collection of packages with colormaps
+def import_cmap_pkgs():
     # Define list of packages with colormaps
     cmap_pkgs = ['cmocean', 'colorcet', 'palettable']
 
@@ -116,6 +115,15 @@ def main():
             import_module(cmap_pkg)
         except ImportError:
             pass
+
+
+# %% MAIN FUNCTION
+def main():
+    """
+    This is the main function of the CLI and is called whenever `cmr` is
+    invoked from the command-line.
+
+    """
 
     # Initialize argparser
     parser = argparse.ArgumentParser(
