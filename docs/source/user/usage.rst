@@ -150,7 +150,7 @@ The example below shows the script used to create a line plot with 5 colors take
     fig = plt.figure()
 
     # Take 5 colors from rainforest in [0.15, 0.85] range in HEX
-    colors = cmr.take_cmap_colors('cmr.rainforest', 5, (0.15, 0.85), return_hex=True)
+    colors = cmr.take_cmap_colors('cmr.rainforest', 5, cmap_range=(0.15, 0.85), return_fmt='hex')
 
     # Create 5 line plots, each using a different color
     for i, color in enumerate(colors):
