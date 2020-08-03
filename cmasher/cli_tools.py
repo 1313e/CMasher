@@ -151,7 +151,7 @@ def main():
     # Add 'cmap' argument
     cmap_parent_parser.add_argument(
         'cmap',
-        help="Colormap to use",
+        help="Name of colormap to use as registered in matplotlib",
         metavar='CMAP',
         action='store',
         type=str)

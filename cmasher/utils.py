@@ -173,8 +173,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         overview.
         If 'alphabetical', the colormaps are sorted alphabetically on their
         name.
-        If 'lightness', the colormaps are sorted on their starting lightness
-        and their lightness range.
+        If 'lightness', the colormaps are sorted based on their lightness
+        profile.
         If function, a function definition that takes a
         :obj:`~matplotlib.colors.Colormap` object and returns the sorted
         position of that colormap.
@@ -185,9 +185,9 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         its gray-scale version and `plot_profile` is used for setting the alpha
         (opacity) value.
         If `plot_profile` is *True*, it will be set to `0.25`.
-    title : str or False. Default: "Colormap Overview"
+    title : str or None. Default: "Colormap Overview"
         String to be used as the title of the colormap overview.
-        If empty or *False*, no title will be used.
+        If empty or *None*, no title will be used.
 
     Notes
     -----
@@ -319,6 +319,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     height = 0.4*(len(cmaps_list)+bool(title))
     fig, axes = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
                              ncols=2)
+
+    # Add title if requested and adjust subplot positioning
     if title:
         fig.subplots_adjust(top=(1-0.288/height), bottom=0.048/height,
                             left=0.2, right=0.99, wspace=0.05)
