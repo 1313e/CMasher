@@ -153,8 +153,8 @@ def create_cmap_mod(cmap, *, save_dir='.'):
 
     A standalone colormap module can be used to quickly share a colormap with
     someone without adding the *CMasher* dependency.
-    Importing the creating module allows the colormap to be used in the same
-    way as usual through *MPL* (including the 'cmr.' prefix).
+    Importing the created module allows the colormap to be used in the same way
+    as usual through *MPL* (including the 'cmr.' prefix).
 
     Parameters
     ----------

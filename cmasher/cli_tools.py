@@ -134,12 +134,15 @@ def import_cmap_pkgs():
         # If Windows, split variable at semicolons
         if sys.platform.startswith('win'):
             env_pkgs = env_pkgs.split(';')
-        # Else, split variable at colons
+        # Else, if UNIX, split variable at colons
         elif sys.platform.startswith(('darwin', 'linux')):
             env_pkgs = env_pkgs.split(':')
+        # Else, ignore the variable
+        else:
+            env_pkgs = []
 
         # Add pkgs
-        cmap_pkgs.add(env_pkgs)
+        cmap_pkgs.update(env_pkgs)
 
     # Attempt to import each package
     for cmap_pkg in cmap_pkgs:

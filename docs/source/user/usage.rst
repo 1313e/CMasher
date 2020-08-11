@@ -42,6 +42,32 @@ Below is a list of pages containing several colormap overview examples with thei
     cmap_overviews/seq_mpl_cmaps
 
 
+Command-line interface (CLI)
+----------------------------
+Although *CMasher* is written in Python, some of its utility functions do not require the interpreter in order to be used properly.
+For that reason, *CMasher* provides a CLI that allows for these utility functions to be called directly from the command-line.
+This CLI can be accessed with the command ``cmr`` after installing *CMasher*.
+The table below shows which CLI commands are available and what utility function in *CMasher* they correspond to.
+
++--------+-------------------------------------------------------+
+|Command |Function                                               |
++========+=======================================================+
+|bibtex  |:func:`~cmasher.get_bibtex`                            |
++--------+-------------------------------------------------------+
+|cmcolors|:func:`~cmasher.take_cmap_colors`                      |
++--------+-------------------------------------------------------+
+|cmtype  |:func:`~cmasher.get_cmap_type`                         |
++--------+-------------------------------------------------------+
+|mkcmod  |:func:`~cmasher.create_cmap_mod`                       |
++--------+-------------------------------------------------------+
+|rgbtable|:func:`~cmasher.take_cmap_colors` with :pycode:`N=None`|
++--------+-------------------------------------------------------+
+
+Except for the `mkcmod` command, the commands print their results directly to the console using the formatting that was requested (if applicable).
+Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr bibtex > bibliography.bib`` to save the BibTeX entry in a ``.bib``-file on UNIX-systems).
+All functionality that is usually available for the listed functions within the interpreter, are also available from the command-line.
+
+
 Custom colormaps
 ----------------
 *CMasher* allows for custom colormaps to be imported with the :func:`~cmasher.import_cmaps` function (which is executed automatically on the `cmasher/colormaps`_ directory when *CMasher* is imported).
