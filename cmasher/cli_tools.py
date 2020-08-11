@@ -4,6 +4,7 @@
 # Built-in imports
 import argparse
 from importlib import import_module
+import os
 import sys
 
 # Package imports
@@ -122,8 +123,23 @@ def cli_mk_cmod():
 # %% FUNCTION DEFINITIONS
 # This function attempts to import a collection of packages with colormaps
 def import_cmap_pkgs():
-    # Define list of packages with colormaps
-    cmap_pkgs = ['cmocean', 'colorcet', 'palettable']
+    # Define set of packages with colormaps
+    cmap_pkgs = {'cmocean', 'colorcet', 'palettable'}
+
+    # Obtain packages from CMR_CMAP_PKGS environment variable
+    env_pkgs = os.environ.get('CMR_CMAP_PKGS', None)
+
+    # Add env_pkgs to cmap_pkgs if it is not empty
+    if env_pkgs is not None:
+        # If Windows, split variable at semicolons
+        if sys.platform.startswith('win'):
+            env_pkgs = env_pkgs.split(';')
+        # Else, split variable at colons
+        elif sys.platform.startswith(('darwin', 'linux')):
+            env_pkgs = env_pkgs.split(':')
+
+        # Add pkgs
+        cmap_pkgs.add(env_pkgs)
 
     # Attempt to import each package
     for cmap_pkg in cmap_pkgs:
