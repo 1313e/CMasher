@@ -2,10 +2,10 @@
 check-manifest
 cmocean>=2.0
 pyqt5==5.12.*
-pytest>=4.6.0,<6.0.0
+pytest>=4.6.0
 pytest-cov
 pytest-mpl
-pytest-pep8
+pytest-flake8
 readme_renderer[md]
 scipy>=1.0.0
 setuptools>=38.6.0

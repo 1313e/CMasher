@@ -58,8 +58,8 @@ class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
 
         # Transform name to the proper formatting
         name = "{0}{1: <{2}}{3}".format(
-                ' '*self._current_indent, name, name_width,
-                '  ' if(len(name) <= name_width) else '\n'+' '*help_position)
+            ' '*self._current_indent, name, name_width,
+            '  ' if(len(name) <= name_width) else '\n'+' '*help_position)
 
         # Split the lines of the subcommand description
         desc_lines = self._split_lines(description, help_width)
