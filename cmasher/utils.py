@@ -3,7 +3,7 @@
 """
 Utils
 =====
-Utility functions required for registering all defined scientific colormaps.
+Utility functions for registering and manipulating colormaps in various ways.
 
 """
 
