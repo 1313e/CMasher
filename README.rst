@@ -2,7 +2,7 @@
 
 *CMasher*: Scientific colormaps for making accessible, informative and *cmashing* plots
 =======================================================================================
-The *CMasher* package provides a collection of scientific colormaps to be used by different *Python* packages and projects, mainly in combination with `matplotlib`_, showcased in the `online documentation`_.
+The *CMasher* package provides a collection of scientific colormaps and utility functions to be used by different *Python* packages and projects, mainly in combination with `matplotlib`_, showcased in the `online documentation`_.
 The colormaps in *CMasher* are all designed to be perceptually uniform sequential using the `viscm`_ package; most of them are color-vision deficiency friendly; and they cover a wide range of different color combinations to accommodate for most applications.
 It offers several alternatives to commonly used colormaps, like *chroma* and *rainforest* for *jet*; *sunburst* for *hot*; *neutral* for *binary*; and *fusion* and *redshift* for *coolwarm*.
 If you cannot find your ideal colormap, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
@@ -75,13 +75,13 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
     plt.scatter(x, y, c=z, cmap=cmap, s=300)
     plt.show()
 
-For other use-cases, see the `online documentation`_.
+For other use-cases, including an overview of *CMasher*'s utility functions, see the `online documentation`_.
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Latest Release
-.. |Python| image:: https://img.shields.io/badge/Python-2.7%20%7C%203.5%2B-blue?logo=python&logoColor=white
+.. |Python| image:: https://img.shields.io/badge/Python-3.5%2B-blue?logo=python&logoColor=white
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Python Versions
 .. |Travis| image:: https://img.shields.io/travis/com/1313e/CMasher/master.svg?logo=travis%20ci&logoColor=white&label=Travis%20CI

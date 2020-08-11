@@ -14,8 +14,8 @@ __package__ = 'cmasher'
 
 
 # %% GLOBALS AND DEFINITIONS
-# Type of this colormap (according to viscm)
-cm_type = "linear"
+# Type of this colormap
+cm_type = 'sequential'
 
 # RGB-values of this colormap
 cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
@@ -276,7 +276,7 @@ cm_data = [[0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
            [5.93577071e-01, 9.89836236e-01, 1.02981048e-01]]
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name="cmr.nuclear", N=len(cm_data))
+cmap = ListedColormap(cm_data, name='cmr.nuclear', N=len(cm_data))
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL

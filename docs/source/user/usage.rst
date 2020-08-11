@@ -8,8 +8,9 @@ Accessing colormaps
 -------------------
 All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package, but *CMasher* also provides a few other ways of using the colormaps.
 
-If one wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can find stand-alone versions of all colormaps, named ``<cmap_name>/<cmap_name>.py``, in the `cmasher/colormaps`_ directory.
-These Python modules can be placed in a local working directory, and can then be imported with :pycode:`import <cmap_name>` (e.g., :pycode:`import rainforest` to register the :ref:`rainforest` colormap in *matplotlib* as ``'cmr.rainforest'``).
+If one wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can create a standalone Python module of the colormap with :func:`~cmasher.create_cmap_mod`.
+The created Python module can be placed in a local working directory, and can then be imported with :pycode:`import <cmap_name>` (e.g., :pycode:`cmr.create_cmap_mod('rainforest')` to create standalone module of :ref:`rainforest`; and `:pycode:`import rainforest` to register the colormap in *matplotlib* as ``'cmr.rainforest'``).
+Premade standalone versions of all colormaps in *CMasher* can be found in the `cmasher/colormaps`_ directory, with the name ``<cmap_name>/<cmap_name>.py``.
 
 Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_8bit.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit RGB values of every colormap, and registering them in the appropriate package in the language manually.
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
@@ -39,6 +40,37 @@ Below is a list of pages containing several colormap overview examples with thei
     cmap_overviews/categories
     cmap_overviews/mpl_cmaps
     cmap_overviews/seq_mpl_cmaps
+
+
+Command-line interface (CLI)
+----------------------------
+Although *CMasher* is written in Python, some of its utility functions do not require the interpreter in order to be used properly.
+For that reason, *CMasher* provides a CLI that allows for these utility functions to be called directly from the command-line.
+This CLI can be accessed with the command ``cmr`` after installing *CMasher*.
+The table below shows which CLI commands are available and what utility function in *CMasher* they correspond to.
+
++--------+-------------------------------------------------------+
+|Command |Function                                               |
++========+=======================================================+
+|bibtex  |:func:`~cmasher.get_bibtex`                            |
++--------+-------------------------------------------------------+
+|cmcolors|:func:`~cmasher.take_cmap_colors`                      |
++--------+-------------------------------------------------------+
+|cmtype  |:func:`~cmasher.get_cmap_type`                         |
++--------+-------------------------------------------------------+
+|mkcmod  |:func:`~cmasher.create_cmap_mod`                       |
++--------+-------------------------------------------------------+
+|rgbtable|:func:`~cmasher.take_cmap_colors` with :pycode:`N=None`|
++--------+-------------------------------------------------------+
+
+Except for the `mkcmod` command, the commands print their results directly to the console using the formatting that was requested (if applicable).
+Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr bibtex > bibliography.bib`` to save the BibTeX entry in a ``.bib``-file on UNIX-systems).
+All functionality that is usually available for the listed functions within the interpreter, are also available from the command-line.
+
+Because it is not possible to import any packages that provide colormaps before using a CLI function, *CMasher* provides the ``CMR_CMAP_PKGS`` environment variable.
+If this variable exists, it should contain a collection of names of packages that must be imported before any CLI function is executed.
+By default, *CMasher* will attempt to import *cmocean*; *colorcet*; and *palettable*.
+Providing names of packages that are not installed will be ignored.
 
 
 Custom colormaps
@@ -150,12 +182,12 @@ The example below shows the script used to create a line plot with 5 colors take
     fig = plt.figure()
 
     # Take 5 colors from rainforest in [0.15, 0.85] range in HEX
-    colors = cmr.take_cmap_colors('cmr.rainforest', 5, (0.15, 0.85), return_hex=True)
+    colors = cmr.take_cmap_colors('cmr.rainforest', 5, cmap_range=(0.15, 0.85), return_fmt='hex')
 
     # Create 5 line plots, each using a different color
     for i, color in enumerate(colors):
         x = 0.1*(i+1)*np.linspace(0, 1, 100)**2
-        plt.plot(x, color=color, label=color.upper())
+        plt.plot(x, color=color, label=color)
 
     # Obtain axes object
     ax = fig.axes[0]

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # %% IMPORTS
-# Future imports
-from __future__ import absolute_import, division, print_function
-
 # Built-in imports
+from importlib.util import module_from_spec, spec_from_file_location
 import os
 from os import path
 
@@ -16,14 +14,13 @@ from matplotlib.colors import ListedColormap as LC
 from matplotlib.legend import Legend
 import numpy as np
 import pytest
-from six import PY2
 
 # CMasher imports
 import cmasher as cmr
 from cmasher import cm as cmrcm
 from cmasher.utils import (
-    create_cmap_overview, get_bibtex, get_sub_cmap, import_cmaps,
-    set_cmap_legend_entry, take_cmap_colors)
+    create_cmap_mod, create_cmap_overview, get_bibtex, get_sub_cmap,
+    import_cmaps, set_cmap_legend_entry, take_cmap_colors)
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
@@ -46,6 +43,36 @@ mpl_cmaps = plt.colormaps()
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
+# Pytest class for create_cmap_mod
+class Test_create_cmap_mod(object):
+    # Test if a standalone module of rainforest can be created
+    def test_standalone_rainforest(self):
+        # Obtain the currently registered version of rainforest
+        cmap_old = mplcm.get_cmap('cmr.rainforest')
+
+        # Create standalone module for rainforest
+        cmap_path = create_cmap_mod('rainforest')
+
+        # Try to import this module
+        spec = spec_from_file_location('rainforest', cmap_path)
+        mod = module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        # Check if the colormap in MPL has been updated
+        cmap_new = mplcm.get_cmap('cmr.rainforest')
+        assert cmap_new is mod.cmap
+        assert cmap_old is not cmap_new
+
+        # Check if the values in both colormaps are the same
+        assert np.allclose(cmap_old.colors, cmap_new.colors)
+
+    # Test if providing an invalid colormap name fails
+    def test_invalid_cmap(self):
+        # Check if a ValueError is raised
+        with pytest.raises(ValueError):
+            create_cmap_mod('this is an incorrect colormap name')
+
+
 # Pytest class for create_cmap_overview
 class Test_create_cmap_overview(object):
     # Test if default arguments work
@@ -135,14 +162,10 @@ class Test_import_cmaps(object):
     def test_cmap_file_8bit(self):
         import_cmaps(path.join(dirpath, 'data/cm_8bit.txt'))
 
-    # Test if providing a cmap .jscm-file works (Py3) or errors (Py2)
+    # Test if providing a cmap .jscm-file works
     def test_cmap_file_jscm(self):
         cmap_path = path.join(dirpath, 'data/cm_rainforest_jscm.jscm')
-        if PY2:
-            with pytest.raises(ValueError):
-                import_cmaps(cmap_path)
-        else:
-            import_cmaps(cmap_path)
+        import_cmaps(cmap_path)
 
     # Test if providing a cyclic colormap works
     def test_cyclic_cmap(self):
@@ -210,6 +233,11 @@ class Test_set_cmap_legend_entry(object):
 
 # Pytest class for take_cmap_colors()-function
 class Test_take_cmap_colors(object):
+    # Test if all colors can be taken from the 'rainforest' colormap
+    def test_rainforest_all(self):
+        assert np.allclose(take_cmap_colors('cmr.rainforest', None),
+                           cmr.rainforest.colors)
+
     # Test if five colors can be taken from the 'rainforest' colormap
     def test_rainforest_five(self):
         assert np.allclose(take_cmap_colors('cmr.rainforest', 5),
@@ -219,17 +247,28 @@ class Test_take_cmap_colors(object):
                             (0.709615979, 0.722863985, 0.0834727592),
                             (1.0, 1.0, 1.0)])
 
+    # Test if their 8-bit RGB values can be requested as well
+    def test_rainforest_five_8bit(self):
+        assert np.allclose(take_cmap_colors('cmr.rainforest', 5,
+                                            return_fmt='int'),
+                           [(0, 0, 0),
+                            (58, 32, 144),
+                            (14, 132, 116),
+                            (181, 184, 21),
+                            (255, 255, 255)])
+
     # Test if their HEX-code values can be requested as well
     def test_rainforest_five_hex(self):
-        assert (take_cmap_colors('cmr.rainforest', 5, return_hex=True) ==
-                ['#000000', '#3a2090', '#0e8474', '#b5b815', '#ffffff'])
+        assert (take_cmap_colors('cmr.rainforest', 5, return_fmt='hex') ==
+                ['#000000', '#3A2090', '#0E8474', '#B5B815', '#FFFFFF'])
 
     # Test if only a subrange can be used for picking colors
     def test_rainforest_sub_five(self):
-        assert (take_cmap_colors('cmr.rainforest', 5, (0.2, 0.8), True) ==
-                ['#3e0374', '#10528a', '#0e8474', '#5cad3c', '#d6bf4a'])
+        assert (take_cmap_colors('cmr.rainforest', 5, cmap_range=(0.2, 0.8),
+                                 return_fmt='hex') ==
+                ['#3E0374', '#10528A', '#0E8474', '#5CAD3C', '#D6BF4A'])
 
     # Test if providing an incorrect range raises an error
     def test_invalid_range(self):
         with pytest.raises(ValueError):
-            take_cmap_colors('cmr.rainforest', 5, (-1, 1.5))
+            take_cmap_colors('cmr.rainforest', 5, cmap_range=(-1, 1.5))
