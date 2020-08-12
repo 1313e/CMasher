@@ -67,7 +67,7 @@ Except for the `mkcmod` command, the commands print their results directly to th
 Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr bibtex > bibliography.bib`` to save the BibTeX entry in a ``.bib``-file on UNIX-systems).
 All functionality that is usually available for the listed functions within the interpreter, are also available from the command-line.
 
-Because it is not possible to import any packages that provide colormaps before using a CLI function, *CMasher* provides the ``CMR_CMAP_PKGS`` environment variable.
+Because it is not possible to import any packages that provide colormaps before using a CLI function, *CMasher* reads the ``CMR_CMAP_PKGS`` environment variable.
 If this variable exists, it should contain a collection of names of packages that must be imported before any CLI function is executed.
 By default, *CMasher* will attempt to import *cmocean*; *colorcet*; and *palettable*.
 Providing names of packages that are not installed will be ignored.
