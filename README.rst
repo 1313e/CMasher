@@ -32,20 +32,26 @@ Installation & Use
 ==================
 How to install
 --------------
-*CMasher* can be easily installed by either cloning the `repository`_ and installing it manually::
+*CMasher* can be easily installed directly from `PyPI`_ with::
+
+    $ pip install cmasher
+
+or `conda-forge`_ with::
+
+    $ conda install -c conda-forge cmasher  # If conda-forge is not set up as a channel
+    $ conda install cmasher                 # If conda-forge is set up as a channel
+
+If required, one can also clone the `repository`_ and install *CMasher* manually::
 
     $ git clone https://github.com/1313e/CMasher
     $ cd CMasher
     $ pip install .
 
-or by installing it directly from `PyPI`_ with::
-
-    $ pip install cmasher
-
 *CMasher* can now be imported as a package with ``import cmasher as cmr``.
 
 .. _repository: https://github.com/1313e/CMasher
 .. _PyPI: https://pypi.org/project/CMasher
+.. _conda-forge: https://anaconda.org/conda-forge/CMasher
 
 Example use
 -----------
