@@ -96,7 +96,7 @@ For other use-cases, including an overview of *CMasher*'s utility functions, see
 .. |Coverage| image:: https://img.shields.io/codecov/c/github/1313e/CMasher/master.svg?logo=codecov&logoColor=white&label=Coverage
     :target: https://codecov.io/gh/1313e/CMasher/branches/master
     :alt: CodeCov - Coverage Status
-.. |JOSS| image:: https://img.shields.io/badge/JOSS-published-brightgreen
+.. |JOSS| image:: https://img.shields.io/badge/JOSS-view-brightgreen
    :target: https://doi.org/10.21105/joss.02004
    :alt: JOSS - Submission Status
 .. |conda-forge| image:: https://img.shields.io/conda/vn/conda-forge/cmasher.svg?logo=conda-forge&logoColor=white
