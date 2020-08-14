@@ -149,7 +149,7 @@ def _get_cmap_lightness_rank(cmap):
 def create_cmap_mod(cmap, *, save_dir='.'):
     """
     Creates a standalone Python module of the provided *CMasher* `cmap` and
-    saves it in the given `save_dir` as '`cmap`.py'.
+    saves it in the given `save_dir` as '<`cmap`>.py'.
 
     A standalone colormap module can be used to quickly share a colormap with
     someone without adding the *CMasher* dependency.

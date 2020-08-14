@@ -218,11 +218,23 @@ def main():
     # Obtain the optional default arguments of take_cmap_colors
     defaults = cmr.take_cmap_colors.__kwdefaults__
 
-    # Create a return_fmt parser
-    return_fmt_parent_parser = argparse.ArgumentParser(add_help=False)
+    # Create a take_colors parser
+    take_colors_parent_parser = argparse.ArgumentParser(add_help=False)
+
+    # Add 'cmap_range' optional argument
+    take_colors_parent_parser.add_argument(
+        '--range',
+        help=("Normalized value range in the colormap from which colors should"
+              " be taken"),
+        metavar=('LOWER', 'UPPER'),
+        action='store',
+        nargs=2,
+        default=defaults['cmap_range'],
+        type=float,
+        dest='cmap_range')
 
     # Add 'fmt' optional argument
-    return_fmt_parent_parser.add_argument(
+    take_colors_parent_parser.add_argument(
         '--fmt',
         help="Format to return colors in",
         action='store',
@@ -234,7 +246,7 @@ def main():
     # Add cmap_colors subparser
     cmap_colors_parser = subparsers.add_parser(
         'cmcolors',
-        parents=[cmap_parent_parser, return_fmt_parent_parser],
+        parents=[cmap_parent_parser, take_colors_parent_parser],
         description=e13.get_main_desc(cmr.take_cmap_colors),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True)
@@ -247,18 +259,6 @@ def main():
         action='store',
         type=int)
 
-    # Add 'cmap_range' optional argument
-    cmap_colors_parser.add_argument(
-        '--range',
-        help=("Normalized value range in the colormap from which colors should"
-              " be taken"),
-        metavar=('LOWER', 'UPPER'),
-        action='store',
-        nargs=2,
-        default=defaults['cmap_range'],
-        type=float,
-        dest='cmap_range')
-
     # Set defaults for cmap_colors_parser
     cmap_colors_parser.set_defaults(func=cli_cmap_colors)
 
@@ -266,15 +266,14 @@ def main():
     # Add rgb_table subparser
     rgb_table_parser = subparsers.add_parser(
         'rgbtable',
-        parents=[cmap_parent_parser, return_fmt_parent_parser],
+        parents=[cmap_parent_parser, take_colors_parent_parser],
         description="Retrieves the RGB values of the provided `cmap`.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True)
 
     # Set defaults for rgb_table_parser
     rgb_table_parser.set_defaults(func=cli_cmap_colors,
-                                  ncolors=None,
-                                  cmap_range=defaults['cmap_range'])
+                                  ncolors=None)
 
     # MK_CMOD COMMAND
     # Add mk_cmod subparser

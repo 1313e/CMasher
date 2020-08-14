@@ -9,10 +9,12 @@ Accessing colormaps
 All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package, but *CMasher* also provides a few other ways of using the colormaps.
 
 If one wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can create a standalone Python module of the colormap with :func:`~cmasher.create_cmap_mod`.
-The created Python module can be placed in a local working directory, and can then be imported with :pycode:`import <cmap_name>` (e.g., :pycode:`cmr.create_cmap_mod('rainforest')` to create standalone module of :ref:`rainforest`; and `:pycode:`import rainforest` to register the colormap in *matplotlib* as ``'cmr.rainforest'``).
+The created Python module can be placed in a local working directory, and can then be imported with :pycode:`import <cmap_name>` (e.g., :pycode:`cmr.create_cmap_mod('rainforest')` to create a standalone module of :ref:`rainforest`; and :pycode:`import rainforest` to register the colormap in *matplotlib* as ``'cmr.rainforest'``).
 Premade standalone versions of all colormaps in *CMasher* can be found in the `cmasher/colormaps`_ directory, with the name ``<cmap_name>/<cmap_name>.py``.
 
-Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_8bit.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit RGB values of every colormap, and registering them in the appropriate package in the language manually.
+Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_8bit.txt`` or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit and HEX RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
+These RGB values can also be obtained with the :func:`~cmasher.take_cmap_colors` function using :pycode:`N=None` and providing the appropriate format string for the `return_fmt` argument.
+
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
 Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
 
