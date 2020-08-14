@@ -30,7 +30,7 @@ How to install
 
     $ pip install cmasher
 
-or `conda-forge`_ with::
+or from `conda-forge`_ with::
 
     $ conda install -c conda-forge cmasher  # If conda-forge is not set up as a channel
     $ conda install cmasher                 # If conda-forge is set up as a channel
