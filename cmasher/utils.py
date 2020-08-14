@@ -210,7 +210,7 @@ def create_cmap_mod(cmap, *, save_dir='.'):
     # Convert RGB values to string
     array_str = np.array2string(rgb, max_line_width=79, prefix='cm_data = ',
                                 separator=', ', threshold=rgb.size,
-                                precision=8, floatmode='fixed')
+                                formatter={'float': lambda x: "%.8f" % (x)})
 
     # Create Python module template and add obtained RGB data to it
     cm_py_file = dedent("""

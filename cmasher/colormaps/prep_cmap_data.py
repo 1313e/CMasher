@@ -9,6 +9,7 @@ import sys
 from textwrap import dedent
 
 # Package imports
+from matplotlib.colors import to_hex
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
@@ -71,11 +72,15 @@ if(__name__ == '__main__'):
     plt.close(fig)
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8e')
+    np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8f')
 
     # Create txt-file with 8-bit colormap data
     rgb_8bit = np.rint(rgb*255)
     np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
+
+    # Create txt-file with HEX colormap data
+    rgb_hex = np.apply_along_axis((lambda x: to_hex(x).upper()), 1, rgb)
+    np.savetxt("{0}/{0}_hex.txt".format(name), rgb_hex, fmt="%s")
 
     # Make new colormap overview
     create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
