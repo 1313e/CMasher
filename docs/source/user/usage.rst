@@ -79,6 +79,10 @@ If this variable exists, it should contain a collection of names of packages tha
 By default, *CMasher* will attempt to import *cmocean*; *colorcet*; and *palettable*.
 Providing names of packages that are not installed will be ignored.
 
+In addition to this environment variable, one can also provide the object path of a :obj:`~matplotlib.colors.Colormap` object using the format :pycode:`'a.b:c.d'` as the ``CMAP`` argument (except for the ``mkcmod`` command).
+Here, :pycode:`'a.b'` is the module to be imported and :pycode:`'c.d'` is the requested colormap object in this module (e.g., :pycode:`import a.b; cmap = a.b.c.d`).
+For example, if one were to request the colormap type of the :ref:`rainforest` colormap, then one could do this with ``cmr cmtype cmasher:rainforest`` (or ``cmr cmtype cmasher.cm:rainforest``).
+
 
 Custom colormaps
 ----------------

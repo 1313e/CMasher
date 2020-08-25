@@ -428,8 +428,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
     # Create figure instance
     height = 0.4*(len(cmaps_list)+bool(title))
-    fig, axes = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
-                             ncols=2)
+    fig, axs = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
+                            ncols=2)
 
     # Add title if requested and adjust subplot positioning
     if title:
@@ -440,23 +440,23 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         fig.subplots_adjust(top=(1-0.048/height), bottom=0.048/height,
                             left=0.2, right=0.99, wspace=0.05)
 
-    # If cmaps_list only has a single element, make sure axes is a list
+    # If cmaps_list only has a single element, make sure axs is a list
     if(len(cmaps_list) == 1):
-        axes = [axes]
+        axs = [axs]
 
     # Set the current cm_type to None
     cm_type = None
 
     # Loop over all cmaps defined in cmaps list
-    for ax, cmap in zip(axes, cmaps_list):
+    for (ax0, ax1), cmap in zip(axs, cmaps_list):
         # Turn axes off
-        ax[0].set_axis_off()
-        ax[1].set_axis_off()
+        ax0.set_axis_off()
+        ax1.set_axis_off()
 
         # If cmap is a string, it defines a cm_type
         if isinstance(cmap, str):
             # Write the cm_type as text in the correct position
-            fig.text(0.595, ax[0].get_position().bounds[1], cmap,
+            fig.text(0.595, ax0.get_position().bounds[1], cmap,
                      va='bottom', ha='center', fontsize=14)
 
             # Save what the current cm_type is
@@ -481,7 +481,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             rgb_L = cmrcm.neutral(L)[:, :3]
 
             # Add colormap subplot
-            ax[0].imshow(rgb[np.newaxis, ...], aspect='auto')
+            ax0.imshow(rgb[np.newaxis, ...], aspect='auto')
 
             # Check if the lightness profile was requested
             if plot_profile and (cm_type != 'qualitative'):
@@ -525,13 +525,13 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 lc.set_array(s_colors)
 
                 # Add line-collection to this subplot
-                ax[1].add_collection(lc)
+                ax1.add_collection(lc)
 
             # Add gray-scale colormap subplot
-            ax[1].imshow(rgb_L[np.newaxis, ...], aspect='auto')
+            ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
 
             # Plot the name of the colormap as text
-            pos = list(ax[0].get_position().bounds)
+            pos = list(ax0.get_position().bounds)
             x_text = pos[0]-0.01
             y_text = pos[1]+pos[3]/2
             fig.text(x_text, y_text, cmap.name, va='center', ha='right',
@@ -708,7 +708,7 @@ def get_sub_cmap(cmap, start, stop):
     One can check the number of colors in a colormap with
     :attr:`matplotlib.colors.Colormap.N`.
 
-    Any colormaps created using this function is not registered in either
+    Any colormaps created using this function are not registered in either
     *CMasher* or *MPL*.
 
     """

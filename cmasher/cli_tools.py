@@ -9,6 +9,7 @@ import sys
 
 # Package imports
 import e13tools as e13
+from matplotlib import cm as mplcm
 import numpy as np
 
 # CMasher imports
@@ -88,7 +89,7 @@ def cli_cmap_type():
     import_cmap_pkgs()
 
     # Print cmap type
-    print(cmr.get_cmap_type(ARGS.cmap))
+    print(cmr.get_cmap_type(get_cmap(ARGS.cmap)))
 
 
 # This function handles the 'take_cmap_colors' subcommand
@@ -97,7 +98,7 @@ def cli_cmap_colors():
     import_cmap_pkgs()
 
     # Obtain the colors
-    colors = cmr.take_cmap_colors(ARGS.cmap, ARGS.ncolors,
+    colors = cmr.take_cmap_colors(get_cmap(ARGS.cmap), ARGS.ncolors,
                                   cmap_range=ARGS.cmap_range,
                                   return_fmt=ARGS.return_fmt)
 
@@ -121,6 +122,37 @@ def cli_mk_cmod():
 
 
 # %% FUNCTION DEFINITIONS
+# This function obtains the colormap that was requested
+def get_cmap(cmap):
+    # Try to obtain the colormap from MPL
+    try:
+        cmap = mplcm.get_cmap(cmap)
+
+    # If this does not work, try to expand given cmap in setuptools-style
+    except ValueError:
+        # Check if cmap contains a colon
+        if ':' in cmap:
+            # Split cmap up into mod_name and obj_name
+            mod_name, obj_name = cmap.split(':', 1)
+            obj_path = obj_name.split('.')
+
+            # Import the provided module as cmap
+            cmap = import_module(mod_name)
+
+            # Import the provided object from this module
+            for obj in obj_path:
+                cmap = getattr(cmap, obj)
+
+    # If cmap is still a string, raise error
+    if isinstance(cmap, str):
+        # Print error and exit
+        print("Requested 'CMAP' ({!r}) cannot be found!".format(cmap))
+        sys.exit()
+
+    # Return cmap
+    return(cmap)
+
+
 # This function attempts to import a collection of packages with colormaps
 def import_cmap_pkgs():
     # Define set of packages with colormaps
@@ -186,7 +218,9 @@ def main():
     # Add 'cmap' argument
     cmap_parent_parser.add_argument(
         'cmap',
-        help="Name of colormap to use, as registered in *matplotlib*",
+        help=("Name of colormap to use as registered in *matplotlib* or the "
+              "object path of a colormap (e.g., 'a.b:c.d' -> import a.b; "
+              "cmap = a.b.c.d)"),
         metavar='CMAP',
         action='store',
         type=str)
