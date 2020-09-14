@@ -39,13 +39,17 @@ These colormaps are shown in an overview and described individually below.
     sequential/horizon
     sequential/jungle
     sequential/lavender
+    sequential/lilac
+    sequential/neon
     sequential/neutral
     sequential/nuclear
     sequential/ocean
     sequential/pepper
     sequential/rainforest
     sequential/savanna
+    sequential/sepia
     sequential/sunburst
     sequential/swamp
     sequential/toxic
+    sequential/tree
     sequential/voltage
