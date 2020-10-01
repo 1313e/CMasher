@@ -405,7 +405,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                     value.sort(key=sort)
 
                 # Add to list
-                cmaps_list.append(key)
+                cmaps_list.append((key, False))
                 cmaps_list.extend(value)
 
     # Else, a list is used
@@ -423,22 +423,21 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         if sort is not None:
             cmaps_list.sort(key=sort)
 
+    # Add title to cmaps_list if requested
+    if title:
+        cmaps_list.insert(0, (title, True))
+
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
     # Create figure instance
-    height = 0.4*(len(cmaps_list)+bool(title))
+    height = 0.4*len(cmaps_list)+0.1
     fig, axs = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
                             ncols=2)
 
-    # Add title if requested and adjust subplot positioning
-    if title:
-        fig.subplots_adjust(top=(1-0.288/height), bottom=0.048/height,
-                            left=0.2, right=0.99, wspace=0.05)
-        fig.suptitle(title, fontsize=16, x=0.595, y=1.0-0.048/height)
-    else:
-        fig.subplots_adjust(top=(1-0.048/height), bottom=0.048/height,
-                            left=0.2, right=0.99, wspace=0.05)
+    # Adjust subplot positioning
+    fig.subplots_adjust(top=(1-0.05/height), bottom=0.05/height, left=0.2,
+                        right=0.99, wspace=0.05)
 
     # If cmaps_list only has a single element, make sure axs is a list
     if(len(cmaps_list) == 1):
@@ -453,11 +452,22 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         ax0.set_axis_off()
         ax1.set_axis_off()
 
-        # If cmap is a string, it defines a cm_type
-        if isinstance(cmap, str):
-            # Write the cm_type as text in the correct position
-            fig.text(0.595, ax0.get_position().bounds[1], cmap,
-                     va='bottom', ha='center', fontsize=14)
+        # Obtain position bbox of ax0
+        pos0 = ax0.get_position()
+
+        # If cmap is a tuple, it defines a title or cm_type
+        if isinstance(cmap, tuple):
+            # If it is a title
+            if cmap[1]:
+                # Write the title as text in the correct position
+                fig.text(0.595, pos0.y0+pos0.height/2, cmap[0],
+                         va='center', ha='center', fontsize=18)
+
+            # If it is a cm_type
+            else:
+                # Write the cm_type as text in the correct position
+                fig.text(0.595, pos0.y0, cmap[0],
+                         va='bottom', ha='center', fontsize=14)
 
             # Save what the current cm_type is
             cm_type = cmap
@@ -531,11 +541,10 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
 
             # Plot the name of the colormap as text
-            pos = list(ax0.get_position().bounds)
-            x_text = pos[0]-0.01
-            y_text = pos[1]+pos[3]/2
-            fig.text(x_text, y_text, cmap.name, va='center', ha='right',
-                     fontsize=10)
+            x_text = pos0.x0-0.01
+            y_text = pos0.y0+pos0.height/2
+            fig.text(x_text, y_text, cmap.name,
+                     va='center', ha='right', fontsize=10)
 
     # If savefig is not None, save the figure
     if savefig is not None:

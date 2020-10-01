@@ -2,7 +2,7 @@ Sequential colormaps
 ====================
 This colormap overview shows all sequential colormaps in *matplotlib* and *CMasher*.
 The colormaps are sorted on their name (note that colormap types are not used).
-The overview has its title set to :pycode:`"Sequential Colormaps"` instead of the default.
+The overview has its title set to :pycode:`"Sequential MPL Colormaps"` instead of the default.
 
 .. image:: ../images/seq_mpl_cmaps.png
     :alt: Colormap overview of all sequential colormaps in *matplotlib* and *CMasher*.
@@ -20,4 +20,4 @@ The overview has its title set to :pycode:`"Sequential Colormaps"` instead of th
              if cmr.get_cmap_type(cmap) == 'sequential']
 
     # Create colormap overview of all sequential colormaps in MPL and CMasher
-    cmr.create_cmap_overview(cmaps, use_types=False, title="Sequential Colormaps")
+    cmr.create_cmap_overview(cmaps, use_types=False, title="Sequential MPL Colormaps")

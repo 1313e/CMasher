@@ -52,21 +52,20 @@ if(__name__ == '__main__'):
                            cmtype=cmap.cmtype, method=cmap.method,
                            **cmap.params)
     rgb, _ = v.cmap_model.get_sRGB()
-    cmtype = cmap.cmtype
 
     # Register this colormap in CMasher
     register_cmap(name, rgb)
+
+    # Obtain cmtype
+    cmtype = get_cmap_type('cmr.{0}'.format(name))
 
     # Export as .py-file
     create_cmap_mod(name, save_dir=name)
 
     # Create colormap figure
-    fig, ax = plt.subplots(frameon=False, figsize=(12.8, 3.2))
-    fig.subplots_adjust(wspace=0)
+    fig, ax = plt.subplots(figsize=(12.8, 3.2))
     ax.imshow(rgb[np.newaxis, ...], aspect='auto')
     ax.set_axis_off()
-    ax.xaxis.set_visible(False)
-    ax.yaxis.set_visible(False)
     plt.savefig("{0}/{0}.png".format(name), dpi=100, bbox_inches='tight',
                 pad_inches=0)
     plt.close(fig)
@@ -112,20 +111,17 @@ if(__name__ == '__main__'):
         <Recommended use>""").format(name, '-'*len(name))
 
     # Make new colormap type overviews
-    if(cmtype == 'linear'):
-        create_cmap_overview(
-            cmap_cd['sequential'].values(), sort='lightness',
-            savefig=path.join(docs_dir, 'images', 'seq_cmaps.png'))
+    create_cmap_overview(
+        cmap_cd[cmtype].values(), sort='lightness', use_types=False,
+        savefig=path.join(docs_dir, 'images',
+                          '{0}_cmaps.png'.format(cmtype[:3])),
+        title="{0} Colormaps".format(cmtype.capitalize()))
+    if(cmtype == 'sequential'):
         cmaps = [cm for cm in plt.colormaps()
                  if get_cmap_type(cm) == 'sequential']
         create_cmap_overview(
-            cmaps, use_types=False, title="Sequential Colormaps",
+            cmaps, use_types=False, title="Sequential MPL Colormaps",
             savefig=path.join(docs_dir, 'images', 'seq_mpl_cmaps.png'))
-        cmtype = 'sequential'
-    elif(cmtype == 'diverging'):
-        create_cmap_overview(
-            cmap_cd['diverging'].values(), sort='lightness',
-            savefig=path.join(docs_dir, 'images', 'div_cmaps.png'))
 
     # Create docs entry for this colormap if possible
     try:
