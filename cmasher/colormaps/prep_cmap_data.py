@@ -2,6 +2,7 @@
 
 # %% Imports
 # Built-in imports
+from itertools import zip_longest
 import os
 from os import path
 import shutil
@@ -9,7 +10,7 @@ import sys
 from textwrap import dedent
 
 # Package imports
-from matplotlib.colors import to_hex
+from matplotlib.colors import TwoSlopeNorm, to_hex
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
@@ -23,6 +24,103 @@ from cmasher.utils import (
 # %% GLOBALS
 docs_dir = path.abspath(path.join(path.dirname(__file__),
                                   '../../docs/source/user'))
+
+
+# %% FUNCTION DEFINITIONS
+def create_cmap_app_overview(fig_path):
+    # Load sequential image data
+    image_seq = np.loadtxt("app_data.txt.gz", dtype=int)
+
+    # Obtain resolution ratio
+    image_ratio = image_seq.shape[0]/image_seq.shape[1]
+
+    # Create diverging image data
+    X, Y = np.meshgrid(np.linspace(-2.5, 2.5, int(600/image_ratio)),
+                       np.linspace(-2, 2, 600))
+    image_div = (1-X/2+X**5+Y**3)*np.exp(-X**2-Y**2)
+
+    # Obtain all colormaps with their types
+    seq_cmaps = [cmap for cmap in cmap_cd['sequential'].values()
+                 if not cmap.name.endswith('_r')]
+    div_cmaps = [cmap for cmap in cmap_cd['diverging'].values()
+                 if not cmap.name.endswith('_r')]
+
+    # Determine number of colormaps
+    n_seq = len(seq_cmaps)
+    n_div = len(div_cmaps)
+
+    # Determine number of columns and rows required
+    n_cols = 4
+    fontsize = 34
+    n_rows_seq = int(np.ceil(n_seq/n_cols))
+    n_rows_div = int(np.ceil(n_div/n_cols))
+    n_rows = n_rows_seq+n_rows_div
+
+    # Set spacing between the two gridspecs
+    gs_spc = 0.5
+
+    # Determine required height of figure
+    height = 8.0*(n_rows/n_cols)*image_ratio+gs_spc
+
+    # Initialize figure
+    fig = plt.figure(figsize=(6.4, height))
+
+    # Add gridspecs for the sequential and diverging colormaps
+    gs1 = fig.add_gridspec(nrows=n_rows_seq, ncols=n_cols, left=0.10,
+                           right=0.99, top=1-0.1/height, wspace=0.05, hspace=0,
+                           bottom=1-n_rows_seq/n_rows*(1-gs_spc/height))
+    gs2 = fig.add_gridspec(nrows=n_rows_div, ncols=n_cols, left=0.10,
+                           right=0.99, bottom=0.01/height, hspace=0,
+                           top=(1-n_rows_seq/n_rows)*(1-gs_spc/height),
+                           wspace=0.05)
+
+    # Obtain the Axes objects for the sequential and diverging colormaps
+    seq_axs = [fig.add_subplot(x) for x in gs1]
+    div_axs = [fig.add_subplot(x) for x in gs2]
+
+    # Make subplot for all sequential colormaps
+    for cmap, ax in zip_longest(seq_cmaps, seq_axs):
+        # If there is still a colormap left to be plotted, plot it
+        if cmap is not None:
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+            ax.imshow(image_seq, cmap=cmap)
+            ax.set_title(cmap.name)
+
+        # Else, turn the entire Axes object off
+        else:
+            ax.set_axis_off()
+
+    # Write text specifying that these are sequential colormaps
+    x = seq_axs[0].get_position().x0/2
+    y = (1+gs1.bottom)/2
+    fig.text(x, y, "Sequential", va='center', ha='center', rotation='vertical',
+             color='grey', fontsize=fontsize, alpha=0.5)
+
+    # Make subplot for all diverging colormaps
+    for cmap, ax in zip_longest(div_cmaps, div_axs):
+        # If there is still a colormap left to be plotted, plot it
+        if cmap is not None:
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+            ax.imshow(image_div, cmap=cmap, norm=TwoSlopeNorm(0))
+            ax.set_title(cmap.name)
+
+        # Else, turn the entire Axes object off
+        else:
+            ax.set_axis_off()
+
+    # Write text specifying that these are diverging colormaps
+    x = div_axs[0].get_position().x0/2
+    y = (gs2.top+gs2.bottom+1-gs1.top)/2
+    fig.text(x, y, "Diverging", va='center', ha='center', rotation='vertical',
+             color='grey', fontsize=fontsize, alpha=0.5)
+
+    # Save the figure
+    plt.savefig(fig_path, dpi=250)
+
+    # Close the figure
+    plt.close()
 
 
 # %% MAIN SCRIPT
@@ -89,6 +187,8 @@ if(__name__ == '__main__'):
     create_cmap_overview(
         plt.colormaps(), plot_profile=True, sort='lightness',
         savefig=path.join(docs_dir, 'images', 'mpl_cmaps.png'))
+    create_cmap_app_overview(
+        path.join(docs_dir, 'images', 'cmr_cmaps_app.png'))
 
     # Make string with the docs entry
     docs_entry = dedent("""

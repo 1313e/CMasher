@@ -2,7 +2,7 @@
 
 Usage
 =====
-The following contains explanations on how the different functions in *CMasher* can be used to aid the creation of *cmashing* plots.
+The following contains explanations on how the different colormaps and functions in *CMasher* can be used to aid the creation of *cmashing* plots.
 
 Accessing colormaps
 -------------------
@@ -47,6 +47,20 @@ Below is a list of pages containing several colormap overview examples with thei
     cmap_overviews/categories
     cmap_overviews/mpl_cmaps
     cmap_overviews/seq_mpl_cmaps
+
+
+Colormap application overview
+-----------------------------
+Whereas the colormap overviews introduced above are great for seeing how the colormaps compare to each other in terms of performance, they do not show how the colormap would look like when used in a realistic application.
+As *CMasher* has quite a few different colormaps, this could make it difficult to pick the right one.
+For that reason, below is an overview of all colormaps in *CMasher*, using their sample images as usually shown on the individual colormap pages:
+
+.. figure:: images/cmr_cmaps_app.png
+    :alt: Application overview plot of *CMasher*'s colormaps.
+    :width: 100%
+    :align: center
+
+    Application overview plot of *CMasher*'s colormaps.
 
 
 Command-line interface (CLI)

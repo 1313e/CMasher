@@ -26,6 +26,7 @@ The documentation of *CMasher* is spread out over several sections:
     user/usage
     user/sequential
     user/diverging
+    user/FAQ
     community_guidelines
    
 .. _api-docs:
