@@ -27,7 +27,7 @@ If the colormap is also required to be color-vision deficiency (CVD; color blind
 
 Using this information, we can check the performance of the *jet* colormap as shown in :numref:`jet_viscm`.
 The *jet* colormap shows the spectrum of visible light, which trivially increases linearly in wavelength.
-However, in :numref:`jet_viscm`, we can see that this introduces multiple problems, as the color green is perceived as the brightest of the visible colors due to its natural occurance, and the colormap is absolutely not CVD-friendly.
+However, in :numref:`jet_viscm`, we can see that this introduces multiple problems, as the color green is perceived as the brightest of the visible colors due to its natural occurrence, and the colormap is absolutely not CVD-friendly.
 This is an example of a colormap where it would be necessary to have a colorbar/legend, and it is a poor choice for representing numerical values.
 
 Despite all of these shortcomings, *jet* is still a commonly used colormap in the scientific literature.
