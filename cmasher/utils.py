@@ -443,9 +443,6 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     if(len(cmaps_list) == 1):
         axs = [axs]
 
-    # Set the current cm_type to None
-    cm_type = None
-
     # Loop over all cmaps defined in cmaps list
     for (ax0, ax1), cmap in zip(axs, cmaps_list):
         # Turn axes off
@@ -469,11 +466,11 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 fig.text(0.595, pos0.y0, cmap[0],
                          va='bottom', ha='center', fontsize=14)
 
-            # Save what the current cm_type is
-            cm_type = cmap
-
         # Else, this is a colormap
         else:
+            # Obtain the colormap type
+            cm_type = get_cmap_type(cmap)
+
             # Get array of all values for which a colormap value is requested
             x = np.arange(cmap.N)
 
