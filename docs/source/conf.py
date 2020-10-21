@@ -165,8 +165,6 @@ html_split_index = True
 
 html_baseurl = 'https://cmasher.readthedocs.io'
 
-html_extra_path = ['_static/google3ccf0e77d0aa4c22.html']
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.

@@ -42,7 +42,7 @@ Keep in mind that sorting on lightness profiles is only useful if all colormaps 
     Sorting colormaps on their lightness profiles is done roughly in the following order:
 
     1. Sequential colormaps are split up into four groups based on their minimum and maximum lightness values.
-       These groups are :math:`[0, <100]`; :math:`[0, 100]`; :math:`[0<, 100]`; and :math:`[0<, <100]`.
+       These groups are :math:`[0, {<}100]`; :math:`[0, 100]`; :math:`[0{<}, 100]`; and :math:`[0{<}, {<}100]`.
     2. Starting (sequential) or central (diverging and cyclic) lightness value.
     3. Difference between the minimum and maximum lightness values.
     4. RMSE (root mean square error) of the derivative of the lightness profile.
@@ -68,12 +68,13 @@ Colormap application overview
 -----------------------------
 Whereas the colormap overviews introduced above are great for seeing how the colormaps compare to each other in terms of performance, they do not show how the colormap would look like when used in a realistic application.
 As *CMasher* has quite a few different colormaps, this could make it difficult to pick the right one.
-For that reason, below is an overview of all colormaps in *CMasher*, using their sample images as usually shown on the individual colormap pages:
+For that reason, below is an overview of all colormaps in *CMasher* (and the reversed versions of all sequential colormaps as well), using their sample images as usually shown on the individual colormap pages:
 
-.. figure:: images/cmr_cmaps_app.png
+.. figure:: images/cmr_cmaps_app_100.png
     :alt: Application overview plot of *CMasher*'s colormaps.
     :width: 100%
     :align: center
+    :target: ../_static/cmr_cmaps_app_250.png
 
     Application overview plot of *CMasher*'s colormaps.
 

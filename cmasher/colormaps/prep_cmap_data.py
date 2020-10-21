@@ -27,16 +27,17 @@ docs_dir = path.abspath(path.join(path.dirname(__file__),
 
 
 # %% FUNCTION DEFINITIONS
-def create_cmap_app_overview(fig_path):
+def create_cmap_app_overview():
     # Load sequential image data
-    image_seq = np.loadtxt("app_data.txt.gz", dtype=int)
+    image_seq = np.loadtxt(path.join(path.dirname(__file__),
+                                     "app_data.txt.gz"), dtype=int)
 
     # Obtain resolution ratio
     image_ratio = image_seq.shape[0]/image_seq.shape[1]
 
     # Create diverging image data
-    X, Y = np.meshgrid(np.linspace(-2.5, 2.5, int(600/image_ratio)),
-                       np.linspace(-2, 2, 600))
+    X, Y = np.meshgrid(np.linspace(-2.5, 2.5, image_seq.shape[1]),
+                       np.linspace(-2, 2, image_seq.shape[0]))
     image_div = (1-X/2+X**5+Y**3)*np.exp(-X**2-Y**2)
 
     # Obtain all colormaps with their types
@@ -115,8 +116,13 @@ def create_cmap_app_overview(fig_path):
     fig.text(x, y, "Diverging", va='center', ha='center', rotation='vertical',
              color='grey', fontsize=fontsize, alpha=0.5)
 
+    # Obtain figure path
+    fig_path_100 = path.join(docs_dir, 'images', 'cmr_cmaps_app_100.png')
+    fig_path_250 = path.join(docs_dir, '../_static', 'cmr_cmaps_app_250.png')
+
     # Save the figure
-    plt.savefig(fig_path, dpi=250)
+    plt.savefig(fig_path_100, dpi=100)
+    plt.savefig(fig_path_250, dpi=250)
 
     # Close the figure
     plt.close()
@@ -186,8 +192,7 @@ if(__name__ == '__main__'):
     create_cmap_overview(
         plt.colormaps(), plot_profile=True, sort='lightness',
         savefig=path.join(docs_dir, 'images', 'mpl_cmaps.png'))
-    create_cmap_app_overview(
-        path.join(docs_dir, 'images', 'cmr_cmaps_app.png'))
+    create_cmap_app_overview()
 
     # Make string with the docs entry
     docs_entry = dedent("""
