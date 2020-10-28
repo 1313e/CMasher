@@ -162,6 +162,10 @@ class Test_import_cmaps(object):
     def test_cmap_file_8bit(self):
         import_cmaps(path.join(dirpath, 'data/cm_8bit.txt'))
 
+    # Test if providing a cmap .txt-file with HEX values works
+    def test_cmap_file_HEX(self):
+        import_cmaps(path.join(dirpath, 'data/cm_hex.txt'))
+
     # Test if providing a cmap .jscm-file works
     def test_cmap_file_jscm(self):
         cmap_path = path.join(dirpath, 'data/cm_rainforest_jscm.jscm')

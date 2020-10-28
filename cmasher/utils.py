@@ -750,8 +750,8 @@ def import_cmaps(cmap_path):
         Relative or absolute path to a custom colormap file; or directory that
         contains custom colormap files. A colormap file can be a *NumPy* binary
         file ('.npy'); a *viscm* source file ('.jscm'); or any text file.
-        If the file is not a JSCM-file, it must contain the normalized RGB
-        values that define the colormap.
+        If the file is not a JSCM-file, it must contain the normalized; 8-bit;
+        or hexadecimal string RGB values that define the colormap.
 
     Notes
     -----
@@ -876,10 +876,12 @@ def register_cmap(name, data):
     ----------
     name : str
         The name that this colormap must have.
-    data : 2D array_like of {float; int} with shape `(N, 3)`
+    data : 2D array_like of {float; int} with shape `(N, 3)` or 1D array_like \
+        of str with shape `(N, )`
         An array containing the RGB values of all segments in the colormap.
-        If int, the array contains 8-bit RGB values.
         If float, the array contains normalized RGB values.
+        If int, the array contains 8-bit RGB values.
+        If str, the array contains hexadecimal string RGB values.
 
     Note
     ----
@@ -889,15 +891,26 @@ def register_cmap(name, data):
     """
 
     # Convert provided data to a NumPy array
-    cm_data = np.array(data, ndmin=2)
+    cm_data = np.array(data)
 
     # Check the type of the data
-    if issubclass(cm_data.dtype.type, np.integer):
-        # If the values are integers, divide them by 255
-        cm_data = cm_data/255
+    if issubclass(cm_data.dtype.type, str):
+        # If the values are strings, make sure they start with a '#'
+        cm_data = map(lambda x: '#'+x if not x.startswith('#') else x, cm_data)
 
-    # Convert cm_data to a list
-    colorlist = cm_data.tolist()
+        # Convert all values to floats
+        colorlist = list(map(to_rgb, cm_data))
+
+    else:
+        # Make sure that cm_data is 2D
+        cm_data = np.array(cm_data, copy=False, ndmin=2)
+
+        # If the values are integers, divide them by 255
+        if issubclass(cm_data.dtype.type, np.integer):
+            cm_data = cm_data/255
+
+        # Convert cm_data to a list
+        colorlist = cm_data.tolist()
 
     # Transform colorlist into a Colormap
     cmap_N = len(colorlist)
@@ -991,16 +1004,16 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
         The normalized value range in the colormap from which colors should be
         taken.
         By default, colors are taken from the entire colormap.
-    return_fmt : {'float'/'norm'; 'str'/'hex'; 'int'/'8bit'}. Default: 'float'
+    return_fmt : {'float'/'norm'; 'int'/'8bit'; 'str'/'hex'}. Default: 'float'
         The format of the requested colors.
         If 'float'/'norm', the colors are returned as normalized RGB tuples.
+        If 'int'/'8bit', the colors are returned as 8-bit RGB tuples.
         If 'str'/'hex', the colors are returned using their hexadecimal string
         representations.
-        If 'int'/'8bit', the colors are returned as 8-bit RGB tuples.
 
     Returns
     -------
-    colors : list of tuple, str
+    colors : list of {tuple; str}
         The colors that were taken from the provided `cmap`.
 
     Examples

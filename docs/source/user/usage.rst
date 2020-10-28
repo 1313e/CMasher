@@ -17,7 +17,7 @@ Premade standalone versions of all colormaps in *CMasher* can be found in the `c
     Standalone Python modules can only be made with :func:`~cmasher.create_cmap_mod` of colormaps that are registered in *CMasher* (see `Custom colormaps`_).
     This is because these modules contain metadata that states where the colormap comes from, and there is no consistent way to obtain this metadata for colormaps not coming from *CMasher*.
 
-Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_8bit.txt`` or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the 8-bit and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
+Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
 These RGB values can also be obtained with the :func:`~cmasher.take_cmap_colors` function using :pycode:`N=None` and providing the appropriate format string for the `return_fmt` argument.
 
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
@@ -54,7 +54,7 @@ Keep in mind that sorting on lightness profiles is only useful if all colormaps 
 Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their grey-scaled versions, allowing for quick performance comparisons between colormaps.
 And, finally, one can set the title that is displayed at the top of the colormap overview with the `title` argument, which by default is set to :pycode:`"Colormap Overview"`.
 
-Below is a list of pages containing several colormap overview examples with their scripts.
+Below is a list of several colormap overview examples with their scripts:
 
 .. toctree::
 
@@ -118,8 +118,8 @@ Custom colormaps
 ----------------
 *CMasher* allows for custom colormaps to be imported with the :func:`~cmasher.import_cmaps` function (which is executed automatically on the `cmasher/colormaps`_ directory when *CMasher* is imported).
 This function takes the path to a colormap file named ``cm_<cmap_name>`` (or the path to a directory containing such files); creates a :obj:`~matplotlib.colors.ListedColormap` object using the data in the file; and registers it in *matplotlib* with the name ``'cmr.<cmap_name>'`` (it will also be available in *CMasher* as :pycode:`cmr.cm.<cmap_name>`).
-A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the (normalized) RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
-If one wishes to register a colormap using (normalized) RGB values that are already in memory, the :func:`~cmasher.register_cmap` function can be used for this.
+A colormap file can either be a JSCM-file as created by *viscm* or a text file that contains the normalized; 8-bit; or HEX-code RGB values of the colormap (see the text files in the `cmasher/colormaps`_ directory for the structure of such files).
+If one wishes to register a colormap using RGB values that are already in memory, the :func:`~cmasher.register_cmap` function can be used for this.
 
 Note that colormaps imported/registered this way cannot be accessed through *CMasher* using :pycode:`cmr.<cmap_name>`, unlike *CMasher*'s own colormaps, but solely using :pycode:`cmr.cm.<cmap_name>` (access through *matplotlib* is the same as before).
 This is to keep official and unofficial colormaps separated in *CMasher*.
