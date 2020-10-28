@@ -841,7 +841,8 @@ def import_cmaps(cmap_path):
 
             # If file is anything else
             else:
-                rgb = np.genfromtxt(cm_file_path, dtype=None, encoding=None)
+                rgb = np.genfromtxt(cm_file_path, dtype=None, comments='//',
+                                    encoding=None)
 
             # Register colormap
             register_cmap(cm_name, rgb)
