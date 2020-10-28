@@ -81,7 +81,7 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
     plt.scatter(x, y, c=z, cmap=cmap, s=300)
     plt.show()
 
-For other use-cases, including an overview of *CMasher*'s utility functions, see the `online documentation`_.
+For other use-cases, including an overview of *CMasher*'s utility functions and how to use *CMasher* in other programming languages, see the `online documentation`_.
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI

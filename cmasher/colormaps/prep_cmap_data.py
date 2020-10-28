@@ -176,6 +176,9 @@ if(__name__ == '__main__'):
     # Create txt-file with colormap data
     np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8f')
 
+    # Create txt-file with normalized colormap data
+    np.savetxt("{0}/{0}_norm.txt".format(name), rgb, fmt='%.8f')
+
     # Create txt-file with 8-bit colormap data
     rgb_8bit = np.rint(rgb*255)
     np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')

@@ -20,6 +20,13 @@ Premade standalone versions of all colormaps in *CMasher* can be found in the `c
 Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
 These RGB values can also be obtained with the :func:`~cmasher.take_cmap_colors` function using :pycode:`N=None` and providing the appropriate format string for the `return_fmt` argument.
 
+Below is a list of pages with instructions for using *CMasher* in several other languages, provided to me by wonderful members of the community:
+
+.. toctree::
+
+    lang_usage/R
+
+
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
 Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
 
