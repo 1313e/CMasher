@@ -20,7 +20,8 @@ Premade standalone versions of all colormaps in *CMasher* can be found in the `c
 Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
 These RGB values can also be obtained with the :func:`~cmasher.take_cmap_colors` function using :pycode:`N=None` and providing the appropriate format string for the `return_fmt` argument.
 
-Below is a list of pages with instructions for using *CMasher* in several other languages, provided to me by wonderful members of the community:
+Below is a list of pages with instructions for using *CMasher* in several other languages, provided to me by wonderful members of the community.
+If your language of choice is not in this list, feel free to open an `issue`_ about it or create a tutorial for it yourself such that it can be added.
 
 .. toctree::
 
