@@ -70,8 +70,8 @@ Now that we have created an RDS object, we can easily reload the *CMasher* color
     RDSfilepath = '/path/to/where/you/wanna/keep/the/RDS/object'
     cmr_cmaps = readRDS(file=paste0(RDSfilepath, '/', 'cmr_cmaps.RDS'))
 
-And there you go, the colormaps are now all contained within the `cmr_cmaps` R object list.
-To access a specific colormap, we can simply use the `$` operator (e.g., the :ref:`rainforest` colormap can be accessed as `cmr_cmaps$rainforest`).
+And there you go, the colormaps are now all contained within the ``cmr_cmaps`` R object list.
+To access a specific colormap, we can simply use the ``$`` operator (e.g., the :ref:`rainforest` colormap can be accessed as ``cmr_cmaps$rainforest``).
 
 
 Below, we show an example of using the :ref:`rainforest` colormap to create a test plot (after loading in the RDS object using the script above):
