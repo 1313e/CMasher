@@ -17,7 +17,7 @@ Premade standalone versions of all colormaps in *CMasher* can be found in the `c
     Standalone Python modules can only be made with :func:`~cmasher.create_cmap_mod` of colormaps that are registered in *CMasher* (see `Custom colormaps`_).
     This is because these modules contain metadata that states where the colormap comes from, and there is no consistent way to obtain this metadata for colormaps not coming from *CMasher*.
 
-Accessing the colormaps in other languages than *Python* would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
+Accessing the colormaps in other languages than Python would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
 These RGB values can also be obtained with the :func:`~cmasher.take_cmap_colors` function using :pycode:`N=None` and providing the appropriate format string for the `return_fmt` argument.
 
 Below is a list of pages with instructions for using *CMasher* in several other languages, provided to me by wonderful members of the community.
@@ -57,7 +57,7 @@ Keep in mind that sorting on lightness profiles is only useful if all colormaps 
     5. Name.
 
     Qualitative and miscellaneous colormaps are never sorted on their lightness profiles and solely use the last step.
-    
+
 
 Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their grey-scaled versions, allowing for quick performance comparisons between colormaps.
 And, finally, one can set the title that is displayed at the top of the colormap overview with the `title` argument, which by default is set to :pycode:`"Colormap Overview"`.
@@ -90,7 +90,7 @@ For that reason, below is an overview of all colormaps in *CMasher* (and the rev
 Command-line interface (CLI)
 ----------------------------
 Although *CMasher* is written in Python, some of its utility functions do not require the interpreter in order to be used properly.
-For that reason, *CMasher* provides a CLI that allows for these utility functions to be called directly from the command-line.
+Therefore, *CMasher* provides a CLI that allows for these utility functions to be called directly from the command-line.
 This CLI can be accessed with the command ``cmr`` after installing *CMasher*.
 The table below shows which CLI commands are available and what utility function in *CMasher* they correspond to.
 
@@ -110,7 +110,7 @@ The table below shows which CLI commands are available and what utility function
 
 Except for the `mkcmod` command, the commands print their results directly to the console using the formatting that was requested (if applicable).
 Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr rgbtable rainforest > rainforest.txt`` to save the RGB values of :ref:`rainforest` in a ``.txt``-file on UNIX-systems).
-All functionality that is usually available for the listed functions within the interpreter, are also available from the command-line.
+All functionality that is usually available for the listed functions within the interpreter, is also available from the command-line.
 
 Because it is not possible to import any packages that provide colormaps before using a CLI function, *CMasher* reads the ``CMR_CMAP_PKGS`` environment variable.
 If this variable exists, it should contain a collection of names of packages that must be imported before any CLI function is executed.
@@ -220,7 +220,11 @@ As colormaps contain colors in an ordered structure, they are well suited for th
 
 *CMasher* allows one to take a given number of equally spaced colors from any colormap with the :func:`~cmasher.take_cmap_colors` function.
 These colors can then be used during plotting.
-The example below shows the script used to create a line plot with 5 colors taken from the :ref:`rainforest` colormap, and the resulting figure::
+Depending on the application, certain colormaps are more well suited than others when picking these colors.
+For example, when you have a lot of different plots to show or distinguishability is more important than comparability, a colormap with a high perceptual range is often the better choice, like :ref:`apple`; :ref:`chroma`; :ref:`heat`; :ref:`neon`; and :ref:`rainforest`.
+On the other hand, if comparability is more important than distinguishability, then colormaps with a low perceptual range and preferably only a single major color usually perform better, like :ref:`flamingo`; :ref:`freeze`; :ref:`gothic`; :ref:`jungle`; and :ref:`ocean`.
+
+Below is an example of taking 5 colors from a colormap with a high perceptual range (:ref:`rainforest`) and a low perceptual range (:ref:`ocean`), and the resulting figures::
 
     # Import packages
     import cmasher as cmr
@@ -251,12 +255,20 @@ The example below shows the script used to create a line plot with 5 colors take
     # Show figure
     plt.show()
 
-.. figure:: images/take_colors.png
+.. figure:: images/take_colors_rainforest.png
     :alt: Line plot using 5 different colors from the *rainforest* colormap.
     :width: 100%
     :align: center
 
-    Line plot using 5 different colors from the :ref:`rainforest` colormap.
+    Line plot using 5 different colors from the :ref:`rainforest` colormap in the :math:`[0.15, 0.85]` range.
+
+
+.. figure:: images/take_colors_ocean.png
+    :alt: Line plot using 5 different colors from the *ocean* colormap.
+    :width: 100%
+    :align: center
+
+    Line plot using 5 different colors from the :ref:`ocean` colormap in the :math:`[0, 0.85]` range.
 
 
 .. _viscm: https://github.com/matplotlib/viscm
