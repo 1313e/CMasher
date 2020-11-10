@@ -8,10 +8,11 @@ Users are highly encouraged to make contributions to the package or request new 
 As with contributions, if you find a problem or issue with *CMasher*, please do not hesitate to open a `GitHub issue`_ about it.
 
 If you use *CMasher* for your work, then please star the `repo`_, such that I can keep track of how many users it has and more easily raise awareness of bad colormaps.
-Additionally, if you use *CMasher* as part of your workflow in a scientific publication, please consider including an acknowledgement like *"Parts of the results in this work make use of the colormaps in the CMasher package."* and citing the *CMasher* paper using the BibTeX-entry further below.
+Additionally, if you use *CMasher* as part of your workflow in a scientific publication, please consider including an acknowledgement like *"Parts of the results in this work make use of the colormaps in the CMasher package."* and citing the *CMasher* `paper`_ using the BibTeX-entry further below.
 
 .. _repo: https://github.com/1313e/CMasher
 .. _GitHub issue: https://github.com/1313e/CMasher/issues
+.. _paper: https://doi.org/10.21105/joss.02004
 
 
 License

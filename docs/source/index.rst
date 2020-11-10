@@ -2,11 +2,13 @@
 =======================================================================================
 This is the documentation for the *CMasher* package, a collection of scientific colormaps and utility functions for making accessible, informative and *cmashing* plots in Python.
 It is written in pure `Python 3`_ and `publicly available on GitHub`_.
+*CMasher* has also been published in the `Journal of Open Source Software`_.
 
 .. _@1313e: https://github.com/1313e
 .. _Python 3: https://www.python.org
 .. _publicly available on GitHub: https://github.com/1313e/CMasher
 .. _issue: https://github.com/1313e/CMasher/issues
+.. _Journal of Open Source Software: https://doi.org/10.21105/joss.02004
 
 ----
 
