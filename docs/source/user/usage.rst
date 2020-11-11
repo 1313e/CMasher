@@ -6,7 +6,7 @@ The following contains explanations on how the different colormaps and functions
 
 Accessing colormaps
 -------------------
-All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package, but *CMasher* also provides a few other ways of using the colormaps.
+All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package as shown in :ref:`example_use`, but *CMasher* also provides a few other ways of using the colormaps.
 
 If one wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can create a standalone Python module of the colormap with :func:`~cmasher.create_cmap_mod`.
 The created Python module can be placed in a local working directory, and can then be imported with :pycode:`import <cmap_name>` (e.g., :pycode:`cmr.create_cmap_mod('rainforest')` to create a standalone module of :ref:`rainforest`; and :pycode:`import rainforest` to register the colormap in *matplotlib* as ``'cmr.rainforest'``).

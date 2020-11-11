@@ -43,6 +43,8 @@ If required, one can also clone the `repository`_ and install *CMasher* manually
 
 *CMasher* can now be imported as a package with :pycode:`import cmasher as cmr`.
 
+.. _example_use:
+
 Example use
 -----------
 The colormaps shown above can be accessed by simply importing *CMasher*.
