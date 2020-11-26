@@ -184,11 +184,13 @@ The script and image below show an example of this::
 
     Hexbin plot using a colormap legend entry for the :ref:`rainforest` colormap.
 
+.. _sub_colormaps:
 
 Sub-colormaps
 -------------
 Most sequential colormaps in *CMasher* span the entire lightness range from black to white, to maximize the perceptual range of the colormap.
 However, there are many cases in which this is not necessary or is even counter-productive (e.g., annotating colormaps; displaying smooth information like images; etc.).
+Another possibility is that one wants to use a white-centered diverging colormap, but the edges need to be distinguishable as well.
 To aid with this, *CMasher* allows for sub-colormaps to be made of any colormap with the :func:`~cmasher.get_sub_cmap` function.
 Below is an example of a sub-colormap of :ref:`rainforest` using the central :math:`70\%`, created with :pycode:`cmr.get_sub_cmap('cmr.rainforest', 0.15, 0.85)`, compared to the original:
 

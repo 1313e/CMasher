@@ -26,6 +26,19 @@ Definitely.
 If you have an idea for a utility feature (like a function; class; CLI-command; etc.) that is related to using colormaps, please open a `GitHub issue`_ using the `Feature request` template.
 
 
+The edges of white-centered diverging colormaps are too similar
+---------------------------------------------------------------
+Some diverging colormaps in *CMasher*, like :ref:`fusion`; :ref:`seasons`; and :ref:`waterlily`, have a white center and linearly decrease to :math:`10\%` lightness at the edges.
+Depending on the screen that is being used and who is looking at the colormap, this may make it difficult to distinguish the two edges from each other.
+The reason for this is that white-centered diverging colormaps should normally be used for plots where the central values are the main focus of the plot, like probability maps (the lower the number of standard deviations, the better).
+Therefore, the edge values should have very little importance, and thus should look similarly dark.
+When plotting values where the deviation from the center should be highlighted, for example with radial velocity maps or for showing probability outliers, one should normally use a black-centered diverging colormap, like :ref:`iceburn`; :ref:`redshift`; or :ref:`wildfire`.
+
+However, when it is not possible/desirable to use a black-centered diverging colormap and the edges should be distinguishable, one can easily solve this by cutting away a small fraction at the edges of the desired colormap using the :func:`~cmasher.get_sub_cmap` function.
+For example, :pycode:`cmr.get_sub_cmap('fusion', 0.05, 0.95)` will cut away :math:`5\%` at each side of the :ref:`fusion` colormap.
+See :ref:`sub_colormaps` for more details on the usage of this function.
+
+
 There are artifacts in a *CMasher* colormap
 -------------------------------------------
 All colormaps in *CMasher* are as close to perceptually uniform sequential as they can be without significantly lowering its quality.
