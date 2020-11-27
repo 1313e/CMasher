@@ -35,7 +35,7 @@ Therefore, the edge values should have very little importance, and thus should l
 When plotting values where the deviation from the center should be highlighted, for example with radial velocity maps or for showing probability outliers, one should normally use a black-centered diverging colormap, like :ref:`iceburn`; :ref:`redshift`; or :ref:`wildfire`.
 
 However, when it is not possible/desirable to use a black-centered diverging colormap and the edges should be distinguishable, one can easily solve this by cutting away a small fraction at the edges of the desired colormap using the :func:`~cmasher.get_sub_cmap` function.
-For example, :pycode:`cmr.get_sub_cmap('fusion', 0.05, 0.95)` will cut away :math:`5\%` at each side of the :ref:`fusion` colormap.
+For example, :pycode:`cmr.get_sub_cmap('cmr.fusion', 0.05, 0.95)` will cut away :math:`5\%` at each side of the :ref:`fusion` colormap.
 See :ref:`sub_colormaps` for more details on the usage of this function.
 
 
