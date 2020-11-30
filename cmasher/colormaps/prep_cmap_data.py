@@ -45,6 +45,10 @@ def create_cmap_app_overview():
     div_cmaps = [cmap for cmap in cmap_cd['diverging'].values()
                  if not cmap.name.endswith('_r')]
 
+    # Sort colormaps on name
+    seq_cmaps.sort(key=lambda x: x.name)
+    div_cmaps.sort(key=lambda x: x.name)
+
     # Determine number of colormaps
     n_seq = len(seq_cmaps)
     n_div = len(div_cmaps)
