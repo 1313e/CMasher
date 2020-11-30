@@ -25,9 +25,9 @@ These colormaps are shown in an overview and described individually below.
     sequential/amber
     sequential/apple
     sequential/arctic
-    sequential/aurora
     sequential/bubblegum
     sequential/chroma
+    sequential/cosmic
     sequential/dusk
     sequential/eclipse
     sequential/ember
