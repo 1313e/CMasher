@@ -868,7 +868,9 @@ def import_cmaps(cmap_path):
 # Function to generate a sequential qualitative colormap from an existing one
 def make_qualitative_cmap(name, cmap, N, cmap_range=(0, 1)):
     """
-    Creates a qualitative
+    Creates a qualitative `cmap` of `N` colors from another `cmap` and
+    registers the colormap in the :mod:`cmasher.cm` and :mod:`matplotlib.cm`
+    modules under `name`.
 
     Parameters
     ----------
