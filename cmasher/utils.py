@@ -865,6 +865,58 @@ def import_cmaps(cmap_path):
                              % (cm_name, error))
 
 
+# Function to generate a sequential qualitative colormap from an existing one
+def make_qualitative_cmap(name, cmap, N, cmap_range=(0, 1)):
+    """
+    Creates a qualitative
+
+    Parameters
+    ----------
+    name : str
+        The name that this colormap must have.
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
+    N : int or None
+        The number of colors to take from the provided `cmap`.
+        If *None*, take all colors in `cmap` within the provided `cmap_range`.
+
+    Optional
+    --------
+    cmap_range : tuple of float. Default: (0, 1)
+        The normalized value range in the colormap from which colors should be
+        taken.
+        By default, colors are taken from the entire colormap.
+
+    Examples
+    --------
+    Creating a five colour sequential qualitative colormap from rainforest.
+        >>> make_qualitative_cmap('qual_rainforest', cmr.rainforest, 5)
+
+    Creating and using a three color qualitative map with matplotlib
+        >>> import numpy as np
+        >>> import matplotlib.pyplots as plt
+        >>> data = np.array([[0.1, 0.8], [0.3, 0.5]])
+        >>> fig, ax = plt.subplots()
+        >>> make_qualitative_cmap('qual_rainforest', cmr.rainforest, 3)
+        >>> im = ax.imshow(data, cmap=cmr.cm.qual_rainforest)
+        >>> plt.colorbar(im, ax=ax)
+
+    """
+    # Take the qualitative cmap colors from the given cmap
+    colors = take_cmap_colors(cmap, N, cmap_range=cmap_range)
+    # The length of the color in the cmap array.
+    subcolor_len = 256 / N
+
+    # Create new color map from colors
+    qual_cmap = np.empty((256, 3), dtype=float)
+    for i, color in enumerate(colors):
+        qual_cmap[int(i * subcolor_len):int((i + 1) * subcolor_len)] = color
+
+    # Register the new colormap in cmasher and MPL
+    register_cmap(name, qual_cmap)
+
+
 # Function to register a custom colormap in MPL and CMasher
 def register_cmap(name, data):
     """
