@@ -27,6 +27,11 @@ For more information, see the `online documentation`_.
     :target: https://cmasher.readthedocs.io
     :alt: CMasher Colormap Overview
 
+In the figure, one can see this wide range of color combinations that *CMasher* has to offer, as I wanted to make sure that *CMasher* has a colormap for everyone.
+Because of this, *CMasher*'s sequential colormaps range from single major color maps like *amber*; *ember*; *flamingo*; *freeze*; *gothic*; and *jungle*, to colormaps with high perceptual ranges like *apple*; *chroma*; *heat*; *neon*; and *rainforest*.
+The diverging colormaps in *CMasher* have a similar variety, but more importantly, several of them have a black center instead of a white center, like *iceburn*; *redshift*; *watermelon*; and *wildfire*.
+Black centered diverging colormaps are quite rare as most researchers are used to white centered ones, even though a black centered diverging colormap can be rather useful in certain cases, like plotting a radial velocity map (the further away from the common center, the higher the velocity in either direction, and thus the corresponding color should be brighter).
+
 
 Installation & Use
 ==================

@@ -24,6 +24,11 @@ Below is an overview of all the colormaps that are currently in *CMasher* (made 
 
     Overview of all colormaps in *CMasher*.
 
+In :numref:`cmr_cmaps`, one can see this wide range of color combinations that *CMasher* has to offer, as I wanted to make sure that *CMasher* has a colormap for everyone.
+Because of this, *CMasher*'s sequential colormaps range from single major color maps like :ref:`amber`; :ref:`ember`; :ref:`flamingo`; :ref:`freeze`; :ref:`gothic`; and :ref:`jungle`, to colormaps with high perceptual ranges like :ref:`apple`; :ref:`chroma`; :ref:`heat`; :ref:`neon`; and :ref:`rainforest`.
+The diverging colormaps in *CMasher* have a similar variety, but more importantly, several of them have a black center instead of a white center, like :ref:`iceburn`; :ref:`redshift`; :ref:`watermelon`; and :ref:`wildfire`.
+Black centered diverging colormaps are quite rare as most researchers are used to white centered ones, even though a black centered diverging colormap can be rather useful in certain cases, like plotting a radial velocity map (the further away from the common center, the higher the velocity in either direction, and thus the corresponding color should be brighter).
+
 How to install
 --------------
 *CMasher* can be easily installed directly from `PyPI`_ with::
