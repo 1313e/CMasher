@@ -28,6 +28,7 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
     diverging/pride
     diverging/redshift
     diverging/seasons
+    diverging/seaweed
     diverging/viola
     diverging/waterlily
     diverging/watermelon
