@@ -53,4 +53,5 @@ These colormaps are shown in an overview and described individually below.
     sequential/swamp
     sequential/toxic
     sequential/tree
+    sequential/tropical
     sequential/voltage
