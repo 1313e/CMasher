@@ -1,4 +1,4 @@
-|PyPI| |conda-forge| |Python| |Travis| |AppVeyor| |Coverage| |JOSS|
+|PyPI| |conda-forge| |Python| |GitHub| |Coverage| |JOSS|
 
 *CMasher*: Scientific colormaps for making accessible, informative and *cmashing* plots
 =======================================================================================
@@ -95,12 +95,9 @@ For other use-cases, including an overview of *CMasher*'s utility functions and 
 .. |Python| image:: https://img.shields.io/badge/Python-3.6%2B-blue?logo=python&logoColor=white
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Python Versions
-.. |Travis| image:: https://img.shields.io/travis/com/1313e/CMasher/master.svg?logo=travis%20ci&logoColor=white&label=Travis%20CI
-    :target: https://travis-ci.com/1313e/CMasher
-    :alt: Travis CI - Build Status
-.. |AppVeyor| image:: https://img.shields.io/appveyor/ci/1313e/CMasher/master.svg?logo=appveyor&logoColor=white&label=AppVeyor
-    :target: https://ci.appveyor.com/project/1313e/CMasher
-    :alt: AppVeyor - Build Status
+.. |GitHub| image:: https://img.shields.io/github/workflow/status/1313e/CMasher/Test?label=GitHub&logo=GitHub
+    :target: https://github.com/1313e/CMasher/actions
+    :alt: GitHub Actions - Build Status
 .. |ReadTheDocs| image:: https://img.shields.io/readthedocs/cmasher/latest.svg?logo=read%20the%20docs&logoColor=white&label=Docs
     :target: https://cmasher.readthedocs.io
     :alt: ReadTheDocs - Build Status
