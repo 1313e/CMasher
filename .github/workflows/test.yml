@@ -48,5 +48,6 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
+        echo ${{ github.ref }}
         twine upload --skip-existing dist/*
       
