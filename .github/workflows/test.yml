@@ -7,7 +7,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-
+    name: ${{ matrix.os }}, Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -35,3 +35,8 @@ jobs:
     - name: Upload coverage
       run: |
         curl -s https://codecov.io/bash | bash
+    - name: Deploy package
+      if: success(), matrix.os == 'ubuntu-latest', github.event == 'push', github.ref == 'refs/heads/master'
+      run: |
+        twine upload --skip-existing dist/*
+      
