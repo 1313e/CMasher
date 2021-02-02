@@ -43,7 +43,7 @@ jobs:
       run: |
         curl -s https://codecov.io/bash | bash
     - name: Deploy package
-      if: success()
+      if: success() && matrix.os == ubuntu-latest
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
