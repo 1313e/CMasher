@@ -92,10 +92,10 @@ For other use-cases, including an overview of *CMasher*'s utility functions and 
 .. |PyPI| image:: https://img.shields.io/pypi/v/CMasher.svg?logo=pypi&logoColor=white&label=PyPI
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Latest Release
-.. |Python| image:: https://img.shields.io/badge/Python-3.6%2B-blue?logo=python&logoColor=white
+.. |Python| image:: https://img.shields.io/pypi/pyversions/CMasher?logo=python&logoColor=white&label=Python
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Python Versions
-.. |GitHub| image:: https://img.shields.io/github/workflow/status/1313e/CMasher/Test?label=GitHub&logo=GitHub
+.. |GitHub| image:: https://img.shields.io/github/workflow/status/1313e/CMasher/Test?logo=github&logoColor=white&label=Actions
     :target: https://github.com/1313e/CMasher/actions
     :alt: GitHub Actions - Build Status
 .. |ReadTheDocs| image:: https://img.shields.io/readthedocs/cmasher/latest.svg?logo=read%20the%20docs&logoColor=white&label=Docs
