@@ -43,7 +43,7 @@ jobs:
       run: |
         curl -s https://codecov.io/bash | bash
     - name: Deploy package
-      if: ${{ success() && matrix.os == 'ubuntu-latest' && github.event == 'push' && github.ref == 'refs/heads/master' }}
+      if: ${{ success() && matrix.os == 'ubuntu-latest' && github.event == 'push' && github.ref == 'refs/heads/GitHub-Actions-Deploy' }}
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
