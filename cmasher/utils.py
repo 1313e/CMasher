@@ -672,7 +672,7 @@ def get_cmap_type(cmap):
 
 
 # Function create a colormap using a subset of the colors in an existing one
-def get_sub_cmap(cmap, start, stop, N=None, name=None):
+def get_sub_cmap(cmap, start, stop, N=None):
     """
     Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
     the range `[start, stop]` of the provided `cmap` and returns it.
@@ -697,11 +697,6 @@ def get_sub_cmap(cmap, start, stop, N=None, name=None):
         The number of color segments to return from the provided `cmap`.
         If *None*, take all colors in `cmap` within the provided `cmap_range`.
 
-    name : str or None. Default: None
-        Creates a :obj:`~matplotlib.colors.ListedColormap` object using the
-        provided `name`.
-        By default, the cmap will be registered with cmap.name + "_sub".
-
     Returns
     -------
     sub_cmap : :obj:`~matplotlib.colors.ListedColormap`
@@ -714,9 +709,9 @@ def get_sub_cmap(cmap, start, stop, N=None, name=None):
         >>> get_sub_cmap('cmr.rainforest', 0, 0.8)
 
     Creating a qualitative colormap containing 5 colors from the middle 60%
-    of the 'lilac' colormap and registering it with the name `cmr.lilac_qual`:
+    of the 'lilac' colormap:
 
-        >>> get_subcmap('cmr.lilac', 0.2, 0.8, segments=5, name="lilac_qual")
+        >>> get_subcmap('cmr.lilac', 0.2, 0.8, N=5)
 
     Notes
     -----
@@ -739,21 +734,13 @@ def get_sub_cmap(cmap, start, stop, N=None, name=None):
     cmap = mplcm.get_cmap(cmap)
 
     if not (isinstance(N, int) or (N is None)):
-        raise ValueError("segments must have type int or None.")
+        raise ValueError("N must have type int or None.")
 
     # Obtain colors
     colors = take_cmap_colors(cmap, N, cmap_range=(start, stop))
 
-    # Check if name has been provided or use default.
-    if isinstance(name, str):
-        sub_cmap_name = name
-    elif name is not None:
-        raise ValueError("name must have have type str or None.")
-    else:
-        sub_cmap_name = cmap.name + '_sub'
-
     # Create new colormap
-    sub_cmap = LC(colors, sub_cmap_name, N=len(colors))
+    sub_cmap = LC(colors, cmap_name + '_sub', N=len(colors))
 
     # Return sub_cmap
     return(sub_cmap)
