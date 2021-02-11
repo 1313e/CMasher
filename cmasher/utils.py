@@ -554,60 +554,6 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         plt.show()
 
 
-# Function to generate a sequential qualitative colormap from an existing one
-def create_qualitative_cmap(name, cmap, N, cmap_range=(0, 1)):
-    """
-    Creates a qualitative `cmap` of `N` colors from another `cmap` and
-    registers the colormap in the :mod:`cmasher.cm` and :mod:`matplotlib.cm`
-    modules under `name`.
-
-    Parameters
-    ----------
-    name : str
-        The name that this colormap must have.
-    cmap : str or :obj:`~matplotlib.colors.Colormap` object
-        The registered name of the colormap in :mod:`matplotlib.cm` or its
-        corresponding :obj:`~matplotlib.colors.Colormap` object.
-    N : int or None
-        The number of colors to take from the provided `cmap`.
-        If *None*, take all colors in `cmap` within the provided `cmap_range`.
-
-    Optional
-    --------
-    cmap_range : tuple of float. Default: (0, 1)
-        The normalized value range in the colormap from which colors should be
-        taken.
-        By default, colors are taken from the entire colormap.
-
-    Examples
-    --------
-    Creating a five colour sequential qualitative colormap from rainforest.
-        >>> make_qualitative_cmap('qual_rainforest', cmr.rainforest, 5)
-
-    Creating and using a three color qualitative map with matplotlib
-        >>> import numpy as np
-        >>> import matplotlib.pyplots as plt
-        >>> data = np.array([[0.1, 0.8], [0.3, 0.5]])
-        >>> fig, ax = plt.subplots()
-        >>> make_qualitative_cmap('qual_rainforest', cmr.rainforest, 3)
-        >>> im = ax.imshow(data, cmap=cmr.cm.qual_rainforest)
-        >>> plt.colorbar(im, ax=ax)
-
-    """
-    # Take the qualitative cmap colors from the given cmap
-    colors = take_cmap_colors(cmap, N, cmap_range=cmap_range)
-    # The length of the color in the cmap array.
-    subcolor_len = 256 / N
-
-    # Create new color map from colors
-    qual_cmap = np.empty((256, 3), dtype=float)
-    for i, color in enumerate(colors):
-        qual_cmap[int(i * subcolor_len):int((i + 1) * subcolor_len)] = color
-
-    # Register the new colormap in cmasher and MPL
-    register_cmap(name, qual_cmap)
-
-
 # Define function that prints a string with the BibTeX entry to CMasher's paper
 def get_bibtex():
     """
@@ -726,7 +672,7 @@ def get_cmap_type(cmap):
 
 
 # Function create a colormap using a subset of the colors in an existing one
-def get_sub_cmap(cmap, start, stop):
+def get_sub_cmap(cmap, start, stop, segments=None, name=None):
     """
     Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
     the range `[start, stop]` of the provided `cmap` and returns it.
@@ -745,6 +691,17 @@ def get_sub_cmap(cmap, start, stop):
         The normalized range of the colors in `cmap` that must be in the sub
         colormap.
 
+    Optional
+    --------
+    segments : int or None. Default: None
+        The number of color segments to return from the provided `cmap`.
+        If *None*, take all colors in `cmap` within the provided `cmap_range`.
+
+    name : str or None. Default: None
+        Creates a :obj:`~matplotlib.colors.ListedColormap` object using the
+        provided `name`.
+        By default, the cmap will be registered with cmap.name + "_sub".
+
     Returns
     -------
     sub_cmap : :obj:`~matplotlib.colors.ListedColormap`
@@ -755,6 +712,12 @@ def get_sub_cmap(cmap, start, stop):
     Creating a colormap using the first 80% of the 'rainforest' colormap::
 
         >>> get_sub_cmap('cmr.rainforest', 0, 0.8)
+
+
+    Creating a qualitative colormap containing 5 colors from the middle 60%
+    of the 'lilac' colormap and registering it with the name `cmr.lilac_qual`:
+
+        >>> get_subcmap('cmr.lilac', 0.2, 0.8, segments=5, name="lilac_qual")
 
     Notes
     -----
@@ -776,11 +739,23 @@ def get_sub_cmap(cmap, start, stop):
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
+    if not (isinstance(segments, int) or (segments is None)):
+        raise ValueError("segments must have type int or None.")
+
     # Obtain colors
-    colors = take_cmap_colors(cmap, None, cmap_range=(start, stop))
+    colors = take_cmap_colors(cmap, segments, cmap_range=(start, stop))
+
+    # Check if name has been provided or use default.
+    if isinstance(name, str):
+        sub_cmap_name = name
+    elif name is not None:
+        raise ValueError("name must have have type str or None.")
+    else:
+        sub_cmap_name = cmap.name + '_sub'
 
     # Create new colormap
-    sub_cmap = LC(colors, cmap.name+'_sub', N=len(colors))
+    sub_cmap = LC(colors, sub_cmap_name, N=len(colors))
+
 
     # Return sub_cmap
     return(sub_cmap)
