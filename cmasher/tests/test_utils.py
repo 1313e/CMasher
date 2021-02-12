@@ -133,6 +133,13 @@ class Test_get_sub_cmap(object):
         assert np.allclose(sub_cmap(1.0), cmrcm.rainforest(204))
         assert (sub_cmap.N == 154)
 
+    # Test if a qualitative colormap can be made
+    def test_lilac_qual(self):
+        qual_cmap = get_sub_cmap('cmr.lilac', 0.2, 0.8, N=5)
+        assert np.allclose(qual_cmap(0.0), cmrcm.lilac(51))
+        assert np.allclose(qual_cmap(1.0), cmrcm.lilac(204))
+        assert (qual_cmap.N == 5)
+
     # Test if providing an incorrect range raises an error
     def test_invalid_range(self):
         with pytest.raises(ValueError):

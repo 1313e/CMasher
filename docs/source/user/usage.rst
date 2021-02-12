@@ -212,6 +212,23 @@ Note that :func:`~cmasher.get_sub_cmap` does not interpolate between colors, as 
 In order to avoid creating colormaps that have too few different colors to look smooth, it is recommended to include at least 128 different colors.
 For *CMasher* colormaps, this means that one should aim to use at least :math:`50\%` of sequential colormaps (256 colors), or :math:`25\%` of diverging colormaps (511 colors).
 
+It is also possible to use the :func:`~cmasher.get_sub_cmap` function to create qualitative sub-colormaps of any colormap, by setting the :pycode:`N` parameter to an integer.
+This works very similarly to the :func:`~cmasher.take_cmap_colors` function described below, but returns a :obj:`~matplotlib.colors.ListedColormap` object instead of a list of colors.
+Below is an example of a qualitative sub-colormap with 5 colors using the central :math:`60\%` of the :ref:`lilac` colormap, created with :pycode:`cmr.get_sub_cmap('cmr.lilac', 0.2, 0.8, N=5)`:
+
+.. figure:: ../../../cmasher/colormaps/lilac/lilac.png
+    :alt: The *lilac* colormap.
+    :width: 100%
+    :align: center
+
+    The :ref:`lilac` colormap.
+
+.. figure:: images/lilac_qual.png
+    :alt: The *lilac* qualitative sub-colormap.
+    :width: 100%
+    :align: center
+
+    The qualitative sub-colormap made of :ref:`lilac`, using its central :math:`60\%` and 5 colors.
 
 Taking colormap colors
 ----------------------
