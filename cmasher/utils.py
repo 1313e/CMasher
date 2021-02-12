@@ -258,8 +258,9 @@ def create_cmap_mod(cmap, *, save_dir='.'):
 
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
-                         sort='alphabetical', plot_profile=False,
-                         title="Colormap Overview", dark_mode=False):
+                         sort='alphabetical', show_grayscale=True,
+                         plot_profile=False, dark_mode=False,
+                         title="Colormap Overview", wscale=1, hscale=1):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -290,18 +291,27 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         :obj:`~matplotlib.colors.Colormap` object and returns the sorted
         position of that colormap.
         If *None*, the colormaps retain the order they were given in.
+    show_grayscale : bool. Default: True
+        Whether to show the grayscale versions of the given `cmaps` in the
+        overview.
     plot_profile : bool or float. Default: False
         Whether the lightness profiles of all colormaps should be plotted. If
         not *False*, the lightness profile of a colormap is plotted on top of
         its gray-scale version and `plot_profile` is used for setting the alpha
         (opacity) value.
         If `plot_profile` is *True*, it will be set to `0.25`.
-    title : str or None. Default: "Colormap Overview"
-        String to be used as the title of the colormap overview.
-        If empty or *None*, no title will be used.
+        If `show_grayscale` is *False*, this value is ignored.
     dark_mode : bool. Default: False
         Whether the colormap overview should be created using mostly dark
         colors.
+    title : str or None. Default: "Colormap Overview"
+        String to be used as the title of the colormap overview.
+        If empty or *None*, no title will be used.
+    wscale, hscale : float. Default: (1, 1)
+        Floats that determine with what factor the colormap subplot dimensions
+        in the overview should be scaled with.
+        The default values uses the default dimensions for the subplots (which
+        are determined by other input arguments).
 
     Notes
     -----
@@ -317,6 +327,21 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     The lightness profile transitions between black and white at 50% lightness.
 
     """
+
+    # Check value of show_grayscale
+    if show_grayscale:
+        # If True, the overview will have two columns
+        ncols = 2
+    else:
+        # If False, the overview will have one column and no profile plotted
+        ncols = 1
+        wscale *= 0.5
+        plot_profile = False
+
+    # Determine positions
+    wscale = 0.2+0.8*wscale
+    left_pos = 0.2/wscale
+    spacing = 0.01/wscale
 
     # If plot_profile is True, set it to its default value
     if plot_profile is True:
@@ -446,40 +471,54 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
     # Create figure instance
-    height = 0.4*len(cmaps_list)+0.1
-    fig, axs = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
-                            ncols=2, edgecolor=edge_color,
-                            facecolor=face_color)
+    height = (0.4*len(cmaps_list)+0.1)*hscale
+    fig, axs = plt.subplots(figsize=(6.4*wscale, height),
+                            nrows=len(cmaps_list), ncols=ncols,
+                            edgecolor=edge_color, facecolor=face_color)
 
     # Adjust subplot positioning
-    fig.subplots_adjust(top=(1-0.05/height), bottom=0.05/height, left=0.2,
-                        right=0.99, wspace=0.05)
+    fig.subplots_adjust(top=(1-0.05/height), bottom=0.05/height, left=left_pos,
+                        right=1.0-spacing, wspace=0.05)
 
     # If cmaps_list only has a single element, make sure axs is a list
     if(len(cmaps_list) == 1):
         axs = [axs]
 
     # Loop over all cmaps defined in cmaps list
-    for (ax0, ax1), cmap in zip(axs, cmaps_list):
-        # Turn axes off
-        ax0.set_axis_off()
-        ax1.set_axis_off()
+    for ax, cmap in zip(axs, cmaps_list):
+        # Obtain axes objects and turn them off
+        if show_grayscale:
+            # Obtain Axes objects
+            ax0, ax1 = ax
+
+            # Turn axes off
+            ax0.set_axis_off()
+            ax1.set_axis_off()
+        else:
+            # Obtain Axes object
+            ax0 = ax
+
+            # Turn axis off
+            ax0.set_axis_off()
 
         # Obtain position bbox of ax0
         pos0 = ax0.get_position()
 
         # If cmap is a tuple, it defines a title or cm_type
         if isinstance(cmap, tuple):
+            # Calculate title_pos
+            title_pos = left_pos+(1-spacing-left_pos)/2
+
             # If it is a title
             if cmap[1]:
                 # Write the title as text in the correct position
-                fig.text(0.595, pos0.y0+pos0.height/2, cmap[0],
+                fig.text(title_pos, pos0.y0+pos0.height/2, cmap[0],
                          va='center', ha='center', fontsize=18, c=text_color)
 
             # If it is a cm_type
             else:
                 # Write the cm_type as text in the correct position
-                fig.text(0.595, pos0.y0, cmap[0],
+                fig.text(title_pos, pos0.y0, cmap[0],
                          va='bottom', ha='center', fontsize=14, c=text_color)
 
         # Else, this is a colormap
@@ -550,11 +589,12 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 # Add line-collection to this subplot
                 ax1.add_collection(lc)
 
-            # Add gray-scale colormap subplot
-            ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
+            # Add gray-scale colormap subplot if requested
+            if show_grayscale:
+                ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
 
             # Plot the name of the colormap as text
-            x_text = pos0.x0-0.01
+            x_text = pos0.x0-spacing
             y_text = pos0.y0+pos0.height/2
             fig.text(x_text, y_text, cmap.name,
                      va='center', ha='right', fontsize=10, c=text_color)
@@ -698,8 +738,6 @@ def get_sub_cmap(cmap, start, stop, *, N=None):
     an existing colormap.
     If `N` is not set to *None*, this function creates a qualitative colormap
     from `cmap` instead.
-
-    .. versionadded:: 1.3.2
 
     Parameters
     ----------
@@ -1022,8 +1060,6 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
     """
     Takes `N` equally spaced colors from the provided colormap `cmap` and
     returns them.
-
-    .. versionadded:: 1.3.2
 
     Parameters
     ----------

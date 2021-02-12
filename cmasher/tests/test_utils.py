@@ -104,7 +104,11 @@ class Test_create_cmap_overview(object):
 
     # Test if dark mode can be enabled for the overview
     def test_dark_mode(self):
-        create_cmap_overview(mpl_cmaps, dark_mode=True)
+        create_cmap_overview([cmrcm.rainforest], dark_mode=True)
+
+    # Test if the grayscale versions can be removed
+    def test_no_grayscale(self):
+        create_cmap_overview([cmrcm.rainforest], show_grayscale=False)
 
     # Test if providing a custom dict of colormaps works
     def test_dict(self):

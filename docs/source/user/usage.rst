@@ -35,9 +35,11 @@ Note that my modified version of *viscm* (available `here <https://github.com/13
 Colormap overviews
 ------------------
 To allow for colormaps to be more easily compared with each other, *CMasher* can create colormap overviews of a given collection of colormaps, like those shown on the :ref:`introduction`; :ref:`sequential`; and :ref:`diverging` pages.
-This is done with the :func:`~cmasher.create_cmap_overview` function, which takes a list of colormaps, and creates an overview with their colored and grey-scaled versions, sorted on type and name (by default).
+This is done with the :func:`~cmasher.create_cmap_overview` function, which takes a list of colormaps, and creates an overview with their colored and gray-scaled versions, sorted on type and name (by default).
+Showing the grayscale versions of the colormaps can be turned off with :pycode:`show_grayscale=False`.
 Colormap overview figures are ideal for webpages or documents, as their horizontal resolution is always the same (i.e., 640px for SVG, or 1,600px for other formats).
 Adding or removing colormaps from the overview solely affects its vertical resolution, which is adjusted automatically such that each entry always has the same resolution.
+Using :pycode:`show_grayscale=False` and/or setting the `wscale` and `hscale` arguments will modify this resolution accordingly.
 
 The colormaps shown in an overview can be sorted/ordered in a number of different ways.
 By default, the colormaps are separated into their types (as determined by :func:`~cmasher.get_cmap_type`), and sorted on their name in alphabetical order (use :pycode:`sort=None` to not sort the colormaps).
@@ -59,7 +61,7 @@ Keep in mind that sorting on lightness profiles is only useful if all colormaps 
     Qualitative and miscellaneous colormaps are never sorted on their lightness profiles and solely use the last step.
 
 
-Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their grey-scaled versions, allowing for quick performance comparisons between colormaps.
+Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their gray-scaled versions, allowing for quick performance comparisons between colormaps.
 For those that want to show a colormap overview on a page that usually uses dark mode or simply want to have a dark background instead of a white background in the overview, one can enable dark mode in the overview by using :pycode:`dark_mode=True`.
 An example of dark mode is shown in the :ref:`cmap_overview_categories` overview.
 And, finally, one can set the title that is displayed at the top of the colormap overview with the `title` argument, which by default is set to :pycode:`"Colormap Overview"`.
@@ -72,6 +74,7 @@ Below is a list of several colormap overview examples with their scripts:
     cmap_overviews/categories
     cmap_overviews/mpl_cmaps
     cmap_overviews/seq_mpl_cmaps
+    cmap_overviews/single_major
 
 
 Colormap application overview
