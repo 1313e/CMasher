@@ -672,7 +672,7 @@ def get_cmap_type(cmap):
 
 
 # Function create a colormap using a subset of the colors in an existing one
-def get_sub_cmap(cmap, start, stop):
+def get_sub_cmap(cmap, start, stop, N=None):
     """
     Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
     the range `[start, stop]` of the provided `cmap` and returns it.
@@ -691,6 +691,12 @@ def get_sub_cmap(cmap, start, stop):
         The normalized range of the colors in `cmap` that must be in the sub
         colormap.
 
+    Optional
+    --------
+    N : int or None. Default: None
+        The number of color segments to return from the provided `cmap`.
+        If *None*, take all colors in `cmap` within the provided `cmap_range`.
+
     Returns
     -------
     sub_cmap : :obj:`~matplotlib.colors.ListedColormap`
@@ -701,6 +707,11 @@ def get_sub_cmap(cmap, start, stop):
     Creating a colormap using the first 80% of the 'rainforest' colormap::
 
         >>> get_sub_cmap('cmr.rainforest', 0, 0.8)
+
+    Creating a qualitative colormap containing 5 colors from the middle 60%
+    of the 'lilac' colormap:
+
+        >>> get_subcmap('cmr.lilac', 0.2, 0.8, N=5)
 
     Notes
     -----
@@ -722,11 +733,14 @@ def get_sub_cmap(cmap, start, stop):
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
+    if not (isinstance(N, int) or (N is None)):
+        raise ValueError("N must have type int or None.")
+
     # Obtain colors
-    colors = take_cmap_colors(cmap, None, cmap_range=(start, stop))
+    colors = take_cmap_colors(cmap, N, cmap_range=(start, stop))
 
     # Create new colormap
-    sub_cmap = LC(colors, cmap.name+'_sub', N=len(colors))
+    sub_cmap = LC(colors, cmap_name + '_sub', N=len(colors))
 
     # Return sub_cmap
     return(sub_cmap)
