@@ -19,6 +19,7 @@ jobs:
             architecture: x86
           - os: macos-latest
             architecture: x86
+      fail-fast: false
 
     steps:
     - uses: actions/checkout@v2
@@ -49,4 +50,3 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         twine upload --skip-existing dist/*
-      
