@@ -259,7 +259,7 @@ def create_cmap_mod(cmap, *, save_dir='.'):
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                          sort='alphabetical', plot_profile=False,
-                         title="Colormap Overview"):
+                         title="Colormap Overview", dark_mode=False):
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -299,6 +299,9 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     title : str or None. Default: "Colormap Overview"
         String to be used as the title of the colormap overview.
         If empty or *None*, no title will be used.
+    dark_mode : bool. Default: False
+        Whether the colormap overview should be created using mostly dark
+        colors.
 
     Notes
     -----
@@ -318,6 +321,18 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     # If plot_profile is True, set it to its default value
     if plot_profile is True:
         plot_profile = 0.25
+
+    # Check if dark mode is requested
+    if dark_mode:
+        # If so, use dark grey for the background and light grey for the text
+        edge_color = '#24292E'
+        face_color = '#24292E'
+        text_color = '#9DA5B4'
+    else:
+        # If not, use white for the background and black for the text
+        edge_color = '#FFFFFF'
+        face_color = '#FFFFFF'
+        text_color = '#000000'
 
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
@@ -433,7 +448,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     # Create figure instance
     height = 0.4*len(cmaps_list)+0.1
     fig, axs = plt.subplots(figsize=(6.4, height), nrows=len(cmaps_list),
-                            ncols=2)
+                            ncols=2, edgecolor=edge_color,
+                            facecolor=face_color)
 
     # Adjust subplot positioning
     fig.subplots_adjust(top=(1-0.05/height), bottom=0.05/height, left=0.2,
@@ -458,13 +474,13 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             if cmap[1]:
                 # Write the title as text in the correct position
                 fig.text(0.595, pos0.y0+pos0.height/2, cmap[0],
-                         va='center', ha='center', fontsize=18)
+                         va='center', ha='center', fontsize=18, c=text_color)
 
             # If it is a cm_type
             else:
                 # Write the cm_type as text in the correct position
                 fig.text(0.595, pos0.y0, cmap[0],
-                         va='bottom', ha='center', fontsize=14)
+                         va='bottom', ha='center', fontsize=14, c=text_color)
 
         # Else, this is a colormap
         else:
@@ -541,12 +557,13 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             x_text = pos0.x0-0.01
             y_text = pos0.y0+pos0.height/2
             fig.text(x_text, y_text, cmap.name,
-                     va='center', ha='right', fontsize=10)
+                     va='center', ha='right', fontsize=10, c=text_color)
 
     # If savefig is not None, save the figure
     if savefig is not None:
         dpi = 100 if (path.splitext(savefig)[1] == '.svg') else 250
-        plt.savefig(savefig, dpi=dpi)
+        plt.savefig(savefig, dpi=dpi, facecolor=face_color,
+                    edgecolor=edge_color)
         plt.close(fig)
 
     # Else, simply show it

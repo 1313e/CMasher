@@ -102,6 +102,10 @@ class Test_create_cmap_overview(object):
     def test_lightness_profiles(self):
         create_cmap_overview(mpl_cmaps, plot_profile=True)
 
+    # Test if dark mode can be enabled for the overview
+    def test_dark_mode(self):
+        create_cmap_overview(mpl_cmaps, dark_mode=True)
+
     # Test if providing a custom dict of colormaps works
     def test_dict(self):
         create_cmap_overview({'test1': [cmrcm.rainforest],
