@@ -394,7 +394,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             # Add empty list of colormaps to cmaps_dict with this cm_type
             cmaps_dict[cm_type] = []
 
-            # Loop over all cmaps and remove reversed versions
+            # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
                     cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
@@ -410,7 +410,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                         'misc']
             cmaps_dict = odict([[cm_type, []] for cm_type in cm_types])
 
-            # Loop over all cmaps and remove reversed versions
+            # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 cm_type = get_cmap_type(cmap)
                 if isinstance(cmap, str):
@@ -418,7 +418,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 else:
                     cmaps_dict[cm_type].append(cmap)
         else:
-            # Loop over all cmaps and remove reversed versions
+            # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
                     cmaps_list.append(mplcm.get_cmap(cmap))
