@@ -44,6 +44,8 @@ def create_cmap_app_overview():
     seq_cmaps = [cmap for cmap in cmap_cd['sequential'].values()]
     div_cmaps = [cmap for cmap in cmap_cd['diverging'].values()
                  if not cmap.name.endswith('_r')]
+    div_cmaps.extend([cmap for cmap in cmap_cd['cyclic'].values()
+                     if not cmap.name.endswith('_r')])
 
     # Sort colormaps on name
     seq_cmaps.sort(key=lambda x: x.name)
@@ -166,6 +168,21 @@ if(__name__ == '__main__'):
     # Obtain cmtype
     cmtype = get_cmap_type('cmr.{0}'.format(name))
 
+    # Check if provided cmap is a cyclic colormap
+    # If so, obtain its shifted (reversed) versions as well
+    if(cmtype == 'cyclic'):
+        # Determine the central value index of the colormap
+        idx = len(rgb)//2
+
+        # Shift the entire colormap by this index
+        rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
+
+        # Register this colormap as well
+        register_cmap(name+'_shifted', rgb_s)
+
+        # Set cmtype to 'diverging' for the remainder of this script
+        cmtype = 'diverging'
+
     # Export as .py-file
     create_cmap_mod(name, save_dir=name)
 
@@ -221,9 +238,15 @@ if(__name__ == '__main__'):
         <Lightness range><colors>
         <Recommended use>""").format(name, '-'*len(name))
 
+    # Obtain all colormaps with the type of this colormap
+    if(cmtype == 'sequential'):
+        cmaps = list(cmap_cd['sequential'].values())
+    else:
+        cmaps = [*cmap_cd['diverging'].values(), *cmap_cd['cyclic'].values()]
+
     # Make new colormap type overviews
     create_cmap_overview(
-        cmap_cd[cmtype].values(), sort='lightness', use_types=False,
+        cmaps, sort='lightness', use_types=(cmtype == 'diverging'),
         savefig=path.join(docs_dir, 'images',
                           '{0}_cmaps.png'.format(cmtype[:3])),
         title="{0} Colormaps".format(cmtype.capitalize()))

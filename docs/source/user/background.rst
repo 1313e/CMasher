@@ -35,4 +35,4 @@ An often cited reason for this (besides the general *"Everyone else uses it."*),
 Although a high perceptual range can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
 In order to solve the problem of not knowing when to use what colormap, on the :ref:`usage`; :ref:`sequential`; and :ref:`diverging` pages, the different colormaps in *CMasher* are introduced and described what they should be used for, such that others can use them properly for their own projects.
 
-.. _viscm: https://github.com/matplotlib/viscm
+.. _viscm: https://github.com/1313e/viscm

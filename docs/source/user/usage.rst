@@ -29,7 +29,7 @@ If your language of choice is not in this list, feel free to open an `issue`_ ab
 
 
 For those that are interested, the *viscm* source files that were used for creating the colormaps can also be found in the `cmasher/colormaps`_ directory in the repo (the source files are not provided with the package distribution).
-Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging colormap.
+Note that my modified version of *viscm* (available `here <https://github.com/1313e/viscm>`_) is required in order to properly view and edit the source file of a diverging or cyclic colormap.
 
 
 Colormap overviews
@@ -81,7 +81,7 @@ Colormap application overview
 -----------------------------
 Whereas the colormap overviews introduced above are great for seeing how the colormaps compare to each other in terms of performance, they do not show how the colormap would look like when used in a realistic application.
 As *CMasher* has quite a few different colormaps, this could make it difficult to pick the right one.
-For that reason, below is an overview of all colormaps in *CMasher* (and the reversed versions of all sequential colormaps as well), using their sample images as usually shown on the individual colormap pages:
+For that reason, below is an overview of all colormaps in *CMasher* (and the reversed/shifted versions of all sequential/cyclic colormaps as well), using their sample images as usually shown on the individual colormap pages:
 
 .. figure:: images/cmr_cmaps_app_100.png
     :alt: Application overview plot of *CMasher*'s colormaps.
@@ -196,6 +196,7 @@ Sub-colormaps
 Most sequential colormaps in *CMasher* span the entire lightness range from black to white, to maximize the perceptual range of the colormap.
 However, there are many cases in which this is not necessary or is even counter-productive (e.g., annotating colormaps; displaying smooth information like images; etc.).
 Another possibility is that one wants to use a white-centered diverging colormap, but the edges need to be distinguishable as well.
+Or, one would like to use a cyclic colormap as a diverging colormap by only using the center part.
 To aid with this, *CMasher* allows for sub-colormaps to be made of any colormap with the :func:`~cmasher.get_sub_cmap` function.
 Below is an example of a sub-colormap of :ref:`rainforest` using the central :math:`70\%`, created with :pycode:`cmr.get_sub_cmap('cmr.rainforest', 0.15, 0.85)`, compared to the original:
 
@@ -215,7 +216,7 @@ Below is an example of a sub-colormap of :ref:`rainforest` using the central :ma
 
 Note that :func:`~cmasher.get_sub_cmap` does not interpolate between colors, as this can create artifacts.
 In order to avoid creating colormaps that have too few different colors to look smooth, it is recommended to include at least 128 different colors.
-For *CMasher* colormaps, this means that one should aim to use at least :math:`50\%` of sequential colormaps (256 colors), or :math:`25\%` of diverging colormaps (511 colors).
+For *CMasher* colormaps, this means that one should aim to use at least :math:`50\%` of sequential colormaps (256 colors), or :math:`25\%` of diverging/cyclic colormaps (511/510 colors).
 
 It is also possible to use the :func:`~cmasher.get_sub_cmap` function to create qualitative sub-colormaps of any colormap, by setting the `N` argument to an integer.
 This works very similarly to the :func:`~cmasher.take_cmap_colors` function described below, but returns a :obj:`~matplotlib.colors.ListedColormap` object instead of a list of colors.
