@@ -178,7 +178,7 @@ if(__name__ == '__main__'):
         rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
 
         # Register this colormap as well
-        register_cmap(name+'_shifted', rgb_s)
+        register_cmap(name+'_s', rgb_s)
 
         # Set cmtype to 'diverging' for the remainder of this script
         cmtype = 'diverging'
