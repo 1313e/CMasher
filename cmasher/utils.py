@@ -815,7 +815,7 @@ def import_cmaps(cmap_path):
     Both the imported colormap and its reversed version will be registered.
 
     If a provided colormap is a 'cyclic' colormap, its shifted version will
-    also be registered.
+    also be registered with the `_s` suffix.
 
     Parameters
     ----------
@@ -930,7 +930,7 @@ def import_cmaps(cmap_path):
                 rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
 
                 # Register this colormap as well
-                register_cmap(cm_name+'_shifted', rgb_s)
+                register_cmap(cm_name+'_s', rgb_s)
 
         # If any error is raised, reraise it
         except Exception as error:
