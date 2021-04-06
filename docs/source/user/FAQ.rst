@@ -28,7 +28,7 @@ If you have an idea for a utility feature (like a function; class; CLI-command; 
 
 The edges of white-centered diverging colormaps are too similar
 ---------------------------------------------------------------
-Some diverging colormaps in *CMasher*, like :ref:`fusion`; :ref:`seasons`; and :ref:`waterlily`, have a white center and linearly decrease to :math:`10\%` lightness at the edges.
+Some diverging colormaps in *CMasher*, like :ref:`fusion` and :ref:`waterlily`, have a white center and linearly decrease to :math:`10\%` lightness at the edges.
 Depending on the screen that is being used and who is looking at the colormap, this may make it difficult to distinguish the two edges from each other.
 The reason for this is that white-centered diverging colormaps should normally be used for plots where the central values are the main focus of the plot, like probability maps (the lower the number of standard deviations, the better).
 Therefore, the edge values should have very little importance, and thus should look similarly dark.

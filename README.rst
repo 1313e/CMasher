@@ -14,7 +14,7 @@ Let's get rid of all bad colormaps in the world together!
 .. _issue: https://github.com/1313e/CMasher/issues
 .. _online documentation: https://cmasher.readthedocs.io
 .. _matplotlib: https://github.com/matplotlib/matplotlib
-.. _viscm: https://github.com/matplotlib/viscm
+.. _viscm: https://github.com/1313e/viscm
 
 Colormap overview
 -----------------

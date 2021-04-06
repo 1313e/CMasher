@@ -12,19 +12,28 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
 .. figure:: images/div_cmaps.png
     :width: 100%
     :align: center
-    :alt: Overview of all diverging colormaps in *CMasher* for Python.
+    :alt: Overview of all diverging and cyclic colormaps in *CMasher* for Python.
 
-    Overview of all diverging colormaps in *CMasher*.
+    Overview of all diverging and cyclic colormaps in *CMasher*.
 
 .. _PRISM: https://github.com/1313e/PRISM
+
+A special subcategory of diverging colormaps is the group of *cyclic* colormaps.
+Cyclic colormaps are very similar to normal diverging colormaps, but instead of both sides only sharing one end with each other, the sides share both ends.
+This means that the sides of a cyclic colormap both begin and end with the same color and thus theoretically speaking the colormap has no center.
+While cyclic colormaps are significantly more niche than normal diverging colormaps due to this property, they are perfect for plotting information that is periodic in nature, like data affected by orientation and/or phase.
+Due to the complexity and difficulty involved in creating proper cyclic colormaps, they tend to be quite rare, as *matplotlib* for example only has a single cyclic colormap, called *twilight*.
+Because of this, *CMasher* provides a few cyclic colormaps of its own as well, which are shown in their separate category in the overview plot above.
 
 
 .. toctree::
     :caption: Individual colormaps
 
+    diverging/emergency
     diverging/fusion
     diverging/guppy
     diverging/iceburn
+    diverging/infinity
     diverging/pride
     diverging/redshift
     diverging/seasons

@@ -394,7 +394,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             # Add empty list of colormaps to cmaps_dict with this cm_type
             cmaps_dict[cm_type] = []
 
-            # Loop over all cmaps and remove reversed versions
+            # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
                     cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
@@ -410,7 +410,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                         'misc']
             cmaps_dict = odict([[cm_type, []] for cm_type in cm_types])
 
-            # Loop over all cmaps and remove reversed versions
+            # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 cm_type = get_cmap_type(cmap)
                 if isinstance(cmap, str):
@@ -418,7 +418,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 else:
                     cmaps_dict[cm_type].append(cmap)
         else:
-            # Loop over all cmaps and remove reversed versions
+            # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
                     cmaps_list.append(mplcm.get_cmap(cmap))
@@ -815,7 +815,7 @@ def import_cmaps(cmap_path):
     Both the imported colormap and its reversed version will be registered.
 
     If a provided colormap is a 'cyclic' colormap, its shifted version will
-    also be registered.
+    also be registered with the `_s` suffix.
 
     Parameters
     ----------
@@ -930,7 +930,7 @@ def import_cmaps(cmap_path):
                 rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
 
                 # Register this colormap as well
-                register_cmap(cm_name+'_shifted', rgb_s)
+                register_cmap(cm_name+'_s', rgb_s)
 
         # If any error is raised, reraise it
         except Exception as error:

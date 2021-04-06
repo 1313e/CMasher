@@ -190,7 +190,7 @@ class Test_import_cmaps(object):
     def test_cyclic_cmap(self):
         name = 'cyclic'
         import_cmaps(path.join(dirpath, 'data/cm_{0}.txt'.format(name)))
-        for cmap in [name, name+'_r', name+'_shifted', name+'_shifted_r']:
+        for cmap in [name, name+'_r', name+'_s', name+'_s_r']:
             assert 'cmr.'+cmap in plt.colormaps()
             assert getattr(cmrcm, cmap, None) is not None
             assert cmap in cmrcm.cmap_d

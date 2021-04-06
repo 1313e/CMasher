@@ -79,7 +79,7 @@ So, for example, if one were to use the :ref:`rainforest` colormap, this could b
 See :ref:`usage` for more use-cases, including an overview of *CMasher*'s utility functions and how to use *CMasher* in other programming languages.
 
 
-.. _viscm: https://github.com/matplotlib/viscm
+.. _viscm: https://github.com/1313e/viscm
 .. _repository: https://github.com/1313e/CMasher
 .. _PyPI: https://pypi.org/project/CMasher
 .. _conda-forge: https://anaconda.org/conda-forge/CMasher
