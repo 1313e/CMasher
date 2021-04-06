@@ -13,10 +13,10 @@ seasons
     :align: center
 
 The *seasons* colormap is a visual representation of the cycle of the four seasons; winter, spring, summer and fall.
-Unlike most other diverging colormaps, *seasons* is a cyclic colormap, covering the full lightness range and using basically all colors.
+Like :ref:`emergency` and :ref:`infinity`, *seasons* is a cyclic colormap, covering the full lightness range and using basically all colors.
 Due to its exceptionally high perceptual range, *seasons* is great for use in plots with very dense information.
 Note that this colormap is not as CVD-friendly as other diverging or cyclic colormaps.
-A good cyclic alternative that is CVD-friendly is :ref:`infinity`.
+A good cyclic alternative that is CVD-friendly is :ref:`emergency`.
 
 .. note::
 

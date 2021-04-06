@@ -23,6 +23,7 @@ These colormaps are shown in an overview and described individually below.
     :caption: Individual colormaps
 
     sequential/amber
+    sequential/amethyst
     sequential/apple
     sequential/arctic
     sequential/bubblegum
