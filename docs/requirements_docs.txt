@@ -1,5 +1,5 @@
 -r ../requirements.txt
-sphinx>=3.2
+sphinx==3.5.3
 sphinx-autobuild
-sphinx_rtd_theme
+sphinx_rtd_theme==0.5.2
 
