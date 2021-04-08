@@ -66,6 +66,30 @@ class Test_create_cmap_mod(object):
         # Check if the values in both colormaps are the same
         assert np.allclose(cmap_old.colors, cmap_new.colors)
 
+    # Test if a standalone module of infinity can be created
+    def test_standalone_infinity(self):
+        # Obtain the currently registered version of infinity
+        cmap_old = mplcm.get_cmap('cmr.infinity')
+
+        # Create standalone module for infinity
+        cmap_path = create_cmap_mod('infinity')
+
+        # Try to import this module
+        spec = spec_from_file_location('infinity', cmap_path)
+        mod = module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        # Check if the colormap in MPL has been updated
+        cmap_new = mplcm.get_cmap('cmr.infinity')
+        assert cmap_new is mod.cmap
+        assert cmap_old is not cmap_new
+
+        # Check if the values in both colormaps are the same
+        assert np.allclose(cmap_old.colors, cmap_new.colors)
+
+        # Check that the shifted version of infinity also exists
+        assert 'cmr.infinity_s' in plt.colormaps()
+
     # Test if providing an invalid colormap name fails
     def test_invalid_cmap(self):
         # Check if a ValueError is raised
@@ -110,6 +134,10 @@ class Test_create_cmap_overview(object):
     def test_no_grayscale(self):
         create_cmap_overview([cmrcm.rainforest], show_grayscale=False)
 
+    # Test if the lightness info can be shown
+    def test_show_info(self):
+        create_cmap_overview([cmrcm.rainforest], show_info=True)
+
     # Test if providing a custom dict of colormaps works
     def test_dict(self):
         create_cmap_overview({'test1': [cmrcm.rainforest],
@@ -119,6 +147,11 @@ class Test_create_cmap_overview(object):
     def test_savefig(self):
         create_cmap_overview(savefig="test.png")
         assert path.exists("./test.png")
+
+    # test if providing an invalid sort value raises an error
+    def test_invalid_sort_value(self):
+        with pytest.raises(ValueError):
+            create_cmap_overview(sort='test')
 
 
 # Pytest for get_bibtex()-function

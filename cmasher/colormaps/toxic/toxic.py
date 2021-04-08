@@ -276,7 +276,7 @@ cm_data = [[0.00000000, 0.00000000, 0.00000000],
            [0.85017860, 0.90235935, 0.57002798]]
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name='cmr.toxic', N=len(cm_data))
+cmap = ListedColormap(cm_data, name='cmr.toxic', N=256)
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL

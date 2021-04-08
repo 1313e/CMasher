@@ -276,7 +276,7 @@ cm_data = [[0.00000000, 0.00000000, 0.00000000],
            [0.37176267, 0.99245625, 0.81652140]]
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name='cmr.cosmic', N=len(cm_data))
+cmap = ListedColormap(cm_data, name='cmr.cosmic', N=256)
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL

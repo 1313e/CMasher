@@ -530,9 +530,24 @@ cm_data = [[0.34562389, 0.02586483, 0.44469337],
            [0.34869210, 0.02984150, 0.44297001]]
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name='cmr.infinity', N=len(cm_data))
+cmap = ListedColormap(cm_data, name='cmr.infinity', N=510)
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL
 register_cmap(cmap=cmap)
 register_cmap(cmap=cmap_r)
+
+# Determine central value index of the colormap
+idx = len(cm_data)//2
+
+# Shift the entire colormap by this index
+cm_data_s = list(cm_data[idx:])
+cm_data_s.extend(cm_data[:idx])
+
+# Create ListedColormap object for this shifted version
+cmap_s = ListedColormap(cm_data_s, name='cmr.infinity_s', N=510)
+cmap_s_r = cmap_s.reversed()
+
+# Register shifted versions in MPL as well
+register_cmap(cmap=cmap_s)
+register_cmap(cmap=cmap_s_r)

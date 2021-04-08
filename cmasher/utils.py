@@ -93,6 +93,7 @@ def _get_cmap_lightness_rank(cmap):
 
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
+    cm_type = get_cmap_type(cmap)
 
     # Get RGB values for colormap
     rgb = cmap(np.arange(cmap.N))[:, :3]
@@ -109,7 +110,7 @@ def _get_cmap_lightness_rank(cmap):
     L_type = 0
 
     # Determine the RMSE of the lightness profile of a sequential colormap
-    if(get_cmap_type(cmap) == 'sequential'):
+    if(cm_type == 'sequential'):
         # Take RMSE of entire lightness profile
         L_rmse = np.around(np.std(derivs), 1)
 
@@ -121,9 +122,15 @@ def _get_cmap_lightness_rank(cmap):
         L_type += ((np.sum(rgb[0]) == 0) == (np.sum(rgb[-1]) == 3))
 
     # Diverging/cyclic colormaps
-    elif get_cmap_type(cmap) in ('diverging', 'cyclic'):
+    elif cm_type in ('diverging', 'cyclic'):
+        # Determine the center of the colormap
+        if(cm_type == 'diverging'):
+            N = cmap.N-1
+        else:
+            N = cmap.N
+
         # Calculate RMSE of both halves
-        central_i = [int(np.floor(cmap.N/2)), int(np.ceil(cmap.N/2))]
+        central_i = [int(np.floor(N/2)), int(np.ceil(N/2))]
         L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
                          np.around(np.std(derivs[central_i[1]:]), 1)])
 
@@ -131,7 +138,7 @@ def _get_cmap_lightness_rank(cmap):
         L_start = np.around(np.average(L[central_i]), 1)
 
     # Determine lightness range for sequential/diverging/cyclic colormaps
-    if get_cmap_type(cmap) in ('sequential', 'diverging', 'cyclic'):
+    if cm_type in ('sequential', 'diverging', 'cyclic'):
         L_min = np.around(np.min(L), 1)
         L_max = np.around(np.max(L), 1)
         L_rng = np.around(np.abs(L_max-L_min), 1)
@@ -198,6 +205,7 @@ def create_cmap_mod(cmap, *, save_dir='.'):
 
     # Obtain the CMasher colormap associated with the provided cmap
     cmap = cmrcm.cmap_d.get(name, None)
+    cm_type = get_cmap_type(cmap)
 
     # If cmap is None, raise error
     if cmap is None:
@@ -237,13 +245,35 @@ def create_cmap_mod(cmap, *, save_dir='.'):
         cm_data = {1}
 
         # Create ListedColormap object for this colormap
-        cmap = ListedColormap(cm_data, name='cmr.{2}', N=len(cm_data))
+        cmap = ListedColormap(cm_data, name='cmr.{2}', N={3})
         cmap_r = cmap.reversed()
 
         # Register (reversed) cmap in MPL
         register_cmap(cmap=cmap)
         register_cmap(cmap=cmap_r)
-        """).format(get_cmap_type(cmap), array_str, name)
+        """)
+
+    # If this colormap is cyclic, add code to register shifted version as well
+    if(cm_type == 'cyclic'):
+        cm_py_file += dedent("""
+            # Determine central value index of the colormap
+            idx = len(cm_data)//2
+
+            # Shift the entire colormap by this index
+            cm_data_s = list(cm_data[idx:])
+            cm_data_s.extend(cm_data[:idx])
+
+            # Create ListedColormap object for this shifted version
+            cmap_s = ListedColormap(cm_data_s, name='cmr.{2}_s', N={3})
+            cmap_s_r = cmap_s.reversed()
+
+            # Register shifted versions in MPL as well
+            register_cmap(cmap=cmap_s)
+            register_cmap(cmap=cmap_s_r)
+            """)
+
+    # Format py-file string
+    cm_py_file = cm_py_file.format(cm_type, array_str, name, len(rgb))
 
     # Obtain the path to the module
     cmap_path = path.join(save_dir, "{0}.py".format(name))
@@ -259,7 +289,7 @@ def create_cmap_mod(cmap, *, save_dir='.'):
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                          sort='alphabetical', show_grayscale=True,
-                         plot_profile=False, dark_mode=False,
+                         show_info=False, plot_profile=False, dark_mode=False,
                          title="Colormap Overview", wscale=1, hscale=1):
     """
     Creates an overview plot containing all colormaps defined in the provided
@@ -294,11 +324,20 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     show_grayscale : bool. Default: True
         Whether to show the grayscale versions of the given `cmaps` in the
         overview.
+    show_info : bool. Default: False
+        Whether the lightness profile information of all sequential, diverging
+        and cyclic colormaps should be shown under their names. This is a
+        series of numbers representing, in order, the starting (sequential) or
+        central (diverging/cyclic) lightness value; the lightness range; and
+        the RMSE of the lightness profile.
+        When `sort` is set to 'lightness', this is the order in which the
+        colormaps are plotted (although sequential colormaps are sorted on
+        their profile type first).
     plot_profile : bool or float. Default: False
-        Whether the lightness profiles of all colormaps should be plotted. If
-        not *False*, the lightness profile of a colormap is plotted on top of
-        its gray-scale version and `plot_profile` is used for setting the alpha
-        (opacity) value.
+        Whether the lightness profiles of all non-qualitative colormaps should
+        be plotted. If not *False*, the lightness profile of a colormap is
+        plotted on top of its gray-scale version and `plot_profile` is used for
+        setting the alpha (opacity) value.
         If `plot_profile` is *True*, it will be set to `0.25`.
         If `show_grayscale` is *False*, this value is ignored.
     dark_mode : bool. Default: False
@@ -342,6 +381,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     wscale = 0.2+0.8*wscale
     left_pos = 0.2/wscale
     spacing = 0.01/wscale
+    title_pos = left_pos+(1-spacing-left_pos)/2
 
     # If plot_profile is True, set it to its default value
     if plot_profile is True:
@@ -374,6 +414,9 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 return(x.name)
         elif(sort == 'lightness'):
             sort = _get_cmap_lightness_rank
+        else:
+            raise ValueError("Input argument 'sort' has invalid string value "
+                             "%r!" % (sort))
 
     # Create empty list of cmaps
     cmaps_list = []
@@ -506,9 +549,6 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
         # If cmap is a tuple, it defines a title or cm_type
         if isinstance(cmap, tuple):
-            # Calculate title_pos
-            title_pos = left_pos+(1-spacing-left_pos)/2
-
             # If it is a title
             if cmap[1]:
                 # Write the title as text in the correct position
@@ -593,11 +633,26 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             if show_grayscale:
                 ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
 
-            # Plot the name of the colormap as text
+            # Obtain positions of colormap name
             x_text = pos0.x0-spacing
             y_text = pos0.y0+pos0.height/2
-            fig.text(x_text, y_text, cmap.name,
-                     va='center', ha='right', fontsize=10, c=text_color)
+
+            # Check if lightness information was requested for valid cm_type
+            if show_info and cm_type in ('sequential', 'diverging', 'cyclic'):
+                # If so, obtain lightness profile information
+                info = _get_cmap_lightness_rank(cmap)[1:4]
+
+                # Write name of colormap in the correct position
+                fig.text(x_text, y_text, cmap.name,
+                         va='bottom', ha='right', fontsize=10, c=text_color)
+
+                # Write lightness profile information in the correct position
+                fig.text(x_text, y_text, "(%.3g, %.3g, %.3g)" % (info),
+                         va='top', ha='right', fontsize=10, c=text_color)
+            else:
+                # If not, just write the name of the colormap
+                fig.text(x_text, y_text, cmap.name,
+                         va='center', ha='right', fontsize=10, c=text_color)
 
     # If savefig is not None, save the figure
     if savefig is not None:

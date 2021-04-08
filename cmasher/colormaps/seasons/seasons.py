@@ -530,9 +530,24 @@ cm_data = [[0.00000000, 0.00000000, 0.00000000],
            [0.00028859, 0.00020827, 0.00027725]]
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name='cmr.seasons', N=len(cm_data))
+cmap = ListedColormap(cm_data, name='cmr.seasons', N=510)
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL
 register_cmap(cmap=cmap)
 register_cmap(cmap=cmap_r)
+
+# Determine central value index of the colormap
+idx = len(cm_data)//2
+
+# Shift the entire colormap by this index
+cm_data_s = list(cm_data[idx:])
+cm_data_s.extend(cm_data[:idx])
+
+# Create ListedColormap object for this shifted version
+cmap_s = ListedColormap(cm_data_s, name='cmr.seasons_s', N=510)
+cmap_s_r = cmap_s.reversed()
+
+# Register shifted versions in MPL as well
+register_cmap(cmap=cmap_s)
+register_cmap(cmap=cmap_s_r)
