@@ -6,6 +6,7 @@ import argparse
 from importlib import import_module
 import os
 import sys
+from textwrap import dedent
 
 # Package imports
 import e13tools as e13
@@ -21,14 +22,25 @@ __all__ = ['main']
 
 
 # %% GLOBALS
+# Define set of packages with colormaps
+cmap_pkgs = {'cmocean', 'colorcet', 'palettable'}
+
 # Define main description of this package
-main_desc = ("CMasher: Scientific colormaps for making accessible, informative"
-             " and 'cmashing' plots")
+main_desc = dedent("""
+    CMasher: Scientific colormaps for making accessible, informative and
+    'cmashing' plots
+
+    This CLI-tool provides access to several of CMasher's utility functions.
+    As several commands require a colormap object to work, all Python packages
+    defined in the 'CMR_CMAP_PKGS' environment variable in addition to the
+    following packages %s are attempted
+    to be imported before any command is executed.""") % (tuple(cmap_pkgs),)
 
 
 # %% CLASS DEFINITIONS
 # Define formatter that automatically extracts help strings of subcommands
-class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
+class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter,
+                                   argparse.RawTextHelpFormatter):
     # Override the add_argument function
     def add_argument(self, action):
         # Check if the help of this action is required
@@ -155,9 +167,6 @@ def get_cmap(cmap):
 
 # This function attempts to import a collection of packages with colormaps
 def import_cmap_pkgs():
-    # Define set of packages with colormaps
-    cmap_pkgs = {'cmocean', 'colorcet', 'palettable'}
-
     # Obtain packages from CMR_CMAP_PKGS environment variable
     env_pkgs = os.environ.get('CMR_CMAP_PKGS', None)
 
@@ -195,7 +204,7 @@ def main():
     # Initialize argparser
     parser = argparse.ArgumentParser(
         'cmr',
-        description=main_desc,
+        description=main_desc[1:],
         formatter_class=HelpFormatterWithSubCommands,
         add_help=True,
         allow_abbrev=True)

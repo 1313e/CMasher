@@ -37,7 +37,6 @@ These colormaps are shown in an overview and described individually below.
     sequential/freeze
     sequential/gem
     sequential/gothic
-    sequential/heat
     sequential/horizon
     sequential/jungle
     sequential/lavender
@@ -52,6 +51,7 @@ These colormaps are shown in an overview and described individually below.
     sequential/sepia
     sequential/sunburst
     sequential/swamp
+    sequential/torch
     sequential/toxic
     sequential/tree
     sequential/tropical

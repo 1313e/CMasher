@@ -52,3 +52,32 @@ Common color artifacts that I have noticed in screens include shades of red or g
 
 A funny side effect of this is that some colormaps, like :ref:`chroma`; :ref:`rainforest`; :ref:`neon`; and :ref:`pride`, are great for testing the color performance of a screen.
 Simply view their `viscm` outputs on a screen (which can be found on the individual colormap pages), and any problems should immediately show up.
+
+
+Why are there so many diverging colormaps with a blue end?
+----------------------------------------------------------
+There are two reasons for this: Ease-of-use and CVD-friendliness.
+The color blue (and surrounding shades of purple and blue-green) takes up a very large volume in colorspace.
+This means that it is really easy to create a perceptually uniform track through colorspace that involves blue.
+The sheer number of blue sequential colormaps in *CMasher* show this as well, with :ref:`cosmic`; :ref:`arctic`; :ref:`freeze`; :ref:`voltage`; :ref:`ocean`; and :ref:`gem` all primarily using the color blue.
+Their *viscm* outputs also show how wide the arcs through colorspace can be without including other major colors (besides purple).
+
+The more important reason however, is that blue is very CVD-friendly.
+Unlike most other colors, blue appears as blue to pretty much everyone, including those that are affected by CVD, and is usually the only color to appear as blue for people with CVD as well.
+When making colormaps, I usually try to make sure that they are CVD-friendly (i.e., people with CVD can still perceive and interpret a plot with a CVD-friendly colormap properly).
+Of course, there are some examples of colormaps that are not CVD-friendly, like :ref:`chroma`; :ref:`neon`/:ref:`tropical`; :ref:`wildfire`; and :ref:`seasons`, but their pages mention this and these colormaps were purely made to have an exceptionally high perceptual range.
+
+For sequential colormaps, I can use colors that end up having the same saturation for people with CVD, as long as their lightness values are distinctively different.
+A great example of this is :ref:`savanna`, which is a sequential colormap that is CVD-friendly despite using solely green and red.
+The *viscm* output of :ref:`savanna` shows that the colormap becomes a yellow-only colormap for the most common types of CVD, which still works just fine.
+
+For diverging colormaps however, using this 'trick' is no longer possible.
+Diverging colormaps require the use of distinctive sequential colormaps on both sides, which must also be true when viewed by a person affected by CVD.
+For this reason and because of the properties of blue I mentioned above, I tend to end up using blue for one end of every diverging colormap.
+The only diverging colormap in *CMasher* that does not have a blue end (at time of writing), is :ref:`watermelon`.
+One look at the *viscm* output of :ref:`watermelon` tells you immediately that this colormap will not work well for CVD-friendly plots, as both sides end up looking very similar.
+
+Of course, it is possible to make diverging colormaps without blue that are still CVD-friendly.
+However, these colormaps usually tend to end up looking very boring and dull, as I have to prioritize using CVD-friendly colors over colorful colors.
+And while this could be useful, this also means that they end up having low perceptual ranges, which kind of defeats the entire purpose of a diverging colormap.
+

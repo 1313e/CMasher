@@ -1,0 +1,42 @@
+{
+    "content-type": "application/vnd.matplotlib.colormap-v1+json",
+    "name": "prinsenvlag",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0",
+    "usage-hints": [
+        "red-green-colorblind-safe",
+        "greyscale-safe",
+        "diverging"
+    ],
+    "colorspace": "sRGB",
+    "domain": "continuous",
+    "colors": "aa5245ab5245ac5344ac5344ad5343ae5443af5442b05442b05541b15541b25540b35640b3563fb4563fb5573eb6573db6583db7583cb8583cb9593bb9593aba5a3abb5a39bc5a39bc5b38bd5b37be5c37be5c36bf5d35c05d35c05e34c15e33c25e33c25f32c35f31c46031c46030c5612fc6612fc6622ec7622dc8632cc8632cc9642bc9652aca6529cb6629cb6628cc6727cc6726cd6826cd6825ce6924ce6a23cf6a22cf6b22d06c21d06c20d16d1fd16d1ed26e1dd26f1cd36f1cd3701bd4711ad47119d57218d57317d57416d67415d67514d67613d77612d77711d87810d8790fd8790ed87a0dd97b0cd97c0bd97d0bda7d0ada7e09da7f08da8007da8107db8207db8206db8306db8406db8506db8606db8706dc8806dc8807dc8908dc8a08dc8b09dc8c0adc8d0cdc8e0ddc8f0edc9010dc9111dc9213dc9214dc9316dc9417dc9519dc961adc971cdb981edb991fdb9a21db9b23db9c24db9d26db9e28db9e2adb9f2bdba02ddba12fdaa231daa332daa434daa536daa638daa639daa73bdaa83ddaa93fdaaa40daab42daac44daac46daad47daae49daaf4bdab04dd9b04ed9b150d9b252d9b353d9b455d9b457d9b559d9b65ad9b75cdab85edab85fdab961daba63dabb65dabb66dabc68dabd6adabe6bdabe6ddabf6fdac070dac172dac174dac275dbc377dbc479dbc47adbc57cdbc67edbc67fdbc781dcc883dcc984dcc986dcca88dccb89dccb8bddcc8dddcd8eddcd90ddce91ddcf93decf95ded096ded198ded19adfd29bdfd39ddfd39edfd4a0e0d5a2e0d5a3e0d6a5e0d7a6e1d7a8e1d8a9e1d9abe2d9ade2daaee2dbb0e3dbb1e3dcb3e3ddb4e4ddb6e4deb7e4dfb9e5dfbbe5e0bce5e1bee6e1bfe6e2c1e7e3c2e7e3c4e7e4c5e8e5c7e8e5c8e9e6cae9e6cbe9e7cdeae8ceeae8d0ebe9d1ebead3ecead4ecebd6edecd7edecd9eeeddaeeeddbefeeddefefdef0efe0f0f0e1f1f1e3f1f1e4f2f2e5f2f2e7f3f3e8f3f4e9f4f4ebf5f5ecf5f6edf6f6eff6f7f0f7f7f1f8f8f3f8f9f4f9f9f5fafaf6fafaf7fbfbf9fcfcfafcfcfbfdfdfcfefefdfefefefffffffefefefdfefefcfdfdfafdfcf9fcfcf8fcfbf7fbfbf6fbfaf5fbf9f3faf9f2faf8f1f9f8f0f9f7eff8f6edf8f6ecf7f5ebf7f5eaf6f4e8f6f3e7f5f3e6f5f2e5f4f2e3f4f1e2f4f1e1f3f0e0f3f0def2efddf2efdcf1eedaf1eed9f1edd8f0edd7f0ecd5efecd4efebd3eeebd1eeead0eeeaceede9cdede9ccece9caece8c9ece8c8ebe7c6ebe7c5eae7c3eae6c2e9e6c0e9e6bfe9e5bee8e5bce8e5bbe7e4b9e7e4b8e7e4b6e6e4b5e6e3b3e5e3b2e5e3b1e5e3afe4e2aee4e2ace3e2abe3e2a9e2e2a8e2e2a6e2e2a5e1e1a3e1e1a2e0e1a0e0e19fdfe19ddfe19cdfe19adee199dee198dde196dde195dce193dce192dbe191dbe18fdae18edae18dd9e18bd9e28ad8e289d8e287d7e286d7e285d6e284d6e283d5e281d5e280d4e27fd3e37ed3e37dd2e37cd2e37bd1e37ad1e379d0e378d0e477cfe476cee475cee474cde473cde472cce471cbe570cbe56fcae56ecae56dc9e56dc8e56cc8e56bc7e66ac6e66ac6e669c5e668c5e667c4e667c3e766c3e765c2e765c1e764c1e764c0e763bfe762bfe862bee861bde861bde860bce860bbe85fbbe95fbae95fb9e95eb9e95eb8e95db7e95db7e95db6ea5cb5ea5cb5ea5cb4ea5bb3ea5bb3ea5bb2ea5bb1ea5ab0eb5ab0eb5aafeb5aaeeb5aaeeb5aadeb5aaceb59abeb59abec59aaec59a9ec59a9ec59a8ec59a7ec59a6ec59a6ec59a5ec5aa4ec5aa3ed5aa3ed5aa2ed5aa1ed5aa0ed5aa0ed5b9fed5b9eed5b9ded5b9ced5c9ced5c9bed5c9aed5d99ed5d99ed5d98ed5e97ec5e96ec5e95ec5f95ec5f94ec6093ec6092eb6191eb6191eb6290eb628fea638eea638de9648de9648ce8658be8658ae76689e76689e66788e56887e56886e46986e36985e26a84e16a83e06b83df6b82de6b81dd6c81dc6c80da6d7fd96d7fd86d7ed76d7ed56e7dd46e7cd36e7cd16e7bd06e7bce6f7acd6f7acb6f79ca6f79c96f78c76f78c66f77c46f77c36f76c16f76c06f75be6f75bd6f74bb6f74ba6e73b96e73b76e72b66e72b46e72b36e71b16e71b06d70af6d70ad6d6fac6d6faa6d6ea96c6ea86c6ea66c6da56c6da46c6ca2",
+    "extensions": {
+        "https://matplotlib.org/viscm": {
+            "min_Jp": 99.99871678,
+            "max_Jp": 50.0,
+            "xp": [
+                20.214429305338513,
+                25.097912449691194,
+                -4.202986416425034,
+                -1.91200895,
+                -38.69258612341605,
+                -2.982115630336864,
+                1.5961498174938242
+            ],
+            "yp": [
+                8.471317166969385,
+                30.446991316556563,
+                43.26613457048245,
+                -1.15144878,
+                -1.295649121736048,
+                -47.38352129656475,
+                -19.91392860958075
+            ],
+            "fixed": 3,
+            "filter_k": 100,
+            "cmtype": "diverging",
+            "uniform_colorspace": "CAM02-UCS",
+            "spline_method": "Bezier"
+        }
+    }
+}

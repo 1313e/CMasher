@@ -11,7 +11,7 @@ assignees: ''
 <!--List the colors you would like in the colormap.-->
 
 **Describe the colormap type**
-<!--Sequential; diverging; diverging-sequential-->
+<!--Sequential; diverging; cyclic-->
 
 **Describe any extra properties**
 <!--Colorblind-friendliness; lightness range; color focus; etc.-->

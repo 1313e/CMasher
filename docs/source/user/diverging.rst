@@ -35,6 +35,7 @@ Because of this, *CMasher* provides a few cyclic colormaps of its own as well, w
     diverging/iceburn
     diverging/infinity
     diverging/pride
+    diverging/prinsenvlag
     diverging/redshift
     diverging/seasons
     diverging/seaweed

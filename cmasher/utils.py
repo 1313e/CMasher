@@ -14,6 +14,7 @@ from collections import OrderedDict as odict
 from glob import glob
 from os import path
 from textwrap import dedent
+import warnings
 
 # Package imports
 from colorspacious import cspace_converter
@@ -73,8 +74,10 @@ def _get_cmap_lightness_rank(cmap):
 
     Returns
     -------
+    L_slope : int
+        The slope type of lightness profile of `cmap`.
     L_type : int
-        The type of lightness profile of `cmap`.
+        The range type of lightness profile of `cmap`.
         This is only used for sequential colormaps.
     L_start : float
         The starting lightness value of `cmap`.
@@ -118,8 +121,9 @@ def _get_cmap_lightness_rank(cmap):
         L_start = np.around(L[0], 1)
 
         # Determine type of lightness profile
-        L_type += ~(np.sum(rgb[0]) == 0)*2
-        L_type += ((np.sum(rgb[0]) == 0) == (np.sum(rgb[-1]) == 3))
+        L_type += ~np.allclose(rgb[0], [0, 0, 0])*2
+        L_type += (
+            np.allclose(rgb[0], [0, 0, 0]) == np.allclose(rgb[-1], [1, 1, 1]))
 
     # Diverging/cyclic colormaps
     elif cm_type in ('diverging', 'cyclic'):
@@ -143,12 +147,15 @@ def _get_cmap_lightness_rank(cmap):
         L_max = np.around(np.max(L), 1)
         L_rng = np.around(np.abs(L_max-L_min), 1)
 
+        # Determine if cmap goes from dark to light or the opposite
+        L_slope = (L_start > L[-1])*2-1
+
     # For qualitative/misc colormaps, set all lightness values to zero
     else:
-        L_type = L_start = L_rng = L_rmse = 0
+        L_slope = L_type = L_start = L_rng = L_rmse = 0
 
     # Return lightness contributions to the rank
-    return(L_type, L_start, L_rng, L_rmse, cmap.name)
+    return(L_slope, L_type, L_start, L_rng, L_rmse, cmap.name)
 
 
 # %% FUNCTIONS
@@ -328,8 +335,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         Whether the lightness profile information of all sequential, diverging
         and cyclic colormaps should be shown under their names. This is a
         series of numbers representing, in order, the starting (sequential) or
-        central (diverging/cyclic) lightness value; the lightness range; and
-        the RMSE of the lightness profile.
+        central (diverging/cyclic) lightness value; the final/outer lightness
+        value; and the RMSE of the lightness profile.
         When `sort` is set to 'lightness', this is the order in which the
         colormaps are plotted (although sequential colormaps are sorted on
         their profile type first).
@@ -366,38 +373,6 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     The lightness profile transitions between black and white at 50% lightness.
 
     """
-
-    # Check value of show_grayscale
-    if show_grayscale:
-        # If True, the overview will have two columns
-        ncols = 2
-    else:
-        # If False, the overview will have one column and no profile plotted
-        ncols = 1
-        wscale *= 0.5
-        plot_profile = False
-
-    # Determine positions
-    wscale = 0.2+0.8*wscale
-    left_pos = 0.2/wscale
-    spacing = 0.01/wscale
-    title_pos = left_pos+(1-spacing-left_pos)/2
-
-    # If plot_profile is True, set it to its default value
-    if plot_profile is True:
-        plot_profile = 0.25
-
-    # Check if dark mode is requested
-    if dark_mode:
-        # If so, use dark grey for the background and light grey for the text
-        edge_color = '#24292E'
-        face_color = '#24292E'
-        text_color = '#9DA5B4'
-    else:
-        # If not, use white for the background and black for the text
-        edge_color = '#FFFFFF'
-        face_color = '#FFFFFF'
-        text_color = '#000000'
 
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
@@ -513,6 +488,37 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     # Obtain the colorspace converter for showing cmaps in grey-scale
     cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
+    # Check value of show_grayscale
+    if show_grayscale:
+        # If True, the overview will have two columns
+        ncols = 2
+    else:
+        # If False, the overview will have one column
+        ncols = 1
+        wscale *= 0.5
+
+    # Determine text/element positions
+    wscale = 0.2+0.8*wscale
+    left_pos = 0.2/wscale
+    spacing = 0.01/wscale
+    title_pos = left_pos+(1-spacing-left_pos)/2
+
+    # If plot_profile is True, set it to its default value
+    if plot_profile is True:
+        plot_profile = 0.25
+
+    # Check if dark mode is requested
+    if dark_mode:
+        # If so, use dark grey for the background and light grey for the text
+        edge_color = '#24292E'
+        face_color = '#24292E'
+        text_color = '#9DA5B4'
+    else:
+        # If not, use white for the background and black for the text
+        edge_color = '#FFFFFF'
+        face_color = '#FFFFFF'
+        text_color = '#000000'
+
     # Create figure instance
     height = (0.4*len(cmaps_list)+0.1)*hscale
     fig, axs = plt.subplots(figsize=(6.4*wscale, height),
@@ -572,82 +578,84 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
             # Get RGB values for colormap
             rgb = cmap(x)[:, :3]
 
-            # Get lightness values of colormap
-            lab = cspace_convert(rgb)
-            L = lab[:, 0]
-
-            # Normalize lightness values
-            L /= 99.99871678
-
-            # Get corresponding RGB values for lightness values using neutral
-            rgb_L = cmrcm.neutral(L)[:, :3]
-
             # Add colormap subplot
             ax0.imshow(rgb[np.newaxis, ...], aspect='auto')
 
-            # Check if the lightness profile was requested
-            if plot_profile and (cm_type != 'qualitative'):
-                # Determine the points that need to be plotted
-                plot_L = -(L-0.5)
-                points = np.stack([x, plot_L], axis=1)
-
-                # Determine the colors that each point must have
-                # Use black for L >= 0.5 and white for L <= 0.5.
-                colors = np.zeros_like(plot_L, dtype=int)
-                colors[plot_L >= 0] = 1
-
-                # Split points up into segments with the same color
-                s_idx = np.nonzero(np.diff(colors))[0]+1
-                segments = np.split(points, s_idx)
-
-                # Loop over all pairs of adjacent segments
-                for i, (seg1, seg2) in enumerate(zip(segments[:-1],
-                                                     segments[1:])):
-                    # Determine the point in the center of these segments
-                    central_point = (seg1[-1]+seg2[0])/2
-
-                    # Add this point to the ends of these segments
-                    # This ensures that the color changes in between segments
-                    segments[i] = np.concatenate(
-                        [segments[i], [central_point]], axis=0)
-                    segments[i+1] = np.concatenate(
-                        [[central_point], segments[i+1]], axis=0)
-
-                # Create an MPL LineCollection object with these segments
-                lc = LineCollection(segments, cmap=cmrcm.neutral,
-                                    alpha=plot_profile)
-                lc.set_linewidth(1)
-
-                # Determine the colors of each segment
-                s_colors = [colors[0]]
-                s_colors.extend(colors[s_idx])
-                s_colors = np.array(s_colors)
-
-                # Set the values of the line-collection to be these colors
-                lc.set_array(s_colors)
-
-                # Add line-collection to this subplot
-                ax1.add_collection(lc)
-
             # Add gray-scale colormap subplot if requested
             if show_grayscale:
+                # Get lightness values of colormap
+                lab = cspace_convert(rgb)
+                L = lab[:, 0]
+
+                # Normalize lightness values
+                L /= 99.99871678
+
+                # Get RGB values for lightness values using neutral
+                rgb_L = cmrcm.neutral(L)[:, :3]
+
+                # Add grey-scale colormap subplot
                 ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
 
-            # Obtain positions of colormap name
+                # Check if the lightness profile was requested
+                if plot_profile and (cm_type != 'qualitative'):
+                    # Determine the points that need to be plotted
+                    plot_L = -(L-0.5)
+                    points = np.stack([x, plot_L], axis=1)
+
+                    # Determine the colors that each point must have
+                    # Use black for L >= 0.5 and white for L <= 0.5.
+                    colors = np.zeros_like(plot_L, dtype=int)
+                    colors[plot_L >= 0] = 1
+
+                    # Split points up into segments with the same color
+                    s_idx = np.nonzero(np.diff(colors))[0]+1
+                    segments = np.split(points, s_idx)
+
+                    # Loop over all pairs of adjacent segments
+                    for i, (seg1, seg2) in enumerate(zip(segments[:-1],
+                                                         segments[1:])):
+                        # Determine the point in the center of these segments
+                        central_point = (seg1[-1]+seg2[0])/2
+
+                        # Add this point to the ends of these segments
+                        # This ensures that color changes in between segments
+                        segments[i] = np.concatenate(
+                            [segments[i], [central_point]], axis=0)
+                        segments[i+1] = np.concatenate(
+                            [[central_point], segments[i+1]], axis=0)
+
+                    # Create an MPL LineCollection object with these segments
+                    lc = LineCollection(segments, cmap=cmrcm.neutral,
+                                        alpha=plot_profile)
+                    lc.set_linewidth(1)
+
+                    # Determine the colors of each segment
+                    s_colors = [colors[0]]
+                    s_colors.extend(colors[s_idx])
+                    s_colors = np.array(s_colors)
+
+                    # Set the values of the line-collection to be these colors
+                    lc.set_array(s_colors)
+
+                    # Add line-collection to this subplot
+                    ax1.add_collection(lc)
+
+            # Determine positions of colormap name
             x_text = pos0.x0-spacing
             y_text = pos0.y0+pos0.height/2
 
             # Check if lightness information was requested for valid cm_type
             if show_info and cm_type in ('sequential', 'diverging', 'cyclic'):
                 # If so, obtain lightness profile information
-                info = _get_cmap_lightness_rank(cmap)[1:4]
+                rank = _get_cmap_lightness_rank(cmap)[0:5]
 
                 # Write name of colormap in the correct position
                 fig.text(x_text, y_text, cmap.name,
                          va='bottom', ha='right', fontsize=10, c=text_color)
 
                 # Write lightness profile information in the correct position
-                fig.text(x_text, y_text, "(%.3g, %.3g, %.3g)" % (info),
+                fig.text(x_text, y_text, "(%.3g, %.3g, %.3g)" %
+                         (rank[2], rank[2]-rank[0]*rank[3], rank[4]),
                          va='top', ha='right', fontsize=10, c=text_color)
             else:
                 # If not, just write the name of the colormap
@@ -834,8 +842,8 @@ def get_sub_cmap(cmap, start, stop, *, N=None):
     and `stop` that are too close to each other, may result in a colormap that
     contains too few different colors to be smooth.
     It is recommended to use at least 128 different colors in a colormap for
-    optimal results (*CMasher* colormaps have 256 or 511 different colors, for
-    sequential or diverging colormaps respectively).
+    optimal results (*CMasher* colormaps have 256 or 511/510 different colors,
+    for sequential or diverging/cyclic colormaps respectively).
     One can check the number of colors in a colormap with
     :attr:`matplotlib.colors.Colormap.N`.
 
@@ -1222,3 +1230,20 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
 # %% IMPORT SCRIPT
 # Import all colormaps defined in './colormaps'
 import_cmaps(path.join(path.dirname(__file__), 'colormaps'))
+
+
+# Raise warning about 'heat' being renamed to 'torch' in v1.6.1
+class LC_heat(LC):  # pragma: no cover
+    def __call__(self, *args, **kwargs):
+        warnings.warn("The 'heat' colormap was renamed to 'torch' in v1.6.1 "
+                      "and will be removed in v1.7.", FutureWarning,
+                      stacklevel=2)
+        return(super().__call__(*args, **kwargs))
+
+
+_LC = LC
+LC = LC_heat
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore')
+    register_cmap('heat', cmrcm.torch.colors)
+LC = _LC
