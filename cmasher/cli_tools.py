@@ -33,14 +33,13 @@ main_desc = dedent("""
     This CLI-tool provides access to several of CMasher's utility functions.
     As several commands require a colormap object to work, all Python packages
     defined in the 'CMR_CMAP_PKGS' environment variable in addition to the
-    following packages %s are attempted
-    to be imported before any command is executed.""") % (tuple(cmap_pkgs),)
+    following packages %s are attempted to be imported before any command is
+    executed.""") % (tuple(cmap_pkgs),)
 
 
 # %% CLASS DEFINITIONS
 # Define formatter that automatically extracts help strings of subcommands
-class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter,
-                                   argparse.RawTextHelpFormatter):
+class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
     # Override the add_argument function
     def add_argument(self, action):
         # Check if the help of this action is required
@@ -133,6 +132,23 @@ def cli_mk_cmod():
           % (ARGS.cmap, cmap_path))
 
 
+# This function handles the 'app_usage tableau' subcommand
+def cli_app_usage_tableau():
+    # Create/Update Tableau properties file
+    cmr.app_usage.update_tableau_pref_file(dirname=ARGS.dir)
+
+    # Print on commandline that properties file was created/updated
+    print("Created/Updated Tableau preferences file in %r."
+          % (os.path.abspath(ARGS.dir)))
+
+
+# This function handles the 'lang_usage r' subcommand
+def cli_lang_usage_r():
+    # Print on commandline to look this up on the CMasher docs
+    print("Please see https://cmasher.readthedocs.io/user/lang_usage/R.html "
+          "for instructions on how to access *CMasher* colormaps in *R*.")
+
+
 # %% FUNCTION DEFINITIONS
 # This function obtains the colormap that was requested
 def get_cmap(cmap):
@@ -193,6 +209,84 @@ def import_cmap_pkgs():
             pass
 
 
+# This function adds the app_usage parser
+def add_app_usage_parser(main_subparsers):
+    # APP_USAGE COMMAND
+    # Add app_usage parser
+    parser = main_subparsers.add_parser(
+        'app_usage',
+        description=("Access various function definitions useful for porting "
+                     "*CMasher* colormaps to other applications."),
+        formatter_class=HelpFormatterWithSubCommands,
+        add_help=True)
+
+    # Set defaults for this parser
+    parser.set_defaults(func='app_usage')
+
+    # Create app_usage subparsers for app_usage parser
+    subparsers = parser.add_subparsers(
+        title='Applications',
+        metavar='APP')
+
+    # TABLEAU SUB-COMMAND
+    # Add tableau subparser
+    tableau_parser = subparsers.add_parser(
+        'tableau',
+        description=e13.get_main_desc(cmr.app_usage.update_tableau_pref_file),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Add 'dir' optional argument
+    tableau_parser.add_argument(
+        '-d', '--dir',
+        help=("Path to directory where the Tableau preferences file should be "
+              "updated or created if it does not exist there."),
+        action='store',
+        default=cmr.app_usage.update_tableau_prop_file.__defaults__[0],
+        type=str)
+
+    # Set default for tableau parser
+    tableau_parser.set_defaults(func=cli_app_usage_tableau)
+
+    # Return parser
+    return(parser)
+
+
+# This function adds the lang_usage parser
+def add_lang_usage_parser(main_subparsers):
+    # LANG_USAGE COMMAND
+    # Add lang_usage parser
+    parser = main_subparsers.add_parser(
+        'lang_usage',
+        description=("Access various function definitions useful for porting "
+                     "*CMasher* colormaps to other languages."),
+        formatter_class=HelpFormatterWithSubCommands,
+        add_help=True)
+
+    # Set defaults for this parser
+    parser.set_defaults(func='lang_usage')
+
+    # Create lang_usage subparsers for lang_usage parser
+    subparsers = parser.add_subparsers(
+        title='Languages',
+        metavar='LANG')
+
+    # R SUB-COMMAND
+    # Add tableau subparser
+    r_parser = subparsers.add_parser(
+        'r',
+        description=("Prints a URL to the online docs that describes how to "
+                     "access *CMasher* colormaps in *R*."),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Set default for tableau parser
+    r_parser.set_defaults(func=cli_lang_usage_r)
+
+    # Return parser
+    return(parser)
+
+
 # %% MAIN FUNCTION
 def main():
     """
@@ -229,7 +323,7 @@ def main():
         'cmap',
         help=("Name of colormap to use as registered in *matplotlib* or the "
               "object path of a colormap (e.g., 'a.b:c.d' -> import a.b; "
-              "cmap = a.b.c.d)"),
+              "cmap = a.b.c.d)."),
         metavar='CMAP',
         action='store',
         type=str)
@@ -268,7 +362,7 @@ def main():
     take_colors_parent_parser.add_argument(
         '--range',
         help=("Normalized value range in the colormap from which colors should"
-              " be taken"),
+              " be taken."),
         metavar=('LOWER', 'UPPER'),
         action='store',
         nargs=2,
@@ -279,7 +373,7 @@ def main():
     # Add 'fmt' optional argument
     take_colors_parent_parser.add_argument(
         '--fmt',
-        help="Format to return colors in",
+        help="Format to return colors in.",
         action='store',
         default=defaults['return_fmt'],
         choices=['float', 'norm', 'int', '8bit', 'str', 'hex'],
@@ -297,7 +391,7 @@ def main():
     # Add 'N' argument
     cmap_colors_parser.add_argument(
         'ncolors',
-        help="Number of colors to take",
+        help="Number of colors to take.",
         metavar='N',
         action='store',
         type=int)
@@ -329,7 +423,7 @@ def main():
     # Add 'cmap' argument
     mk_cmod_parser.add_argument(
         'cmap',
-        help="Name of *CMasher* colormap to create standalone module for",
+        help="Name of *CMasher* colormap to create standalone module for.",
         metavar='CMAP',
         action='store',
         type=str)
@@ -337,13 +431,21 @@ def main():
     # Add 'dir' optional argument
     mk_cmod_parser.add_argument(
         '-d', '--dir',
-        help="Path to directory where the module must be saved",
+        help="Path to directory where the module must be saved.",
         action='store',
         default=cmr.create_cmap_mod.__kwdefaults__['save_dir'],
         type=str)
 
     # Set defaults for mk_cmod_parser
     mk_cmod_parser.set_defaults(func=cli_mk_cmod)
+
+    # APP_USAGE COMMAND
+    # Add app_usage parser
+    app_usage_parser = add_app_usage_parser(subparsers)
+
+    # LANG_USAGE COMMAND
+    # Add lang_usage parser
+    lang_usage_parser = add_lang_usage_parser(subparsers)
 
     # Parse the arguments
     global ARGS
@@ -352,6 +454,12 @@ def main():
     # If arguments is empty (no func was provided), show help
     if 'func' not in ARGS:
         parser.print_help()
+    # Else if 'func' is 'app_usage', show help of 'app_usage' parser
+    elif(ARGS.func == 'app_usage'):
+        app_usage_parser.print_help()
+    # Else if 'func' is 'lang_usage', show help of 'lang_usage' parser
+    elif(ARGS.func == 'lang_usage'):
+        lang_usage_parser.print_help()
     # Else, call the corresponding function
     else:
         ARGS.func()

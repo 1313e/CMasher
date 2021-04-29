@@ -38,6 +38,7 @@ The documentation of *CMasher* is spread out over several sections:
     :caption: API Reference
    
     api/cmasher
+    api/cmasher.app_usage
 
 .. role:: pycode(code)
     :language: python3

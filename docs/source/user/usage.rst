@@ -17,12 +17,22 @@ Premade standalone versions of all colormaps in *CMasher* can be found in the `c
     Standalone Python modules can only be made with :func:`~cmasher.create_cmap_mod` of colormaps that are registered in *CMasher* (see `Custom colormaps`_).
     This is because these modules contain metadata that states where the colormap comes from, and there is no consistent way to obtain this metadata for colormaps not coming from *CMasher*.
 
-Accessing the colormaps in other languages than Python would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language manually.
+Accessing the colormaps in other applications or languages other than Python would require reading in the ``<cmap_name>/<cmap_name>_norm.txt``; ``<cmap_name>/<cmap_name>_8bit.txt``; or ``<cmap_name>/<cmap_name>_hex.txt`` text files in the `cmasher/colormaps`_ directory, which contain the normalized; 8-bit; and HEX-code RGB values of every colormap, respectively, and registering them in the appropriate package in the language or application manually.
 These RGB values can also be obtained with the :func:`~cmasher.take_cmap_colors` function using :pycode:`N=None` and providing the appropriate format string for the `return_fmt` argument.
 
-Below is a list of pages with instructions for using *CMasher* in several other languages, provided to me by wonderful members of the community.
-If your language of choice is not in this list, feel free to open an `issue`_ about it or create a tutorial for it yourself such that it can be added.
+Below is a list of pages with instructions for using *CMasher* in several other applications and languages, provided to me by wonderful members of the community.
+*CMasher* provides functions for porting its colormaps to certain applications in the :mod:`~cmasher.app_usage` module.
+If your application or language of choice is not in this list, feel free to open an `issue`_ about it or create a tutorial for it yourself such that it can be added.
 
+Applications
+++++++++++++
+.. toctree::
+
+    app_usage/Tableau
+
+
+Languages
++++++++++
 .. toctree::
 
     lang_usage/R
@@ -97,21 +107,25 @@ Command-line interface (CLI)
 Although *CMasher* is written in Python, some of its utility functions do not require the interpreter in order to be used properly.
 Therefore, *CMasher* provides a CLI that allows for these utility functions to be called directly from the command-line.
 This CLI can be accessed with the command ``cmr`` after installing *CMasher*.
-The table below shows which CLI commands are available and what utility function in *CMasher* they correspond to.
+The table below shows which CLI commands are available and what utility function (or module) in *CMasher* they correspond to.
 
-+--------+-------------------------------------------------------+
-|Command |Function                                               |
-+========+=======================================================+
-|bibtex  |:func:`~cmasher.get_bibtex`                            |
-+--------+-------------------------------------------------------+
-|cmcolors|:func:`~cmasher.take_cmap_colors`                      |
-+--------+-------------------------------------------------------+
-|cmtype  |:func:`~cmasher.get_cmap_type`                         |
-+--------+-------------------------------------------------------+
-|mkcmod  |:func:`~cmasher.create_cmap_mod`                       |
-+--------+-------------------------------------------------------+
-|rgbtable|:func:`~cmasher.take_cmap_colors` with :pycode:`N=None`|
-+--------+-------------------------------------------------------+
++----------+-------------------------------------------------------+
+|Command   |Function/Module                                        |
++==========+=======================================================+
+|app_usage |:mod:`~cmasher.app_usage`                              |
++----------+-------------------------------------------------------+
+|bibtex    |:func:`~cmasher.get_bibtex`                            |
++----------+-------------------------------------------------------+
+|cmcolors  |:func:`~cmasher.take_cmap_colors`                      |
++----------+-------------------------------------------------------+
+|cmtype    |:func:`~cmasher.get_cmap_type`                         |
++----------+-------------------------------------------------------+
+|lang_usage|:mod:`~cmasher.lang_usage`                             |
++----------+-------------------------------------------------------+
+|mkcmod    |:func:`~cmasher.create_cmap_mod`                       |
++----------+-------------------------------------------------------+
+|rgbtable  |:func:`~cmasher.take_cmap_colors` with :pycode:`N=None`|
++----------+-------------------------------------------------------+
 
 Except for the `mkcmod` command, the commands print their results directly to the console using the formatting that was requested (if applicable).
 Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr rgbtable rainforest > rainforest.txt`` to save the RGB values of :ref:`rainforest` in a ``.txt``-file on UNIX-systems).

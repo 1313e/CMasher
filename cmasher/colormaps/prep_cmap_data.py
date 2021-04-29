@@ -16,7 +16,8 @@ import numpy as np
 import viscm
 
 # CMasher imports
-from cmasher.cm import cmap_cd
+from cmasher.app_usage import update_tableau_pref_file
+from cmasher.cm import cmap_d, cmap_cd
 from cmasher.utils import (
     create_cmap_mod, create_cmap_overview, get_cmap_type, register_cmap)
 
@@ -119,8 +120,8 @@ def create_cmap_app_overview():
     # Write text specifying that these are diverging colormaps
     x = div_axs[0].get_position().x0/2
     y = (gs2.top+gs2.bottom+1-gs1.top)/2
-    fig.text(x, y, "Diverging", va='center', ha='center', rotation='vertical',
-             color='grey', fontsize=fontsize, alpha=0.5)
+    fig.text(x, y, "Diverging/Cyclic", va='center', ha='center',
+             rotation='vertical', color='grey', fontsize=fontsize, alpha=0.5)
 
     # Obtain figure path
     fig_path_100 = path.join(docs_dir, 'images', 'cmr_cmaps_app_100.png')
@@ -164,6 +165,13 @@ if(__name__ == '__main__'):
 
     # Register this colormap in CMasher
     register_cmap(name, rgb)
+
+    # TODO: Remove in v1.7.0
+    # For now, remove cmr.heat
+    cmap_d.pop('heat')
+    cmap_d.pop('heat_r')
+    cmap_cd['sequential'].pop('heat')
+    cmap_cd['sequential'].pop('heat_r')
 
     # Obtain cmtype
     cmtype = get_cmap_type('cmr.{0}'.format(name))
@@ -256,6 +264,9 @@ if(__name__ == '__main__'):
         create_cmap_overview(
             cmaps, use_types=False, title="Sequential MPL Colormaps",
             savefig=path.join(docs_dir, 'images', 'seq_mpl_cmaps.png'))
+
+    # Update Tableau preferences file
+    update_tableau_pref_file(path.join(docs_dir, '../_static'))
 
     # Create docs entry for this colormap if possible
     try:
