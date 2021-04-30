@@ -28,13 +28,13 @@ cmap_pkgs = {'cmocean', 'colorcet', 'palettable'}
 # Define main description of this package
 main_desc = dedent("""
     CMasher: Scientific colormaps for making accessible, informative and
-    'cmashing' plots
-
+    'cmashing' plots""")[1:]
+main_epilog = dedent("""
     This CLI-tool provides access to several of CMasher's utility functions.
     As several commands require a colormap object to work, all Python packages
     defined in the 'CMR_CMAP_PKGS' environment variable in addition to the
     following packages %s are attempted to be imported before any command is
-    executed.""") % (tuple(cmap_pkgs),)
+    executed.""")[1:] % (tuple(cmap_pkgs),)
 
 
 # %% CLASS DEFINITIONS
@@ -124,12 +124,14 @@ def cli_cmap_colors():
 
 # This function handles the 'mkcmod' subcommand
 def cli_mk_cmod():
-    # Create cmap module
-    cmap_path = cmr.create_cmap_mod(ARGS.cmap, save_dir=ARGS.dir)
+    # Loop over all cmaps in ARGS.cmap
+    for cmap in ARGS.cmap:
+        # Create stand_alone module for this cmap
+        cmap_path = cmr.create_cmap_mod(cmap, save_dir=ARGS.dir)
 
-    # Print on commandline that module has been created
-    print("Created standalone colormap module of %r in %r."
-          % (ARGS.cmap, cmap_path))
+        # Print on commandline that module has been created
+        print("Created standalone colormap module of %r as %r."
+              % (cmap, cmap_path))
 
 
 # This function handles the 'app_usage tableau' subcommand
@@ -145,7 +147,7 @@ def cli_app_usage_tableau():
 # This function handles the 'lang_usage r' subcommand
 def cli_lang_usage_r():
     # Print on commandline to look this up on the CMasher docs
-    print("Please see https://cmasher.readthedocs.io/user/lang_usage/R.html "
+    print("Please see <https://cmasher.readthedocs.io/user/lang_usage/R.html> "
           "for instructions on how to access *CMasher* colormaps in *R*.")
 
 
@@ -242,7 +244,7 @@ def add_app_usage_parser(main_subparsers):
         help=("Path to directory where the Tableau preferences file should be "
               "updated or created if it does not exist there."),
         action='store',
-        default=cmr.app_usage.update_tableau_prop_file.__defaults__[0],
+        default=cmr.app_usage.update_tableau_pref_file.__defaults__[0],
         type=str)
 
     # Set default for tableau parser
@@ -298,7 +300,8 @@ def main():
     # Initialize argparser
     parser = argparse.ArgumentParser(
         'cmr',
-        description=main_desc[1:],
+        description=main_desc,
+        epilog=main_epilog,
         formatter_class=HelpFormatterWithSubCommands,
         add_help=True,
         allow_abbrev=True)
@@ -423,9 +426,10 @@ def main():
     # Add 'cmap' argument
     mk_cmod_parser.add_argument(
         'cmap',
-        help="Name of *CMasher* colormap to create standalone module for.",
+        help="Name of *CMasher* colormap(s) to create standalone module for.",
         metavar='CMAP',
         action='store',
+        nargs='+',
         type=str)
 
     # Add 'dir' optional argument

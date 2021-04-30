@@ -116,14 +116,14 @@ def update_tableau_pref_file(dirname='.'):
         for cmap in cmap_names:
             # Check if cmap is in entries_dict
             if cmap not in entries_dict:
-                # If not, remove this entry from sub_contents
+                # If not, obtain the entire entry
                 idx = sub_contents.find('cmr.'+cmap)
                 start_idx_entry = idx-25
                 match = re.search(r"<\/color-palette>\n",
                                   sub_contents[start_idx_entry:])
                 end_idx_entry = match.end()+start_idx_entry
 
-                # Replace this entry with the new entry
+                # Remove this entry from sub_contents
                 sub_contents = ''.join([sub_contents[:start_idx_entry],
                                         sub_contents[end_idx_entry:]])
 

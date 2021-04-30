@@ -260,7 +260,7 @@ As colormaps contain colors in an ordered structure, they are well suited for th
 *CMasher* allows one to take a given number of equally spaced colors from any colormap with the :func:`~cmasher.take_cmap_colors` function.
 These colors can then be used during plotting.
 Depending on the application, certain colormaps are more well suited than others when picking these colors.
-For example, when you have a lot of different plots to show or distinguishability is more important than comparability, a colormap with a high perceptual range is often the better choice, like :ref:`apple`; :ref:`chroma`; :ref:`torch`; :ref:`neon`; and :ref:`rainforest`.
+For example, when you have a lot of different plots to show or distinguishability is more important than comparability, a colormap with a high perceptual range is often the better choice, like :ref:`apple`; :ref:`chroma`; :ref:`neon`; :ref:`rainforest`; and :ref:`torch`.
 On the other hand, if comparability is more important than distinguishability, then colormaps with a low perceptual range and preferably only a single major color usually perform better, like :ref:`flamingo`; :ref:`freeze`; :ref:`gothic`; :ref:`jungle`; and :ref:`ocean`.
 
 Below is an example of taking 5 colors from a colormap with a high perceptual range (:ref:`rainforest`) and a low perceptual range (:ref:`ocean`), and the resulting figures::
