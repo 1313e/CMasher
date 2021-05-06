@@ -81,12 +81,12 @@ def _get_cmap_lightness_rank(cmap):
         This is only used for sequential colormaps.
     L_start : float
         The starting lightness value of `cmap`.
-        For diverging colormaps, this is the central lightness value.
+        For diverging/cyclic colormaps, this is the central lightness value.
     L_rng : float
-        The lightness range (L_max-L_min) of `cmap`.
+        The lightness range of `cmap`.
     L_rmse : float
         The RMSE of the lightness profile of `cmap`.
-        For diverging colormaps, this is the max RMSE of either half.
+        For diverging/cyclic colormaps, this is the max RMSE of either half.
     name : str
         The name of `cmap`.
         For qualitative and miscellaneous colormaps, this is the only value
@@ -98,54 +98,56 @@ def _get_cmap_lightness_rank(cmap):
     cmap = mplcm.get_cmap(cmap)
     cm_type = get_cmap_type(cmap)
 
-    # Get RGB values for colormap
-    rgb = cmap(np.arange(cmap.N))[:, :3]
-
-    # Get lightness values of colormap
-    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
-    L = lab[:, 0]
-
-    # Determine the deltas of the lightness profile
-    deltas = np.diff(L)
-    derivs = (cmap.N-1)*deltas
-
-    # Set lightness profile type to 0
-    L_type = 0
-
-    # Determine the RMSE of the lightness profile of a sequential colormap
-    if(cm_type == 'sequential'):
-        # Take RMSE of entire lightness profile
-        L_rmse = np.around(np.std(derivs), 1)
-
-        # Calculate starting lightness value
-        L_start = np.around(L[0], 1)
-
-        # Determine type of lightness profile
-        L_type += ~np.allclose(rgb[0], [0, 0, 0])*2
-        L_type += (
-            np.allclose(rgb[0], [0, 0, 0]) == np.allclose(rgb[-1], [1, 1, 1]))
-
-    # Diverging/cyclic colormaps
-    elif cm_type in ('diverging', 'cyclic'):
-        # Determine the center of the colormap
-        if(cm_type == 'diverging'):
-            N = cmap.N-1
-        else:
-            N = cmap.N
-
-        # Calculate RMSE of both halves
-        central_i = [int(np.floor(N/2)), int(np.ceil(N/2))]
-        L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 1),
-                         np.around(np.std(derivs[central_i[1]:]), 1)])
-
-        # Calculate central lightness value
-        L_start = np.around(np.average(L[central_i]), 1)
-
-    # Determine lightness range for sequential/diverging/cyclic colormaps
+    # Determine lightness profile stats for sequential/diverging/cyclic
     if cm_type in ('sequential', 'diverging', 'cyclic'):
-        L_min = np.around(np.min(L), 1)
-        L_max = np.around(np.max(L), 1)
-        L_rng = np.around(np.abs(L_max-L_min), 1)
+        # Get RGB values for colormap
+        rgb = cmap(np.arange(cmap.N))[:, :3]
+
+        # Get lightness values of colormap
+        lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+        L = lab[:, 0]
+
+        # If cyclic colormap, add first L at the end
+        if(cm_type == 'cyclic'):
+            L = np.r_[L, [L[0]]]
+
+        # Determine number of values that will be in deltas
+        N_deltas = len(L)-1
+
+        # Determine the deltas of the lightness profile
+        deltas = np.diff(L)
+        derivs = N_deltas*deltas
+
+        # Set lightness profile type to 0
+        L_type = 0
+
+        # Determine the RMSE of the lightness profile of a sequential colormap
+        if(cm_type == 'sequential'):
+            # Take RMSE of entire lightness profile
+            L_rmse = np.around(np.std(derivs), 0)
+
+            # Calculate starting lightness value
+            L_start = np.around(L[0], 0)
+
+            # Determine type of lightness profile
+            L_type += (not np.allclose(rgb[0], [0, 0, 0]))*2
+            L_type += (np.allclose(rgb[0], [0, 0, 0]) ==
+                       np.allclose(rgb[-1], [1, 1, 1]))
+
+        # Diverging/cyclic colormaps
+        else:
+            # Determine the center of the colormap
+            central_i = [int(np.ceil(N_deltas/2)), int(np.floor(N_deltas/2))]
+
+            # Calculate RMSE of both halves
+            L_rmse = np.max([np.around(np.std(derivs[:central_i[0]]), 0),
+                             np.around(np.std(derivs[central_i[1]:]), 0)])
+
+            # Calculate central lightness value
+            L_start = np.around(np.average(L[central_i]), 0)
+
+        # Determine lightness range
+        L_rng = np.around(np.max(L)-np.min(L), 0)
 
         # Determine if cmap goes from dark to light or the opposite
         L_slope = (L_start > L[-1])*2-1
@@ -156,6 +158,64 @@ def _get_cmap_lightness_rank(cmap):
 
     # Return lightness contributions to the rank
     return(L_slope, L_type, L_start, L_rng, L_rmse, cmap.name)
+
+
+# Define function for obtaining the sorting order for perceptual ranking
+def _get_cmap_perceptual_rank(cmap):
+    """
+    In addition to returning the lightness rank as given by
+    :func:`~_get_cmap_lightness_rank`, also returns the length of the
+    perceptual profile, also known as the perceptual range, of the provided
+    `cmap`.
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
+
+    Returns
+    -------
+    *L_rank : objects
+        The values returned by :func:`~_get_cmap_lightness_rank`, except for
+        the name of the colormap.
+    P_rng : float
+        The perceptual range of `cmap`.
+    name : str
+        The name of `cmap`.
+        For qualitative and miscellaneous colormaps, this is the only value
+        that is used.
+
+    """
+
+    # Obtain the colormap
+    cmap = mplcm.get_cmap(cmap)
+    cm_type = get_cmap_type(cmap)
+
+    # Determine perceptual range for sequential/diverging/cyclic
+    if cm_type in ('sequential', 'diverging', 'cyclic'):
+        # Get RGB values for colormap
+        rgb = cmap(np.arange(cmap.N))[:, :3]
+
+        # Get lab values of colormap
+        lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+
+        # If cyclic colormap, add first lab at the end
+        if(cm_type == 'cyclic'):
+            lab = np.r_[lab, [lab[0]]]
+
+        # Determine the deltas of the lightness profile
+        deltas = np.sqrt(np.sum(np.diff(lab, axis=0)**2, axis=-1))
+
+        # Determine perceptual range
+        P_rng = np.around(np.sum(deltas), 0)
+
+    # For qualitative/misc colormaps, set all values to zero
+    else:
+        P_rng = 0
+
+    # Return perceptual contributions to the rank
+    return(*_get_cmap_lightness_rank(cmap)[:-1], P_rng, cmap.name)
 
 
 # %% FUNCTIONS
@@ -263,12 +323,9 @@ def create_cmap_mod(cmap, *, save_dir='.'):
     # If this colormap is cyclic, add code to register shifted version as well
     if(cm_type == 'cyclic'):
         cm_py_file += dedent("""
-            # Determine central value index of the colormap
-            idx = len(cm_data)//2
-
-            # Shift the entire colormap by this index
-            cm_data_s = list(cm_data[idx:])
-            cm_data_s.extend(cm_data[:idx])
+            # Shift the entire colormap by half of its length
+            cm_data_s = list(cm_data[{4}:])
+            cm_data_s.extend(cm_data[:{4}])
 
             # Create ListedColormap object for this shifted version
             cmap_s = ListedColormap(cm_data_s, name='cmr.{2}_s', N={3})
@@ -280,7 +337,8 @@ def create_cmap_mod(cmap, *, save_dir='.'):
             """)
 
     # Format py-file string
-    cm_py_file = cm_py_file.format(cm_type, array_str, name, len(rgb))
+    cm_py_file = cm_py_file.format(cm_type, array_str, name, len(rgb),
+                                   len(rgb)//2)
 
     # Obtain the path to the module
     cmap_path = path.join(save_dir, "{0}.py".format(name))
@@ -316,14 +374,18 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         Whether all colormaps in `cmaps` should be categorized into their
         colormap types (sequential; diverging; cyclic; qualitative; misc).
         If `cmaps` is a dict, this value is ignored.
-    sort : {'alphabetical'/'name'; 'lightness'}, function or None. Default: \
-        'alphabetical'
+    sort : {'alphabetical'/'name'; 'lightness'; 'perceptual'}, function or \
+        None. Default: 'alphabetical'
         String or function indicating how the colormaps should be sorted in the
         overview.
         If 'alphabetical', the colormaps are sorted alphabetically on their
         name.
         If 'lightness', the colormaps are sorted based on their lightness
-        profile.
+        profile, which is given by :func:`~_get_cmap_lightness_rank`.
+        If 'perceptual', the colormaps sorted based on their perceptual range
+        in  addition to their lightness profile, which is given by
+        :func:`~_get_cmap_perceptual_rank`. Note that this is only meaningful
+        if all `cmaps` are perceptually uniform sequential.
         If function, a function definition that takes a
         :obj:`~matplotlib.colors.Colormap` object and returns the sorted
         position of that colormap.
@@ -332,14 +394,11 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
         Whether to show the grayscale versions of the given `cmaps` in the
         overview.
     show_info : bool. Default: False
-        Whether the lightness profile information of all sequential, diverging
-        and cyclic colormaps should be shown under their names. This is a
-        series of numbers representing, in order, the starting (sequential) or
-        central (diverging/cyclic) lightness value; the final/outer lightness
-        value; and the RMSE of the lightness profile.
-        When `sort` is set to 'lightness', this is the order in which the
-        colormaps are plotted (although sequential colormaps are sorted on
-        their profile type first).
+        Whether the statistics information of all sequential, diverging and
+        cyclic colormaps should be shown under their names. This is a series of
+        numbers representing, in order, the starting (sequential) or central
+        (diverging/cyclic) lightness value; the final/outer lightness value;
+        and the perceptual range of the colormap.
     plot_profile : bool or float. Default: False
         Whether the lightness profiles of all non-qualitative colormaps should
         be plotted. If not *False*, the lightness profile of a colormap is
@@ -367,6 +426,10 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     Any provided reversed colormaps (colormaps that end their name with '_r')
     are ignored if their normal versions were provided as well.
 
+    When `sort` is 'lightness' or 'perceptual', qualitative and miscellaneous
+    colormaps are solely sorted on their names, as the lightness/perceptual
+    profile of these colormaps is meaningless.
+
     If `plot_profile` is not set to *False*, the lightness profiles are plotted
     on top of the gray-scale colormap versions, where the y-axis ranges from 0%
     lightness to 100% lightness.
@@ -389,6 +452,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 return(x.name)
         elif(sort == 'lightness'):
             sort = _get_cmap_lightness_rank
+        elif(sort == 'perceptual'):
+            sort = _get_cmap_perceptual_rank
         else:
             raise ValueError("Input argument 'sort' has invalid string value "
                              "%r!" % (sort))
@@ -619,10 +684,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
                         # Add this point to the ends of these segments
                         # This ensures that color changes in between segments
-                        segments[i] = np.concatenate(
-                            [segments[i], [central_point]], axis=0)
-                        segments[i+1] = np.concatenate(
-                            [[central_point], segments[i+1]], axis=0)
+                        segments[i] = np.r_[segments[i], [central_point]]
+                        segments[i+1] = np.r_[[central_point], segments[i+1]]
 
                     # Create an MPL LineCollection object with these segments
                     lc = LineCollection(segments, cmap=cmrcm.neutral,
@@ -646,8 +709,8 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
             # Check if lightness information was requested for valid cm_type
             if show_info and cm_type in ('sequential', 'diverging', 'cyclic'):
-                # If so, obtain lightness profile information
-                rank = _get_cmap_lightness_rank(cmap)[0:5]
+                # If so, obtain lightness/perceptual profile information
+                rank = _get_cmap_perceptual_rank(cmap)[0:6]
 
                 # Write name of colormap in the correct position
                 fig.text(x_text, y_text, cmap.name,
@@ -655,7 +718,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
                 # Write lightness profile information in the correct position
                 fig.text(x_text, y_text, "(%.3g, %.3g, %.3g)" %
-                         (rank[2], rank[2]-rank[0]*rank[3], rank[4]),
+                         (rank[2], rank[2]-rank[0]*rank[3], rank[5]),
                          va='top', ha='right', fontsize=10, c=text_color)
             else:
                 # If not, just write the name of the colormap
@@ -990,7 +1053,7 @@ def import_cmaps(cmap_path):
                 idx = len(rgb)//2
 
                 # Shift the entire colormap by this index
-                rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
+                rgb_s = np.r_[rgb[idx:], rgb[:idx]]
 
                 # Register this colormap as well
                 register_cmap(cm_name+'_s', rgb_s)

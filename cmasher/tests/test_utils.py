@@ -116,7 +116,7 @@ class Test_create_cmap_overview(object):
     # Test if providing all MPL colormap objects works
     def test_mpl_cmaps_objs(self):
         cmaps = map(mplcm.get_cmap, mpl_cmaps)
-        create_cmap_overview(cmaps, sort='alphabetical')
+        create_cmap_overview(cmaps, sort='perceptual')
 
     # Test if providing all MPL colormap names works
     def test_mpl_cmaps_names(self):
@@ -134,7 +134,7 @@ class Test_create_cmap_overview(object):
     def test_no_grayscale(self):
         create_cmap_overview([cmrcm.rainforest], show_grayscale=False)
 
-    # Test if the lightness info can be shown
+    # Test if the lightness/perceptual info can be shown
     def test_show_info(self):
         create_cmap_overview([cmrcm.rainforest], show_info=True)
 

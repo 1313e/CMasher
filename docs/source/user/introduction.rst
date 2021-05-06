@@ -48,6 +48,9 @@ If required, one can also clone the `repository`_ and install *CMasher* manually
 
 *CMasher* can now be imported as a package with :pycode:`import cmasher as cmr`.
 
+Besides *Python*, *CMasher*'s colormaps can also be accessed in various other languages and applications.
+A list of all currently known languages and applications that support *CMasher* can be found in :ref:`accessing_colormaps`.
+
 .. _example_use:
 
 Example use

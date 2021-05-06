@@ -4,6 +4,9 @@ Usage
 =====
 The following contains explanations on how the different colormaps and functions in *CMasher* can be used to aid the creation of *cmashing* plots.
 
+
+.. _accessing_colormaps:
+
 Accessing colormaps
 -------------------
 All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package as shown in :ref:`example_use`, but *CMasher* also provides a few other ways of using the colormaps.

@@ -2,7 +2,7 @@
 
 *CMasher*: Scientific colormaps for making accessible, informative and *cmashing* plots
 =======================================================================================
-The *CMasher* package provides a collection of scientific colormaps and utility functions to be used by different Python packages and projects, mainly in combination with `matplotlib`_, showcased in the `online documentation`_ (where I also describe how to use the colormaps in other languages and applications).
+The *CMasher* package provides a collection of scientific colormaps and utility functions to be used by different *Python* packages and projects, mainly in combination with `matplotlib`_, showcased in the `online documentation`_ (where I also describe how to use the colormaps in other languages and applications).
 The colormaps in *CMasher* are all designed to be perceptually uniform sequential using the `viscm`_ package; most of them are color-vision deficiency friendly; and they cover a wide range of different color combinations to accommodate for most applications.
 It offers several alternatives to commonly used colormaps, like *chroma* and *rainforest* for *jet*; *sunburst* for *hot*; *neutral* for *binary*; and *fusion* and *redshift* for *coolwarm*.
 If you cannot find your ideal colormap, then please open an `issue`_, provide the colors and/or style you want, and I will try to create one to your liking!
@@ -53,6 +53,9 @@ If required, one can also clone the `repository`_ and install *CMasher* manually
     $ pip install .
 
 *CMasher* can now be imported as a package with ``import cmasher as cmr``.
+
+Besides Python, *CMasher*'s colormaps can also be accessed in various other languages and applications.
+A list of all currently known languages and applications that support *CMasher* can be found in the online documentation `here <https://cmasher.readthedocs.io/user/usage.html#accessing-colormaps>`_.
 
 .. _repository: https://github.com/1313e/CMasher
 .. _PyPI: https://pypi.org/project/CMasher

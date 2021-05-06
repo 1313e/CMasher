@@ -254,10 +254,10 @@ if(__name__ == '__main__'):
 
     # Make new colormap type overviews
     create_cmap_overview(
-        cmaps, sort='lightness', use_types=(cmtype == 'diverging'),
+        cmaps, sort='perceptual', use_types=(cmtype == 'diverging'),
         savefig=path.join(docs_dir, 'images',
                           '{0}_cmaps.png'.format(cmtype[:3])),
-        title="{0} Colormaps".format(cmtype.capitalize()))
+        title="{0} Colormaps".format(cmtype.capitalize()), show_info=True)
     if(cmtype == 'sequential'):
         cmaps = [cm for cm in plt.colormaps()
                  if get_cmap_type(cm) == 'sequential']
