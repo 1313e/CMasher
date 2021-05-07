@@ -94,7 +94,20 @@ def cli_bibtex():
     cmr.get_bibtex()
 
 
-# This function handles the 'cmap_type' subcommand
+# This function handles the 'cmlist' subcommand
+def cli_cmlist():
+    # Obtain list without reversed versions
+    cmaps = [cmap for cmap in cmr.get_cmap_list(ARGS.cmap_type)
+             if not cmap.endswith('_r')]
+
+    # Create string with all cmaps
+    cmaps_str = '\n'.join(cmaps)
+
+    # Print string
+    print(cmaps_str)
+
+
+# This function handles the 'cmtype' subcommand
 def cli_cmap_type():
     # Import cmap packages
     import_cmap_pkgs()
@@ -103,7 +116,7 @@ def cli_cmap_type():
     print(cmr.get_cmap_type(get_cmap(ARGS.cmap)))
 
 
-# This function handles the 'take_cmap_colors' subcommand
+# This function handles the 'cmcolors' subcommand
 def cli_cmap_colors():
     # Import cmap packages
     import_cmap_pkgs()
@@ -132,6 +145,15 @@ def cli_mk_cmod():
         # Print on commandline that module has been created
         print("Created standalone colormap module of %r as %r."
               % (cmap, cmap_path))
+
+
+# This function handles the 'cmview' subcommand
+def cli_cmap_view():
+    # Import cmap packages
+    import_cmap_pkgs()
+
+    # View cmap
+    cmr.view_cmap(get_cmap(ARGS.cmap), savefig=ARGS.save)
 
 
 # This function handles the 'app_usage tableau' subcommand
@@ -342,6 +364,31 @@ def main():
     # Set defaults for bibtex_parser
     bibtex_parser.set_defaults(func=cli_bibtex)
 
+    # CMLIST COMMAND
+    # Add cmlist subparser
+    cmlist_parser = subparsers.add_parser(
+        'cmlist',
+        description=("Prints a list of all colormaps available in *CMasher*. "
+                     "Reversed versions are excluded from this list."),
+        epilog=("Note that *CMasher* colormaps registered in *MPL* have an "
+                "added 'cmr.' prefix."),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Add 'type' optional argument
+    cmlist_parser.add_argument(
+        '--type',
+        help="Which colormap type to print.",
+        action='store',
+        default=cmr.get_cmap_list.__defaults__[0],
+        choices=['all', 's', 'seq', 'sequential', 'd', 'div', 'diverging', 'c',
+                 'cyc', 'cyclic'],
+        type=str,
+        dest='cmap_type')
+
+    # Set defaults for cmlist_parser
+    cmlist_parser.set_defaults(func=cli_cmlist)
+
     # CMAP_TYPE COMMAND
     # Add cmap_type subparser
     cmap_type_parser = subparsers.add_parser(
@@ -414,6 +461,27 @@ def main():
     # Set defaults for rgb_table_parser
     rgb_table_parser.set_defaults(func=cli_cmap_colors,
                                   ncolors=None)
+
+    # CMVIEW COMMAND
+    # Add cmap_view subparser
+    cmap_view_parser = subparsers.add_parser(
+        'cmview',
+        parents=[cmap_parent_parser],
+        description=e13.get_main_desc(cmr.view_cmap),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        add_help=True)
+
+    # Add 'save' optional argument
+    cmap_view_parser.add_argument(
+        '--save',
+        help="Path where plot must be saved to.",
+        metavar='PATH',
+        action='store',
+        default=None,
+        type=str)
+
+    # Set defaults for cmap_view_parser
+    cmap_view_parser.set_defaults(func=cli_cmap_view)
 
     # MK_CMOD COMMAND
     # Add mk_cmod subparser

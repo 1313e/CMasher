@@ -19,8 +19,9 @@ import pytest
 import cmasher as cmr
 from cmasher import cm as cmrcm
 from cmasher.utils import (
-    create_cmap_mod, create_cmap_overview, get_bibtex, get_sub_cmap,
-    import_cmaps, set_cmap_legend_entry, take_cmap_colors)
+    create_cmap_mod, create_cmap_overview, get_bibtex, get_cmap_list,
+    get_sub_cmap, import_cmaps, set_cmap_legend_entry, take_cmap_colors,
+    view_cmap)
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
@@ -158,6 +159,25 @@ class Test_create_cmap_overview(object):
 def test_get_bibtex():
     # Print the output of the get_bibtex() function
     get_bibtex()
+
+
+# Pytest class for get_cmap_list()-function
+class Test_get_cmap_list(object):
+    # Test default arguments
+    def test_default(self):
+        assert (get_cmap_list() == list(cmrcm.cmap_d))
+
+    # Test obtaining all sequential colormaps
+    def test_seq(self):
+        assert (get_cmap_list('seq') == list(cmrcm.cmap_cd['sequential']))
+
+    # Test obtaining all diverging colormaps
+    def test_div(self):
+        assert (get_cmap_list('div') == list(cmrcm.cmap_cd['diverging']))
+
+    # Test obtaining all cyclic colormaps
+    def test_cyc(self):
+        assert (get_cmap_list('cyc') == list(cmrcm.cmap_cd['cyclic']))
 
 
 # Pytest class for get_sub_cmap()-function
@@ -324,3 +344,15 @@ class Test_take_cmap_colors(object):
     def test_invalid_range(self):
         with pytest.raises(ValueError):
             take_cmap_colors('cmr.rainforest', 5, cmap_range=(-1, 1.5))
+
+
+# Pytest class for view_cmap()-function
+class Test_view_cmap(object):
+    # Test if default arguments work
+    def test_default(self):
+        view_cmap('cmr.rainforest')
+
+    # Test if the figure can be saved
+    def test_savefig(self):
+        view_cmap('cmr.rainforest', savefig="test.png")
+        assert path.exists("./test.png")

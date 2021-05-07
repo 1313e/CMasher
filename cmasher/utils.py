@@ -32,8 +32,9 @@ from cmasher import cm as cmrcm
 
 # All declaration
 __all__ = ['create_cmap_mod', 'create_cmap_overview', 'get_bibtex',
-           'get_cmap_type', 'get_sub_cmap', 'import_cmaps', 'register_cmap',
-           'set_cmap_legend_entry', 'take_cmap_colors']
+           'get_cmap_list', 'get_cmap_type', 'get_sub_cmap', 'import_cmaps',
+           'register_cmap', 'set_cmap_legend_entry', 'take_cmap_colors',
+           'view_cmap']
 
 
 # %% HELPER CLASSES
@@ -776,6 +777,45 @@ def get_bibtex():
     print(bibtex.strip())
 
 
+# This function returns a list of all colormaps available in CMasher
+def get_cmap_list(cmap_type='all'):
+    """
+    Returns a list with the names of all colormaps available in *CMasher* of
+    the given `cmap_type`.
+
+    Note that *CMasher* colormaps registered in *MPL* have an added 'cmr.'
+    prefix.
+
+    Optional
+    --------
+    cmap_type : {'a'/'all'; 's'/'seq'/'sequential'; 'd'/'div'/'diverging'; \
+        'c'/'cyc'/'cyclic'}. Default: 'all'
+        The colormap type that should be in the returned list.
+
+    Returns
+    -------
+    cmap_list : list of str
+        List containing the names of all colormaps available in *CMasher*.
+
+    """
+
+    # Convert cmap_type to lowercase
+    cmap_type = cmap_type.lower()
+
+    # Obtain proper list
+    if cmap_type in ('a', 'all'):
+        cmaps = [cmap for cmap in cmrcm.cmap_d]
+    elif cmap_type in ('s', 'seq', 'sequential'):
+        cmaps = [cmap for cmap in cmrcm.cmap_cd['sequential']]
+    elif cmap_type in ('d', 'div', 'diverging'):
+        cmaps = [cmap for cmap in cmrcm.cmap_cd['diverging']]
+    elif cmap_type in ('c', 'cyc', 'cyclic'):
+        cmaps = [cmap for cmap in cmrcm.cmap_cd['cyclic']]
+
+    # Return cmaps
+    return(cmaps)
+
+
 # This function determines the colormap type of a given colormap
 def get_cmap_type(cmap):
     """
@@ -1288,6 +1328,47 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
 
     # Return colors
     return(colors)
+
+
+# Function to view what a colormap looks like
+def view_cmap(cmap, *, savefig=None):
+    """
+    Shows a simple plot of the provided `cmap`.
+
+    Parameters
+    ----------
+    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+        The registered name of the colormap in :mod:`matplotlib.cm` or its
+        corresponding :obj:`~matplotlib.colors.Colormap` object.
+
+    Optional
+    --------
+    savefig : str or None. Default: None
+        If not *None*, the path where the plot must be saved to.
+        Else, the plot will simply be shown.
+
+    """
+
+    # Obtain RGB values of cmap in provided range
+    rgb = np.array(take_cmap_colors(cmap, None))
+
+    # Create figure
+    fig, ax = plt.subplots(figsize=(12.8, 3.2))
+
+    # Create plot
+    ax.imshow(rgb[np.newaxis, ...], aspect='auto')
+
+    # Turn axes off
+    ax.set_axis_off()
+
+    # If savefig is not None, save the figure
+    if savefig is not None:
+        plt.savefig(savefig, dpi=100, bbox_inches='tight', pad_inches=0)
+        plt.close(fig)
+
+    # Else, simply show it
+    else:
+        plt.show()
 
 
 # %% IMPORT SCRIPT

@@ -14,7 +14,8 @@ These colormaps are shown in an overview and described individually below.
     :align: center
     :alt: Overview of all sequential colormaps in *CMasher* for Python.
 
-    Overview of all sequential colormaps in *CMasher*.
+    Overview of all sequential colormaps in *CMasher*, sorted on lightness profile and perceptual range.
+    The three numbers below the name of each colormap represent the starting lightness value; the final lightness value; and the perceptual range of that colormap, respectively.
 
 .. _PRISM: https://github.com/1313e/PRISM
 

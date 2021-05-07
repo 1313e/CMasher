@@ -9,7 +9,7 @@ The following contains explanations on how the different colormaps and functions
 
 Accessing colormaps
 -------------------
-All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package as shown in :ref:`example_use`, but *CMasher* also provides a few other ways of using the colormaps.
+All *CMasher* colormaps are available through *matplotlib* and *CMasher* upon importing the package as shown in :ref:`example_use` and a list of all available colormaps can be obtained with :func:`~cmasher.get_cmap_list`, but *CMasher* also provides a few other ways of using the colormaps.
 
 If one wishes to use a specific *CMasher* colormap without adding dependencies (useful for, e.g., handing in tutorial assignments; quickly sharing work/results with someone; etc.), then one can create a standalone Python module of the colormap with :func:`~cmasher.create_cmap_mod`.
 The created Python module can be placed in a local working directory, and can then be imported with :pycode:`import <cmap_name>` (e.g., :pycode:`cmr.create_cmap_mod('rainforest')` to create a standalone module of :ref:`rainforest`; and :pycode:`import rainforest` to register the colormap in *matplotlib* as ``'cmr.rainforest'``).
@@ -58,7 +58,8 @@ The colormaps shown in an overview can be sorted/ordered in a number of differen
 By default, the colormaps are separated into their types (as determined by :func:`~cmasher.get_cmap_type`), and sorted on their name in alphabetical order (use :pycode:`sort=None` to not sort the colormaps).
 However, one can specify their own categories for colormaps (that are used instead of the colormap types) by providing a dict of lists, where the keys are used as the categories.
 As colormaps with different lightness profiles can cause perception issues when displayed near each other, colormaps can also be sorted on their lightness profiles with :pycode:`sort='lightness'` to avoid this problem.
-Keep in mind that sorting on lightness profiles is only useful if all colormaps within a category are of the same colormap type.
+If required, the colormaps can also be sorted on their perceptual range in addition to their lightness profiles with :pycode:`sort='perceptual'`, which makes it easier to distinguish colormaps with high color variation from those with low color variation.
+Keep in mind that sorting on lightness profiles is only useful if all colormaps within a category are of the same colormap type, and sorting on perceptual range only makes sense if all colormaps are perceptually uniform sequential.
 
 .. note::
 
@@ -75,6 +76,11 @@ Keep in mind that sorting on lightness profiles is only useful if all colormaps 
 
 
 Additionally, by using :pycode:`plot_profile=True`, one can plot the lightness profile of all colormaps (except those that are classified as 'qualitative') on top of their gray-scaled versions, allowing for quick performance comparisons between colormaps.
+Another way of comparing colormaps can be obtained with :pycode:`show_info=True`, which shows three numbers below the name of each colormap, representing the starting/central lightness value; the final/outer lightness value; and the perceptual range of that colormap, respectively.
+Both of these options make it significantly easier to find a colormap that suits your application, where especially the latter can be quite helpful, as it shows you the lightness range of the colormap (as usually reported on the individual colormap pages in these docs) and the perceptual range.
+The perceptual range is a measure of how much color variation there is in the colormap, with higher values implicating that there is more color in the colormap.
+This information is provided in the :ref:`cmap_overview_perceptual` overview and the overviews on the :ref:`sequential` and :ref:`diverging` pages.
+
 For those that want to show a colormap overview on a page that usually uses dark mode or simply want to have a dark background instead of a white background in the overview, one can enable dark mode in the overview by using :pycode:`dark_mode=True`.
 An example of dark mode is shown in the :ref:`cmap_overview_categories` overview.
 And, finally, one can set the title that is displayed at the top of the colormap overview with the `title` argument, which by default is set to :pycode:`"Colormap Overview"`.
@@ -121,7 +127,11 @@ The table below shows which CLI commands are available and what utility function
 +----------+-------------------------------------------------------+
 |cmcolors  |:func:`~cmasher.take_cmap_colors`                      |
 +----------+-------------------------------------------------------+
+|cmlist    |:func:`~cmasher.get_cmap_list` with reversed excluded  |
++----------+-------------------------------------------------------+
 |cmtype    |:func:`~cmasher.get_cmap_type`                         |
++----------+-------------------------------------------------------+
+|cmview    |:func:`~cmasher.view_cmap`                             |
 +----------+-------------------------------------------------------+
 |lang_usage|:mod:`~cmasher.lang_usage`                             |
 +----------+-------------------------------------------------------+
@@ -130,7 +140,7 @@ The table below shows which CLI commands are available and what utility function
 |rgbtable  |:func:`~cmasher.take_cmap_colors` with :pycode:`N=None`|
 +----------+-------------------------------------------------------+
 
-Except for the `mkcmod` command, the commands print their results directly to the console using the formatting that was requested (if applicable).
+Except for the `cmview` and `mkcmod` commands, the commands print their results directly to the console using the formatting that was requested (if applicable).
 Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr rgbtable rainforest > rainforest.txt`` to save the RGB values of :ref:`rainforest` in a ``.txt``-file on UNIX-systems).
 All functionality that is usually available for the listed functions within the interpreter, is also available from the command-line.
 
@@ -218,6 +228,7 @@ To aid with this, *CMasher* allows for sub-colormaps to be made of any colormap 
 Below is an example of a sub-colormap of :ref:`rainforest` using the central :math:`70\%`, created with :pycode:`cmr.get_sub_cmap('cmr.rainforest', 0.15, 0.85)`, compared to the original:
 
 .. figure:: ../../../cmasher/colormaps/rainforest/rainforest.png
+    :name: rainforest_fig
     :alt: The *rainforest* colormap.
     :width: 100%
     :align: center
@@ -247,11 +258,16 @@ Below is an example of a qualitative sub-colormap with 5 colors using the centra
     A sub-colormap made of :ref:`lilac`, using its central :math:`60\%`.
 
 .. figure:: images/lilac_qual.png
+    :name: lilac_qual
     :alt: The *lilac* qualitative sub-colormap.
     :width: 100%
     :align: center
 
     The qualitative sub-colormap made of :ref:`lilac`, using its central :math:`60\%` and 5 colors.
+
+In order to see what the created sub-colormap actually looks like and whether it maybe requires some small tweaks, you can use the :func:`~cmasher.view_cmap` function to create a simple colormap plot.
+Simply pass the created :obj:`~matplotlib.colors.ListedColormap` object to this function and *CMasher* will show you the colormap, similarly to the figures given above.
+
 
 Taking colormap colors
 ----------------------
@@ -311,6 +327,24 @@ Below is an example of taking 5 colors from a colormap with a high perceptual ra
     :align: center
 
     Line plot using 5 different colors from the :ref:`ocean` colormap in the :math:`[0, 0.85]` range.
+
+
+Viewing colormaps
+-----------------
+Sometimes one wishes to just see what a colormap actually looks like, without being forced to check the documentation of the specific colormap for that.
+For this, *CMasher* provides the simple :func:`~cmasher.view_cmap` function.
+This function takes the name of a colormap as registered in *MPL* or a :obj:`~matplotlib.colors.Colormap` object and creates a simple colorbar plot with that colormap (which can also optionally be saved to file).
+This can be used to view any of the registered colormaps, like :ref:`rainforest` as shown in :numref:`rainforest_fig` (made with :pycode:`cmr.view_cmap('cmr.rainforest')`), or to test any sub-colormaps made with the :func:`~cmasher.get_sub_cmap` function.
+For example, the qualitative sub-colormap made of :ref:`lilac` shown in :numref:`lilac_qual` was made with::
+
+    # Import CMasher
+    import cmasher as cmr
+    
+    # Create sub-colormap
+    cmap = cmr.get_sub_cmap('cmr.lilac', 0.2, 0.8, N=5)
+    
+    # View colormap
+    cmr.view_cmap(cmap)
 
 
 .. _viscm: https://github.com/matplotlib/viscm

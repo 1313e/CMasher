@@ -14,7 +14,8 @@ Therefore, a few alternatives are introduced here, with a full overview being sh
     :align: center
     :alt: Overview of all diverging and cyclic colormaps in *CMasher* for Python.
 
-    Overview of all diverging and cyclic colormaps in *CMasher*.
+    Overview of all diverging and cyclic colormaps in *CMasher*, sorted on lightness profile and perceptual range.
+    The three numbers below the name of each colormap represent the central lightness value; the outer lightness value; and the perceptual range of that colormap, respectively.
 
 .. _PRISM: https://github.com/1313e/PRISM
 

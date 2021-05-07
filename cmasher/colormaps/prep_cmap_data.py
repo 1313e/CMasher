@@ -19,7 +19,8 @@ import viscm
 from cmasher.app_usage import update_tableau_pref_file
 from cmasher.cm import cmap_d, cmap_cd
 from cmasher.utils import (
-    create_cmap_mod, create_cmap_overview, get_cmap_type, register_cmap)
+    create_cmap_mod, create_cmap_overview, get_cmap_type, register_cmap,
+    view_cmap)
 
 
 # %% GLOBALS
@@ -195,12 +196,7 @@ if(__name__ == '__main__'):
     create_cmap_mod(name, save_dir=name)
 
     # Create colormap figure
-    fig, ax = plt.subplots(figsize=(12.8, 3.2))
-    ax.imshow(rgb[np.newaxis, ...], aspect='auto')
-    ax.set_axis_off()
-    plt.savefig("{0}/{0}.png".format(name), dpi=100, bbox_inches='tight',
-                pad_inches=0)
-    plt.close(fig)
+    view_cmap('cmr.'+name, savefig="{0}/{0}.png".format(name))
 
     # Create txt-file with colormap data
     np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8f')
@@ -221,6 +217,9 @@ if(__name__ == '__main__'):
     create_cmap_overview(
         savefig=path.join(docs_dir, 'images', 'cmap_overview.png'),
         sort='lightness')
+    create_cmap_overview(
+        savefig=path.join(docs_dir, 'images', 'cmap_overview_perceptual.png'),
+        sort='perceptual', show_info=True)
     create_cmap_overview(
         plt.colormaps(), plot_profile=True, sort='lightness',
         savefig=path.join(docs_dir, 'images', 'mpl_cmaps.png'))
