@@ -62,6 +62,7 @@ setup(name="cmasher",
           'Programming Language :: Python :: 3.9',
           'Topic :: Scientific/Engineering :: Visualization',
           'Topic :: Utilities',
+          'Framework :: Matplotlib',
           ],
       keywords=("cmasher perceptually uniform sequential colormaps plotting "
                 "python visualization"),

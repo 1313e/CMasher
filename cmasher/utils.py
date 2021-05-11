@@ -1360,6 +1360,7 @@ def view_cmap(cmap, *, savefig=None):
 
     # Turn axes off
     ax.set_axis_off()
+    plt.tight_layout(0, 0, 0)
 
     # If savefig is not None, save the figure
     if savefig is not None:

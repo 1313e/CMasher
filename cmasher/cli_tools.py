@@ -153,7 +153,8 @@ def cli_cmap_view():
     import_cmap_pkgs()
 
     # View cmap
-    cmr.view_cmap(get_cmap(ARGS.cmap), savefig=ARGS.save)
+    save = ARGS.cmap+'.png' if ARGS.save is True else ARGS.save
+    cmr.view_cmap(get_cmap(ARGS.cmap), savefig=save)
 
 
 # This function handles the 'app_usage tableau' subcommand
@@ -477,7 +478,9 @@ def main():
         help="Path where plot must be saved to.",
         metavar='PATH',
         action='store',
+        nargs='?',
         default=None,
+        const=True,
         type=str)
 
     # Set defaults for cmap_view_parser
