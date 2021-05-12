@@ -346,8 +346,33 @@ For example, the qualitative sub-colormap made of :ref:`lilac` shown in :numref:
     # View colormap
     cmr.view_cmap(cmap)
 
+It is also possible to view the colormap together with its grayscale version (like usually shown in colormap overviews) and/or with a colormap test plotted on top of it (as shown on the `viscm`_ outputs).
+This is done by setting the `show_grayscale` and/or `show_test` arguments to :pycode:`True`, respectively.
+Below are the three different versions of the :ref:`rainforest` colormap one can make by toggling these flags in addition to the one shown in :numref:`rainforest_fig`.
 
-.. _viscm: https://github.com/matplotlib/viscm
+.. figure:: images/rainforest_test.png
+    :alt: The *rainforest* colormap.
+    :width: 100%
+    :align: center
+
+    The :ref:`rainforest` colormap with :pycode:`show_test=True`.
+
+.. figure:: images/rainforest_gs.png
+    :alt: The *rainforest* colormap.
+    :width: 100%
+    :align: center
+
+    The :ref:`rainforest` colormap with :pycode:`show_grayscale=True`.
+
+.. figure:: images/rainforest_gs_test.png
+    :alt: The *rainforest* colormap.
+    :width: 100%
+    :align: center
+
+    The :ref:`rainforest` colormap with :pycode:`show_grayscale=True` and :pycode:`show_test=True`.
+
+
+.. _viscm: https://github.com/1313e/viscm
 .. _repository: https://github.com/1313e/CMasher
 .. _PyPI: https://pypi.org/project/CMasher
 .. _matplotlib: https://github.com/matplotlib/matplotlib

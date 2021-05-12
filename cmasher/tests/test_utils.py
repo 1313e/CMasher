@@ -354,5 +354,6 @@ class Test_view_cmap(object):
 
     # Test if the figure can be saved
     def test_savefig(self):
-        view_cmap('cmr.rainforest', savefig="test.png")
+        view_cmap('cmr.rainforest', show_test=True, show_grayscale=True,
+                  savefig="test.png")
         assert path.exists("./test.png")

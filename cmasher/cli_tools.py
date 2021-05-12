@@ -154,7 +154,8 @@ def cli_cmap_view():
 
     # View cmap
     save = ARGS.cmap+'.png' if ARGS.save is True else ARGS.save
-    cmr.view_cmap(get_cmap(ARGS.cmap), savefig=save)
+    cmr.view_cmap(get_cmap(ARGS.cmap), savefig=save, show_test=ARGS.test,
+                  show_grayscale=ARGS.gs)
 
 
 # This function handles the 'app_usage tableau' subcommand
@@ -482,6 +483,18 @@ def main():
         default=None,
         const=True,
         type=str)
+
+    # Add 'test' optional argument
+    cmap_view_parser.add_argument(
+        '--test',
+        help="Show a colormap test of `cmap` instead.",
+        action='store_true')
+
+    # Add 'test' optional argument
+    cmap_view_parser.add_argument(
+        '--gs', '--grayscale',
+        help="Show grayscale version of `cmap` as well.",
+        action='store_true')
 
     # Set defaults for cmap_view_parser
     cmap_view_parser.set_defaults(func=cli_cmap_view)

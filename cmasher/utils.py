@@ -37,6 +37,11 @@ __all__ = ['create_cmap_mod', 'create_cmap_overview', 'get_bibtex',
            'view_cmap']
 
 
+# %% GLOBALS
+# Obtain the colorspace converter for showing cmaps in gray-scale
+cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
+
+
 # %% HELPER CLASSES
 # Define legend handler class for artists that use colormaps
 class _HandlerColorPolyCollection(HandlerBase):
@@ -551,9 +556,6 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
     if title:
         cmaps_list.insert(0, (title, True))
 
-    # Obtain the colorspace converter for showing cmaps in grey-scale
-    cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
-
     # Check value of show_grayscale
     if show_grayscale:
         # If True, the overview will have two columns
@@ -575,7 +577,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
     # Check if dark mode is requested
     if dark_mode:
-        # If so, use dark grey for the background and light grey for the text
+        # If so, use dark gray for the background and light gray for the text
         edge_color = '#24292E'
         face_color = '#24292E'
         text_color = '#9DA5B4'
@@ -659,7 +661,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
                 # Get RGB values for lightness values using neutral
                 rgb_L = cmrcm.neutral(L)[:, :3]
 
-                # Add grey-scale colormap subplot
+                # Add gray-scale colormap subplot
                 ax1.imshow(rgb_L[np.newaxis, ...], aspect='auto')
 
                 # Check if the lightness profile was requested
@@ -1331,7 +1333,7 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
 
 
 # Function to view what a colormap looks like
-def view_cmap(cmap, *, savefig=None):
+def view_cmap(cmap, *, savefig=None, show_test=False, show_grayscale=False):
     """
     Shows a simple plot of the provided `cmap`.
 
@@ -1346,20 +1348,54 @@ def view_cmap(cmap, *, savefig=None):
     savefig : str or None. Default: None
         If not *None*, the path where the plot must be saved to.
         Else, the plot will simply be shown.
+    show_test : bool. Default: False
+        If *True*, show a colormap test in the plot instead.
+    show_grayscale : bool. Default: False
+        If *True*, also show the grayscale version of `cmap`.
 
     """
 
-    # Obtain RGB values of cmap in provided range
-    rgb = np.array(take_cmap_colors(cmap, None))
+    # Obtain cmap
+    cmap = mplcm.get_cmap(cmap)
+
+    # Check if show_grayscale is True
+    if show_grayscale:
+        # If so, create a colormap of cmap in grayscale
+        rgb = cmap(np.arange(cmap.N))[:, :3]
+        L = cspace_convert(rgb)[:, 0]
+        L /= 99.99871678
+        rgb_L = cmrcm.neutral(L)[:, :3]
+        cmap_L = LC(rgb_L)
+
+        # Set that there are two plots to create
+        nplots = 2
+    else:
+        # Else, there is only one plot
+        nplots = 1
 
     # Create figure
-    fig, ax = plt.subplots(figsize=(12.8, 3.2))
+    fig, ax = plt.subplots(ncols=nplots, figsize=(12.8*nplots, 3.2))
 
-    # Create plot
-    ax.imshow(rgb[np.newaxis, ...], aspect='auto')
+    # Check if show_test is True
+    if show_test:
+        # If so, use a colormap test data file
+        data = np.load(path.join(path.dirname(__file__),
+                                 'data/colormaptest.npy'))
+    else:
+        # If not, just plot the colormap
+        data = [np.linspace(0, 1, cmap.N)]
 
-    # Turn axes off
-    ax.set_axis_off()
+    # If show_grayscale is True, show both plots instead of just one
+    if show_grayscale:
+        ax[0].imshow(data, cmap=cmap, aspect='auto')
+        ax[0].set_axis_off()
+        ax[1].imshow(data, cmap=cmap_L, aspect='auto')
+        ax[1].set_axis_off()
+    else:
+        ax.imshow(data, cmap=cmap, aspect='auto')
+        ax.set_axis_off()
+
+    # Use tight layout
     plt.tight_layout(0, 0, 0)
 
     # If savefig is not None, save the figure
