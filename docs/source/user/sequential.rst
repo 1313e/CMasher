@@ -33,10 +33,12 @@ These colormaps are shown in an overview and described individually below.
     sequential/dusk
     sequential/eclipse
     sequential/ember
+    sequential/emerald
     sequential/fall
     sequential/flamingo
     sequential/freeze
     sequential/gem
+    sequential/ghostlight
     sequential/gothic
     sequential/horizon
     sequential/jungle
@@ -48,6 +50,7 @@ These colormaps are shown in an overview and described individually below.
     sequential/ocean
     sequential/pepper
     sequential/rainforest
+    sequential/sapphire
     sequential/savanna
     sequential/sepia
     sequential/sunburst

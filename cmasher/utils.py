@@ -1422,6 +1422,7 @@ class LC_heat(LC):  # pragma: no cover
         return(super().__call__(*args, **kwargs))
 
 
+# Use this special LC class for 'heat'
 _LC = LC
 LC = LC_heat
 with warnings.catch_warnings():

@@ -1,6 +1,6 @@
 Single major colors
 ===================
-This colormap overview shows a collection of colormaps in *CMasher* that only use a single major color (determined at v1.6.0).
+This colormap overview shows a collection of colormaps in *CMasher* that only use a single major color (determined at v1.6.2).
 The overview does not show the grayscale colormap versions and scales the colormap subplots to be twice as wide as usual.
 
 .. image:: ../images/seq_single.png
@@ -22,9 +22,11 @@ The overview does not show the grayscale colormap versions and scales the colorm
         cmr.sepia,
         cmr.jungle,
         cmr.nuclear,
+        cmr.emerald,
         cmr.swamp,
         cmr.ocean,
         cmr.arctic,
+        cmr.sapphire,
         cmr.freeze,
         cmr.cosmic,
         cmr.amethyst,

@@ -74,7 +74,7 @@ The *viscm* output of :ref:`savanna` shows that the colormap becomes a yellow-on
 For diverging colormaps however, using this 'trick' is no longer possible.
 Diverging colormaps require the use of distinctive sequential colormaps on both sides, which must also be true when viewed by a person affected by CVD.
 For this reason and because of the properties of blue I mentioned above, I tend to end up using blue for one end of every diverging colormap.
-The only diverging colormap in *CMasher* that does not have a blue end (at time of writing), is :ref:`watermelon`.
+The only two diverging colormaps in *CMasher* that do not have a blue end (at time of writing), are :ref:`holly` and :ref:`watermelon`.
 One look at the *viscm* output of :ref:`watermelon` tells you immediately that this colormap will not work well for CVD-friendly plots, as both sides end up looking very similar.
 
 Of course, it is possible to make diverging colormaps without blue that are still CVD-friendly.

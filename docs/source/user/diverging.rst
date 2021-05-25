@@ -30,9 +30,11 @@ Because of this, *CMasher* provides a few cyclic colormaps of its own as well, w
 .. toctree::
     :caption: Individual colormaps
 
+    diverging/copper
     diverging/emergency
     diverging/fusion
     diverging/guppy
+    diverging/holly
     diverging/iceburn
     diverging/infinity
     diverging/pride

@@ -57,7 +57,7 @@ Using :pycode:`show_grayscale=False` and/or setting the `wscale` and `hscale` ar
 The colormaps shown in an overview can be sorted/ordered in a number of different ways.
 By default, the colormaps are separated into their types (as determined by :func:`~cmasher.get_cmap_type`), and sorted on their name in alphabetical order (use :pycode:`sort=None` to not sort the colormaps).
 However, one can specify their own categories for colormaps (that are used instead of the colormap types) by providing a dict of lists, where the keys are used as the categories.
-As colormaps with different lightness profiles can cause perception issues when displayed near each other, colormaps can also be sorted on their lightness profiles with :pycode:`sort='lightness'` to avoid this problem.
+As colormaps with different lightness profiles can cause perception issues when displayed near each other, colormaps can be sorted on their lightness profiles with :pycode:`sort='lightness'` to avoid this problem.
 If required, the colormaps can also be sorted on their perceptual range in addition to their lightness profiles with :pycode:`sort='perceptual'`, which makes it easier to distinguish colormaps with high color variation from those with low color variation.
 Keep in mind that sorting on lightness profiles is only useful if all colormaps within a category are of the same colormap type, and sorting on perceptual range only makes sense if all colormaps are perceptually uniform sequential.
 
