@@ -7,6 +7,7 @@ Scientific colormaps for making accessible, informative and *cmashing* plots.
 
 """
 
+# flake8: noqa
 
 # %% IMPORTS AND DECLARATIONS
 # CMasher imports

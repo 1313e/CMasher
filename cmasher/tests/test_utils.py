@@ -7,7 +7,6 @@ import os
 from os import path
 
 # Package imports
-import cmocean as cmo
 import matplotlib.pyplot as plt
 from matplotlib import cm as mplcm
 from matplotlib.colors import ListedColormap as LC
