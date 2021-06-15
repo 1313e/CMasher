@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # %% IMPORTS
 # Built-in imports
 import argparse
@@ -82,7 +80,7 @@ class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
         # Loop over all remaining desc_lines
         for line in desc_lines:
             # Format and add to parts
-            parts.append("%s%s\n" % (' '*help_position, line))
+            parts.append("{}{}\n".format(' '*help_position, line))
 
         # Convert to a single string and return
         return(''.join(parts))
@@ -200,7 +198,7 @@ def get_cmap(cmap):
     # If cmap is still a string, raise error
     if isinstance(cmap, str):
         # Print error and exit
-        print("Requested 'CMAP' ({!r}) cannot be found!".format(cmap))
+        print(f"Requested 'CMAP' ({cmap!r}) cannot be found!")
         sys.exit()
 
     # Return cmap
@@ -340,7 +338,7 @@ def main():
     parser.add_argument(
         '-v', '--version',
         action='version',
-        version="CMasher v{}".format(__version__))
+        version=f"CMasher v{__version__}")
 
     # Create a cmap parser for several commands
     cmap_parent_parser = argparse.ArgumentParser(add_help=False)

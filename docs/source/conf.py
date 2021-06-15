@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -28,7 +27,7 @@ author = 'Ellert van der Velden'
 # The short X.Y version
 version = 'latest'
 # The full version, including alpha/beta/rc tags
-with open('../../cmasher/__version__.py', 'r') as f:
+with open('../../cmasher/__version__.py') as f:
     vf = f.read()
 
 # Obtain version from read-in __version__.py file

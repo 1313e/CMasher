@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Utils
 =====
@@ -347,7 +345,7 @@ def create_cmap_mod(cmap, *, save_dir='.'):
                                    len(rgb)//2)
 
     # Obtain the path to the module
-    cmap_path = path.join(save_dir, "{0}.py".format(name))
+    cmap_path = path.join(save_dir, f"{name}.py")
 
     # Create Python module
     with open(cmap_path, 'w') as f:

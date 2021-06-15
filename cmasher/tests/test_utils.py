@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # %% IMPORTS
 # Built-in imports
 from importlib.util import module_from_spec, spec_from_file_location
@@ -45,7 +43,7 @@ mpl_cmaps = plt.colormaps()
 
 # %% PYTEST CLASSES AND FUNCTIONS
 # Pytest class for create_cmap_mod
-class Test_create_cmap_mod(object):
+class Test_create_cmap_mod:
     # Test if a standalone module of rainforest can be created
     def test_standalone_rainforest(self):
         # Obtain the currently registered version of rainforest
@@ -99,7 +97,7 @@ class Test_create_cmap_mod(object):
 
 
 # Pytest class for create_cmap_overview
-class Test_create_cmap_overview(object):
+class Test_create_cmap_overview:
     # Test if default arguments work
     def test_default(self):
         create_cmap_overview()
@@ -162,7 +160,7 @@ def test_get_bibtex():
 
 
 # Pytest class for get_cmap_list()-function
-class Test_get_cmap_list(object):
+class Test_get_cmap_list:
     # Test default arguments
     def test_default(self):
         assert (get_cmap_list() == list(cmrcm.cmap_d))
@@ -181,7 +179,7 @@ class Test_get_cmap_list(object):
 
 
 # Pytest class for get_sub_cmap()-function
-class Test_get_sub_cmap(object):
+class Test_get_sub_cmap:
     # Test if a copy can be made of the 'rainforest' colormap
     def test_rainforest_copy(self):
         assert np.allclose(get_sub_cmap('cmr.rainforest', 0, 1).colors,
@@ -208,7 +206,7 @@ class Test_get_sub_cmap(object):
 
 
 # Pytest class for import_cmaps()-function
-class Test_import_cmaps(object):
+class Test_import_cmaps:
     # Test if all colormaps in cmasher/colormaps are loaded into CMasher/MPL
     @pytest.mark.parametrize('cm_name', cm_names)
     def test_CMasher_cmaps(self, cm_name):
@@ -242,7 +240,7 @@ class Test_import_cmaps(object):
     # Test if providing a cyclic colormap works
     def test_cyclic_cmap(self):
         name = 'cyclic'
-        import_cmaps(path.join(dirpath, 'data/cm_{0}.txt'.format(name)))
+        import_cmaps(path.join(dirpath, f'data/cm_{name}.txt'))
         for cmap in [name, name+'_r', name+'_s', name+'_s_r']:
             assert 'cmr.'+cmap in plt.colormaps()
             assert getattr(cmrcm, cmap, None) is not None
@@ -271,7 +269,7 @@ class Test_import_cmaps(object):
 
 
 # Pytest class for set_cmap_legend_entry()-function
-class Test_set_cmap_legend_entry(object):
+class Test_set_cmap_legend_entry:
     # Test if providing a PathCollection object works
     def test_path_collection(self):
         # Create a small scatter plot
@@ -304,7 +302,7 @@ class Test_set_cmap_legend_entry(object):
 
 
 # Pytest class for take_cmap_colors()-function
-class Test_take_cmap_colors(object):
+class Test_take_cmap_colors:
     # Test if all colors can be taken from the 'rainforest' colormap
     def test_rainforest_all(self):
         assert np.allclose(take_cmap_colors('cmr.rainforest', None),
@@ -347,7 +345,7 @@ class Test_take_cmap_colors(object):
 
 
 # Pytest class for view_cmap()-function
-class Test_view_cmap(object):
+class Test_view_cmap:
     # Test if default arguments work
     def test_default(self):
         view_cmap('cmr.rainforest')

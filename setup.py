@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Setup file for the *CMasher* package.
 
@@ -17,15 +15,15 @@ from setuptools import find_packages, setup
 
 # %% SETUP DEFINITION
 # Get the long description from the README file
-with open('README.rst', 'r') as f:
+with open('README.rst') as f:
     long_description = f.read()
 
 # Get the requirements list
-with open('requirements.txt', 'r') as f:
+with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 # Read the __version__.py file
-with open('cmasher/__version__.py', 'r') as f:
+with open('cmasher/__version__.py') as f:
     vf = f.read()
 
 # Obtain version from read-in __version__.py file

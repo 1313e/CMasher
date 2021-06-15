@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # %% Imports
 # Built-in imports
 from itertools import zip_longest
@@ -175,7 +173,7 @@ if(__name__ == '__main__'):
     cmap_cd['sequential'].pop('heat_r')
 
     # Obtain cmtype
-    cmtype = get_cmap_type('cmr.{0}'.format(name))
+    cmtype = get_cmap_type(f'cmr.{name}')
 
     # Check if provided cmap is a cyclic colormap
     # If so, obtain its shifted (reversed) versions as well
@@ -199,7 +197,7 @@ if(__name__ == '__main__'):
     view_cmap('cmr.'+name, savefig="{0}/{0}.png".format(name))
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8f')
+    np.savetxt(f"cm_{name}.txt", rgb, fmt='%.8f')
 
     # Create txt-file with normalized colormap data
     np.savetxt("{0}/{0}_norm.txt".format(name), rgb, fmt='%.8f')
@@ -255,8 +253,8 @@ if(__name__ == '__main__'):
     create_cmap_overview(
         cmaps, sort='perceptual', use_types=(cmtype == 'diverging'),
         savefig=path.join(docs_dir, 'images',
-                          '{0}_cmaps.png'.format(cmtype[:3])),
-        title="{0} Colormaps".format(cmtype.capitalize()), show_info=True)
+                          f'{cmtype[:3]}_cmaps.png'),
+        title=f"{cmtype.capitalize()} Colormaps", show_info=True)
     if(cmtype == 'sequential'):
         cmaps = [cm for cm in plt.colormaps()
                  if get_cmap_type(cm) == 'sequential']
@@ -271,7 +269,7 @@ if(__name__ == '__main__'):
     try:
         # Create docs entry
         with open(path.join(docs_dir, cmtype,
-                            "{0}.rst".format(name)), 'x') as f:
+                            f"{name}.rst"), 'x') as f:
             f.write(docs_entry[1:])
     # If this file already exists, then skip
     except FileExistsError:
@@ -279,7 +277,7 @@ if(__name__ == '__main__'):
     # If the file did not exist yet, add it to the corresponding overview
     else:
         # Read the corresponding docs overview page
-        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'r') as f:
+        with open(path.join(docs_dir, f"{cmtype}.rst")) as f:
             docs_overview = f.read()
 
         # Set the string used to start the toctree with
@@ -292,7 +290,7 @@ if(__name__ == '__main__'):
         toctree = toctree.splitlines()
 
         # Add the new entry to toctree
-        toctree.append("    {0}/{1}".format(cmtype, name))
+        toctree.append(f"    {cmtype}/{name}")
 
         # Sort toctree
         toctree.sort()
@@ -304,7 +302,7 @@ if(__name__ == '__main__'):
         docs_overview = ''.join([desc, toctree_header, toctree])
 
         # Save this as the new docs_overview
-        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'w') as f:
+        with open(path.join(docs_dir, f"{cmtype}.rst"), 'w') as f:
             f.write(docs_overview)
 
     # Create viscm output figure

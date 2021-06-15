@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # %% IMPORTS
 # Package imports
 import matplotlib as mpl

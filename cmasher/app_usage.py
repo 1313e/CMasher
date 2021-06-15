@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Application usage
 =================
@@ -97,7 +95,7 @@ def update_tableau_pref_file(dirname='.'):
     # Check if this file already exists
     if path.exists(filename):
         # If so, read in the file contents
-        with open(filename, 'r') as f:
+        with open(filename) as f:
             text = f.read()
 
         # Define the strings that enclose the colormap entries usually
