@@ -12,7 +12,7 @@ jobs:
       - run: codespell --ignore-words-list="mutch"
       - run: flake8 . --count --max-complexity=39 --max-line-length=88 --show-source --statistics
       - run: isort --check-only --profile black . || true
-      - run: pip install -r requirements.txt || true
+      - run: pip install -r requirements.txt
       - run: mypy --ignore-missing-imports . || true
       - run: pytest . || true
       - run: pytest --doctest-modules . || true
