@@ -14,13 +14,15 @@ from collections import OrderedDict as odict
 from glob import glob
 from os import path
 from textwrap import dedent
+from typing import Callable, Iterable, List, Optional, Tuple, Union
 import warnings
 
 # Package imports
 from colorspacious import cspace_converter
 from matplotlib import cm as mplcm
+from matplotlib.artist import Artist
 from matplotlib.collections import LineCollection
-from matplotlib.colors import ListedColormap as LC, to_hex, to_rgb
+from matplotlib.colors import Colormap, ListedColormap as LC, to_hex, to_rgb
 from matplotlib.legend import Legend
 from matplotlib.legend_handler import HandlerBase
 from matplotlib.image import AxesImage
@@ -40,6 +42,10 @@ __all__ = ['create_cmap_mod', 'create_cmap_overview', 'get_bibtex',
 # %% GLOBALS
 # Obtain the colorspace converter for showing cmaps in gray-scale
 cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
+
+# Type aliases
+CMAP = Union[str, Colormap]
+RGB = Union[Iterable[Iterable[Union[float, int]]], Iterable[str]]
 
 
 # %% HELPER CLASSES
@@ -67,7 +73,8 @@ class _HandlerColorPolyCollection(HandlerBase):
 
 # %% HELPER FUNCTIONS
 # Define function for obtaining the sorting order for lightness ranking
-def _get_cmap_lightness_rank(cmap):
+def _get_cmap_lightness_rank(cmap: CMAP) -> Tuple[
+        int, int, float, float, float, str]:
     """
     Returns a tuple of objects used for sorting the provided `cmap` based
     on its lightness profile.
@@ -167,7 +174,8 @@ def _get_cmap_lightness_rank(cmap):
 
 
 # Define function for obtaining the sorting order for perceptual ranking
-def _get_cmap_perceptual_rank(cmap):
+def _get_cmap_perceptual_rank(cmap: CMAP) -> Tuple[
+        int, int, float, float, float, float, str]:
     """
     In addition to returning the lightness rank as given by
     :func:`~_get_cmap_lightness_rank`, also returns the length of the
@@ -226,7 +234,7 @@ def _get_cmap_perceptual_rank(cmap):
 
 # %% FUNCTIONS
 # This function creates a standalone module of a CMasher colormap
-def create_cmap_mod(cmap, *, save_dir='.'):
+def create_cmap_mod(cmap: str, *, save_dir: str = '.') -> str:
     """
     Creates a standalone Python module of the provided *CMasher* `cmap` and
     saves it in the given `save_dir` as '<`cmap`>.py'.
@@ -358,10 +366,19 @@ def create_cmap_mod(cmap, *, save_dir='.'):
 
 
 # This function creates an overview plot of all colormaps specified
-def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
-                         sort='alphabetical', show_grayscale=True,
-                         show_info=False, plot_profile=False, dark_mode=False,
-                         title="Colormap Overview", wscale=1, hscale=1):
+def create_cmap_overview(
+        cmaps: Optional[List[CMAP]] = None,
+        *,
+        savefig: Optional[str] = None,
+        use_types: bool = True,
+        sort: Optional[Union[str, Callable]] = 'alphabetical',
+        show_grayscale: bool = True,
+        show_info: bool = False,
+        plot_profile: Union[bool, float] = False,
+        dark_mode: bool = False,
+        title: Optional[str] = "Colormap Overview",
+        wscale: float = 1,
+        hscale: float = 1) -> None:
     """
     Creates an overview plot containing all colormaps defined in the provided
     `cmaps`.
@@ -741,7 +758,7 @@ def create_cmap_overview(cmaps=None, *, savefig=None, use_types=True,
 
 
 # Define function that prints a string with the BibTeX entry to CMasher's paper
-def get_bibtex():
+def get_bibtex() -> None:
     """
     Prints a string that gives the BibTeX entry for citing the *CMasher* paper
     (Van der Velden 2020, JOSS, 5, 2004).
@@ -780,7 +797,7 @@ def get_bibtex():
 
 
 # This function returns a list of all colormaps available in CMasher
-def get_cmap_list(cmap_type='all'):
+def get_cmap_list(cmap_type: str = 'all') -> List[str]:
     """
     Returns a list with the names of all colormaps available in *CMasher* of
     the given `cmap_type`.
@@ -819,7 +836,7 @@ def get_cmap_list(cmap_type='all'):
 
 
 # This function determines the colormap type of a given colormap
-def get_cmap_type(cmap):
+def get_cmap_type(cmap: CMAP) -> str:
     """
     Checks what the colormap type (sequential; diverging; cyclic; qualitative;
     misc) of the provided `cmap` is and returns it.
@@ -897,7 +914,12 @@ def get_cmap_type(cmap):
 
 
 # Function create a colormap using a subset of the colors in an existing one
-def get_sub_cmap(cmap, start, stop, *, N=None):
+def get_sub_cmap(
+        cmap: CMAP,
+        start: float,
+        stop: float,
+        *,
+        N: Optional[int] = None) -> LC:
     """
     Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
     the range `[start, stop]` of the provided `cmap` and returns it.
@@ -974,7 +996,7 @@ def get_sub_cmap(cmap, start, stop, *, N=None):
 
 
 # Function to import all custom colormaps in a file or directory
-def import_cmaps(cmap_path):
+def import_cmaps(cmap_path: str) -> None:
     """
     Reads in custom colormaps from a provided file or directory `cmap_path`;
     transforms them into :obj:`~matplotlib.colors.ListedColormap` objects; and
@@ -1107,7 +1129,7 @@ def import_cmaps(cmap_path):
 
 
 # Function to register a custom colormap in MPL and CMasher
-def register_cmap(name, data):
+def register_cmap(name: str, data: RGB) -> None:
     """
     Creates a :obj:`~matplotlib.colors.ListedColormap` object using the
     provided `name` and `data`, and registers the colormap in the
@@ -1184,7 +1206,7 @@ def register_cmap(name, data):
 
 
 # Function to set the legend label of an artist that uses a colormap
-def set_cmap_legend_entry(artist, label):
+def set_cmap_legend_entry(artist: Artist, label: str) -> None:
     """
     Sets the label of the provided `artist` to `label`, and creates a legend
     entry using a miniature version of the colormap of `artist` as the legend
@@ -1224,7 +1246,12 @@ def set_cmap_legend_entry(artist, label):
 
 
 # Function to take N equally spaced colors from a colormap
-def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
+def take_cmap_colors(
+        cmap: CMAP,
+        N: Optional[int],
+        *,
+        cmap_range: Tuple[float, float] = (0, 1),
+        return_fmt: str = 'float') -> RGB:
     """
     Takes `N` equally spaced colors from the provided colormap `cmap` and
     returns them.
@@ -1333,7 +1360,12 @@ def take_cmap_colors(cmap, N, *, cmap_range=(0, 1), return_fmt='float'):
 
 
 # Function to view what a colormap looks like
-def view_cmap(cmap, *, savefig=None, show_test=False, show_grayscale=False):
+def view_cmap(
+        cmap: CMAP,
+        *,
+        savefig: Optional[str] = None,
+        show_test: bool = False,
+        show_grayscale: bool = False) -> None:
     """
     Shows a simple plot of the provided `cmap`.
 

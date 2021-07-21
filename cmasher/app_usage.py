@@ -24,7 +24,7 @@ __all__ = ['update_tableau_pref_file']
 
 # %% FUNCTION DEFINITIONS
 # Define function that generates a Tableau properties file with colormaps
-def update_tableau_pref_file(dirname='.'):
+def update_tableau_pref_file(dirname: str = '.') -> None:
     """
     Update an existing Tableau 'Preferences.tps' file to include colormaps from
     *CMasher*.
