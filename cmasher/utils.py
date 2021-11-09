@@ -1428,7 +1428,7 @@ def view_cmap(
         ax.set_axis_off()
 
     # Use tight layout
-    plt.tight_layout(0, 0, 0)
+    plt.tight_layout(pad=0, h_pad=0, w_pad=0)
 
     # If savefig is not None, save the figure
     if savefig is not None:
