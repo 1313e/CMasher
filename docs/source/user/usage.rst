@@ -141,7 +141,7 @@ The table below shows which CLI commands are available and what utility function
 +----------+-------------------------------------------------------+
 
 Except for the `cmview` and `mkcmod` commands, the commands print their results directly to the console using the formatting that was requested (if applicable).
-Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr rgbtable rainforest > rainforest.txt`` to save the RGB values of :ref:`rainforest` in a ``.txt``-file on UNIX-systems).
+Depending on the operating system used, this output can easily be redirected to be saved to a file (e.g., ``cmr rgbtable cmr.rainforest > rainforest.txt`` to save the RGB values of :ref:`rainforest` in a ``.txt``-file on UNIX-systems).
 All functionality that is usually available for the listed functions within the interpreter, is also available from the command-line.
 
 Because it is not possible to import any packages that provide colormaps before using a CLI function, *CMasher* reads the ``CMR_CMAP_PKGS`` environment variable.
