@@ -10,5 +10,5 @@ readme_renderer[md]
 scipy>=1.0.0
 setuptools>=38.6.0
 twine>=1.13.0
-viscm>=0.9
+git+https://github.com/1313e/viscm.git@master
 wheel>=0.31.0
