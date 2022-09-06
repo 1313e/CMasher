@@ -1,6 +1,6 @@
 # %% IMPORTS
 # Package imports
-from matplotlib.cm import register_cmap
+from cmasher.utils import _register_cmap as register_cmap
 from matplotlib.colors import ListedColormap
 
 # All declaration

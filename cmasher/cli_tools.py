@@ -10,11 +10,11 @@ from textwrap import dedent
 
 # Package imports
 import e13tools as e13
-from matplotlib import cm as mplcm
 import numpy as np
 
 # CMasher imports
 from cmasher import __version__
+from cmasher.utils import _get_cmap
 import cmasher as cmr
 
 # All declaration
@@ -180,7 +180,7 @@ def cli_lang_usage_r():
 def get_cmap(cmap):
     # Try to obtain the colormap from MPL
     try:
-        cmap = mplcm.get_cmap(cmap)
+        cmap = _get_cmap(cmap)
 
     # If this does not work, try to expand given cmap in setuptools-style
     except ValueError:

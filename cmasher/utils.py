@@ -18,14 +18,15 @@ from typing import Callable, Iterable, List, Optional, Tuple, Union
 import warnings
 
 # Package imports
+from packaging.version import Version
 from colorspacious import cspace_converter
-from matplotlib import cm as mplcm
 from matplotlib.artist import Artist
 from matplotlib.collections import LineCollection
 from matplotlib.colors import Colormap, ListedColormap as LC, to_hex, to_rgb
 from matplotlib.legend import Legend
 from matplotlib.legend_handler import HandlerBase
 from matplotlib.image import AxesImage
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -46,6 +47,7 @@ cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 # Type aliases
 CMAP = Union[str, Colormap]
 RGB = Union[Iterable[Iterable[Union[float, int]]], Iterable[str]]
+MPL_VERSION = Version(mpl.__version__)
 
 
 # %% HELPER CLASSES
@@ -72,6 +74,28 @@ class _HandlerColorPolyCollection(HandlerBase):
 
 
 # %% HELPER FUNCTIONS
+# wrap matplotlib.cm API, use non-deprecated API when available
+def _get_cmap(cm: CMAP) -> Colormap:
+    if isinstance(cm, Colormap):
+        return cm
+    elif MPL_VERSION >= Version("3.5"):
+        try:
+            return mpl.colormaps[cm]
+        except KeyError as error:
+            raise ValueError from error
+    else:
+        # deprecated API
+        return mpl.cm.get_cmap(cm)
+
+
+def _register_cmap(cmap: Colormap, *, name: Optional[str] = None) -> None:
+    if MPL_VERSION >= Version("3.5"):
+        mpl.colormaps.register(cmap, name=name, force=True)
+    else:
+        # deprecated API
+        mpl.cm.register_cmap(name=name, cmap=cmap)
+
+
 # Define function for obtaining the sorting order for lightness ranking
 def _get_cmap_lightness_rank(cmap: CMAP) -> Tuple[
         int, int, float, float, float, str]:
@@ -108,7 +132,7 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> Tuple[
     """
 
     # Obtain the colormap
-    cmap = mplcm.get_cmap(cmap)
+    cmap = _get_cmap(cmap)
     cm_type = get_cmap_type(cmap)
 
     # Determine lightness profile stats for sequential/diverging/cyclic
@@ -203,7 +227,7 @@ def _get_cmap_perceptual_rank(cmap: CMAP) -> Tuple[
     """
 
     # Obtain the colormap
-    cmap = mplcm.get_cmap(cmap)
+    cmap = _get_cmap(cmap)
     cm_type = get_cmap_type(cmap)
 
     # Determine perceptual range for sequential/diverging/cyclic
@@ -305,7 +329,7 @@ def create_cmap_mod(cmap: str, *, save_dir: str = '.') -> str:
     cm_py_file = dedent("""
         # %% IMPORTS
         # Package imports
-        from matplotlib.cm import register_cmap
+        from cmasher.utils import _register_cmap as register_cmap
         from matplotlib.colors import ListedColormap
 
         # All declaration
@@ -503,7 +527,7 @@ def create_cmap_overview(
             # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
-                    cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
+                    cmaps_dict[cm_type].append(_get_cmap(cmap))
                 else:
                     cmaps_dict[cm_type].append(cmap)
 
@@ -520,14 +544,14 @@ def create_cmap_overview(
             for cmap in cmaps:
                 cm_type = get_cmap_type(cmap)
                 if isinstance(cmap, str):
-                    cmaps_dict[cm_type].append(mplcm.get_cmap(cmap))
+                    cmaps_dict[cm_type].append(_get_cmap(cmap))
                 else:
                     cmaps_dict[cm_type].append(cmap)
         else:
             # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
-                    cmaps_list.append(mplcm.get_cmap(cmap))
+                    cmaps_list.append(_get_cmap(cmap))
                 else:
                     cmaps_list.append(cmap)
 
@@ -856,7 +880,7 @@ def get_cmap_type(cmap: CMAP) -> str:
     """
 
     # Obtain the colormap
-    cmap = mplcm.get_cmap(cmap)
+    cmap = _get_cmap(cmap)
 
     # Get RGB values for colormap
     rgb = cmap(np.arange(cmap.N))[:, :3]
@@ -980,7 +1004,7 @@ def get_sub_cmap(
     """
 
     # Obtain the colormap
-    cmap = mplcm.get_cmap(cmap)
+    cmap = _get_cmap(cmap)
 
     # Check value of N to determine suffix for the name
     suffix = '_sub' if N is None else '_qual'
@@ -1125,7 +1149,7 @@ def import_cmaps(cmap_path: str) -> None:
         # If any error is raised, reraise it
         except Exception as error:
             raise ValueError("Provided colormap %r is invalid! (%s)"
-                             % (cm_name, error))
+                             % (cm_name, error)) from error
 
 
 # Function to register a custom colormap in MPL and CMasher
@@ -1191,14 +1215,14 @@ def register_cmap(name: str, data: RGB) -> None:
     cm_type = get_cmap_type(cmap_mpl)
 
     # Add cmap to matplotlib's cmap list
-    mplcm.register_cmap(cmap=cmap_mpl)
+    _register_cmap(cmap=cmap_mpl)
     setattr(cmrcm, cmap_cmr.name, cmap_cmr)
     cmrcm.__all__.append(cmap_cmr.name)
     cmrcm.cmap_d[cmap_cmr.name] = cmap_cmr
     cmrcm.cmap_cd[cm_type][cmap_cmr.name] = cmap_cmr
 
     # Add reversed cmap to matplotlib's cmap list
-    mplcm.register_cmap(cmap=cmap_mpl_r)
+    _register_cmap(cmap=cmap_mpl_r)
     setattr(cmrcm, cmap_cmr_r.name, cmap_cmr_r)
     cmrcm.__all__.append(cmap_cmr_r.name)
     cmrcm.cmap_d[cmap_cmr_r.name] = cmap_cmr_r
@@ -1328,7 +1352,7 @@ def take_cmap_colors(
     return_fmt = return_fmt.lower()
 
     # Obtain the colormap
-    cmap = mplcm.get_cmap(cmap)
+    cmap = _get_cmap(cmap)
 
     # Check if provided cmap_range is valid
     if not ((0 <= cmap_range[0] <= 1) and (0 <= cmap_range[1] <= 1)):
@@ -1388,7 +1412,7 @@ def view_cmap(
     """
 
     # Obtain cmap
-    cmap = mplcm.get_cmap(cmap)
+    cmap = _get_cmap(cmap)
 
     # Check if show_grayscale is True
     if show_grayscale:
