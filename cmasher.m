@@ -59,6 +59,8 @@ function cmap = cmasher(ColormapName,varargin)
 
 %% Display colormap options: 
 
+addpath(genpath('cmasher'))
+
 if nargin==0
    figure('menubar','none','numbertitle','off','Name','cmasher options:')
    
