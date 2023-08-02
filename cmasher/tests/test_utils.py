@@ -9,7 +9,6 @@ from os import path
 # Package imports
 import cmocean as cmo
 import matplotlib.pyplot as plt
-from matplotlib import cm as mplcm
 from matplotlib.colors import ListedColormap as LC
 from matplotlib.legend import Legend
 import numpy as np
@@ -49,7 +48,7 @@ class Test_create_cmap_mod(object):
     # Test if a standalone module of rainforest can be created
     def test_standalone_rainforest(self):
         # Obtain the currently registered version of rainforest
-        cmap_old = mplcm.get_cmap('cmr.rainforest')
+        cmap_old = plt.colormaps['cmr.rainforest']
 
         # Create standalone module for rainforest
         cmap_path = create_cmap_mod('rainforest')
@@ -60,7 +59,7 @@ class Test_create_cmap_mod(object):
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
-        cmap_new = mplcm.get_cmap('cmr.rainforest')
+        cmap_new = plt.colormaps['cmr.rainforest']
         assert cmap_new is mod.cmap
         assert cmap_old is not cmap_new
 
@@ -70,7 +69,7 @@ class Test_create_cmap_mod(object):
     # Test if a standalone module of infinity can be created
     def test_standalone_infinity(self):
         # Obtain the currently registered version of infinity
-        cmap_old = mplcm.get_cmap('cmr.infinity')
+        cmap_old = plt.colormaps['cmr.infinity']
 
         # Create standalone module for infinity
         cmap_path = create_cmap_mod('infinity')
@@ -81,7 +80,7 @@ class Test_create_cmap_mod(object):
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
-        cmap_new = mplcm.get_cmap('cmr.infinity')
+        cmap_new = plt.colormaps['cmr.infinity']
         assert cmap_new is mod.cmap
         assert cmap_old is not cmap_new
 
@@ -215,7 +214,7 @@ class Test_import_cmaps(object):
         # Check if provided cm_name is registered in CMasher and MPL
         for name in (cm_name, cm_name+'_r'):
             cmr_cmap = getattr(cmr, name)
-            mpl_cmap = mplcm.get_cmap('cmr.'+name)
+            mpl_cmap = plt.colormaps['cmr.'+name]
             assert isinstance(cmr_cmap, LC)
             assert isinstance(mpl_cmap, LC)
             assert getattr(cmrcm, name) is cmr_cmap
