@@ -1,7 +1,7 @@
 -e .
 check-manifest
 cmocean>=2.0
-pyqt5==5.12.*
+pyqt5~=5.12
 pytest>=4.6.0
 pytest-cov
 pytest-flake8
@@ -10,5 +10,17 @@ readme_renderer[md]
 scipy>=1.0.0
 setuptools>=38.6.0
 twine>=1.13.0
-git+https://github.com/1313e/viscm.git@master
 wheel>=0.31.0
+
+# # Break out this dependency separately with --no-deps and relax constraints for now
+# git+https://github.com/1313e/viscm.git@master
+colorspacious>=1.1.0
+matplotlib>=3.2.0
+scipy>=1.0.0
+qtpy>=1.9.0
+
+# # Break out this dependency separately with --no-deps and relax constraints for now
+e13tools>=0.6.16
+numpy>=1.16.0
+pandas>=0.24.0
+sortedcontainers>=1.5.9
