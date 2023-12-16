@@ -46,7 +46,7 @@ jobs:
         twine check dist/*
     - name: Test package
       run: |
-        pytest
+        pytest --color=yes
     - name: Upload coverage
       run: |
         curl -s https://codecov.io/bash | bash
