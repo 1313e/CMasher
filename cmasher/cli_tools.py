@@ -1,21 +1,21 @@
-# -*- coding: utf-8 -*-
 
 # %% IMPORTS
 # Built-in imports
 import argparse
-from importlib import import_module
 import os
 import sys
+from importlib import import_module
 from textwrap import dedent
 
 # Package imports
 import e13tools as e13
-from matplotlib import cm as mplcm
 import numpy as np
+from matplotlib import cm as mplcm
+
+import cmasher as cmr
 
 # CMasher imports
 from cmasher import __version__
-import cmasher as cmr
 
 # All declaration
 __all__ = ['main']
@@ -200,7 +200,7 @@ def get_cmap(cmap):
     # If cmap is still a string, raise error
     if isinstance(cmap, str):
         # Print error and exit
-        print("Requested 'CMAP' ({!r}) cannot be found!".format(cmap))
+        print(f"Requested 'CMAP' ({cmap!r}) cannot be found!")
         sys.exit()
 
     # Return cmap
@@ -320,7 +320,6 @@ def main():
     invoked from the command-line.
 
     """
-
     # Initialize argparser
     parser = argparse.ArgumentParser(
         'cmr',
@@ -340,7 +339,7 @@ def main():
     parser.add_argument(
         '-v', '--version',
         action='version',
-        version="CMasher v{}".format(__version__))
+        version=f"CMasher v{__version__}")
 
     # Create a cmap parser for several commands
     cmap_parent_parser = argparse.ArgumentParser(add_help=False)

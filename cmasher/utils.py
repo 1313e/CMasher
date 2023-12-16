@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """
 Utils
@@ -10,12 +9,15 @@ Utility functions for registering and manipulating colormaps in various ways.
 
 # %% IMPORTS
 # Built-in imports
+import warnings
 from collections import OrderedDict as odict
 from glob import glob
 from os import path
 from textwrap import dedent
 from typing import Callable, Iterable, List, Optional, Tuple, Union
-import warnings
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Package imports
 from colorspacious import cspace_converter
@@ -23,11 +25,9 @@ from matplotlib import cm as mplcm
 from matplotlib.artist import Artist
 from matplotlib.collections import LineCollection
 from matplotlib.colors import Colormap, ListedColormap as LC, to_hex, to_rgb
+from matplotlib.image import AxesImage
 from matplotlib.legend import Legend
 from matplotlib.legend_handler import HandlerBase
-from matplotlib.image import AxesImage
-import matplotlib.pyplot as plt
-import numpy as np
 
 # CMasher imports
 from cmasher import cm as cmrcm
@@ -106,7 +106,6 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> Tuple[
         that is used.
 
     """
-
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
     cm_type = get_cmap_type(cmap)
@@ -201,7 +200,6 @@ def _get_cmap_perceptual_rank(cmap: CMAP) -> Tuple[
         that is used.
 
     """
-
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
     cm_type = get_cmap_type(cmap)
@@ -277,7 +275,6 @@ def create_cmap_mod(cmap: str, *, save_dir: str = '.') -> str:
     colormaps that are registered in *CMasher* (:mod:`cmasher.cm`).
 
     """
-
     # Get absolute value to provided save_dir
     save_dir = path.abspath(save_dir)
 
@@ -355,7 +352,7 @@ def create_cmap_mod(cmap: str, *, save_dir: str = '.') -> str:
                                    len(rgb)//2)
 
     # Obtain the path to the module
-    cmap_path = path.join(save_dir, "{0}.py".format(name))
+    cmap_path = path.join(save_dir, f"{name}.py")
 
     # Create Python module
     with open(cmap_path, 'w') as f:
@@ -459,7 +456,6 @@ def create_cmap_overview(
     The lightness profile transitions between black and white at 50% lightness.
 
     """
-
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
         cmaps = cmrcm.cmap_d.values()
@@ -764,7 +760,6 @@ def get_bibtex() -> None:
     (Van der Velden 2020, JOSS, 5, 2004).
 
     """
-
     # Create string with BibTeX entry
     bibtex = dedent(
         r"""
@@ -817,7 +812,6 @@ def get_cmap_list(cmap_type: str = 'all') -> List[str]:
         List containing the names of all colormaps available in *CMasher*.
 
     """
-
     # Convert cmap_type to lowercase
     cmap_type = cmap_type.lower()
 
@@ -854,7 +848,6 @@ def get_cmap_type(cmap: CMAP) -> str:
         `cmap` has.
 
     """
-
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
@@ -978,7 +971,6 @@ def get_sub_cmap(
     *CMasher* or *MPL*.
 
     """
-
     # Obtain the colormap
     cmap = mplcm.get_cmap(cmap)
 
@@ -1038,7 +1030,6 @@ def import_cmaps(cmap_path: str) -> None:
         >>> plt.get_cmap('cmr.test')    # MPL
 
     """
-
     # Obtain path to file or directory with colormaps
     cmap_path = path.abspath(cmap_path)
 
@@ -1153,7 +1144,6 @@ def register_cmap(name: str, data: RGB) -> None:
     clashes.
 
     """
-
     # Convert provided data to a NumPy array
     cm_data = np.array(data)
 
@@ -1229,7 +1219,6 @@ def set_cmap_legend_entry(artist: Artist, label: str) -> None:
         The string that must be set as the label of `artist`.
 
     """
-
     # Obtain the colormap of the provided artist
     cmap = getattr(artist, 'cmap', None)
 
@@ -1323,7 +1312,6 @@ def take_cmap_colors(
     that describe the same property, but have a different initial state.
 
     """
-
     # Convert provided fmt to lowercase
     return_fmt = return_fmt.lower()
 
@@ -1386,7 +1374,6 @@ def view_cmap(
         If *True*, also show the grayscale version of `cmap`.
 
     """
-
     # Obtain cmap
     cmap = mplcm.get_cmap(cmap)
 

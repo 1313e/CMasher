@@ -85,7 +85,7 @@ select = [
     "E",
     "F",
     "W",
-    "D",   # pydocstyle
+    #"D",   # pydocstyle
     "C4",  # flake8-comprehensions
     "B",   # flake8-bugbear
     "YTT", # flake8-2020

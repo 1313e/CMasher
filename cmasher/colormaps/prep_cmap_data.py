@@ -1,27 +1,30 @@
-# -*- coding: utf-8 -*-
 
 # %% Imports
 # Built-in imports
-from itertools import zip_longest
 import os
-from os import path
 import shutil
 import sys
+from itertools import zip_longest
+from os import path
 from textwrap import dedent
 
-# Package imports
-from matplotlib.colors import TwoSlopeNorm, to_hex
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
 
+# Package imports
+from matplotlib.colors import TwoSlopeNorm, to_hex
+
 # CMasher imports
 from cmasher.app_usage import update_tableau_pref_file
-from cmasher.cm import cmap_d, cmap_cd
+from cmasher.cm import cmap_cd, cmap_d
 from cmasher.utils import (
-    create_cmap_mod, create_cmap_overview, get_cmap_type, register_cmap,
-    view_cmap)
-
+    create_cmap_mod,
+    create_cmap_overview,
+    get_cmap_type,
+    register_cmap,
+    view_cmap,
+)
 
 # %% GLOBALS
 docs_dir = path.abspath(path.join(path.dirname(__file__),
@@ -156,7 +159,7 @@ if(__name__ == '__main__'):
 
     # Load colormap from .jscm-file
     cmap = viscm.gui.Colormap(None, None, None)
-    cmap.load("{0}/{0}.jscm".format(name))
+    cmap.load(f"{name}/{name}.jscm")
 
     # Obtain RGB values of colormap
     v = viscm.viscm_editor(uniform_space=cmap.uniform_space,
@@ -175,7 +178,7 @@ if(__name__ == '__main__'):
     cmap_cd['sequential'].pop('heat_r')
 
     # Obtain cmtype
-    cmtype = get_cmap_type('cmr.{0}'.format(name))
+    cmtype = get_cmap_type(f'cmr.{name}')
 
     # Check if provided cmap is a cyclic colormap
     # If so, obtain its shifted (reversed) versions as well
@@ -196,21 +199,21 @@ if(__name__ == '__main__'):
     create_cmap_mod(name, save_dir=name)
 
     # Create colormap figure
-    view_cmap('cmr.'+name, savefig="{0}/{0}.png".format(name))
+    view_cmap('cmr.'+name, savefig=f"{name}/{name}.png")
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8f')
+    np.savetxt(f"cm_{name}.txt", rgb, fmt='%.8f')
 
     # Create txt-file with normalized colormap data
-    np.savetxt("{0}/{0}_norm.txt".format(name), rgb, fmt='%.8f')
+    np.savetxt(f"{name}/{name}_norm.txt", rgb, fmt='%.8f')
 
     # Create txt-file with 8-bit colormap data
     rgb_8bit = np.rint(rgb*255)
-    np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
+    np.savetxt(f"{name}/{name}_8bit.txt", rgb_8bit, fmt='%i')
 
     # Create txt-file with HEX colormap data
     rgb_hex = np.apply_along_axis((lambda x: to_hex(x).upper()), 1, rgb)
-    np.savetxt("{0}/{0}_hex.txt".format(name), rgb_hex, fmt="%s")
+    np.savetxt(f"{name}/{name}_hex.txt", rgb_hex, fmt="%s")
 
     # Make new colormap overview
     create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
@@ -255,8 +258,8 @@ if(__name__ == '__main__'):
     create_cmap_overview(
         cmaps, sort='perceptual', use_types=(cmtype == 'diverging'),
         savefig=path.join(docs_dir, 'images',
-                          '{0}_cmaps.png'.format(cmtype[:3])),
-        title="{0} Colormaps".format(cmtype.capitalize()), show_info=True)
+                          f'{cmtype[:3]}_cmaps.png'),
+        title=f"{cmtype.capitalize()} Colormaps", show_info=True)
     if(cmtype == 'sequential'):
         cmaps = [cm for cm in plt.colormaps()
                  if get_cmap_type(cm) == 'sequential']
@@ -271,7 +274,7 @@ if(__name__ == '__main__'):
     try:
         # Create docs entry
         with open(path.join(docs_dir, cmtype,
-                            "{0}.rst".format(name)), 'x') as f:
+                            f"{name}.rst"), 'x') as f:
             f.write(docs_entry[1:])
     # If this file already exists, then skip
     except FileExistsError:
@@ -279,7 +282,7 @@ if(__name__ == '__main__'):
     # If the file did not exist yet, add it to the corresponding overview
     else:
         # Read the corresponding docs overview page
-        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'r') as f:
+        with open(path.join(docs_dir, f"{cmtype}.rst")) as f:
             docs_overview = f.read()
 
         # Set the string used to start the toctree with
@@ -292,7 +295,7 @@ if(__name__ == '__main__'):
         toctree = toctree.splitlines()
 
         # Add the new entry to toctree
-        toctree.append("    {0}/{1}".format(cmtype, name))
+        toctree.append(f"    {cmtype}/{name}")
 
         # Sort toctree
         toctree.sort()
@@ -304,9 +307,9 @@ if(__name__ == '__main__'):
         docs_overview = ''.join([desc, toctree_header, toctree])
 
         # Save this as the new docs_overview
-        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'w') as f:
+        with open(path.join(docs_dir, f"{cmtype}.rst"), 'w') as f:
             f.write(docs_overview)
 
     # Create viscm output figure
-    viscm.gui.main(["view", "{0}/{0}.jscm".format(name), "--save",
-                    "{0}/{0}_viscm.png".format(name), "--quit"])
+    viscm.gui.main(["view", f"{name}/{name}.jscm", "--save",
+                    f"{name}/{name}_viscm.png", "--quit"])

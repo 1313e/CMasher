@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 
 # %% IMPORTS
 # Package imports
 import matplotlib as mpl
 from py.path import local
-
 
 # Set MPL backend
 mpl.use('Agg')
