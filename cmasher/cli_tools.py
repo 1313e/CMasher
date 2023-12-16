@@ -82,7 +82,7 @@ class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
         # Loop over all remaining desc_lines
         for line in desc_lines:
             # Format and add to parts
-            parts.append("%s%s\n" % (' '*help_position, line))
+            parts.append(f"{' '*help_position}{line}\n")
 
         # Convert to a single string and return
         return(''.join(parts))
@@ -143,8 +143,7 @@ def cli_mk_cmod():
         cmap_path = cmr.create_cmap_mod(cmap, save_dir=ARGS.dir)
 
         # Print on commandline that module has been created
-        print("Created standalone colormap module of %r as %r."
-              % (cmap, cmap_path))
+        print(f"Created standalone colormap module of {cmap} as {cmap_path}.")
 
 
 # This function handles the 'cmview' subcommand

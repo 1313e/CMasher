@@ -67,8 +67,7 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
         colors_hex = cmr.take_cmap_colors(cmap, N=None, return_fmt='hex')
 
         # Create a list with all color representations in HEX
-        colors_list = list(map(lambda x: "<color>%s</color>" % (x),
-                               colors_hex))
+        colors_list = [f"<color>{x}</color>" for x in colors_hex]
 
         # Combine all these colors into a single string
         colors_str = '\n'.join(colors_list)

@@ -46,7 +46,7 @@ def create_cmap_app_overview():
     image_div = (1-X/2+X**5+Y**3)*np.exp(-X**2-Y**2)
 
     # Obtain all colormaps with their types
-    seq_cmaps = [cmap for cmap in cmap_cd['sequential'].values()]
+    seq_cmaps = list(cmap_cd['sequential'].values())
     div_cmaps = [cmap for cmap in cmap_cd['diverging'].values()
                  if not cmap.name.endswith('_r')]
     div_cmaps.extend([cmap for cmap in cmap_cd['cyclic'].values()

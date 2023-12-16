@@ -733,8 +733,8 @@ def create_cmap_overview(
                          va='bottom', ha='right', fontsize=10, c=text_color)
 
                 # Write lightness profile information in the correct position
-                fig.text(x_text, y_text, "(%.3g, %.3g, %.3g)" %
-                         (rank[2], rank[2]-rank[0]*rank[3], rank[5]),
+                fig.text(x_text, y_text,
+                         f"({rank[2]:.3g}, {rank[2]-rank[0]*rank[3]:.3g}, {rank[5]:.3g})",
                          va='top', ha='right', fontsize=10, c=text_color)
             else:
                 # If not, just write the name of the colormap
@@ -817,13 +817,13 @@ def get_cmap_list(cmap_type: str = 'all') -> List[str]:
 
     # Obtain proper list
     if cmap_type in ('a', 'all'):
-        cmaps = [cmap for cmap in cmrcm.cmap_d]
+        cmaps = list(cmrcm.cmap_d)
     elif cmap_type in ('s', 'seq', 'sequential'):
-        cmaps = [cmap for cmap in cmrcm.cmap_cd['sequential']]
+        cmaps = list(cmrcm.cmap_cd['sequential'])
     elif cmap_type in ('d', 'div', 'diverging'):
-        cmaps = [cmap for cmap in cmrcm.cmap_cd['diverging']]
+        cmaps = list(cmrcm.cmap_cd['diverging'])
     elif cmap_type in ('c', 'cyc', 'cyclic'):
-        cmaps = [cmap for cmap in cmrcm.cmap_cd['cyclic']]
+        cmaps = list(cmrcm.cmap_cd['cyclic'])
 
     # Return cmaps
     return(cmaps)
@@ -1079,7 +1079,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool=False) -> None:
                 # If that fails, raise error
                 except ImportError:  # pragma: no cover
                     raise ImportError("The 'viscm' package is required to read"
-                                      " '.jscm' files!")
+                                      " '.jscm' files!") from None
                 # If that succeeds, load RGB values from source file
                 else:
                     # Load colormap
@@ -1117,8 +1117,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool=False) -> None:
 
         # If any error is raised, reraise it
         except Exception as error:
-            raise ValueError("Provided colormap %r is invalid! (%s)"
-                             % (cm_name, error))
+            raise ValueError(f"Provided colormap {cm_name} is invalid! ({error})") from None
 
 
 # Function to register a custom colormap in MPL and CMasher
@@ -1152,7 +1151,7 @@ def register_cmap(name: str, data: RGB) -> None:
     # Check the type of the data
     if issubclass(cm_data.dtype.type, str):
         # If the values are strings, make sure they start with a '#'
-        cm_data = map(lambda x: '#'+x if not x.startswith('#') else x, cm_data)
+        cm_data = ('#'+x if not x.startswith('#') else x for x in cm_data)
 
         # Convert all values to floats
         colorlist = list(map(to_rgb, cm_data))
@@ -1343,7 +1342,7 @@ def take_cmap_colors(
             colors = np.array(np.rint(colors*255), dtype=int)
         colors = list(map(tuple, colors))
     else:
-        colors = list(map((lambda x: to_hex(x).upper()), colors))
+        colors = [to_hex(x).upper() for x in colors]
 
     # Return colors
     return(colors)
