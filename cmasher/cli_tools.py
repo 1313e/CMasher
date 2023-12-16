@@ -10,7 +10,6 @@ from textwrap import dedent
 # Package imports
 import matplotlib as mpl
 import numpy as np
-from matplotlib import cm as mplcm
 
 import cmasher as cmr
 
@@ -240,7 +239,7 @@ def cli_lang_usage_r():
 def get_cmap(cmap):
     # Try to obtain the colormap from MPL
     try:
-        cmap = mplcm.get_cmap(cmap)
+        cmap = mpl.colormaps.get_cmap(cmap)
 
     # If this does not work, try to expand given cmap in setuptools-style
     except ValueError:

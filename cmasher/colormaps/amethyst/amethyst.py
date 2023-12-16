@@ -1,6 +1,6 @@
 # %% IMPORTS
 # Package imports
-from matplotlib.cm import register_cmap
+import matplotlib as mpl
 from matplotlib.colors import ListedColormap
 
 # All declaration
@@ -282,5 +282,5 @@ cmap = ListedColormap(cm_data, name="cmr.amethyst", N=256)
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL
-register_cmap(cmap=cmap)
-register_cmap(cmap=cmap_r)
+mpl.colormaps.register(cmap=cmap)
+mpl.colormaps.register(cmap=cmap_r)
