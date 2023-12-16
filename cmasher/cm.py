@@ -1,4 +1,3 @@
-
 """
 CMasher Colormaps
 =================
@@ -25,8 +24,9 @@ CMAP_DCT = Dict[str, LC]
 # Initialize empty dict to hold colormaps in
 cmap_d: CMAP_DCT = {}
 cmap_cd: Dict[str, CMAP_DCT] = {
-    'sequential': {},
-    'diverging': {},
-    'cyclic': {},
-    'qualitative': {},
-    'misc': {}}
+    "sequential": {},
+    "diverging": {},
+    "cyclic": {},
+    "qualitative": {},
+    "misc": {},
+}

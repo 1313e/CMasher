@@ -1,4 +1,3 @@
-
 """
 CMasher
 =======
@@ -15,7 +14,7 @@ from .cm import *
 from .utils import *
 
 # All declaration
-__all__ = ['app_usage', 'cm', 'utils']
+__all__ = ["app_usage", "cm", "utils"]
 __all__.extend(cm.__all__)
 __all__.extend(utils.__all__)
 
