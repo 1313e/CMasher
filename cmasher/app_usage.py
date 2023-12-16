@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """
 Application usage
@@ -11,8 +10,8 @@ applications.
 
 # %% IMPORTS
 # Built-in imports
-from os import path
 import re
+from os import path
 from textwrap import dedent, indent
 
 # Import packages
@@ -46,7 +45,6 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
     takes these cases into account as well.
 
     """
-
     # Obtain all colormaps in CMasher without reversed versions
     # This is because Tableau already has a function for this
     cmaps = [y for y in cmr.cm.cmap_d.values() if not y.name.endswith('_r')]
@@ -97,7 +95,7 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
     # Check if this file already exists
     if path.exists(filename):
         # If so, read in the file contents
-        with open(filename, 'r') as f:
+        with open(filename) as f:
             text = f.read()
 
         # Define the strings that enclose the colormap entries usually
