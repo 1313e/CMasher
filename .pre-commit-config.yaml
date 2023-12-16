@@ -24,7 +24,7 @@ repos:
   rev: v2.2.4
   hooks:
   - id: codespell
-    args: [--ignore-words-list="mutch, ore"]
+    args: [--ignore-words-list, 'mutch, ore']
 
 - repo: https://github.com/PyCQA/bandit
   rev: 1.7.6
