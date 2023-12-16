@@ -32,7 +32,9 @@ repos:
   - id: bandit
     args: [
       --recursive,
-      "--skip B101 .",  # B101 is assert statements
+      --skip,
+      B101,  # B101 is assert statements
+      ".",
     ]
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
