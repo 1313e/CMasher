@@ -2,12 +2,13 @@
 # Built-in imports
 import argparse
 import os
+import re
 import sys
 from importlib import import_module
 from textwrap import dedent
 
 # Package imports
-import e13tools as e13
+import matplotlib as mpl
 import numpy as np
 from matplotlib import cm as mplcm
 
@@ -38,6 +39,51 @@ main_epilog = dedent(
     following packages %s are attempted to be imported before any command is
     executed."""
 )[1:] % (tuple(cmap_pkgs),)
+
+
+def _get_main_desc(source):
+    """
+    Retrieves the main description of the provided object `source` and returns
+    it.
+
+    The main description is defined as the first paragraph of its docstring.
+
+    Parameters
+    ----------
+    source : object
+        The object whose main description must be retrieved.
+
+    Returns
+    -------
+    main_desc : str or None
+        The main description string of the provided `source` or *None* if
+        `source` has not docstring.
+
+    """
+    # this function is copied from the e13tools package
+
+    # Retrieve the docstring of provided source
+    doc = source.__doc__
+
+    # If doc is None, return None
+    if doc is None:
+        return None
+
+    # Obtain the index of the last character of the first paragraph
+    index = doc.find("\n\n")
+
+    # If index is -1, there is only 1 paragraph
+    if index == -1:
+        index = len(doc)
+
+    # Gather everything up to this index
+    doc = doc[:index]
+
+    # Replace all occurrences of 2 or more whitespace characters by a space
+    doc = re.sub(r"\s{2,}", " ", doc)
+
+    # Return doc
+    return doc.strip()
 
 
 # %% CLASS DEFINITIONS
@@ -273,7 +319,7 @@ def add_app_usage_parser(main_subparsers):
     # Add tableau subparser
     tableau_parser = subparsers.add_parser(
         "tableau",
-        description=e13.get_main_desc(cmr.app_usage.update_tableau_pref_file),
+        description=_get_main_desc(cmr.app_usage.update_tableau_pref_file),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True,
     )
@@ -383,7 +429,7 @@ def main():
     # Add bibtex subparser
     bibtex_parser = subparsers.add_parser(
         "bibtex",
-        description=e13.get_main_desc(cmr.get_bibtex),
+        description=_get_main_desc(cmr.get_bibtex),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True,
     )
@@ -437,7 +483,7 @@ def main():
     cmap_type_parser = subparsers.add_parser(
         "cmtype",
         parents=[cmap_parent_parser],
-        description=e13.get_main_desc(cmr.get_cmap_type),
+        description=_get_main_desc(cmr.get_cmap_type),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True,
     )
@@ -482,7 +528,7 @@ def main():
     cmap_colors_parser = subparsers.add_parser(
         "cmcolors",
         parents=[cmap_parent_parser, take_colors_parent_parser],
-        description=e13.get_main_desc(cmr.take_cmap_colors),
+        description=_get_main_desc(cmr.take_cmap_colors),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True,
     )
@@ -517,7 +563,7 @@ def main():
     cmap_view_parser = subparsers.add_parser(
         "cmview",
         parents=[cmap_parent_parser],
-        description=e13.get_main_desc(cmr.view_cmap),
+        description=_get_main_desc(cmr.view_cmap),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True,
     )
@@ -554,7 +600,7 @@ def main():
     # Add mk_cmod subparser
     mk_cmod_parser = subparsers.add_parser(
         "mkcmod",
-        description=e13.get_main_desc(cmr.create_cmap_mod),
+        description=_get_main_desc(cmr.create_cmap_mod),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         add_help=True,
     )
