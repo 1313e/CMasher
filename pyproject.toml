@@ -19,8 +19,6 @@ classifiers = [
     "Operating System :: Unix",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Topic :: Scientific/Engineering :: Visualization",
@@ -29,7 +27,7 @@ classifiers = [
 ]
 keywords = ["cmasher perceptually uniform sequential colormaps plotting python visualization"]
 
-requires-python = ">=3.6, <4"
+requires-python = ">=3.8, <4"
 
 # keep in sync with requirements.txt
 dependencies = [
