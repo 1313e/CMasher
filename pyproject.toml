@@ -32,7 +32,6 @@ requires-python = ">=3.8, <4"
 # keep in sync with requirements.txt
 dependencies = [
     "colorspacious>=1.1.0",
-    "e13tools>=0.9.4",
     "matplotlib>=3.5",
     "numpy>=1.17.3",
 ]
