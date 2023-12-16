@@ -339,10 +339,10 @@ For example, the qualitative sub-colormap made of :ref:`lilac` shown in :numref:
 
     # Import CMasher
     import cmasher as cmr
-    
+
     # Create sub-colormap
     cmap = cmr.get_sub_cmap('cmr.lilac', 0.2, 0.8, N=5)
-    
+
     # View colormap
     cmr.view_cmap(cmap)
 

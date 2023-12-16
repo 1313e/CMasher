@@ -22,7 +22,7 @@ The documentation of *CMasher* is spread out over several sections:
 .. toctree::
     :maxdepth: 3
     :caption: User Documentation
-   
+
     user/introduction
     user/background
     user/usage
@@ -30,13 +30,13 @@ The documentation of *CMasher* is spread out over several sections:
     user/diverging
     user/FAQ
     community_guidelines
-   
+
 .. _api-docs:
 
 .. toctree::
     :maxdepth: 4
     :caption: API Reference
-   
+
     api/cmasher
     api/cmasher.app_usage
 
