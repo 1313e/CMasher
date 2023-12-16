@@ -11,17 +11,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        architecture: [x86, x64]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        architecture:
+          #- x86
+          - x64
+        os:
+          - ubuntu-latest
+          #- macos-latest
+          #- windows-latest
         python-version:
-          - "3.8"
+          #- "3.8"
           - "3.9"
-        exclude:
-          - os: ubuntu-latest
-            architecture: x86
-          - os: macos-latest
-            architecture: x86
-      fail-fast: false
+        #exclude:
+        #  - os: ubuntu-latest
+        #    architecture: x86
+        #  - os: macos-latest
+        #    architecture: x86
+      fail-fast: true # tmp
 
     steps:
     - uses: actions/checkout@v4
