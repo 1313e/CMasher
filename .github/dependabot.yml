@@ -5,12 +5,12 @@ version: 2
 updates:
 - package-ecosystem: pip
   directory: /
-  target-branch: "develop"
+  target-branch: develop
   schedule:
     interval: monthly
 
 - package-ecosystem: github-actions
   directory: /.github/workflows
-  target-branch: "develop"
+  target-branch: develop
   schedule:
     interval: monthly

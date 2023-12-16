@@ -1,18 +1,18 @@
 codecov:
-    notify:
-        require_ci_to_pass: yes
+  notify:
+    require_ci_to_pass: yes
 
 coverage:
-    round: nearest
-    precision: 2
-    status:
-        project:
-            default:
-                target: 99%
-        patch:
-            default:
-                target: 95%
-        changes: yes
+  round: nearest
+  precision: 2
+  status:
+    project:
+      default:
+        target: 99%
+    patch:
+      default:
+        target: 95%
+    changes: yes
 
 comment:
-    require_changes: yes
+  require_changes: yes

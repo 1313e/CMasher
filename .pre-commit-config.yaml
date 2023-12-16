@@ -24,18 +24,13 @@ repos:
   rev: v2.2.4
   hooks:
   - id: codespell
-    args: [--ignore-words-list="mutch,ore"]
+    args: [--ignore-words-list="mutch, ore"]
 
 - repo: https://github.com/PyCQA/bandit
-  rev: "1.7.6"
+  rev: 1.7.6
   hooks:
   - id: bandit
-    args: [
-      --recursive,
-      --skip,
-      B101,  # B101 is assert statements
-      ".",
-    ]
+    args: [--recursive, --skip, B101, .]
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
   rev: v2.11.0
