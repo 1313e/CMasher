@@ -33,8 +33,8 @@ requires-python = ">=3.8, <4"
 dependencies = [
     "colorspacious>=1.1.0",
     "e13tools>=0.9.4",
-    "matplotlib>=2.2.4",
-    "numpy>=1.16.0",
+    "matplotlib>=3.5",
+    "numpy>=1.17.3",
 ]
 
 [project.urls]
