@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cmasher"
+version = "1.6.3" # keep in sync with __version__
+authors = [{name = "Ellert van der Velden", email = "ellert_vandervelden@outlook.com"}]
+description = "Scientific colormaps for making accessible, informative and 'cmashing' plots"
+readme = "README.rst"
+license = {text = "BSD-3"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Utilities",
+    "Framework :: Matplotlib",
+]
+keywords = ["cmasher perceptually uniform sequential colormaps plotting python visualization"]
+
+requires-python = ">=3.6, <4"
+
+# keep in sync with requirements.txt
+dependencies = [
+    "colorspacious>=1.1.0",
+    "e13tools>=0.9.4",
+    "matplotlib>=2.2.4",
+    "numpy>=1.16.0",
+]
+
+[project.urls]
+Homepage = "https://cmasher.readthedocs.io"
+Documentation = "https://cmasher.readthedocs.io"
+"Source Code" = "https://github.com/1313e/CMasher"
+
+[project.scripts]
+cmr = "cmasher.cli_tools:main"
+
+[tool.setuptools]
+package-dir = {cmasher = "cmasher"}
+include-package-data = true
+zip-safe = false
+platforms = [
+    "Windows",
+    "Mac OS-X",
+    "Linux",
+    "Unix",
+]
+
+[tool.setuptools.packages]
+find = {namespaces = false}
+
+[tool.distutils.bdist_wheel]
+universal = 0
+
+[tool.pytest.ini_options]
+addopts = "--mpl --flake8 -v --cov --cov-config=pyproject.toml --cov-report=term-missing"
+testpaths = ["./cmasher"]
+flake8-ignore = """
+E226
+F401
+F403
+W503
+W504"""
+
+[tool.coverage.run]
+include = ["cmasher/*"]
+omit = [
+    "cmasher/__version__*",
+    "cmasher/app_usage.py",
+]
