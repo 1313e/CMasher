@@ -207,13 +207,6 @@ if __name__ == "__main__":
     # Register this colormap in CMasher
     register_cmap(name, rgb)
 
-    # TODO: Remove in v1.7.0
-    # For now, remove cmr.heat
-    cmap_d.pop("heat")
-    cmap_d.pop("heat_r")
-    cmap_cd["sequential"].pop("heat")
-    cmap_cd["sequential"].pop("heat_r")
-
     # Obtain cmtype
     cmtype = get_cmap_type(f"cmr.{name}")
 

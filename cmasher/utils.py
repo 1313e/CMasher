@@ -1509,24 +1509,3 @@ def view_cmap(
 # %% IMPORT SCRIPT
 # Import all colormaps defined in './colormaps'
 import_cmaps(path.join(path.dirname(__file__), "colormaps"))
-
-
-# Raise warning about 'heat' being renamed to 'torch' in v1.6.1
-class LC_heat(LC):  # pragma: no cover
-    def __call__(self, *args, **kwargs):
-        warnings.warn(
-            "The 'heat' colormap was renamed to 'torch' in v1.6.1 "
-            "and will be removed in v1.7.",
-            FutureWarning,
-            stacklevel=2,
-        )
-        return super().__call__(*args, **kwargs)
-
-
-# Use this special LC class for 'heat'
-_LC = LC
-LC = LC_heat
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
-    register_cmap("heat", cmrcm.torch.colors)
-LC = _LC
