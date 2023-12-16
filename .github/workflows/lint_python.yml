@@ -4,8 +4,8 @@ jobs:
   lint_python:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - run: pipx run pre-commit run --all-files
       - run: pip install flake8 mypy pytest safety
       - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
