@@ -1,4 +1,3 @@
-
 """
 Application usage
 =================
@@ -18,12 +17,12 @@ from textwrap import dedent, indent
 import cmasher as cmr
 
 # All declaration
-__all__ = ['update_tableau_pref_file']
+__all__ = ["update_tableau_pref_file"]
 
 
 # %% FUNCTION DEFINITIONS
 # Define function that generates a Tableau properties file with colormaps
-def update_tableau_pref_file(dirname: str = '.') -> None:
+def update_tableau_pref_file(dirname: str = ".") -> None:
     """
     Update an existing Tableau 'Preferences.tps' file to include colormaps from
     *CMasher*.
@@ -47,13 +46,14 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
     """
     # Obtain all colormaps in CMasher without reversed versions
     # This is because Tableau already has a function for this
-    cmaps = [y for y in cmr.cm.cmap_d.values() if not y.name.endswith('_r')]
+    cmaps = [y for y in cmr.cm.cmap_d.values() if not y.name.endswith("_r")]
 
     # Create a dict that contains the Tableau type for each colormap type
     cmap_types = {
-        'sequential': 'ordered-sequential',
-        'diverging': 'ordered-diverging',
-        'cyclic': 'regular'}
+        "sequential": "ordered-sequential",
+        "diverging": "ordered-diverging",
+        "cyclic": "regular",
+    }
 
     # Create empty dict of color-palette entries for all colormaps
     entries_dict = {}
@@ -64,32 +64,33 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
         cmap_type = cmap_types[cmr.get_cmap_type(cmap)]
 
         # Obtain all colors of this colormap in HEX-format
-        colors_hex = cmr.take_cmap_colors(cmap, N=None, return_fmt='hex')
+        colors_hex = cmr.take_cmap_colors(cmap, N=None, return_fmt="hex")
 
         # Create a list with all color representations in HEX
         colors_list = [f"<color>{x}</color>" for x in colors_hex]
 
         # Combine all these colors into a single string
-        colors_str = '\n'.join(colors_list)
+        colors_str = "\n".join(colors_list)
 
         # Make sure to indent all lines in this string by 1 tab
-        colors_str = indent(colors_str, '\t').expandtabs(4)
+        colors_str = indent(colors_str, "\t").expandtabs(4)
 
         # Create color-palette entry string
-        entry_str = dedent("""
+        entry_str = dedent(
+            """
             <color-palette name="cmr.{0}" type="{1}">
             {2}
-            </color-palette>""").format(
-            cmap.name, cmap_type, colors_str)[1:]
+            </color-palette>"""
+        ).format(cmap.name, cmap_type, colors_str)[1:]
 
         # Indent this string by 1 tab
-        entry_str = indent(entry_str, '\t').expandtabs(4)
+        entry_str = indent(entry_str, "\t").expandtabs(4)
 
         # Add this entry to the dict
         entries_dict[cmap.name] = entry_str
 
     # Obtain absolute path to preferences file in provided dirname
-    filename = path.abspath(path.join(dirname, 'Preferences.tps'))
+    filename = path.abspath(path.join(dirname, "Preferences.tps"))
 
     # Check if this file already exists
     if path.exists(filename):
@@ -102,7 +103,7 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
         end_str = "\n    </preferences>\n</workbook>"
 
         # Search for these strings
-        start_idx = text.find(start_str)+29
+        start_idx = text.find(start_str) + 29
         end_idx = text.find(end_str)
         sub_contents = text[start_idx:end_idx]
 
@@ -114,61 +115,68 @@ def update_tableau_pref_file(dirname: str = '.') -> None:
             # Check if cmap is in entries_dict
             if cmap not in entries_dict:
                 # If not, obtain the entire entry
-                idx = sub_contents.find('cmr.'+cmap)
-                start_idx_entry = idx-25
-                match = re.search(r"<\/color-palette>\n",
-                                  sub_contents[start_idx_entry:])
-                end_idx_entry = match.end()+start_idx_entry
+                idx = sub_contents.find("cmr." + cmap)
+                start_idx_entry = idx - 25
+                match = re.search(
+                    r"<\/color-palette>\n", sub_contents[start_idx_entry:]
+                )
+                end_idx_entry = match.end() + start_idx_entry
 
                 # Remove this entry from sub_contents
-                sub_contents = ''.join([sub_contents[:start_idx_entry],
-                                        sub_contents[end_idx_entry:]])
+                sub_contents = "".join(
+                    [sub_contents[:start_idx_entry], sub_contents[end_idx_entry:]]
+                )
 
         # Search this sub_contents string for all strings in entries_dict
         for cmap, cmap_entry in dict(entries_dict).items():
             # Check if this colormap name already exists
-            idx = sub_contents.find('cmr.'+cmap)
-            if(idx != -1):
+            idx = sub_contents.find("cmr." + cmap)
+            if idx != -1:
                 # If so, obtain the entire entry
-                start_idx_entry = idx-25
-                match = re.search(r"<\/color-palette>",
-                                  sub_contents[start_idx_entry:])
-                end_idx_entry = match.end()+start_idx_entry
+                start_idx_entry = idx - 25
+                match = re.search(r"<\/color-palette>", sub_contents[start_idx_entry:])
+                end_idx_entry = match.end() + start_idx_entry
 
                 # Replace this entry with the new entry
-                sub_contents = ''.join([sub_contents[:start_idx_entry],
-                                        cmap_entry,
-                                        sub_contents[end_idx_entry:]])
+                sub_contents = "".join(
+                    [
+                        sub_contents[:start_idx_entry],
+                        cmap_entry,
+                        sub_contents[end_idx_entry:],
+                    ]
+                )
 
                 # Remove cmap from entries_dict
                 entries_dict.pop(cmap)
 
         # Combine everything remaining in entries_dict together
-        entries_str = '\n'.join(['', *entries_dict.values()])
+        entries_str = "\n".join(["", *entries_dict.values()])
 
         # Join sub_contents and entries_str together
-        sub_contents = ''.join([sub_contents, entries_str])
+        sub_contents = "".join([sub_contents, entries_str])
 
         # Insert the sub_contents into pref_file_contents
-        text = ''.join([text[:start_idx], sub_contents, text[end_idx:]])
+        text = "".join([text[:start_idx], sub_contents, text[end_idx:]])
 
         # Save this to the preferences file
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             f.write(text)
 
     else:
         # If not, combine everything in entries_dict together to single string
-        entries_str = '\n'.join(entries_dict.values())
+        entries_str = "\n".join(entries_dict.values())
 
         # Create the string for the new 'Preferences.tps' file
-        pref_file = dedent("""
+        pref_file = dedent(
+            """
             <?xml version='1.0'?>
             <workbook>
                 <preferences>
             {0}
                 </preferences>
-            </workbook>""").format(entries_str)[1:]
+            </workbook>"""
+        ).format(entries_str)[1:]
 
         # Create this file
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             f.write(pref_file)
