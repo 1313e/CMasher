@@ -63,7 +63,14 @@ universal = 0
 
 [tool.pytest.ini_options]
 addopts = "--mpl -v --cov --cov-config=pyproject.toml --cov-report=term-missing"
-testpaths = ["./cmasher"]
+filterwarnings = [
+  "error",
+  "ignore:FigureCanvasAgg is non-interactive:UserWarning",
+  # this future warning is internal to viscm
+  "ignore: Deprecated. CatmulClark builds nicer splines.:FutureWarning",
+  # internal to colorspacious
+  "ignore:invalid value encountered in divide:RuntimeWarning",
+]
 
 [tool.coverage.run]
 include = ["cmasher/*"]
