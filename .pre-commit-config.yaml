@@ -30,6 +30,7 @@ repos:
   rev: 1.7.6
   hooks:
   - id: bandit
+    # B101 is assert statements
     args: [--recursive, --skip, B101, .]
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
