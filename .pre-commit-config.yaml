@@ -1,0 +1,42 @@
+ci:
+  autofix_prs: false
+  autoupdate_schedule: quarterly
+
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: no-commit-to-branch
+  - id: debug-statements
+  - id: check-merge-conflict
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: check-toml
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.1.3
+  hooks:
+  - id: ruff-format
+  - id: ruff
+    args: [--fix]
+
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.2.4
+  hooks:
+  - id: codespell
+    args: [--ignore-words-list="mutch,ore"]
+
+- repo: https://github.com/PyCQA/bandit
+  rev: "1.7.6"
+  hooks:
+  - id: bandit
+    args: [
+      --recursive,
+      "--skip B101 .",  # B101 is assert statements
+    ]
+
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.11.0
+  hooks:
+  - id: pretty-format-yaml
+    args: [--autofix, --indent, '2']
