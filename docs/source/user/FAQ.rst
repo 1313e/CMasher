@@ -80,4 +80,3 @@ One look at the *viscm* output of :ref:`watermelon` tells you immediately that t
 Of course, it is possible to make diverging colormaps without blue that are still CVD-friendly.
 However, these colormaps usually tend to end up looking very boring and dull, as I have to prioritize using CVD-friendly colors over colorful colors.
 And while this could be useful, this also means that they end up having low perceptual ranges, which kind of defeats the entire purpose of a diverging colormap.
-
