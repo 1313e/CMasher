@@ -58,17 +58,19 @@ class Test_create_cmap_mod:
         cmap_old = mplcm.get_cmap('cmr.rainforest')
 
         # Create standalone module for rainforest
-        cmap_path = create_cmap_mod('rainforest')
+        cmap_path = create_cmap_mod('rainforest', _copy_name='rainforest_copy')
 
         # Try to import this module
-        spec = spec_from_file_location('rainforest', cmap_path)
+        spec = spec_from_file_location('rainforest_copy', cmap_path)
         mod = module_from_spec(spec)
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
-        cmap_new = mplcm.get_cmap('cmr.rainforest')
-        assert cmap_new is mod.cmap
-        assert cmap_old is not cmap_new
+        cmap_new = mplcm.get_cmap('cmr.rainforest_copy')
+
+        # identity equality isn't achievable since mplcm.get_cmap may return a copy
+        assert cmap_new == mod.cmap
+        assert cmap_old == cmap_new
 
         # Check if the values in both colormaps are the same
         assert np.allclose(cmap_old.colors, cmap_new.colors)
@@ -79,17 +81,17 @@ class Test_create_cmap_mod:
         cmap_old = mplcm.get_cmap('cmr.infinity')
 
         # Create standalone module for infinity
-        cmap_path = create_cmap_mod('infinity')
+        cmap_path = create_cmap_mod('infinity', _copy_name='inifinity_copy')
 
         # Try to import this module
-        spec = spec_from_file_location('infinity', cmap_path)
+        spec = spec_from_file_location('infinity_copy', cmap_path)
         mod = module_from_spec(spec)
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
         cmap_new = mplcm.get_cmap('cmr.infinity')
-        assert cmap_new is mod.cmap
-        assert cmap_old is not cmap_new
+        assert cmap_new == mod.cmap
+        assert cmap_old == cmap_new
 
         # Check if the values in both colormaps are the same
         assert np.allclose(cmap_old.colors, cmap_new.colors)
@@ -230,7 +232,7 @@ class Test_import_cmaps:
 
     # Test if providing a cmap .txt-file works
     def test_cmap_file_txt(self):
-        import_cmaps(path.join(dirpath, '../colormaps/cm_rainforest.txt'))
+        import_cmaps(path.join(dirpath, '../colormaps/cm_rainforest.txt'), _skip_registration=True)
 
     # Test if providing a cmap .txt-file with 8-bit values works
     def test_cmap_file_8bit(self):

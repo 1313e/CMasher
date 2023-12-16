@@ -232,7 +232,7 @@ def _get_cmap_perceptual_rank(cmap: CMAP) -> Tuple[
 
 # %% FUNCTIONS
 # This function creates a standalone module of a CMasher colormap
-def create_cmap_mod(cmap: str, *, save_dir: str = '.') -> str:
+def create_cmap_mod(cmap: str, *, save_dir: str = '.', _copy_name: Optional[str] = None) -> str:
     """
     Creates a standalone Python module of the provided *CMasher* `cmap` and
     saves it in the given `save_dir` as '<`cmap`>.py'.
@@ -348,11 +348,11 @@ def create_cmap_mod(cmap: str, *, save_dir: str = '.') -> str:
             """)
 
     # Format py-file string
-    cm_py_file = cm_py_file.format(cm_type, array_str, name, len(rgb),
+    cm_py_file = cm_py_file.format(cm_type, array_str, _copy_name or name, len(rgb),
                                    len(rgb)//2)
 
     # Obtain the path to the module
-    cmap_path = path.join(save_dir, f"{name}.py")
+    cmap_path = path.join(save_dir, f"{_copy_name or name}.py")
 
     # Create Python module
     with open(cmap_path, 'w') as f:
@@ -988,7 +988,7 @@ def get_sub_cmap(
 
 
 # Function to import all custom colormaps in a file or directory
-def import_cmaps(cmap_path: str) -> None:
+def import_cmaps(cmap_path: str, *, _skip_registration: bool=False) -> None:
     """
     Reads in custom colormaps from a provided file or directory `cmap_path`;
     transforms them into :obj:`~matplotlib.colors.ListedColormap` objects; and
@@ -1098,8 +1098,9 @@ def import_cmaps(cmap_path: str) -> None:
                 rgb = np.genfromtxt(cm_file_path, dtype=None, comments='//',
                                     encoding=None)
 
-            # Register colormap
-            register_cmap(cm_name, rgb)
+            if not _skip_registration:
+                # Register colormap
+                register_cmap(cm_name, rgb)
 
             # Check if provided cmap is a cyclic colormap
             # If so, obtain its shifted (reversed) versions as well
@@ -1110,8 +1111,9 @@ def import_cmaps(cmap_path: str) -> None:
                 # Shift the entire colormap by this index
                 rgb_s = np.r_[rgb[idx:], rgb[:idx]]
 
-                # Register this colormap as well
-                register_cmap(cm_name+'_s', rgb_s)
+                if not _skip_registration:
+                    # Register this colormap as well
+                    register_cmap(cm_name+'_s', rgb_s)
 
         # If any error is raised, reraise it
         except Exception as error:
