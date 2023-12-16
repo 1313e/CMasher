@@ -43,4 +43,3 @@ The documentation of *CMasher* is spread out over several sections:
 .. role:: pycode(code)
     :language: python3
     :class: highlight
-
