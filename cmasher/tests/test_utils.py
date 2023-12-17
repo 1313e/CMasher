@@ -6,10 +6,10 @@ from os import path
 
 # Package imports
 import cmocean as cmo
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-from matplotlib import cm as mplcm
 from matplotlib.colors import ListedColormap as LC
 from matplotlib.legend import Legend
 
@@ -54,7 +54,7 @@ class Test_create_cmap_mod:
     # Test if a standalone module of rainforest can be created
     def test_standalone_rainforest(self):
         # Obtain the currently registered version of rainforest
-        cmap_old = mplcm.get_cmap("cmr.rainforest")
+        cmap_old = mpl.colormaps["cmr.rainforest"]
 
         # Create standalone module for rainforest
         cmap_path = create_cmap_mod("rainforest", _copy_name="rainforest_copy")
@@ -65,9 +65,9 @@ class Test_create_cmap_mod:
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
-        cmap_new = mplcm.get_cmap("cmr.rainforest_copy")
+        cmap_new = mpl.colormaps["cmr.rainforest_copy"]
 
-        # identity equality isn't achievable since mplcm.get_cmap may return a copy
+        # identity equality isn't achievable since mpl.colormaps.get_cmap may return a copy
         assert cmap_new == mod.cmap
         assert cmap_old == cmap_new
 
@@ -77,7 +77,7 @@ class Test_create_cmap_mod:
     # Test if a standalone module of infinity can be created
     def test_standalone_infinity(self):
         # Obtain the currently registered version of infinity
-        cmap_old = mplcm.get_cmap("cmr.infinity")
+        cmap_old = mpl.colormaps["cmr.infinity"]
 
         # Create standalone module for infinity
         cmap_path = create_cmap_mod("infinity", _copy_name="inifinity_copy")
@@ -88,7 +88,7 @@ class Test_create_cmap_mod:
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
-        cmap_new = mplcm.get_cmap("cmr.infinity")
+        cmap_new = mpl.colormaps["cmr.infinity"]
         assert cmap_new == mod.cmap
         assert cmap_old == cmap_new
 
@@ -124,7 +124,7 @@ class Test_create_cmap_overview:
 
     # Test if providing all MPL colormap objects works
     def test_mpl_cmaps_objs(self):
-        cmaps = map(mplcm.get_cmap, mpl_cmaps)
+        cmaps = map(mpl.colormaps.get_cmap, mpl_cmaps)
         create_cmap_overview(cmaps, sort="perceptual")
 
     # Test if providing all MPL colormap names works
@@ -223,7 +223,7 @@ class Test_import_cmaps:
         # Check if provided cm_name is registered in CMasher and MPL
         for name in (cm_name, cm_name + "_r"):
             cmr_cmap = getattr(cmr, name)
-            mpl_cmap = mplcm.get_cmap("cmr." + name)
+            mpl_cmap = mpl.colormaps["cmr." + name]
             assert isinstance(cmr_cmap, LC)
             assert isinstance(mpl_cmap, LC)
             assert getattr(cmrcm, name) is cmr_cmap
