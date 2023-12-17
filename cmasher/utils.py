@@ -14,25 +14,20 @@ from collections.abc import Iterable
 from glob import glob
 from os import path
 from textwrap import dedent
-from typing import Callable, Optional, Union
+from typing import TYPE_CHECKING, Callable, Optional, Union
 
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
 
 # Package imports
 from colorspacious import cspace_converter
-from matplotlib import cm as mplcm
-from matplotlib.artist import Artist
-from matplotlib.collections import LineCollection
 from matplotlib.colors import Colormap, ListedColormap as LC, to_hex, to_rgb
-from matplotlib.image import AxesImage
-from matplotlib.legend import Legend
-from matplotlib.legend_handler import HandlerBase
 
 # CMasher imports
 from cmasher import cm as cmrcm
 
+if TYPE_CHECKING:
+    from matplotlib.artist import Artist
 # All declaration
 __all__ = [
     "create_cmap_mod",
@@ -56,31 +51,6 @@ cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 # Type aliases
 CMAP = Union[str, Colormap]
 RGB = Union[Iterable[Iterable[Union[float, int]]], Iterable[str]]
-
-
-# %% HELPER CLASSES
-# Define legend handler class for artists that use colormaps
-class _HandlerColorPolyCollection(HandlerBase):
-    # Override create_artists to create an AxesImage resembling a colormap
-    def create_artists(
-        self, legend, artist, xdescent, ydescent, width, height, fontsize, trans
-    ):
-        # Obtain the Axes object of this legend
-        ax = legend.axes
-
-        # Obtain the colormap of the artist
-        cmap = artist.cmap
-
-        # Create an AxesImage to contain the colormap with proper dimensions
-        image = AxesImage(
-            ax, cmap=cmap, transform=trans, extent=[xdescent, width, ydescent, height]
-        )
-
-        # Set the data of the image
-        image.set_data(np.arange(cmap.N)[np.newaxis, ...])
-
-        # Return the AxesImage object
-        return [image]
 
 
 # %% HELPER FUNCTIONS
@@ -492,6 +462,8 @@ def create_cmap_overview(
     The lightness profile transitions between black and white at 50% lightness.
 
     """
+    import matplotlib.pyplot as plt
+
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
         cmaps = cmrcm.cmap_d.values()
@@ -761,6 +733,8 @@ def create_cmap_overview(
                         # This ensures that color changes in between segments
                         segments[i] = np.r_[segments[i], [central_point]]
                         segments[i + 1] = np.r_[[central_point], segments[i + 1]]
+
+                    from matplotlib.collections import LineCollection
 
                     # Create an MPL LineCollection object with these segments
                     lc = LineCollection(
@@ -1291,7 +1265,7 @@ def register_cmap(name: str, data: RGB) -> None:
 
 
 # Function to set the legend label of an artist that uses a colormap
-def set_cmap_legend_entry(artist: Artist, label: str) -> None:
+def set_cmap_legend_entry(artist: "Artist", label: str) -> None:
     """
     Sets the label of the provided `artist` to `label`, and creates a legend
     entry using a miniature version of the colormap of `artist` as the legend
@@ -1314,6 +1288,8 @@ def set_cmap_legend_entry(artist: Artist, label: str) -> None:
         The string that must be set as the label of `artist`.
 
     """
+    from matplotlib.legend import Legend
+
     # Obtain the colormap of the provided artist
     cmap = getattr(artist, "cmap", None)
 
@@ -1325,6 +1301,8 @@ def set_cmap_legend_entry(artist: Artist, label: str) -> None:
     artist.set_label(label)
 
     # Add the HandlerColorPolyCollection to the default handler map for artist
+    from ._handlercolorpolycollection import _HandlerColorPolyCollection
+
     Legend.get_default_handler_map()[artist] = _HandlerColorPolyCollection()
 
 
@@ -1472,6 +1450,8 @@ def view_cmap(
         If *True*, also show the grayscale version of `cmap`.
 
     """
+    import matplotlib.pyplot as plt
+
     # Obtain cmap
     cmap = mpl.colormaps[cmap]
 
