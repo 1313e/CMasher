@@ -8,7 +8,7 @@ recursive-include cmasher data/*
 recursive-exclude cmasher/colormaps *
 recursive-include cmasher/colormaps cm_*
 
-exclude docs joss_paper .git*
+exclude docs joss_paper .git* scripts/*
 recursive-exclude docs *
 recursive-exclude joss_paper *
 recursive-exclude .github *
