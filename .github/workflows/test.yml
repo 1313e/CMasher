@@ -20,12 +20,15 @@ jobs:
           #- windows-latest
         python-version:
         - '3.9'
+        - '3.10'
+        - '3.11'
+        - '3.12'
         #exclude:
         #  - os: ubuntu-latest
         #    architecture: x86
         #  - os: macos-latest
         #    architecture: x86
-      fail-fast: true # tmp
+      fail-fast: false
 
     steps:
     - uses: actions/checkout@v4
