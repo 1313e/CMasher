@@ -93,4 +93,5 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        pipx run twine upload
+        pipx run build --sdist --wheel
+        pipx run twine upload dist/*
