@@ -1,5 +1,4 @@
+# keep in sync with pyproject.toml
 colorspacious>=1.1.0
-e13tools>=0.9.4
-matplotlib>=2.2.4
-numpy>=1.16.0
-
+matplotlib>=3.5
+numpy>=1.19.3

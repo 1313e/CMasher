@@ -8,10 +8,11 @@ recursive-include cmasher data/*
 recursive-exclude cmasher/colormaps *
 recursive-include cmasher/colormaps cm_*
 
-exclude docs joss_paper .github
+exclude docs joss_paper .git* scripts/*
 recursive-exclude docs *
 recursive-exclude joss_paper *
 recursive-exclude .github *
-exclude *.yml
+exclude *.yml *.yaml
+
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

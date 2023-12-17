@@ -14,7 +14,7 @@ Let's get rid of all bad colormaps in the world together!
 .. _issue: https://github.com/1313e/CMasher/issues
 .. _online documentation: https://cmasher.readthedocs.io
 .. _matplotlib: https://github.com/matplotlib/matplotlib
-.. _viscm: https://github.com/1313e/viscm
+.. _viscm: https://github.com/matplotlib/viscm
 
 Colormap overview
 -----------------
@@ -73,12 +73,13 @@ So, for example, if one were to use the *rainforest* colormap, this could be don
     import cmasher as cmr
 
     # Import packages for plotting
+    import matplotlib as mpl
     import matplotlib.pyplot as plt
     import numpy as np
 
     # Access rainforest colormap through CMasher or MPL
     cmap = cmr.rainforest                   # CMasher
-    cmap = plt.get_cmap('cmr.rainforest')   # MPL
+    cmap = mpl.colormaps['cmr.rainforest']  # MPL
 
     # Generate some data to plot
     x = np.random.rand(100)

@@ -1,53 +1,59 @@
-# -*- coding: utf-8 -*-
-
 # %% Imports
 # Built-in imports
-from itertools import zip_longest
 import os
-from os import path
 import shutil
 import sys
+from itertools import zip_longest
+from os import path
 from textwrap import dedent
 
-# Package imports
-from matplotlib.colors import TwoSlopeNorm, to_hex
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
 
+# Package imports
+from matplotlib.colors import TwoSlopeNorm, to_hex
+
 # CMasher imports
 from cmasher.app_usage import update_tableau_pref_file
-from cmasher.cm import cmap_d, cmap_cd
+from cmasher.cm import cmap_cd, cmap_d
 from cmasher.utils import (
-    create_cmap_mod, create_cmap_overview, get_cmap_type, register_cmap,
-    view_cmap)
-
+    create_cmap_mod,
+    create_cmap_overview,
+    get_cmap_type,
+    register_cmap,
+    view_cmap,
+)
 
 # %% GLOBALS
-docs_dir = path.abspath(path.join(path.dirname(__file__),
-                                  '../../docs/source/user'))
+docs_dir = path.abspath(path.join(path.dirname(__file__), "../../docs/source/user"))
 
 
 # %% FUNCTION DEFINITIONS
 def create_cmap_app_overview():
     # Load sequential image data
-    image_seq = np.loadtxt(path.join(path.dirname(__file__),
-                                     "app_data.txt.gz"), dtype=int)
+    image_seq = np.loadtxt(
+        path.join(path.dirname(__file__), "app_data.txt.gz"), dtype=int
+    )
 
     # Obtain resolution ratio
-    image_ratio = image_seq.shape[0]/image_seq.shape[1]
+    image_ratio = image_seq.shape[0] / image_seq.shape[1]
 
     # Create diverging image data
-    X, Y = np.meshgrid(np.linspace(-2.5, 2.5, image_seq.shape[1]),
-                       np.linspace(-2, 2, image_seq.shape[0]))
-    image_div = (1-X/2+X**5+Y**3)*np.exp(-X**2-Y**2)
+    X, Y = np.meshgrid(
+        np.linspace(-2.5, 2.5, image_seq.shape[1]),
+        np.linspace(-2, 2, image_seq.shape[0]),
+    )
+    image_div = (1 - X / 2 + X**5 + Y**3) * np.exp(-(X**2) - Y**2)
 
     # Obtain all colormaps with their types
-    seq_cmaps = [cmap for cmap in cmap_cd['sequential'].values()]
-    div_cmaps = [cmap for cmap in cmap_cd['diverging'].values()
-                 if not cmap.name.endswith('_r')]
-    div_cmaps.extend([cmap for cmap in cmap_cd['cyclic'].values()
-                     if not cmap.name.endswith('_r')])
+    seq_cmaps = list(cmap_cd["sequential"].values())
+    div_cmaps = [
+        cmap for cmap in cmap_cd["diverging"].values() if not cmap.name.endswith("_r")
+    ]
+    div_cmaps.extend(
+        [cmap for cmap in cmap_cd["cyclic"].values() if not cmap.name.endswith("_r")]
+    )
 
     # Sort colormaps on name
     seq_cmaps.sort(key=lambda x: x.name)
@@ -60,27 +66,40 @@ def create_cmap_app_overview():
     # Determine number of columns and rows required
     n_cols = 4
     fontsize = 34
-    n_rows_seq = int(np.ceil(n_seq/n_cols))
-    n_rows_div = int(np.ceil(n_div/n_cols))
-    n_rows = n_rows_seq+n_rows_div
+    n_rows_seq = int(np.ceil(n_seq / n_cols))
+    n_rows_div = int(np.ceil(n_div / n_cols))
+    n_rows = n_rows_seq + n_rows_div
 
     # Set spacing between the two gridspecs
     gs_spc = 0.5
 
     # Determine required height of figure
-    height = 8.0*(n_rows/n_cols)*image_ratio+gs_spc
+    height = 8.0 * (n_rows / n_cols) * image_ratio + gs_spc
 
     # Initialize figure
     fig = plt.figure(figsize=(6.4, height))
 
     # Add gridspecs for the sequential and diverging colormaps
-    gs1 = fig.add_gridspec(nrows=n_rows_seq, ncols=n_cols, left=0.10,
-                           right=0.99, top=1-0.1/height, wspace=0.05, hspace=0,
-                           bottom=1-n_rows_seq/n_rows*(1-gs_spc/height))
-    gs2 = fig.add_gridspec(nrows=n_rows_div, ncols=n_cols, left=0.10,
-                           right=0.99, bottom=0.01/height, hspace=0,
-                           top=(1-n_rows_seq/n_rows)*(1-gs_spc/height),
-                           wspace=0.05)
+    gs1 = fig.add_gridspec(
+        nrows=n_rows_seq,
+        ncols=n_cols,
+        left=0.10,
+        right=0.99,
+        top=1 - 0.1 / height,
+        wspace=0.05,
+        hspace=0,
+        bottom=1 - n_rows_seq / n_rows * (1 - gs_spc / height),
+    )
+    gs2 = fig.add_gridspec(
+        nrows=n_rows_div,
+        ncols=n_cols,
+        left=0.10,
+        right=0.99,
+        bottom=0.01 / height,
+        hspace=0,
+        top=(1 - n_rows_seq / n_rows) * (1 - gs_spc / height),
+        wspace=0.05,
+    )
 
     # Obtain the Axes objects for the sequential and diverging colormaps
     seq_axs = [fig.add_subplot(x) for x in gs1]
@@ -100,10 +119,19 @@ def create_cmap_app_overview():
             ax.set_axis_off()
 
     # Write text specifying that these are sequential colormaps
-    x = seq_axs[0].get_position().x0/2
-    y = (1+gs1.bottom)/2
-    fig.text(x, y, "Sequential", va='center', ha='center', rotation='vertical',
-             color='grey', fontsize=fontsize, alpha=0.5)
+    x = seq_axs[0].get_position().x0 / 2
+    y = (1 + gs1.bottom) / 2
+    fig.text(
+        x,
+        y,
+        "Sequential",
+        va="center",
+        ha="center",
+        rotation="vertical",
+        color="grey",
+        fontsize=fontsize,
+        alpha=0.5,
+    )
 
     # Make subplot for all diverging colormaps
     for cmap, ax in zip_longest(div_cmaps, div_axs):
@@ -119,14 +147,23 @@ def create_cmap_app_overview():
             ax.set_axis_off()
 
     # Write text specifying that these are diverging colormaps
-    x = div_axs[0].get_position().x0/2
-    y = (gs2.top+gs2.bottom+1-gs1.top)/2
-    fig.text(x, y, "Diverging/Cyclic", va='center', ha='center',
-             rotation='vertical', color='grey', fontsize=fontsize, alpha=0.5)
+    x = div_axs[0].get_position().x0 / 2
+    y = (gs2.top + gs2.bottom + 1 - gs1.top) / 2
+    fig.text(
+        x,
+        y,
+        "Diverging/Cyclic",
+        va="center",
+        ha="center",
+        rotation="vertical",
+        color="grey",
+        fontsize=fontsize,
+        alpha=0.5,
+    )
 
     # Obtain figure path
-    fig_path_100 = path.join(docs_dir, 'images', 'cmr_cmaps_app_100.png')
-    fig_path_250 = path.join(docs_dir, '../_static', 'cmr_cmaps_app_250.png')
+    fig_path_100 = path.join(docs_dir, "images", "cmr_cmaps_app_100.png")
+    fig_path_250 = path.join(docs_dir, "../_static", "cmr_cmaps_app_250.png")
 
     # Save the figure
     plt.savefig(fig_path_100, dpi=100)
@@ -137,13 +174,13 @@ def create_cmap_app_overview():
 
 
 # %% MAIN SCRIPT
-if(__name__ == '__main__'):
+if __name__ == "__main__":
     # Obtain path to .jscm-file
     jscm_path = path.abspath(sys.argv[1])
 
     # If this path does not exist, try again with added 'PROJECTS'
     if not path.exists(jscm_path):
-        jscm_path = path.abspath(path.join('PROJECTS', sys.argv[1]))
+        jscm_path = path.abspath(path.join("PROJECTS", sys.argv[1]))
 
     # Get colormap name
     name = path.splitext(path.basename(jscm_path))[0]
@@ -156,77 +193,79 @@ if(__name__ == '__main__'):
 
     # Load colormap from .jscm-file
     cmap = viscm.gui.Colormap(None, None, None)
-    cmap.load("{0}/{0}.jscm".format(name))
+    cmap.load(f"{name}/{name}.jscm")
 
     # Obtain RGB values of colormap
-    v = viscm.viscm_editor(uniform_space=cmap.uniform_space,
-                           cmtype=cmap.cmtype, method=cmap.method,
-                           **cmap.params)
+    v = viscm.viscm_editor(
+        uniform_space=cmap.uniform_space,
+        cmtype=cmap.cmtype,
+        method=cmap.method,
+        **cmap.params,
+    )
     rgb, _ = v.cmap_model.get_sRGB()
 
     # Register this colormap in CMasher
     register_cmap(name, rgb)
 
-    # TODO: Remove in v1.7.0
-    # For now, remove cmr.heat
-    cmap_d.pop('heat')
-    cmap_d.pop('heat_r')
-    cmap_cd['sequential'].pop('heat')
-    cmap_cd['sequential'].pop('heat_r')
-
     # Obtain cmtype
-    cmtype = get_cmap_type('cmr.{0}'.format(name))
+    cmtype = get_cmap_type(f"cmr.{name}")
 
     # Check if provided cmap is a cyclic colormap
     # If so, obtain its shifted (reversed) versions as well
-    if(cmtype == 'cyclic'):
+    if cmtype == "cyclic":
         # Determine the central value index of the colormap
-        idx = len(rgb)//2
+        idx = len(rgb) // 2
 
         # Shift the entire colormap by this index
         rgb_s = np.concatenate([rgb[idx:], rgb[:idx]], axis=0)
 
         # Register this colormap as well
-        register_cmap(name+'_s', rgb_s)
+        register_cmap(name + "_s", rgb_s)
 
         # Set cmtype to 'diverging' for the remainder of this script
-        cmtype = 'diverging'
+        cmtype = "diverging"
 
     # Export as .py-file
     create_cmap_mod(name, save_dir=name)
 
     # Create colormap figure
-    view_cmap('cmr.'+name, savefig="{0}/{0}.png".format(name))
+    view_cmap("cmr." + name, savefig=f"{name}/{name}.png")
 
     # Create txt-file with colormap data
-    np.savetxt("cm_{0}.txt".format(name), rgb, fmt='%.8f')
+    np.savetxt(f"cm_{name}.txt", rgb, fmt="%.8f")
 
     # Create txt-file with normalized colormap data
-    np.savetxt("{0}/{0}_norm.txt".format(name), rgb, fmt='%.8f')
+    np.savetxt(f"{name}/{name}_norm.txt", rgb, fmt="%.8f")
 
     # Create txt-file with 8-bit colormap data
-    rgb_8bit = np.rint(rgb*255)
-    np.savetxt("{0}/{0}_8bit.txt".format(name), rgb_8bit, fmt='%i')
+    rgb_8bit = np.rint(rgb * 255)
+    np.savetxt(f"{name}/{name}_8bit.txt", rgb_8bit, fmt="%i")
 
     # Create txt-file with HEX colormap data
     rgb_hex = np.apply_along_axis((lambda x: to_hex(x).upper()), 1, rgb)
-    np.savetxt("{0}/{0}_hex.txt".format(name), rgb_hex, fmt="%s")
+    np.savetxt(f"{name}/{name}_hex.txt", rgb_hex, fmt="%s")
 
     # Make new colormap overview
-    create_cmap_overview(savefig='cmap_overview.png', sort='lightness')
+    create_cmap_overview(savefig="cmap_overview.png", sort="lightness")
     create_cmap_overview(
-        savefig=path.join(docs_dir, 'images', 'cmap_overview.png'),
-        sort='lightness')
+        savefig=path.join(docs_dir, "images", "cmap_overview.png"), sort="lightness"
+    )
     create_cmap_overview(
-        savefig=path.join(docs_dir, 'images', 'cmap_overview_perceptual.png'),
-        sort='perceptual', show_info=True)
+        savefig=path.join(docs_dir, "images", "cmap_overview_perceptual.png"),
+        sort="perceptual",
+        show_info=True,
+    )
     create_cmap_overview(
-        plt.colormaps(), plot_profile=True, sort='lightness',
-        savefig=path.join(docs_dir, 'images', 'mpl_cmaps.png'))
+        plt.colormaps(),
+        plot_profile=True,
+        sort="lightness",
+        savefig=path.join(docs_dir, "images", "mpl_cmaps.png"),
+    )
     create_cmap_app_overview()
 
     # Make string with the docs entry
-    docs_entry = dedent("""
+    docs_entry = dedent(
+        """
         .. _{0}:
 
         {0}
@@ -243,35 +282,40 @@ if(__name__ == '__main__'):
 
         The *{0}* colormap is <visual representation>.
         <Lightness range><colors>
-        <Recommended use>""").format(name, '-'*len(name))
+        <Recommended use>"""
+    ).format(name, "-" * len(name))
 
     # Obtain all colormaps with the type of this colormap
-    if(cmtype == 'sequential'):
-        cmaps = list(cmap_cd['sequential'].values())
+    if cmtype == "sequential":
+        cmaps = list(cmap_cd["sequential"].values())
     else:
-        cmaps = [*cmap_cd['diverging'].values(), *cmap_cd['cyclic'].values()]
+        cmaps = [*cmap_cd["diverging"].values(), *cmap_cd["cyclic"].values()]
 
     # Make new colormap type overviews
     create_cmap_overview(
-        cmaps, sort='perceptual', use_types=(cmtype == 'diverging'),
-        savefig=path.join(docs_dir, 'images',
-                          '{0}_cmaps.png'.format(cmtype[:3])),
-        title="{0} Colormaps".format(cmtype.capitalize()), show_info=True)
-    if(cmtype == 'sequential'):
-        cmaps = [cm for cm in plt.colormaps()
-                 if get_cmap_type(cm) == 'sequential']
+        cmaps,
+        sort="perceptual",
+        use_types=(cmtype == "diverging"),
+        savefig=path.join(docs_dir, "images", f"{cmtype[:3]}_cmaps.png"),
+        title=f"{cmtype.capitalize()} Colormaps",
+        show_info=True,
+    )
+    if cmtype == "sequential":
+        cmaps = [cm for cm in plt.colormaps() if get_cmap_type(cm) == "sequential"]
         create_cmap_overview(
-            cmaps, use_types=False, title="Sequential MPL Colormaps",
-            savefig=path.join(docs_dir, 'images', 'seq_mpl_cmaps.png'))
+            cmaps,
+            use_types=False,
+            title="Sequential MPL Colormaps",
+            savefig=path.join(docs_dir, "images", "seq_mpl_cmaps.png"),
+        )
 
     # Update Tableau preferences file
-    update_tableau_pref_file(path.join(docs_dir, '../_static'))
+    update_tableau_pref_file(path.join(docs_dir, "../_static"))
 
     # Create docs entry for this colormap if possible
     try:
         # Create docs entry
-        with open(path.join(docs_dir, cmtype,
-                            "{0}.rst".format(name)), 'x') as f:
+        with open(path.join(docs_dir, cmtype, f"{name}.rst"), "x") as f:
             f.write(docs_entry[1:])
     # If this file already exists, then skip
     except FileExistsError:
@@ -279,7 +323,7 @@ if(__name__ == '__main__'):
     # If the file did not exist yet, add it to the corresponding overview
     else:
         # Read the corresponding docs overview page
-        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'r') as f:
+        with open(path.join(docs_dir, f"{cmtype}.rst")) as f:
             docs_overview = f.read()
 
         # Set the string used to start the toctree with
@@ -292,21 +336,22 @@ if(__name__ == '__main__'):
         toctree = toctree.splitlines()
 
         # Add the new entry to toctree
-        toctree.append("    {0}/{1}".format(cmtype, name))
+        toctree.append(f"    {cmtype}/{name}")
 
         # Sort toctree
         toctree.sort()
 
         # Combine toctree into a single string again
-        toctree = '\n'.join(toctree)
+        toctree = "\n".join(toctree)
 
         # Combine everything together again
-        docs_overview = ''.join([desc, toctree_header, toctree])
+        docs_overview = "".join([desc, toctree_header, toctree])
 
         # Save this as the new docs_overview
-        with open(path.join(docs_dir, "{0}.rst".format(cmtype)), 'w') as f:
+        with open(path.join(docs_dir, f"{cmtype}.rst"), "w") as f:
             f.write(docs_overview)
 
     # Create viscm output figure
-    viscm.gui.main(["view", "{0}/{0}.jscm".format(name), "--save",
-                    "{0}/{0}_viscm.png".format(name), "--quit"])
+    viscm.gui.main(
+        ["view", f"{name}/{name}.jscm", "--save", f"{name}/{name}_viscm.png", "--quit"]
+    )
