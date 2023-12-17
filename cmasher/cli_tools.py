@@ -239,7 +239,7 @@ def cli_lang_usage_r():
 def get_cmap(cmap):
     # Try to obtain the colormap from MPL
     try:
-        cmap = mpl.colormaps.get_cmap(cmap)
+        cmap = mpl.colormaps[cmap]
 
     # If this does not work, try to expand given cmap in setuptools-style
     except ValueError:
