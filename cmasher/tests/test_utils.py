@@ -67,7 +67,8 @@ class Test_create_cmap_mod:
         # Check if the colormap in MPL has been updated
         cmap_new = mpl.colormaps["cmr.rainforest_copy"]
 
-        # identity equality isn't achievable since mpl.colormaps.get_cmap may return a copy
+        # identity equality isn't achievable since mpl.colormaps.__getitem__
+        # may return a copy
         assert cmap_new == mod.cmap
         assert cmap_old == cmap_new
 
@@ -124,7 +125,7 @@ class Test_create_cmap_overview:
 
     # Test if providing all MPL colormap objects works
     def test_mpl_cmaps_objs(self):
-        cmaps = map(mpl.colormaps.get_cmap, mpl_cmaps)
+        cmaps = map(mpl.colormaps.__getitem__, mpl_cmaps)
         create_cmap_overview(cmaps, sort="perceptual")
 
     # Test if providing all MPL colormap names works

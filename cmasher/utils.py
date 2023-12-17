@@ -118,7 +118,9 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> tuple[int, int, float, float, float,
 
     """
     # Obtain the colormap
-    cmap = mpl.colormaps.get_cmap(cmap)
+    if isinstance(cmap, str):
+        cmap = mpl.colormaps[cmap]
+
     cm_type = get_cmap_type(cmap)
 
     # Determine lightness profile stats for sequential/diverging/cyclic
@@ -216,7 +218,9 @@ def _get_cmap_perceptual_rank(
 
     """
     # Obtain the colormap
-    cmap = mpl.colormaps.get_cmap(cmap)
+    if isinstance(cmap, str):
+        cmap = mpl.colormaps[cmap]
+
     cm_type = get_cmap_type(cmap)
 
     # Determine perceptual range for sequential/diverging/cyclic
@@ -300,6 +304,9 @@ def create_cmap_mod(
 
     # Obtain the CMasher colormap associated with the provided cmap
     cmap = cmrcm.cmap_d.get(name, None)
+    if cmap is None:
+        raise ValueError(f"{name!r} is not a valid cmasher colormap name")
+
     cm_type = get_cmap_type(cmap)
 
     # If cmap is None, raise error
@@ -530,7 +537,7 @@ def create_cmap_overview(
             # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
-                    cmaps_dict[cm_type].append(mpl.colormaps.get_cmap(cmap))
+                    cmaps_dict[cm_type].append(mpl.colormaps[cmap])
                 else:
                     cmaps_dict[cm_type].append(cmap)
 
@@ -546,14 +553,14 @@ def create_cmap_overview(
             for cmap in cmaps:
                 cm_type = get_cmap_type(cmap)
                 if isinstance(cmap, str):
-                    cmaps_dict[cm_type].append(mpl.colormaps.get_cmap(cmap))
+                    cmaps_dict[cm_type].append(mpl.colormaps[cmap])
                 else:
                     cmaps_dict[cm_type].append(cmap)
         else:
             # Loop over all cmaps and add their Colormap objects
             for cmap in cmaps:
                 if isinstance(cmap, str):
-                    cmaps_list.append(mpl.colormaps.get_cmap(cmap))
+                    cmaps_list.append(mpl.colormaps[cmap])
                 else:
                     cmaps_list.append(cmap)
 
@@ -922,7 +929,8 @@ def get_cmap_type(cmap: CMAP) -> str:
 
     """
     # Obtain the colormap
-    cmap = mpl.colormaps.get_cmap(cmap)
+    if isinstance(cmap, str):
+        cmap = mpl.colormaps[cmap]
 
     # Get RGB values for colormap
     rgb = cmap(np.arange(cmap.N))[:, :3]
@@ -1042,7 +1050,7 @@ def get_sub_cmap(
 
     """
     # Obtain the colormap
-    cmap = mpl.colormaps.get_cmap(cmap)
+    cmap = mpl.colormaps[cmap]
 
     # Check value of N to determine suffix for the name
     suffix = "_sub" if N is None else "_qual"
@@ -1403,7 +1411,8 @@ def take_cmap_colors(
     return_fmt = return_fmt.lower()
 
     # Obtain the colormap
-    cmap = mpl.colormaps.get_cmap(cmap)
+    if isinstance(cmap, str):
+        cmap = mpl.colormaps[cmap]
 
     # Check if provided cmap_range is valid
     if not ((0 <= cmap_range[0] <= 1) and (0 <= cmap_range[1] <= 1)):
@@ -1464,7 +1473,7 @@ def view_cmap(
 
     """
     # Obtain cmap
-    cmap = mpl.colormaps.get_cmap(cmap)
+    cmap = mpl.colormaps[cmap]
 
     # Check if show_grayscale is True
     if show_grayscale:
