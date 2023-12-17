@@ -10,10 +10,11 @@ Utility functions for registering and manipulating colormaps in various ways.
 # Built-in imports
 import warnings
 from collections import OrderedDict as odict
+from collections.abc import Iterable
 from glob import glob
 from os import path
 from textwrap import dedent
-from typing import Callable, Iterable, List, Optional, Tuple, Union
+from typing import Callable, Optional, Union
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -84,7 +85,7 @@ class _HandlerColorPolyCollection(HandlerBase):
 
 # %% HELPER FUNCTIONS
 # Define function for obtaining the sorting order for lightness ranking
-def _get_cmap_lightness_rank(cmap: CMAP) -> Tuple[int, int, float, float, float, str]:
+def _get_cmap_lightness_rank(cmap: CMAP) -> tuple[int, int, float, float, float, str]:
     """
     Returns a tuple of objects used for sorting the provided `cmap` based
     on its lightness profile.
@@ -188,7 +189,7 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> Tuple[int, int, float, float, float,
 # Define function for obtaining the sorting order for perceptual ranking
 def _get_cmap_perceptual_rank(
     cmap: CMAP
-) -> Tuple[int, int, float, float, float, float, str]:
+) -> tuple[int, int, float, float, float, float, str]:
     """
     In addition to returning the lightness rank as given by
     :func:`~_get_cmap_lightness_rank`, also returns the length of the
@@ -391,7 +392,7 @@ def create_cmap_mod(
 
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(
-    cmaps: Optional[List[CMAP]] = None,
+    cmaps: Optional[list[CMAP]] = None,
     *,
     savefig: Optional[str] = None,
     use_types: bool = True,
@@ -864,7 +865,7 @@ def get_bibtex() -> None:
 
 
 # This function returns a list of all colormaps available in CMasher
-def get_cmap_list(cmap_type: str = "all") -> List[str]:
+def get_cmap_list(cmap_type: str = "all") -> list[str]:
     """
     Returns a list with the names of all colormaps available in *CMasher* of
     the given `cmap_type`.
@@ -1324,7 +1325,7 @@ def take_cmap_colors(
     cmap: CMAP,
     N: Optional[int],
     *,
-    cmap_range: Tuple[float, float] = (0, 1),
+    cmap_range: tuple[float, float] = (0, 1),
     return_fmt: str = "float",
 ) -> RGB:
     """
