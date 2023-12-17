@@ -1229,11 +1229,18 @@ def register_cmap(name: str, data: RGB) -> None:
     # Check the type of the data
     if issubclass(cm_data.dtype.type, str):
         # If the values are strings, make sure they start with a '#'
-        cm_data = ("#" + x if not x.startswith("#") else x for x in cm_data)
+        if cm_data.ndim == 0:
+            cm_data = [cm_data.item()]
+        else:
+            cm_data = ("#" + x if not x.startswith("#") else x for x in cm_data)
 
-        # Convert all values to floats
-        colorlist = list(map(to_rgb, cm_data))
-
+        try:
+            # Convert all values to floats
+            colorlist = [to_rgb(_) for _ in cm_data]
+        except ValueError:
+            raise ValueError(
+                f"Input data isn't valid hexadecimal RGB values: {data=}"
+            ) from None
     else:
         # Make sure that cm_data is 2D
         cm_data = np.array(cm_data, copy=False, ndmin=2)
