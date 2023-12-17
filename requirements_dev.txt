@@ -2,7 +2,6 @@
 pyqt5>=5.12
 pytest>=4.6.0
 pytest-cov
-pytest-flake8
 pytest-mpl
 readme_renderer[md]
 scipy>=1.0.0
