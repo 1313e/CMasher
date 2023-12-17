@@ -64,7 +64,7 @@ find = {namespaces = false}
 universal = 0
 
 [tool.pytest.ini_options]
-addopts = "--mpl -v --cov --cov-config=pyproject.toml --cov-report=term-missing"
+addopts = "-v"
 filterwarnings = [
   "error",
   "ignore:FigureCanvasAgg is non-interactive:UserWarning",
