@@ -68,6 +68,7 @@ addopts = "--mpl -v --cov --cov-config=pyproject.toml --cov-report=term-missing"
 filterwarnings = [
   "error",
   "ignore:FigureCanvasAgg is non-interactive:UserWarning",
+  "ignore:Matplotlib is currently using agg, which is a non-GUI backend:UserWarning",
   # this future warning is internal to viscm
   "ignore: Deprecated. CatmulClark builds nicer splines.:FutureWarning",
   # internal to colorspacious

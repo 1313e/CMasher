@@ -1,11 +1,10 @@
 # %% IMPORTS
 # Built-in imports
 import os
-from importlib.util import module_from_spec, spec_from_file_location
+from importlib.util import find_spec, module_from_spec, spec_from_file_location
 from os import path
 
 # Package imports
-import cmocean as cmo
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -27,6 +26,26 @@ from cmasher.utils import (
     take_cmap_colors,
     view_cmap,
 )
+
+HAS_VISCM = find_spec("viscm") is not None
+
+
+def _MPL38_colormap_eq(cmap, other) -> bool:
+    # equality check for two colormaps
+    # this is adapted from Colormap.__eq__ (mpl 3.8)
+    # in previous versions, colormaps compared as != unless they
+    # had the exact same name, which is not what we care about here
+    from matplotlib.colors import Colormap
+
+    if not isinstance(other, Colormap) or cmap.colorbar_extend != other.colorbar_extend:
+        return False
+    # To compare lookup tables the Colormaps have to be initialized
+    if not cmap._isinit:
+        cmap._init()
+    if not other._isinit:
+        other._init()
+    return np.array_equal(cmap._lut, other._lut)
+
 
 # Save the path to this directory
 dirpath = path.dirname(__file__)
@@ -70,7 +89,11 @@ class Test_create_cmap_mod:
         # identity equality isn't achievable since mpl.colormaps.__getitem__
         # may return a copy
         assert cmap_new == mod.cmap
-        assert cmap_old == cmap_new
+
+        if mpl.__version_info__ >= (3, 8):
+            assert cmap_old == cmap_new
+        else:
+            assert _MPL38_colormap_eq(cmap_old, cmap_new)
 
         # Check if the values in both colormaps are the same
         assert np.allclose(cmap_old.colors, cmap_new.colors)
@@ -90,7 +113,11 @@ class Test_create_cmap_mod:
 
         # Check if the colormap in MPL has been updated
         cmap_new = mpl.colormaps["cmr.infinity"]
-        assert cmap_new == mod.cmap
+        if mpl.__version_info__ >= (3, 8):
+            assert cmap_old == cmap_new
+        else:
+            assert _MPL38_colormap_eq(cmap_old, cmap_new)
+
         assert cmap_old == cmap_new
 
         # Check if the values in both colormaps are the same
@@ -247,6 +274,7 @@ class Test_import_cmaps:
         import_cmaps(path.join(dirpath, "data/cm_hex.txt"))
 
     # Test if providing a cmap .jscm-file works
+    @pytest.mark.skipif(not HAS_VISCM, reason="viscm is required")
     def test_cmap_file_jscm(self):
         cmap_path = path.join(dirpath, "data/cm_rainforest_jscm.jscm")
         import_cmaps(cmap_path)
