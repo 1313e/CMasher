@@ -72,6 +72,8 @@ filterwarnings = [
   "ignore: Deprecated. CatmulClark builds nicer splines.:FutureWarning",
   # internal to colorspacious
   "ignore:invalid value encountered in divide:RuntimeWarning",
+# https://github.com/dateutil/dateutil/pull/1285
+  'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
 ]
 
 [tool.coverage.run]
