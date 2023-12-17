@@ -1,7 +1,7 @@
 -e .
 check-manifest
 cmocean>=2.0
-pyqt5==5.12.*
+pyqt5>=5.12
 pytest>=4.6.0
 pytest-cov
 pytest-flake8
@@ -10,5 +10,5 @@ readme_renderer[md]
 scipy>=1.0.0
 setuptools>=38.6.0
 twine>=1.13.0
-git+https://github.com/1313e/viscm.git@master
+viscm>=0.10
 wheel>=0.31.0
