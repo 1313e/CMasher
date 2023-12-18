@@ -57,11 +57,8 @@ cmap_dir = path.abspath(path.join(dirpath, "../colormaps"))
 
 # Obtain list of all colormaps defined in CMasher
 # As all colormaps have their own directories, save them instead
-cm_names = sorted(next(os.walk(cmap_dir))[1])
-
-# Make sure that the 'PROJECTS' folder is removed
-if "PROJECTS" in cm_names:
-    cm_names.remove("PROJECTS")
+_IGNORED = ["PROJECTS", "__pycache__"]
+cm_names = [_ for _ in sorted(next(os.walk(cmap_dir))[1]) if _ not in _IGNORED]
 
 # Obtain list of all colormaps registered in MPL
 mpl_cmaps = plt.colormaps()
