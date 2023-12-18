@@ -1115,13 +1115,31 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
         cm_files = list(map(path.basename, glob("%s/cm_*" % (cmap_dir))))
         cm_files.sort()
 
+        def sort_key(name):
+            # prioritize binary files over text files because binary loads faster
+            _, ext = path.splitext(name)
+            if ext == ".npy":
+                return 0
+            if ext == ".txt":
+                return 1
+            return 10
+
+        cm_files.sort(key=sort_key)
+        del sort_key
+
     if any(file.endswith(".jscm") for file in cm_files) and not _HAS_VISCM:
         raise ValueError("The 'viscm' package is required to read '.jscm' files!")
 
     # Read in all the defined colormaps, transform and register them
+    seen: set[str] = set()
     for cm_file in cm_files:
         # Split basename and extension
         base_str, ext_str = path.splitext(cm_file)
+        if base_str in seen:
+            continue
+        else:
+            seen.add(base_str)
+
         cm_name = base_str[3:]
 
         # Obtain absolute path to colormap data file
