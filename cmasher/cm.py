@@ -13,7 +13,7 @@ Holds all the different colormaps that are in *CMasher*.
 from matplotlib.colors import ListedColormap as LC
 
 # All declaration
-__all__ = []
+__all__: list[str] = []
 
 
 # %% GLOBALS
