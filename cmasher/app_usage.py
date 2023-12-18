@@ -56,7 +56,7 @@ def update_tableau_pref_file(dirname: str = ".") -> None:
     }
 
     # Create empty dict of color-palette entries for all colormaps
-    entries_dict = {}
+    entries_dict: dict[str, str] = {}
 
     # Loop over all colormaps and create their color-palette entries
     for cmap in cmaps:
@@ -111,43 +111,50 @@ def update_tableau_pref_file(dirname: str = ".") -> None:
         cmap_names = re.findall(r"\"cmr\.(\w+)\"", sub_contents)
 
         # Search entries_dict for all cmap_names
-        for cmap in cmap_names:
-            # Check if cmap is in entries_dict
-            if cmap not in entries_dict:
-                # If not, obtain the entire entry
-                idx = sub_contents.find("cmr." + cmap)
-                start_idx_entry = idx - 25
-                match = re.search(
+        for name in cmap_names:
+            if name in entries_dict:
+                continue
+            # If not, obtain the entire entry
+            idx = sub_contents.find("cmr." + name)
+            start_idx_entry = idx - 25
+            if (
+                match := re.search(
                     r"<\/color-palette>\n", sub_contents[start_idx_entry:]
                 )
-                end_idx_entry = match.end() + start_idx_entry
+            ) is None:
+                raise RuntimeError
+            end_idx_entry = match.end() + start_idx_entry
 
-                # Remove this entry from sub_contents
-                sub_contents = "".join(
-                    [sub_contents[:start_idx_entry], sub_contents[end_idx_entry:]]
-                )
+            # Remove this entry from sub_contents
+            sub_contents = "".join(
+                [sub_contents[:start_idx_entry], sub_contents[end_idx_entry:]]
+            )
 
         # Search this sub_contents string for all strings in entries_dict
-        for cmap, cmap_entry in dict(entries_dict).items():
+        for name, cmap_entry in dict(entries_dict).items():
             # Check if this colormap name already exists
-            idx = sub_contents.find("cmr." + cmap)
-            if idx != -1:
-                # If so, obtain the entire entry
-                start_idx_entry = idx - 25
-                match = re.search(r"<\/color-palette>", sub_contents[start_idx_entry:])
-                end_idx_entry = match.end() + start_idx_entry
+            idx = sub_contents.find("cmr." + name)
+            if idx == -1:
+                continue
+            # obtain the entire entry
+            start_idx_entry = idx - 25
+            if (
+                match := re.search(r"<\/color-palette>", sub_contents[start_idx_entry:])
+            ) is None:
+                raise RuntimeError
+            end_idx_entry = match.end() + start_idx_entry
 
-                # Replace this entry with the new entry
-                sub_contents = "".join(
-                    [
-                        sub_contents[:start_idx_entry],
-                        cmap_entry,
-                        sub_contents[end_idx_entry:],
-                    ]
-                )
+            # Replace this entry with the new entry
+            sub_contents = "".join(
+                [
+                    sub_contents[:start_idx_entry],
+                    cmap_entry,
+                    sub_contents[end_idx_entry:],
+                ]
+            )
 
-                # Remove cmap from entries_dict
-                entries_dict.pop(cmap)
+            # Remove cmap from entries_dict
+            entries_dict.pop(name)
 
         # Combine everything remaining in entries_dict together
         entries_str = "\n".join(["", *entries_dict.values()])

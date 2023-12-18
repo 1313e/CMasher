@@ -42,9 +42,9 @@ def _MPL38_colormap_eq(cmap, other) -> bool:
     # To compare lookup tables the Colormaps have to be initialized
     if not cmap._isinit:
         cmap._init()
-    if not other._isinit:
-        other._init()
-    return np.array_equal(cmap._lut, other._lut)
+    if not other._isinit:  # type: ignore [attr-defined]
+        other._init()  # type: ignore [attr-defined]
+    return np.array_equal(cmap._lut, other._lut)  # type: ignore [attr-defined]
 
 
 # Save the path to this directory

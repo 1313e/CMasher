@@ -333,16 +333,16 @@ if __name__ == "__main__":
         desc, _, toctree = docs_overview.partition(toctree_header)
 
         # Split toctree up into individual lines
-        toctree = toctree.splitlines()
+        toctree_lines = toctree.splitlines()
 
         # Add the new entry to toctree
-        toctree.append(f"    {cmtype}/{name}")
+        toctree_lines.append(f"    {cmtype}/{name}")
 
         # Sort toctree
-        toctree.sort()
+        toctree_lines.sort()
 
         # Combine toctree into a single string again
-        toctree = "\n".join(toctree)
+        toctree = "\n".join(toctree_lines)
 
         # Combine everything together again
         docs_overview = "".join([desc, toctree_header, toctree])

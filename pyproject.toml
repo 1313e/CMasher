@@ -115,3 +115,15 @@ convention = "numpy"
 [tool.ruff.per-file-ignores]
 "cmasher/tests/**" = ["D"]
 "_backports.py" = ["D"]
+
+[tool.mypy]
+python_version = 3.9
+show_error_codes = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_unreachable = true
+show_error_context = true
+exclude = [
+    'prep_cmap_data\.py',
+]
+ignore_missing_imports = true
