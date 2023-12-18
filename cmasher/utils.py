@@ -27,6 +27,8 @@ from matplotlib.colors import Colormap, ListedColormap as LC, to_hex, to_rgb
 # CMasher imports
 from cmasher import cm as cmrcm
 
+from ._known_cmap_types import _CMASHER_BUILTIN_MAP_TYPES
+
 if TYPE_CHECKING:
     from matplotlib.artist import Artist
 
@@ -908,6 +910,10 @@ def get_cmap_type(cmap: CMAP) -> str:
     """
     # Obtain the colormap
     if isinstance(cmap, str):
+        if cmap in _CMASHER_BUILTIN_MAP_TYPES:
+            # fast track for known results
+            return _CMASHER_BUILTIN_MAP_TYPES[cmap]
+
         cmap = mpl.colormaps[cmap]
 
     # Get RGB values for colormap
@@ -1259,12 +1265,14 @@ def register_cmap(name: str, data: RGB) -> None:
     cmap_mpl_r = cmap_mpl.reversed()
     cmap_cmr_r = cmap_cmr.reversed()
 
-    # Test that the colormaps can be called
-    cmap_mpl(1)
-    cmap_mpl_r(1)
-
     # Determine the cm_type of the colormap
-    cm_type = get_cmap_type(cmap_mpl)
+    if name in _CMASHER_BUILTIN_MAP_TYPES:
+        cm_type = _CMASHER_BUILTIN_MAP_TYPES[name]
+    else:
+        cm_type = get_cmap_type(cmap_mpl)
+        # Test that the colormaps can be called
+        cmap_mpl(1)
+        cmap_mpl_r(1)
 
     # Add cmap to matplotlib's cmap list
     mpl.colormaps.register(cmap=cmap_mpl)
