@@ -99,9 +99,10 @@ For other use-cases, including an overview of *CMasher*'s utility functions and 
 .. |Python| image:: https://img.shields.io/pypi/pyversions/CMasher?logo=python&logoColor=white&label=Python
     :target: https://pypi.python.org/pypi/CMasher
     :alt: PyPI - Python Versions
-.. |GitHub| image:: https://img.shields.io/github/workflow/status/1313e/CMasher/Test?logo=github&logoColor=white&label=Actions
+.. |GitHub| image:: https://img.shields.io/github/actions/workflow/status/1313e/CMasher/.github/workflows/test.yml?branch=dev
     :target: https://github.com/1313e/CMasher/actions
     :alt: GitHub Actions - Build Status
+
 .. |ReadTheDocs| image:: https://img.shields.io/readthedocs/cmasher/latest.svg?logo=read%20the%20docs&logoColor=white&label=Docs
     :target: https://cmasher.readthedocs.io
     :alt: ReadTheDocs - Build Status
