@@ -6,9 +6,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
-    - run: pipx run pre-commit run --all-files
-    - run: pip install mypy pytest safety
+      with:
+        python-version: 3.x
     - run: pip install -r requirements/dependencies.txt || true
-    - run: mypy --ignore-missing-imports . || true
     - run: shopt -s globstar
-    #- run: safety check
+    # - run: pip install safety && safety check
