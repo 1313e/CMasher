@@ -12,6 +12,7 @@ import warnings
 from collections import OrderedDict as odict
 from collections.abc import Iterable
 from glob import glob
+from importlib.util import find_spec
 from os import path
 from textwrap import dedent
 from typing import TYPE_CHECKING, Callable, Optional, Union
@@ -28,6 +29,9 @@ from cmasher import cm as cmrcm
 
 if TYPE_CHECKING:
     from matplotlib.artist import Artist
+
+_HAS_VISCM = find_spec("viscm") is not None
+
 # All declaration
 __all__ = [
     "create_cmap_mod",
@@ -1111,6 +1115,9 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
         cm_files = list(map(path.basename, glob("%s/cm_*" % (cmap_dir))))
         cm_files.sort()
 
+    if any(file.endswith(".jscm") for file in cm_files) and not _HAS_VISCM:
+        raise ValueError("The 'viscm' package is required to read '.jscm' files!")
+
     # Read in all the defined colormaps, transform and register them
     for cm_file in cm_files:
         # Split basename and extension
@@ -1128,28 +1135,20 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
 
             # If file is viscm source file
             elif ext_str == ".jscm":
-                # Check if viscm is available
-                try:
-                    import viscm
-                # If that fails, raise error
-                except ImportError:  # pragma: no cover
-                    raise ImportError(
-                        "The 'viscm' package is required to read" " '.jscm' files!"
-                    ) from None
-                # If that succeeds, load RGB values from source file
-                else:
-                    # Load colormap
-                    cmap = viscm.gui.Colormap(None, None, None)
-                    cmap.load(cm_file_path)
+                import viscm
 
-                    # Create editor and obtain RGB values
-                    v = viscm.viscm_editor(
-                        uniform_space=cmap.uniform_space,
-                        cmtype=cmap.cmtype,
-                        method=cmap.method,
-                        **cmap.params,
-                    )
-                    rgb, _ = v.cmap_model.get_sRGB()
+                # Load colormap
+                cmap = viscm.gui.Colormap(None, None, None)
+                cmap.load(cm_file_path)
+
+                # Create editor and obtain RGB values
+                v = viscm.viscm_editor(
+                    uniform_space=cmap.uniform_space,
+                    cmtype=cmap.cmtype,
+                    method=cmap.method,
+                    **cmap.params,
+                )
+                rgb, _ = v.cmap_model.get_sRGB()
 
             # If file is anything else
             else:
