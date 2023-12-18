@@ -31,7 +31,7 @@ keywords = ["cmasher perceptually uniform sequential colormaps plotting python v
 
 requires-python = ">=3.9, <4"
 
-# keep in sync with requirements.txt
+# keep in sync with requirements/dependencies.txt
 dependencies = [
     "colorspacious>=1.1.0",
     "matplotlib>=3.5",
