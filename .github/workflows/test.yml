@@ -105,7 +105,7 @@ jobs:
     - run: python -m pip freeze
     - name: Build
       run: |
-        sphinx-build -M html docs/source site
+        sphinx-build -M html docs/source site -W
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
