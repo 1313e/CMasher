@@ -255,10 +255,10 @@ class Test_import_cmaps:
             assert cmrcm.cmap_d.get(name) is cmr_cmap
             assert np.allclose(cmr_cmap.colors, mpl_cmap.colors)
 
-    # Test if providing a cmap .txt-file works
-    def test_cmap_file_txt(self):
+    # Test if providing a cmap .npy-file works
+    def test_cmap_file_npy(self):
         import_cmaps(
-            path.join(dirpath, "../colormaps/cm_rainforest.txt"),
+            path.join(dirpath, "../colormaps/cm_rainforest.npy"),
             _skip_registration=True,
         )
 
