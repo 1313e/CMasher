@@ -231,8 +231,8 @@ if __name__ == "__main__":
     # Create colormap figure
     view_cmap("cmr." + name, savefig=f"{name}/{name}.png")
 
-    # Create txt-file with colormap data
-    np.savetxt(f"cm_{name}.txt", rgb, fmt="%.8f")
+    # Create npy-file with colormap data
+    np.save(f"cm_{name}.npy", rgb, allow_pickle=False)
 
     # Create txt-file with normalized colormap data
     np.savetxt(f"{name}/{name}_norm.txt", rgb, fmt="%.8f")
