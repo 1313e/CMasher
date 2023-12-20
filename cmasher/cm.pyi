@@ -1,5 +1,7 @@
 from matplotlib.colors import ListedColormap as LC
 
+__all__: list[str]
+
 CMAP_DCT = dict[str, LC]
 cmap_d: CMAP_DCT
 cmap_cd: dict[str, CMAP_DCT]
