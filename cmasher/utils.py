@@ -710,7 +710,7 @@ def create_cmap_overview(
                 L /= 99.99871678
 
                 # Get RGB values for lightness values using neutral
-                rgb_L = cmrcm.neutral(L)[:, :3]  # type: ignore [attr-defined]
+                rgb_L = cmrcm.neutral(L)[:, :3]
 
                 # Add gray-scale colormap subplot
                 ax1.imshow(rgb_L[np.newaxis, ...], aspect="auto")
@@ -745,7 +745,7 @@ def create_cmap_overview(
                     # Create an MPL LineCollection object with these segments
                     lc = LineCollection(
                         segments,
-                        cmap=cmrcm.neutral,  # type: ignore [attr-defined]
+                        cmap=cmrcm.neutral,
                         alpha=plot_profile,
                     )
                     lc.set_linewidth(1)
@@ -1324,7 +1324,7 @@ def set_cmap_legend_entry(artist: "Artist", label: str) -> None:
 
     # If cmap is None, raise error
     if cmap is None:
-        raise ValueError("Input argument 'artist' does not have attribute " "'cmap'!")
+        raise ValueError("Input argument 'artist' does not have attribute 'cmap'!")
 
     # Set the label of this artist
     artist.set_label(label)
@@ -1424,7 +1424,7 @@ def take_cmap_colors(
     # Check if provided cmap_range is valid
     if not ((0 <= cmap_range[0] <= 1) and (0 <= cmap_range[1] <= 1)):
         raise ValueError(
-            "Input argument 'cmap_range' does not contain " "normalized values!"
+            "Input argument 'cmap_range' does not contain normalized values!"
         )
 
     # Extract and convert start and stop to their integer indices (inclusive)
@@ -1491,7 +1491,7 @@ def view_cmap(
         rgb = cmap(np.arange(cmap.N))[:, :3]
         L = cspace_convert(rgb)[:, 0]
         L /= 99.99871678
-        rgb_L = cmrcm.neutral(L)[:, :3]  # type: ignore [attr-defined]
+        rgb_L = cmrcm.neutral(L)[:, :3]
         cmap_L = LC(rgb_L)
 
         # Set that there are two plots to create
