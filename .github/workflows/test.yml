@@ -131,7 +131,7 @@ jobs:
       with:
         python-version: 3.x
     - run: |
-        pipx run build --sdist
+        pipx run build --sdist --wheel
         pipx run twine check dist/*
 
   publish:
