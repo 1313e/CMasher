@@ -25,6 +25,10 @@ jobs:
           python-version: '3.9'
       fail-fast: false
 
+    concurrency:
+      group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-build
+      cancel-in-progress: true
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -65,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
 
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.python-version }}-typecheck
+      group: ${{ github.ref }}-${{ matrix.python-version }}-typecheck
       cancel-in-progress: true
 
     steps:
@@ -115,6 +119,11 @@ jobs:
   check-manifest:
     name: Check MANIFEST.in
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.ref }}-check_manifest
+      cancel-in-progress: true
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
@@ -125,6 +134,11 @@ jobs:
   check-twine:
     name: Test deployment
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.ref }}-check_twine
+      cancel-in-progress: true
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
