@@ -4,6 +4,7 @@ import sys
 
 # Package imports
 import matplotlib as mpl
+import pytest
 from py.path import local
 
 # Set MPL backend
@@ -37,3 +38,16 @@ def pytest_sessionfinish(session, exitstatus):
 # %% PYTEST SETTINGS
 # Set the current working directory to the temporary directory
 local.get_temproot().chdir()
+
+
+# %% FIXTURES
+@pytest.fixture(scope="function", autouse=True)
+def clean_registration():
+    old = set(mpl.colormaps.keys())
+    yield
+    new = set(mpl.colormaps.keys())
+    for name in new - old:
+        if mpl.__version_info__ >= (3, 6):
+            mpl.colormaps.unregister(name)
+        else:
+            mpl.cm.unregister_cmap(name)
