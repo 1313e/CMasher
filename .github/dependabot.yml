@@ -8,9 +8,17 @@ updates:
   target-branch: develop
   schedule:
     interval: monthly
+  groups:
+    actions:
+      patterns:
+      - '*'
 
 - package-ecosystem: github-actions
   directory: /.github/workflows
   target-branch: develop
   schedule:
     interval: monthly
+  groups:
+    actions:
+      patterns:
+      - '*'
