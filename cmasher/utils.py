@@ -173,7 +173,7 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> tuple[int, int, float, float, float,
 
 # Define function for obtaining the sorting order for perceptual ranking
 def _get_cmap_perceptual_rank(
-    cmap: CMAP
+    cmap: CMAP,
 ) -> tuple[int, int, float, float, float, float, str]:
     """
     In addition to returning the lightness rank as given by
