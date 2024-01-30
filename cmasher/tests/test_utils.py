@@ -16,6 +16,7 @@ from matplotlib.legend import Legend
 import cmasher as cmr
 from cmasher import cm as cmrcm
 from cmasher.utils import (
+    combine_cmaps,
     create_cmap_mod,
     create_cmap_overview,
     get_bibtex,
@@ -65,6 +66,124 @@ mpl_cmaps = plt.colormaps()
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
+# Pytest class for combine_cmaps
+class Test_combine_cmaps:
+    # Test if multiple Colormaps or colormap names can be combined
+    @pytest.mark.parametrize(
+        "cmaps, nodes",
+        [
+            (["Blues", "Oranges", "Greens"], [0.25, 0.75]),
+            (["Blues", "Oranges", "Greens"], np.array([0.25, 0.75])),
+            (
+                [
+                    mpl.colormaps["Blues"],
+                    mpl.colormaps["Oranges"],
+                    mpl.colormaps["Greens"],
+                ],
+                [0.25, 0.75],
+            ),
+        ],
+    )
+    def test_combine_cmaps(self, cmaps, nodes):
+        combined_cmap = combine_cmaps(*cmaps, nodes=nodes, n_rgb_levels=256)
+        blues_cmap = mpl.colormaps["Blues"]
+        oranges_cmap = mpl.colormaps["Oranges"]
+        greens_cmap = mpl.colormaps["Greens"]
+
+        assert np.allclose(combined_cmap(0.0), blues_cmap(0))
+        assert np.allclose(combined_cmap(0.25), oranges_cmap(0))
+        assert np.allclose(combined_cmap(0.75), greens_cmap(0))
+        assert np.allclose(combined_cmap(1.0), greens_cmap(255))
+
+        assert combined_cmap.N == 256
+
+    # Test combine cmaps with default nodes
+    def test_default_nodes(self):
+        combined_cmap = combine_cmaps("Blues", "Oranges", n_rgb_levels=256)
+
+        blues_cmap = mpl.colormaps["Blues"]
+        oranges_cmap = mpl.colormaps["Oranges"]
+
+        assert np.allclose(combined_cmap(0.0), blues_cmap(0))
+        assert np.allclose(combined_cmap(0.5), oranges_cmap(0))
+        assert np.allclose(combined_cmap(1.0), oranges_cmap(255))
+
+    # Test if combining less than 2 colormaps triggers an error
+    @pytest.mark.parametrize(
+        "cmaps",
+        [
+            pytest.param([], id="no_cmap"),
+            pytest.param(["Blues"], id="single_cmap"),
+            pytest.param(["fake_name"], id="fake_cmap_name"),
+        ],
+    )
+    def test_not_enough_cmaps(self, cmaps):
+        with pytest.raises(
+            ValueError, match="Expected at least two colormaps to combine."
+        ):
+            combine_cmaps(*cmaps)
+
+    # Test if invalid colormap name raise an error
+    def test_invalid_cmap_name(self):
+        with pytest.raises(
+            KeyError,
+            match="'fake_cmap' is not a known colormap name",
+        ):
+            combine_cmaps("fake_cmap", "Blues")
+
+    # Test if invalid colormap types raise an error
+    @pytest.mark.parametrize(
+        "invalid_cmap",
+        [0, 0.0, [], ()],
+    )
+    def test_invalid_cmap_types(self, invalid_cmap):
+        with pytest.raises(
+            TypeError,
+            match=f"Unsupported colormap type: {type(invalid_cmap)}.",
+        ):
+            combine_cmaps("Blues", invalid_cmap)
+
+    # Test if invalid nodes types raise an error
+    def test_invalid_nodes_types(self):
+        invalid_nodes = "0.5"
+        with pytest.raises(
+            TypeError,
+            match=f"Unsupported nodes type: {type(invalid_nodes)}, expect list of float.",
+        ):
+            combine_cmaps("Blues", "Greens", nodes=invalid_nodes)
+
+    # Test if mismatch cmaps and nodes length raise an error
+    @pytest.mark.parametrize(
+        "cmaps, nodes",
+        [
+            (["Blues", "Oranges", "Greens"], [0.5]),
+            (["Reds", "Blues"], [0.2, 0.8]),
+        ],
+    )
+    def test_cmaps_nodes_length_mismatch(self, cmaps, nodes):
+        with pytest.raises(
+            ValueError,
+            match=("Number of nodes should be one less than the number of colormaps."),
+        ):
+            combine_cmaps(*cmaps, nodes=nodes)
+
+    # Test if invalid nodes raise an error
+    @pytest.mark.parametrize(
+        "cmaps, nodes",
+        [
+            (["Blues", "Oranges", "Greens"], [-1, 0.75]),
+            (["Blues", "Oranges", "Greens"], [0.25, 2]),
+            (["Blues", "Oranges", "Greens"], [0.75, 0.25]),
+        ],
+    )
+    def test_invalid_nodes(self, cmaps, nodes):
+        with pytest.raises(
+            ValueError,
+            match="Nodes should only contain increasing values between 0.0 and 1.0.",
+        ):
+            combine_cmaps(*cmaps, nodes=nodes)
+
+
 # Pytest class for create_cmap_mod
 class Test_create_cmap_mod:
     # Test if a standalone module of rainforest can be created

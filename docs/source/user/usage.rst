@@ -111,6 +111,29 @@ For that reason, below is an overview of all colormaps in *CMasher* (and the rev
     Application overview plot of *CMasher*'s colormaps.
 
 
+.. _combine_colormaps:
+
+Combine colormaps
+-----------------
+*CMasher* offers a utility function :func:`~cmasher.combine_cmaps`, which enables the combination of multiple colormaps at specified ``nodes`` (where a node denotes the point separating adjacent colormaps, within the interval [0, 1]). You can directly pass several colormaps using the function like so :pycode:`combine_cmaps("cmr.rainforest", "cmr.torch_r")`. By default, each sub-colormap occupies an equal portion of the final colormap.
+
+.. figure:: images/combine_cmaps_equal.png
+    :alt: Combine two colormaps with default equal separation.
+    :width: 100%
+    :align: center
+
+    Combine two colormaps with default equal separation.
+
+Alternatively, you may want to specify ``nodes`` explicitly. For example :pycode:`cmr.combine_cmaps("cmr.rainforest", "cmr.torch_r", nodes=[0.75])` would allocate the starting 75% of the final colormap to "cmr.rainforest"and the remaining 25% to "cmr.torch_r".
+
+.. figure:: images/combine_cmaps_0.75_0.25.png
+    :alt: Combine two colormaps with a 75%/25% separation.
+    :width: 100%
+    :align: center
+
+    Combine two colormaps with a 75%/25% separation.
+
+
 Command-line interface (CLI)
 ----------------------------
 Although *CMasher* is written in Python, some of its utility functions do not require the interpreter in order to be used properly.
@@ -215,6 +238,7 @@ The script and image below show an example of this::
     :align: center
 
     Hexbin plot using a colormap legend entry for the :ref:`rainforest` colormap.
+
 
 .. _sub_colormaps:
 
