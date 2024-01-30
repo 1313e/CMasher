@@ -21,7 +21,13 @@ import numpy as np
 
 # Package imports
 from colorspacious import cspace_converter
-from matplotlib.colors import Colormap, ListedColormap as LC, to_hex, to_rgb
+from matplotlib.colors import (
+    Colormap,
+    LinearSegmentedColormap,
+    ListedColormap as LC,
+    to_hex,
+    to_rgb,
+)
 
 # CMasher imports
 from cmasher import cm as cmrcm
@@ -40,6 +46,7 @@ _HAS_VISCM = find_spec("viscm") is not None
 
 # All declaration
 __all__ = [
+    "combine_cmaps",
     "create_cmap_mod",
     "create_cmap_overview",
     "get_bibtex",
@@ -233,6 +240,109 @@ def _get_cmap_perceptual_rank(
 
 
 # %% FUNCTIONS
+# This function combines multiple colormaps at given nodes
+def combine_cmaps(
+    *cmaps: Union[Colormap, str],
+    nodes: Optional[Union[list[float], np.ndarray]] = None,
+    n_rgb_levels: int = 256,
+    combined_cmap_name: str = "combined_cmap",
+) -> LinearSegmentedColormap:
+    """Create a composite matplotlib colormap by combining multiple colormaps.
+
+    Parameters
+    ----------
+    *cmaps: Colormap or colormap name (str) to be combined.
+    nodes: list or numpy array of nodes (float). Defaults: equal divisions.
+        The blending points between colormaps, in the range [0, 1].
+    n_rgb_levels: int. Defaults: 256.
+        Number of RGB levels for each colormap segment.
+    combined_cmap_name: str. Defaults: "combined_cmap".
+        name of the combined Colormap.
+
+    Returns
+    -------
+    Colormap: The composite colormap.
+
+    Raises
+    ------
+    TypeError: If the list contains mixed datatypes or invalid
+        colormap names.
+    ValueError: If the cmaps contain only one single colormap,
+        or if the number of nodes is not one less than the number
+        of colormaps, or if the nodes do not contain incrementing values
+        between 0.0 and 1.0.
+
+    Note
+    ----
+    The colormaps are combined from low value to high value end.
+
+    References
+    ----------
+    - https://stackoverflow.com/questions/31051488/combining-two-matplotlib-colormaps/31052741#31052741
+
+    Examples
+    --------
+    Using predefined colormap names::
+        >>> custom_cmap_1 = combine_cmaps(
+            ["ocean", "prism", "coolwarm"], nodes=[0.2, 0.75]
+        )
+
+    Using Colormap objects::
+        >>> cmap_0 = plt.get_cmap("Blues")
+        >>> cmap_1 = plt.get_cmap("Oranges")
+        >>> cmap_2 = plt.get_cmap("Greens")
+        >>> custom_cmap_2 = combine_cmaps([cmap_0, cmap_1, cmap_2])
+
+    """
+    # Check colormap datatype and convert to list[Colormap]
+    if len(cmaps) <= 1:
+        raise ValueError("Expected at least two colormaps to combine.")
+    for cm in cmaps:
+        if not isinstance(cm, (Colormap, str)):
+            raise TypeError(f"Unsupported colormap type: {type(cm)}.")
+    _cmaps: list[Colormap] = [
+        cm if isinstance(cm, Colormap) else mpl.colormaps[cm] for cm in cmaps
+    ]
+
+    # Generate default nodes for equal separation
+    if nodes is None:
+        nodes_arr = np.linspace(0, 1, len(_cmaps) + 1)
+    elif isinstance(nodes, (list, np.ndarray)):
+        nodes_arr = np.concatenate([[0.0], nodes, [1.0]])
+    else:
+        raise TypeError(f"Unsupported nodes type: {type(nodes)}, expect list of float.")
+
+    # Check nodes length
+    if len(nodes_arr) != len(_cmaps) + 1:
+        raise ValueError(
+            "Number of nodes should be one less than the number of colormaps."
+        )
+
+    # Check node values
+    if any((nodes_arr < 0) | (nodes_arr > 1)) or any(np.diff(nodes_arr) <= 0):
+        raise ValueError(
+            "Nodes should only contain increasing values between 0.0 and 1.0."
+        )
+
+    # Generate composite colormap
+    combined_cmap_segments = []
+
+    for i, cmap in enumerate(_cmaps):
+        start_position = nodes_arr[i]
+        end_position = nodes_arr[i + 1]
+
+        # Calculate the length of the segment
+        segment_length = int(n_rgb_levels * (end_position - start_position))
+
+        # Append the segment to the combined colormap segments
+        combined_cmap_segments.append(cmap(np.linspace(0, 1, segment_length)))
+
+    # Combine the segments (from bottom to top)
+    return LinearSegmentedColormap.from_list(
+        combined_cmap_name, np.vstack(combined_cmap_segments)
+    )
+
+
 # This function creates a standalone module of a CMasher colormap
 def create_cmap_mod(
     cmap: str, *, save_dir: str = ".", _copy_name: Optional[str] = None
