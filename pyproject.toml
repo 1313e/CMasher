@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cmasher"
-version = "1.7.2" # keep in sync with __version__
+version = "1.8.0" # keep in sync with __version__
 authors = [{name = "Ellert van der Velden", email = "ellert_vandervelden@outlook.com"}]
 description = "Scientific colormaps for making accessible, informative and 'cmashing' plots"
 readme = "README.rst"
