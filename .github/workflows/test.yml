@@ -7,7 +7,7 @@ on:
   push:
     branches:
     - master
-    - dev
+    tags: v*
   pull_request:
   schedule:
   # run this on first day of the month at 3 am UTC
