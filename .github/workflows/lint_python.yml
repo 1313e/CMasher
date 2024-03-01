@@ -8,6 +8,8 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: 3.x
-    - run: pip install -r requirements/dependencies.txt || true
+    - run: |
+        pipx run uv pip compile pyproject.toml > deps.txt
+        pip install -r deps.txt
     - run: shopt -s globstar
     # - run: pip install safety && safety check
