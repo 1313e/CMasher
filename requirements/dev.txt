@@ -2,4 +2,3 @@ pyqt5>=5.12
 pytest>=4.6.0
 pytest-cov
 pytest-mpl
-viscm>=0.10
