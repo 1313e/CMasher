@@ -1315,7 +1315,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
         except Exception as error:
             raise ValueError(
                 f"Provided colormap {cm_name} is invalid! ({error})"
-            ) from None
+            ) from error
 
 
 # Function to register a custom colormap in MPL and CMasher
