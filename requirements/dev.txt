@@ -1,7 +1,5 @@
--e .
 pyqt5>=5.12
 pytest>=4.6.0
 pytest-cov
 pytest-mpl
-readme_renderer[md]
 viscm>=0.10
