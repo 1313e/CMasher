@@ -83,7 +83,7 @@ omit = [
     "cmasher/app_usage.py",
 ]
 
-[tool.ruff]
+[tool.ruff.lint]
 ignore = [
     "E501",
     "D101",
@@ -104,14 +104,14 @@ select = [
     "NPY", # numpy specific rules
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 known-first-party = ["cmasher"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "cmasher/tests/**" = ["D"]
 "_backports.py" = ["D"]
 
