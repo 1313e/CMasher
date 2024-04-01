@@ -5,7 +5,6 @@ Utility functions for registering and manipulating colormaps in various ways.
 
 """
 
-
 # %% IMPORTS
 # Built-in imports
 import sys
