@@ -6,7 +6,6 @@ applications.
 
 """
 
-
 # %% IMPORTS
 # Built-in imports
 import re
