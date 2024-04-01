@@ -14,7 +14,7 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.1.9
+  rev: v0.3.5
   hooks:
   - id: ruff-format
   - id: ruff
@@ -27,14 +27,14 @@ repos:
     args: [--ignore-words-list, 'mutch, ore']
 
 - repo: https://github.com/PyCQA/bandit
-  rev: 1.7.6
+  rev: 1.7.8
   hooks:
   - id: bandit
     # B101 is assert statements
     args: [--recursive, --skip, B101, .]
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.12.0
+  rev: v2.13.0
   hooks:
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
