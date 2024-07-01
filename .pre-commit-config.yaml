@@ -4,7 +4,7 @@ ci:
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.5.0
+  rev: v4.6.0
   hooks:
   - id: no-commit-to-branch
   - id: debug-statements
@@ -14,20 +14,20 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.3.5
+  rev: v0.5.0
   hooks:
   - id: ruff-format
   - id: ruff
     args: [--fix]
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.6
+  rev: v2.3.0
   hooks:
   - id: codespell
     args: [--ignore-words-list, 'mutch, ore']
 
 - repo: https://github.com/PyCQA/bandit
-  rev: 1.7.8
+  rev: 1.7.9
   hooks:
   - id: bandit
     # B101 is assert statements
