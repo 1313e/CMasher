@@ -410,7 +410,7 @@ def create_cmap_mod(
         prefix="cm_data = ",
         separator=", ",
         threshold=rgb.size,
-        formatter={"float": lambda x: "%.8f" % (x)},
+        formatter={"float": lambda x: f"{x:.8f}"},
     )
 
     # Create Python module template and add obtained RGB data to it
@@ -599,7 +599,7 @@ def create_cmap_overview(
             sort_key = _get_cmap_perceptual_rank
         else:
             raise ValueError(
-                "Input argument 'sort' has invalid string value " "%r!" % (sort)
+                "Input argument 'sort' has invalid string value " f"{sort!r}!"
             )
 
     # Create empty list of cmaps
@@ -1211,7 +1211,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
     # Check if provided file or directory exists
     if not path.exists(cmap_path):
         raise OSError(
-            "Input argument 'cmap_path' is a non-existing path (%r)!" % (cmap_path)
+            f"Input argument 'cmap_path' is a non-existing path ({cmap_path!r})!"
         )
 
     # Check if cmap_path is a file or directory and act accordingly
@@ -1223,7 +1223,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
         if not cmap_file.startswith("cm_"):
             raise OSError(
                 "Input argument 'cmap_path' does not lead to a file "
-                "with the 'cm_' prefix (%r)!" % (cmap_path)
+                f"with the 'cm_' prefix ({cmap_path!r})!"
             )
 
         # Set cm_files to be the sole read-in file
@@ -1231,7 +1231,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
     else:
         # If directory, obtain the names of all colormap files in cmap_path
         cmap_dir = cmap_path
-        cm_files = list(map(path.basename, glob("%s/cm_*" % (cmap_dir))))
+        cm_files = list(map(path.basename, glob(f"{cmap_dir}/cm_*")))
         cm_files.sort()
 
         def sort_key(name):

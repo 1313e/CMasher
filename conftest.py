@@ -16,7 +16,7 @@ mpl.use("Agg")
 def pytest_report_header(config):
     from cmasher.__version__ import __version__
 
-    return "CMasher: %s" % (__version__)
+    return f"CMasher: {__version__}"
 
 
 def pytest_sessionstart(session):

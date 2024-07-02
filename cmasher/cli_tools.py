@@ -220,9 +220,7 @@ def cli_app_usage_tableau():
     cmr.app_usage.update_tableau_pref_file(dirname=ARGS.dir)
 
     # Print on commandline that properties file was created/updated
-    print(
-        "Created/Updated Tableau preferences file in %r." % (os.path.abspath(ARGS.dir))
-    )
+    print(f"Created/Updated Tableau preferences file in {os.path.abspath(ARGS.dir)!r}.")
 
 
 # This function handles the 'lang_usage r' subcommand
