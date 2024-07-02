@@ -8,8 +8,10 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: 3.x
-    - run: |
-        pipx run uv pip compile pyproject.toml > deps.txt
-        pip install -r deps.txt
+    - uses: yezz123/setup-uv@v4
+      with:
+        uv-version: 0.2.18
+        uv-venv: .venv
+    - run: uv pip compile pyproject.toml | uv pip install -r -
     - run: shopt -s globstar
     # - run: pip install safety && safety check

@@ -52,24 +52,26 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements/dev.txt ${{ matrix.pip-args }}
+    - uses: yezz123/setup-uv@v4
+      with:
+        uv-version: 0.2.18
+        uv-venv: .venv
+
+    - run: uv pip install -r requirements/dev.txt ${{ matrix.pip-args }}
 
     - if: matrix.with-viscm
-      run: python -m pip install "viscm>=0.10"
+      run: uv pip install "viscm>=0.10"
 
     - if: matrix.deps == 'minimal'
       run: |
-        pipx run uv pip compile pyproject.toml --resolution=lowest-direct > mindeps.txt
-        python -m pip install --requirement mindeps.txt \
+        uv pip compile pyproject.toml --resolution=lowest-direct | uv pip install -r - \
           --only-binary ':all:' ${{ matrix.pip-args }}
 
     - name: Build
       run: |
-        python -m pip install -e .
+        uv pip install -e .
 
-    - run: python -m pip list
+    - run: uv pip list
 
     - name: Test package
       run: |
@@ -99,12 +101,15 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+    - uses: yezz123/setup-uv@v4
+      with:
+        uv-version: 0.2.18
+        uv-venv: .venv
 
     - name: Build
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install "."
-        python -m pip install -r requirements/typecheck.txt
+        uv pip install "."
+        uv pip install -r requirements/typecheck.txt
 
     - name: Run mypy
       run: mypy cmasher
@@ -123,11 +128,13 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.9'
+    - uses: yezz123/setup-uv@v4
+      with:
+        uv-version: 0.2.18
+        uv-venv: .venv
     - name: Setup env
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements/docs.txt
-    - run: python -m pip freeze
+      run: uv pip install -r requirements/docs.txt
+    - run: uv pip freeze
     - name: Build
       run: |
         sphinx-build -M html docs/source site -W
