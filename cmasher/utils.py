@@ -578,6 +578,7 @@ def create_cmap_overview(
 
     """
     import matplotlib.pyplot as plt
+    from matplotlib.axes import Axes
 
     # If cmaps is None, use cmap_d.values
     if cmaps is None:
@@ -743,9 +744,9 @@ def create_cmap_overview(
         wspace=0.05,
     )
 
-    # If cmaps_list only has a single element, make sure axs is a list
-    if len(cmaps_list) == 1:
-        axs = [axs]
+    # Narrow axs' type
+    if len(cmaps_list) == 1 or isinstance(axs, Axes):
+        axs = np.array([axs])
 
     # Loop over all cmaps defined in cmaps list
     for ax, _cm in zip(axs, cmaps_list):
@@ -1589,6 +1590,7 @@ def view_cmap(
 
     """
     import matplotlib.pyplot as plt
+    from matplotlib.axes import Axes
 
     if isinstance(cmap, str):
         # Obtain cmap
@@ -1622,11 +1624,17 @@ def view_cmap(
 
     # If show_grayscale is True, show both plots instead of just one
     if show_grayscale:
+        if isinstance(ax, Axes):
+            # defensive programming
+            raise RuntimeError
         ax[0].imshow(data, cmap=cmap, aspect="auto")
         ax[0].set_axis_off()
         ax[1].imshow(data, cmap=cmap_L, aspect="auto")
         ax[1].set_axis_off()
     else:
+        if not isinstance(ax, Axes):
+            # defensive programming
+            raise RuntimeError
         ax.imshow(data, cmap=cmap, aspect="auto")
         ax.set_axis_off()
 
