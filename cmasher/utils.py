@@ -9,11 +9,12 @@ Utility functions for registering and manipulating colormaps in various ways.
 # Built-in imports
 import sys
 from collections import OrderedDict
+from collections.abc import Callable
 from glob import glob
 from importlib.util import find_spec
 from os import path
 from textwrap import dedent
-from typing import TYPE_CHECKING, Callable, Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import matplotlib as mpl
 import numpy as np
@@ -34,12 +35,9 @@ from cmasher import cm as cmrcm
 from ._known_cmap_types import _CMASHER_BUILTIN_MAP_TYPES
 
 if TYPE_CHECKING:
-    from matplotlib.artist import Artist
+    from typing import TypeAlias
 
-    if sys.version_info >= (3, 10):
-        from typing import TypeAlias
-    else:
-        from typing_extensions import TypeAlias
+    from matplotlib.artist import Artist
 
 _HAS_VISCM = find_spec("viscm") is not None
 
@@ -65,7 +63,7 @@ __all__ = [
 cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
 # Type aliases
-CMAP = Union[str, Colormap]
+CMAP = str | Colormap
 RED: "TypeAlias" = float
 GREEN: "TypeAlias" = float
 BLUE: "TypeAlias" = float
@@ -241,8 +239,8 @@ def _get_cmap_perceptual_rank(
 # %% FUNCTIONS
 # This function combines multiple colormaps at given nodes
 def combine_cmaps(
-    *cmaps: Union[Colormap, str],
-    nodes: Optional[Union[list[float], np.ndarray]] = None,
+    *cmaps: Colormap | str,
+    nodes: list[float] | np.ndarray | None = None,
     n_rgb_levels: int = 256,
     combined_cmap_name: str = "combined_cmap",
 ) -> LinearSegmentedColormap:
@@ -297,7 +295,7 @@ def combine_cmaps(
     if len(cmaps) <= 1:
         raise ValueError("Expected at least two colormaps to combine.")
     for cm in cmaps:
-        if not isinstance(cm, (Colormap, str)):
+        if not isinstance(cm, Colormap | str):
             raise TypeError(f"Unsupported colormap type: {type(cm)}.")
     _cmaps: list[Colormap] = [
         cm if isinstance(cm, Colormap) else mpl.colormaps[cm] for cm in cmaps
@@ -306,7 +304,7 @@ def combine_cmaps(
     # Generate default nodes for equal separation
     if nodes is None:
         nodes_arr = np.linspace(0, 1, len(_cmaps) + 1)
-    elif isinstance(nodes, (list, np.ndarray)):
+    elif isinstance(nodes, list | np.ndarray):
         nodes_arr = np.concatenate([[0.0], nodes, [1.0]])
     else:
         raise TypeError(f"Unsupported nodes type: {type(nodes)}, expect list of float.")
@@ -344,7 +342,7 @@ def combine_cmaps(
 
 # This function creates a standalone module of a CMasher colormap
 def create_cmap_mod(
-    cmap: str, *, save_dir: str = ".", _copy_name: Optional[str] = None
+    cmap: str, *, save_dir: str = ".", _copy_name: str | None = None
 ) -> str:
     """
     Creates a standalone Python module of the provided *CMasher* `cmap` and
@@ -484,16 +482,16 @@ def create_cmap_mod(
 
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(
-    cmaps: Union[list[CMAP], dict[str, list[Colormap]], None] = None,
+    cmaps: list[CMAP] | dict[str, list[Colormap]] | None = None,
     *,
-    savefig: Optional[str] = None,
+    savefig: str | None = None,
     use_types: bool = True,
-    sort: Optional[Union[str, Callable]] = "alphabetical",
+    sort: str | Callable | None = "alphabetical",
     show_grayscale: bool = True,
     show_info: bool = False,
-    plot_profile: Union[bool, float] = False,
+    plot_profile: bool | float = False,
     dark_mode: bool = False,
-    title: Optional[str] = "Colormap Overview",
+    title: str | None = "Colormap Overview",
     wscale: float = 1,
     hscale: float = 1,
 ) -> None:
@@ -604,7 +602,7 @@ def create_cmap_overview(
             )
 
     # Create empty list of cmaps
-    cmaps_list: list[Union[Colormap, tuple[str, bool]]] = []
+    cmaps_list: list[Colormap | tuple[str, bool]] = []
 
     # Define empty dict of colormaps
     cmaps_dict: OrderedDict[str, list[Colormap]] = OrderedDict()
@@ -749,7 +747,7 @@ def create_cmap_overview(
         axs = np.array([axs])
 
     # Loop over all cmaps defined in cmaps list
-    for ax, _cm in zip(axs, cmaps_list):
+    for ax, _cm in zip(axs, cmaps_list, strict=True):
         # Obtain axes objects and turn them off
         if show_grayscale:
             # Obtain Axes objects
@@ -841,7 +839,9 @@ def create_cmap_overview(
                     segments = np.split(points, s_idx)
 
                     # Loop over all pairs of adjacent segments
-                    for i, (seg1, seg2) in enumerate(zip(segments[:-1], segments[1:])):
+                    for i, (seg1, seg2) in enumerate(
+                        zip(segments[:-1], segments[1:], strict=True)
+                    ):
                         # Determine the point in the center of these segments
                         central_point = (seg1[-1] + seg2[0]) / 2
 
@@ -1085,9 +1085,7 @@ def get_cmap_type(cmap: CMAP) -> str:
 
 
 # Function create a colormap using a subset of the colors in an existing one
-def get_sub_cmap(
-    cmap: CMAP, start: float, stop: float, *, N: Optional[int] = None
-) -> LC:
+def get_sub_cmap(cmap: CMAP, start: float, stop: float, *, N: int | None = None) -> LC:
     """
     Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
     the range `[start, stop]` of the provided `cmap` and returns it.
@@ -1448,7 +1446,7 @@ def set_cmap_legend_entry(artist: "Artist", label: str) -> None:
 # Function to take N equally spaced colors from a colormap
 def take_cmap_colors(
     cmap: CMAP,
-    N: Optional[int],
+    N: int | None,
     *,
     cmap_range: tuple[float, float] = (0, 1),
     return_fmt: str = "float",
@@ -1565,7 +1563,7 @@ def take_cmap_colors(
 def view_cmap(
     cmap: CMAP,
     *,
-    savefig: Optional[str] = None,
+    savefig: str | None = None,
     show_test: bool = False,
     show_grayscale: bool = False,
 ) -> None:
