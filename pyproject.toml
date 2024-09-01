@@ -116,10 +116,10 @@ convention = "numpy"
 "_backports.py" = ["D"]
 
 [tool.mypy]
-python_version = 3.9
+python_version = '3.9'
 show_error_codes = true
 warn_unused_configs = true
-warn_unused_ignores = true
+# warn_unused_ignores = true # TODO: uncomment when Python 3.9 is dropped
 warn_unreachable = true
 show_error_context = true
 exclude = [
