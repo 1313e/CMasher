@@ -19,7 +19,6 @@ classifiers = [
     "Operating System :: Unix",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -29,12 +28,12 @@ classifiers = [
 ]
 keywords = ["cmasher perceptually uniform sequential colormaps plotting python visualization"]
 
-requires-python = ">=3.9, <4"
+requires-python = ">=3.10, <4"
 
 dependencies = [
     "colorspacious>=1.1.0",
     "matplotlib>=3.5",
-    "numpy>=1.19.5",
+    "numpy>=1.21.2",
 ]
 
 [project.urls]
@@ -116,7 +115,7 @@ convention = "numpy"
 "_backports.py" = ["D"]
 
 [tool.mypy]
-python_version = 3.9
+python_version = '3.10'
 show_error_codes = true
 warn_unused_configs = true
 warn_unused_ignores = true

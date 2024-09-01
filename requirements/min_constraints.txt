@@ -1,2 +1,0 @@
-scipy<1.11
-contourpy<1.2
