@@ -28,14 +28,12 @@ jobs:
         - '3.10'
         - '3.11'
         - '3.12'
-        with-viscm:
-        - true
+        test-args: [--with 'viscm>=0.10']
 
         include:
         - os: ubuntu-20.04
           python-version: '3.10'
-          deps: minimal
-          with-viscm: false
+          install-args: --resolution=lowest-direct
 
       fail-fast: false
 
@@ -45,38 +43,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+    - uses: astral-sh/setup-uv@v2
       with:
-        python-version: ${{ matrix.python-version }}
-
-    - uses: yezz123/setup-uv@v4
-      with:
-        uv-version: 0.2.18
-        uv-venv: .venv
-
-    - run: uv pip install -r requirements/dev.txt ${{ matrix.pip-args }}
-
-    - if: matrix.with-viscm
-      run: uv pip install "viscm>=0.10"
-
-    - if: matrix.deps == 'minimal'
-      # 2021-11-16 is matplotlib 3.5.0's release date
-      run: |
-        uv pip compile pyproject.toml \
-         --resolution=lowest-direct \
-         --exclude-newer '2021-11-16' | uv pip install --no-build -r -
+        enable-cache: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build
       run: |
-        uv pip install -e .
+        uv venv --python ${{ matrix.python-version }}
+        uv pip install -e . ${{ matrix.install-args }}
 
     - run: uv pip list
 
     - name: Test package
+      shell: bash # for windows-compat
       run: |
-        pytest --color=yes --mpl --cov --cov-config=pyproject.toml --cov-report=term-missing
+        uv run --with-requirements=requirements/dev.txt ${{ matrix.test-args }} \
+          pytest --color=yes --mpl \
+          --cov --cov-config=pyproject.toml --cov-report=term-missing
+
     - name: Upload coverage
+      shell: bash # for windows-compat
       run: |
         curl -s https://codecov.io/bash | bash
 
@@ -97,22 +84,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
+    - uses: astral-sh/setup-uv@v2
       with:
-        python-version: ${{ matrix.python-version }}
-    - uses: yezz123/setup-uv@v4
-      with:
-        uv-version: 0.2.18
-        uv-venv: .venv
-
-    - name: Build
-      run: |
-        uv pip install "."
-        uv pip install -r requirements/typecheck.txt
+        enable-cache: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run mypy
-      run: mypy cmasher
+      run: |
+        uvx --python ${{ matrix.python-version }} \
+          --with-requirements=requirements/typecheck.txt --with . \
+          mypy cmasher
 
   docs:
     name: Build docs
@@ -124,20 +105,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
+    - uses: astral-sh/setup-uv@v2
       with:
-        python-version: '3.12'
-    - uses: yezz123/setup-uv@v4
-      with:
-        uv-version: 0.2.18
-        uv-venv: .venv
-    - name: Setup env
-      run: uv pip install -r requirements/docs.txt
-    - run: uv pip freeze
+        enable-cache: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build
       run: |
-        sphinx-build -M html docs/source site -W
+        uvx --python 3.12 --with-requirements=requirements/docs.txt --from sphinx \
+          sphinx-build -M html docs/source site -W
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -154,10 +130,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: astral-sh/setup-uv@v2
       with:
-        python-version: 3.x
-    - run: pipx run check-manifest
+        enable-cache: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - run: uvx check-manifest
 
   build-artifacts:
     name: Build artifacts
@@ -165,12 +142,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: astral-sh/setup-uv@v2
       with:
-        python-version: 3.x
-    - run: |
-        pipx run build
-        pipx run twine check dist/*
+        enable-cache: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - run: uv build
+    - run: uvx twine check dist/*
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
