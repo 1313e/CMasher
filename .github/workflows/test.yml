@@ -46,7 +46,6 @@ jobs:
     - uses: astral-sh/setup-uv@v2
       with:
         enable-cache: true
-        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build
       run: |
@@ -87,7 +86,6 @@ jobs:
     - uses: astral-sh/setup-uv@v2
       with:
         enable-cache: true
-        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run mypy
       run: |
@@ -108,7 +106,6 @@ jobs:
     - uses: astral-sh/setup-uv@v2
       with:
         enable-cache: true
-        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build
       run: |
@@ -133,7 +130,6 @@ jobs:
     - uses: astral-sh/setup-uv@v2
       with:
         enable-cache: true
-        github-token: ${{ secrets.GITHUB_TOKEN }}
     - run: uvx check-manifest
 
   build-artifacts:
@@ -145,7 +141,6 @@ jobs:
     - uses: astral-sh/setup-uv@v2
       with:
         enable-cache: true
-        github-token: ${{ secrets.GITHUB_TOKEN }}
     - run: uv build
     - run: uvx twine check dist/*
 
