@@ -4,7 +4,7 @@ ci:
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
+  rev: v5.0.0
   hooks:
   - id: no-commit-to-branch
   - id: debug-statements
@@ -14,7 +14,7 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.5.0
+  rev: v0.6.9
   hooks:
   - id: ruff-format
   - id: ruff
@@ -27,7 +27,7 @@ repos:
     args: [--ignore-words-list, 'mutch, ore']
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.13.0
+  rev: v2.14.0
   hooks:
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
