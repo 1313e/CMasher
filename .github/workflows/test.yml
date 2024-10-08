@@ -19,23 +19,36 @@ jobs:
     name: ${{ matrix.os }}, Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
         - ubuntu-latest
         - macos-latest
-        - windows-latest
         python-version:
         - '3.10'
         - '3.11'
         - '3.12'
-        test-args: [--with 'viscm>=0.10']
+        - '3.13'
+        test-args: [viscm>=0.10]
+        venv-loc: [bin]
 
         include:
         - os: ubuntu-20.04
           python-version: '3.10'
+          venv-loc: bin
           install-args: --resolution=lowest-direct
-
-      fail-fast: false
+        - os: windows-latest
+          python-version: '3.10'
+          venv-loc: Scripts
+        - os: windows-latest
+          python-version: '3.11'
+          venv-loc: Scripts
+        - os: windows-latest
+          python-version: '3.12'
+          venv-loc: Scripts
+        - os: windows-latest
+          python-version: '3.13'
+          venv-loc: Scripts
 
     concurrency:
       group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-build
@@ -51,15 +64,16 @@ jobs:
       run: |
         uv venv --python ${{ matrix.python-version }}
         uv pip install -e . ${{ matrix.install-args }}
+        uv pip install -r requirements/dev.txt ${{ matrix.test-args }}
 
     - run: uv pip list
 
     - name: Test package
       shell: bash # for windows-compat
       run: |
-        uv run --with-requirements=requirements/dev.txt ${{ matrix.test-args }} \
-          pytest --color=yes --mpl \
-          --cov --cov-config=pyproject.toml --cov-report=term-missing
+        source .venv/${{matrix.venv-loc}}/activate
+        pytest --color=yes --mpl \
+        --cov --cov-config=pyproject.toml --cov-report=term-missing
 
     - name: Upload coverage
       shell: bash # for windows-compat
@@ -73,7 +87,7 @@ jobs:
       matrix:
         python-version:
         - '3.10'
-        - '3.12'
+        - '3.13'
 
     runs-on: ubuntu-latest
 
