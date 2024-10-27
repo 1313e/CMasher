@@ -1,4 +1,4 @@
-|PyPI| |conda-forge| |Python| |GitHub| |Coverage| |JOSS|
+|PyPI| |conda-forge| |Python| |GitHub| |JOSS|
 
 *CMasher*: Scientific colormaps for making accessible, informative and *cmashing* plots
 =======================================================================================
@@ -106,9 +106,6 @@ For other use-cases, including an overview of *CMasher*'s utility functions and 
 .. |ReadTheDocs| image:: https://img.shields.io/readthedocs/cmasher/latest.svg?logo=read%20the%20docs&logoColor=white&label=Docs
     :target: https://cmasher.readthedocs.io
     :alt: ReadTheDocs - Build Status
-.. |Coverage| image:: https://img.shields.io/codecov/c/github/1313e/CMasher/master.svg?logo=codecov&logoColor=white&label=Coverage
-    :target: https://codecov.io/gh/1313e/CMasher/branches/master
-    :alt: CodeCov - Coverage Status
 .. |JOSS| image:: https://img.shields.io/badge/JOSS-paper-brightgreen
    :target: https://doi.org/10.21105/joss.02004
    :alt: JOSS - Submission Status

@@ -72,13 +72,9 @@ jobs:
       shell: bash # for windows-compat
       run: |
         source .venv/${{matrix.venv-loc}}/activate
-        pytest --color=yes --mpl \
-        --cov --cov-config=pyproject.toml --cov-report=term-missing
+        coverage run -m pytest --color=yes --mpl
 
-    - name: Upload coverage
-      shell: bash # for windows-compat
-      run: |
-        curl -s https://codecov.io/bash | bash
+        # TODO: add coverage report + upload step (use parallel mode)
 
   type-check:
     name: type check w/ Python ${{ matrix.python-version }}
