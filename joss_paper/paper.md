@@ -56,7 +56,7 @@ An often cited reason for this (besides the general _"Everyone else uses it."_),
 Although a high perceptual range can be useful in many different cases, it certainly is not useful in all of them and there are ways to achieve this without giving false information.
 This is where *CMasher* comes in.
 
-![Overview of all current colormaps in *CMasher* (v1.2.2).](https://raw.githubusercontent.com/1313e/CMasher/master/cmasher/colormaps/cmap_overview.png)
+![Overview of all current colormaps in *CMasher* (v1.2.2).](https://raw.githubusercontent.com/1313e/CMasher/master/src/cmasher/colormaps/cmap_overview.png)
 
 
 # CMasher
