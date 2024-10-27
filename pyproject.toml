@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.2"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "cmasher"
@@ -45,22 +45,10 @@ Documentation = "https://cmasher.readthedocs.io"
 [project.scripts]
 cmr = "cmasher.cli_tools:main"
 
-[tool.setuptools]
-package-dir = {cmasher = "cmasher"}
-include-package-data = true
-zip-safe = false
-platforms = [
-    "Windows",
-    "Mac OS-X",
-    "Linux",
-    "Unix",
+[tool.hatch.build]
+exclude = [
+  "scripts",
 ]
-
-[tool.setuptools.packages]
-find = {namespaces = false}
-
-[tool.distutils.bdist_wheel]
-universal = 0
 
 [tool.pytest.ini_options]
 addopts = "-v"
