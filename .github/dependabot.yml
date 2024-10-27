@@ -5,8 +5,8 @@
 version: 2
 updates:
 - package-ecosystem: pip
-  directory: /requirements
-  target-branch: develop
+  directory: docs
+  target-branch: master
   schedule:
     interval: monthly
   groups:
@@ -16,7 +16,7 @@ updates:
 
 - package-ecosystem: github-actions
   directory: /.github/workflows
-  target-branch: develop
+  target-branch: master
   schedule:
     interval: monthly
   groups:
