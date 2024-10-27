@@ -134,7 +134,6 @@ html_theme_options = {
     "sticky_navigation": False,
     "includehidden": False,
     "titles_only": False,
-    "display_version": False,
 }
 
 # Title formatting
