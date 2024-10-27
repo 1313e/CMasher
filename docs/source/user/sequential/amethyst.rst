@@ -2,12 +2,12 @@
 
 amethyst
 --------
-.. image:: ../../../../cmasher/colormaps/amethyst/amethyst.png
+.. image:: ../../../../src/cmasher/colormaps/amethyst/amethyst.png
     :alt: Visual representation of the *amethyst* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/amethyst/amethyst_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/amethyst/amethyst_viscm.png
     :alt: Statistics of the *amethyst* colormap.
     :width: 100%
     :align: center

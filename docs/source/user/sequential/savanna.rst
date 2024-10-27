@@ -2,12 +2,12 @@
 
 savanna
 -------
-.. image:: ../../../../cmasher/colormaps/savanna/savanna.png
+.. image:: ../../../../src/cmasher/colormaps/savanna/savanna.png
     :alt: Visual representation of the *savanna* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/savanna/savanna_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/savanna/savanna_viscm.png
     :alt: Statistics of the *savanna* colormap.
     :width: 100%
     :align: center

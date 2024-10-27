@@ -101,7 +101,7 @@ jobs:
       run: |
         uvx --python ${{ matrix.python-version }} \
           --with-requirements=requirements/typecheck.txt --with . \
-          mypy cmasher
+          mypy src/cmasher
 
   docs:
     name: Build docs

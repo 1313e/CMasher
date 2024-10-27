@@ -2,12 +2,12 @@
 
 nuclear
 -------
-.. image:: ../../../../cmasher/colormaps/nuclear/nuclear.png
+.. image:: ../../../../src/cmasher/colormaps/nuclear/nuclear.png
     :alt: Visual representation of the *nuclear* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/nuclear/nuclear_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/nuclear/nuclear_viscm.png
     :alt: Statistics of the *nuclear* colormap.
     :width: 100%
     :align: center

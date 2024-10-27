@@ -2,12 +2,12 @@
 
 redshift
 --------
-.. image:: ../../../../cmasher/colormaps/redshift/redshift.png
+.. image:: ../../../../src/cmasher/colormaps/redshift/redshift.png
     :alt: Visual representation of the *redshift* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/redshift/redshift_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/redshift/redshift_viscm.png
     :alt: Statistics of the *redshift* colormap.
     :width: 100%
     :align: center

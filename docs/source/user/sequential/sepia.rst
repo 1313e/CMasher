@@ -2,12 +2,12 @@
 
 sepia
 -----
-.. image:: ../../../../cmasher/colormaps/sepia/sepia.png
+.. image:: ../../../../src/cmasher/colormaps/sepia/sepia.png
     :alt: Visual representation of the *sepia* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/sepia/sepia_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/sepia/sepia_viscm.png
     :alt: Statistics of the *sepia* colormap.
     :width: 100%
     :align: center

@@ -2,12 +2,12 @@
 
 sunburst
 --------
-.. image:: ../../../../cmasher/colormaps/sunburst/sunburst.png
+.. image:: ../../../../src/cmasher/colormaps/sunburst/sunburst.png
     :alt: Visual representation of the *sunburst* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/sunburst/sunburst_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/sunburst/sunburst_viscm.png
     :alt: Statistics of the *sunburst* colormap.
     :width: 100%
     :align: center

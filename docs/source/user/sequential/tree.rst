@@ -2,12 +2,12 @@
 
 tree
 ----
-.. image:: ../../../../cmasher/colormaps/tree/tree.png
+.. image:: ../../../../src/cmasher/colormaps/tree/tree.png
     :alt: Visual representation of the *tree* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/tree/tree_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/tree/tree_viscm.png
     :alt: Statistics of the *tree* colormap.
     :width: 100%
     :align: center

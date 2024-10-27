@@ -2,12 +2,12 @@
 
 voltage
 -------
-.. image:: ../../../../cmasher/colormaps/voltage/voltage.png
+.. image:: ../../../../src/cmasher/colormaps/voltage/voltage.png
     :alt: Visual representation of the *voltage* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/voltage/voltage_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/voltage/voltage_viscm.png
     :alt: Statistics of the *voltage* colormap.
     :width: 100%
     :align: center

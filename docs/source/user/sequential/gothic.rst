@@ -2,12 +2,12 @@
 
 gothic
 ------
-.. image:: ../../../../cmasher/colormaps/gothic/gothic.png
+.. image:: ../../../../src/cmasher/colormaps/gothic/gothic.png
     :alt: Visual representation of the *gothic* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/gothic/gothic_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/gothic/gothic_viscm.png
     :alt: Statistics of the *gothic* colormap.
     :width: 100%
     :align: center

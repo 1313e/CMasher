@@ -2,12 +2,12 @@
 
 fall
 ----
-.. image:: ../../../../cmasher/colormaps/fall/fall.png
+.. image:: ../../../../src/cmasher/colormaps/fall/fall.png
     :alt: Visual representation of the *fall* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/fall/fall_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/fall/fall_viscm.png
     :alt: Statistics of the *fall* colormap.
     :width: 100%
     :align: center

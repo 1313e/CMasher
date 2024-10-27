@@ -2,12 +2,12 @@
 
 wildfire
 --------
-.. image:: ../../../../cmasher/colormaps/wildfire/wildfire.png
+.. image:: ../../../../src/cmasher/colormaps/wildfire/wildfire.png
     :alt: Visual representation of the *wildfire* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/wildfire/wildfire_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/wildfire/wildfire_viscm.png
     :alt: Statistics of the *wildfire* colormap.
     :width: 100%
     :align: center

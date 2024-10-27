@@ -2,12 +2,12 @@
 
 jungle
 ------
-.. image:: ../../../../cmasher/colormaps/jungle/jungle.png
+.. image:: ../../../../src/cmasher/colormaps/jungle/jungle.png
     :alt: Visual representation of the *jungle* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/jungle/jungle_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/jungle/jungle_viscm.png
     :alt: Statistics of the *jungle* colormap.
     :width: 100%
     :align: center

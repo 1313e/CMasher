@@ -2,12 +2,12 @@
 
 cosmic
 ------
-.. image:: ../../../../cmasher/colormaps/cosmic/cosmic.png
+.. image:: ../../../../src/cmasher/colormaps/cosmic/cosmic.png
     :alt: Visual representation of the *cosmic* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/cosmic/cosmic_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/cosmic/cosmic_viscm.png
     :alt: Statistics of the *cosmic* colormap.
     :width: 100%
     :align: center

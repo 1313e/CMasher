@@ -2,12 +2,12 @@
 
 copper
 ------
-.. image:: ../../../../cmasher/colormaps/copper/copper.png
+.. image:: ../../../../src/cmasher/colormaps/copper/copper.png
     :alt: Visual representation of the *copper* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/copper/copper_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/copper/copper_viscm.png
     :alt: Statistics of the *copper* colormap.
     :width: 100%
     :align: center

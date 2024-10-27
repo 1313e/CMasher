@@ -2,12 +2,12 @@
 
 seasons
 -------
-.. image:: ../../../../cmasher/colormaps/seasons/seasons.png
+.. image:: ../../../../src/cmasher/colormaps/seasons/seasons.png
     :alt: Visual representation of the *seasons* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/seasons/seasons_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/seasons/seasons_viscm.png
     :alt: Statistics of the *seasons* colormap.
     :width: 100%
     :align: center

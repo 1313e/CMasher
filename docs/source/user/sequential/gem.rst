@@ -2,12 +2,12 @@
 
 gem
 ---
-.. image:: ../../../../cmasher/colormaps/gem/gem.png
+.. image:: ../../../../src/cmasher/colormaps/gem/gem.png
     :alt: Visual representation of the *gem* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/gem/gem_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/gem/gem_viscm.png
     :alt: Statistics of the *gem* colormap.
     :width: 100%
     :align: center

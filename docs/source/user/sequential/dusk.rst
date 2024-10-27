@@ -2,12 +2,12 @@
 
 dusk
 ----
-.. image:: ../../../../cmasher/colormaps/dusk/dusk.png
+.. image:: ../../../../src/cmasher/colormaps/dusk/dusk.png
     :alt: Visual representation of the *dusk* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/dusk/dusk_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/dusk/dusk_viscm.png
     :alt: Statistics of the *dusk* colormap.
     :width: 100%
     :align: center

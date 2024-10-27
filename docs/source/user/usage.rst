@@ -251,7 +251,7 @@ Or, one would like to use a cyclic colormap as a diverging colormap by only usin
 To aid with this, *CMasher* allows for sub-colormaps to be made of any colormap with the :func:`~cmasher.get_sub_cmap` function.
 Below is an example of a sub-colormap of :ref:`rainforest` using the central :math:`70\%`, created with :pycode:`cmr.get_sub_cmap('cmr.rainforest', 0.15, 0.85)`, compared to the original:
 
-.. figure:: ../../../cmasher/colormaps/rainforest/rainforest.png
+.. figure:: ../../../src/cmasher/colormaps/rainforest/rainforest.png
     :name: rainforest_fig
     :alt: The *rainforest* colormap.
     :width: 100%

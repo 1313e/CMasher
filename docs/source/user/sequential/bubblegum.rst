@@ -2,12 +2,12 @@
 
 bubblegum
 ---------
-.. image:: ../../../../cmasher/colormaps/bubblegum/bubblegum.png
+.. image:: ../../../../src/cmasher/colormaps/bubblegum/bubblegum.png
     :alt: Visual representation of the *bubblegum* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/bubblegum/bubblegum_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/bubblegum/bubblegum_viscm.png
     :alt: Statistics of the *bubblegum* colormap.
     :width: 100%
     :align: center

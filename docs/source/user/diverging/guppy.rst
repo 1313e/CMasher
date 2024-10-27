@@ -2,12 +2,12 @@
 
 guppy
 -----
-.. image:: ../../../../cmasher/colormaps/guppy/guppy.png
+.. image:: ../../../../src/cmasher/colormaps/guppy/guppy.png
     :alt: Visual representation of the *guppy* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/guppy/guppy_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/guppy/guppy_viscm.png
     :alt: Statistics of the *guppy* colormap.
     :width: 100%
     :align: center

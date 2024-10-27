@@ -2,12 +2,12 @@
 
 amber
 -----
-.. image:: ../../../../cmasher/colormaps/amber/amber.png
+.. image:: ../../../../src/cmasher/colormaps/amber/amber.png
     :alt: Visual representation of the *amber* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/amber/amber_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/amber/amber_viscm.png
     :alt: Statistics of the *amber* colormap.
     :width: 100%
     :align: center

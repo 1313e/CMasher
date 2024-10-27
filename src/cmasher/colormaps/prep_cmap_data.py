@@ -270,12 +270,12 @@ if __name__ == "__main__":
 
         {0}
         {1}
-        .. image:: ../../../../cmasher/colormaps/{0}/{0}.png
+        .. image:: ../../../../src/cmasher/colormaps/{0}/{0}.png
             :alt: Visual representation of the *{0}* colormap.
             :width: 100%
             :align: center
 
-        .. image:: ../../../../cmasher/colormaps/{0}/{0}_viscm.png
+        .. image:: ../../../../src/cmasher/colormaps/{0}/{0}_viscm.png
             :alt: Statistics of the *{0}* colormap.
             :width: 100%
             :align: center

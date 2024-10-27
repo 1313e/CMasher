@@ -2,12 +2,12 @@
 
 horizon
 -------
-.. image:: ../../../../cmasher/colormaps/horizon/horizon.png
+.. image:: ../../../../src/cmasher/colormaps/horizon/horizon.png
     :alt: Visual representation of the *horizon* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/horizon/horizon_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/horizon/horizon_viscm.png
     :alt: Statistics of the *horizon* colormap.
     :width: 100%
     :align: center

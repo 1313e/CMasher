@@ -2,12 +2,12 @@
 
 apple
 -----
-.. image:: ../../../../cmasher/colormaps/apple/apple.png
+.. image:: ../../../../src/cmasher/colormaps/apple/apple.png
     :alt: Visual representation of the *apple* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/apple/apple_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/apple/apple_viscm.png
     :alt: Statistics of the *apple* colormap.
     :width: 100%
     :align: center

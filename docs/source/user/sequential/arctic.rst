@@ -2,12 +2,12 @@
 
 arctic
 ------
-.. image:: ../../../../cmasher/colormaps/arctic/arctic.png
+.. image:: ../../../../src/cmasher/colormaps/arctic/arctic.png
     :alt: Visual representation of the *arctic* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/arctic/arctic_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/arctic/arctic_viscm.png
     :alt: Statistics of the *arctic* colormap.
     :width: 100%
     :align: center

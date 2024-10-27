@@ -2,12 +2,12 @@
 
 eclipse
 -------
-.. image:: ../../../../cmasher/colormaps/eclipse/eclipse.png
+.. image:: ../../../../src/cmasher/colormaps/eclipse/eclipse.png
     :alt: Visual representation of the *eclipse* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/eclipse/eclipse_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/eclipse/eclipse_viscm.png
     :alt: Statistics of the *eclipse* colormap.
     :width: 100%
     :align: center

@@ -2,12 +2,12 @@
 
 seaweed
 -------
-.. image:: ../../../../cmasher/colormaps/seaweed/seaweed.png
+.. image:: ../../../../src/cmasher/colormaps/seaweed/seaweed.png
     :alt: Visual representation of the *seaweed* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/seaweed/seaweed_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/seaweed/seaweed_viscm.png
     :alt: Statistics of the *seaweed* colormap.
     :width: 100%
     :align: center

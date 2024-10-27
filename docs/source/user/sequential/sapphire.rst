@@ -2,12 +2,12 @@
 
 sapphire
 --------
-.. image:: ../../../../cmasher/colormaps/sapphire/sapphire.png
+.. image:: ../../../../src/cmasher/colormaps/sapphire/sapphire.png
     :alt: Visual representation of the *sapphire* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/sapphire/sapphire_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/sapphire/sapphire_viscm.png
     :alt: Statistics of the *sapphire* colormap.
     :width: 100%
     :align: center

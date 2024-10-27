@@ -2,12 +2,12 @@
 
 lilac
 -----
-.. image:: ../../../../cmasher/colormaps/lilac/lilac.png
+.. image:: ../../../../src/cmasher/colormaps/lilac/lilac.png
     :alt: Visual representation of the *lilac* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/lilac/lilac_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/lilac/lilac_viscm.png
     :alt: Statistics of the *lilac* colormap.
     :width: 100%
     :align: center
