@@ -28,7 +28,7 @@ def pytest_sessionstart(session):
 
 def pytest_sessionfinish(session, exitstatus):
     AT_END = set(mpl.colormaps.keys())
-    if diff := (AT_END - AT_START):
+    if diff := (AT_END - AT_START):  # pragma: no cover
         print(
             f"The following colormaps appear to have leaked during test session {diff}",
             file=sys.stderr,

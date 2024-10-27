@@ -68,13 +68,60 @@ jobs:
 
     - run: uv pip list
 
-    - name: Test package
+    - name: Test package (no coverage)
+      if: ${{ !startsWith( matrix.os , 'ubuntu' ) }}
       shell: bash # for windows-compat
       run: |
         source .venv/${{matrix.venv-loc}}/activate
-        coverage run -m pytest --color=yes --mpl
+        pytest --color=yes --mpl
 
-        # TODO: add coverage report + upload step (use parallel mode)
+    - name: Test package (with coverage)
+      if: startsWith( matrix.os , 'ubuntu' )
+      run: |
+        source .venv/${{matrix.venv-loc}}/activate
+        coverage run --parallel-mode -m pytest --color=yes --mpl
+
+    - name: Upload coverage data
+      # only using reports from ubuntu because
+      # combining reports from multiple platforms is tricky (or impossible ?)
+      if: startsWith( matrix.os , 'ubuntu' )
+      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+      with:
+        name: cmasher_coverage_data-${{ matrix.os }}-${{ matrix.python-version }}
+        path: .coverage.*
+        if-no-files-found: ignore
+        include-hidden-files: true
+
+
+  coverage:
+    name: Combine & check coverage
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+    - uses: astral-sh/setup-uv@3b9817b1bf26186f03ab8277bab9b827ea5cc254 # v3.2.0
+    - run: | # uv sync --only-group covcheck
+        uv venv
+        uv pip install . -r requirements/dev.txt
+
+    - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      with:
+        pattern: cmasher_coverage_data-*
+        merge-multiple: true
+
+    - name: Check coverage
+      run: |
+        uv run coverage combine
+        uv run coverage html --skip-covered --skip-empty
+        uv run coverage report --fail-under=100
+
+    - name: Upload HTML report if check failed.
+      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+      with:
+        name: cmasher_coverage_report
+        path: htmlcov
+      if: ${{ failure() }}
 
   type-check:
     name: type check w/ Python ${{ matrix.python-version }}

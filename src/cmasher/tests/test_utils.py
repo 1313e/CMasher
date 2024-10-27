@@ -1,8 +1,10 @@
 # %% IMPORTS
 # Built-in imports
 import os
+import shutil
 from importlib.util import find_spec, module_from_spec, spec_from_file_location
 from os import path
+from pathlib import Path
 
 # Package imports
 import matplotlib as mpl
@@ -38,12 +40,14 @@ def _MPL38_colormap_eq(cmap, other) -> bool:
     # had the exact same name, which is not what we care about here
     from matplotlib.colors import Colormap
 
-    if not isinstance(other, Colormap) or cmap.colorbar_extend != other.colorbar_extend:
+    if (
+        not isinstance(other, Colormap) or cmap.colorbar_extend != other.colorbar_extend
+    ):  # pragma: no cover
         return False
     # To compare lookup tables the Colormaps have to be initialized
     if not cmap._isinit:
         cmap._init()
-    if not other._isinit:  # type: ignore [attr-defined]
+    if not other._isinit:  # type: ignore [attr-defined] # pragma: no cover
         other._init()  # type: ignore [attr-defined]
     return np.array_equal(cmap._lut, other._lut)  # type: ignore [attr-defined]
 
@@ -63,6 +67,7 @@ cm_names = [_ for _ in sorted(next(os.walk(cmap_dir))[1]) if _ not in _IGNORED]
 
 # Obtain list of all colormaps registered in MPL
 mpl_cmaps = plt.colormaps()
+mpl_cmaps_as_str: list[str] = list(mpl_cmaps)
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
@@ -186,21 +191,26 @@ class Test_combine_cmaps:
 
 # Pytest class for create_cmap_mod
 class Test_create_cmap_mod:
-    # Test if a standalone module of rainforest can be created
-    def test_standalone_rainforest(self):
+    # Test if a standalone module can be created
+    @pytest.mark.parametrize("name", ["rainforest", "infinity"])
+    def test_standalone_copy(self, name, tmp_path):
         # Obtain the currently registered version of rainforest
-        cmap_old = mpl.colormaps["cmr.rainforest"]
+        cmap_old = mpl.colormaps[f"cmr.{name}"]
 
         # Create standalone module for rainforest
-        cmap_path = create_cmap_mod("rainforest", _copy_name="rainforest_copy")
+        cmap_path = create_cmap_mod(
+            name,
+            save_dir=tmp_path,
+            _copy_name=f"{name}_test_copy",
+        )
 
         # Try to import this module
-        spec = spec_from_file_location("rainforest_copy", cmap_path)
+        spec = spec_from_file_location(f"{name}_test_copy", cmap_path)
         mod = module_from_spec(spec)
         spec.loader.exec_module(mod)
 
         # Check if the colormap in MPL has been updated
-        cmap_new = mpl.colormaps["cmr.rainforest_copy"]
+        cmap_new = mpl.colormaps[f"cmr.{name}_test_copy"]
 
         # identity equality isn't achievable since mpl.colormaps.__getitem__
         # may return a copy
@@ -214,39 +224,18 @@ class Test_create_cmap_mod:
         # Check if the values in both colormaps are the same
         assert np.allclose(cmap_old.colors, cmap_new.colors)
 
-    # Test if a standalone module of infinity can be created
-    def test_standalone_infinity(self):
-        # Obtain the currently registered version of infinity
-        cmap_old = mpl.colormaps["cmr.infinity"]
-
-        # Create standalone module for infinity
-        cmap_path = create_cmap_mod("infinity", _copy_name="inifinity_copy")
-
-        # Try to import this module
-        spec = spec_from_file_location("infinity_copy", cmap_path)
-        mod = module_from_spec(spec)
-        spec.loader.exec_module(mod)
-
-        # Check if the colormap in MPL has been updated
-        cmap_new = mpl.colormaps["cmr.infinity"]
-        if mpl.__version_info__ >= (3, 8):
-            assert cmap_old == cmap_new
-        else:
-            assert _MPL38_colormap_eq(cmap_old, cmap_new)
-
-        assert cmap_old == cmap_new
-
-        # Check if the values in both colormaps are the same
-        assert np.allclose(cmap_old.colors, cmap_new.colors)
-
-        # Check that the shifted version of infinity also exists
-        assert "cmr.infinity_s" in plt.colormaps()
+        if name == "infinity":
+            # Check that the shifted version of infinity also exists
+            assert "cmr.infinity_s" in plt.colormaps()
 
     # Test if providing an invalid colormap name fails
-    def test_invalid_cmap(self):
+    def test_invalid_cmap(self, tmp_path):
         # Check if a ValueError is raised
         with pytest.raises(ValueError):
-            create_cmap_mod("this is an incorrect colormap name")
+            create_cmap_mod(
+                "this is an incorrect colormap name",
+                save_dir=tmp_path,
+            )
 
 
 # Pytest class for create_cmap_overview
@@ -267,13 +256,16 @@ class Test_create_cmap_overview:
         create_cmap_overview(["cmr.rainforest"])
 
     # Test if providing all MPL colormap objects works
-    def test_mpl_cmaps_objs(self):
+    @pytest.mark.parametrize("sort", ["perceptual", "lightness"])
+    def test_mpl_cmaps_objs(self, sort):
         cmaps = map(mpl.colormaps.__getitem__, mpl_cmaps)
-        create_cmap_overview(cmaps, sort="perceptual")
+        create_cmap_overview(cmaps, sort=sort)
 
     # Test if providing all MPL colormap names works
-    def test_mpl_cmaps_names(self):
-        create_cmap_overview(mpl_cmaps, sort="lightness")
+    @pytest.mark.parametrize("cmaps", [mpl_cmaps, mpl_cmaps_as_str])
+    @pytest.mark.parametrize("sort", ["perceptual", "lightness"])
+    def test_mpl_cmaps_names(self, cmaps, sort):
+        create_cmap_overview(cmaps, sort=sort)
 
     # Test if the lightness profiles can be plotted
     def test_lightness_profiles(self):
@@ -378,6 +370,18 @@ class Test_import_cmaps:
     def test_cmap_file_npy(self):
         import_cmaps(
             path.join(dirpath, "../colormaps/cm_rainforest.npy"),
+            _skip_registration=True,
+        )
+
+    def test_resilience(self, tmp_path):
+        # check that, in the presence of a npy and a txt,
+        # import_cmaps ignores the second
+        src = Path(dirpath).parent.joinpath("colormaps", "cm_rainforest.npy")
+        shutil.copy(src, tmp_path / "cm_rainforest.npy")
+        shutil.copy(src, tmp_path / "cm_rainforest.txt")
+
+        import_cmaps(
+            tmp_path,
             _skip_registration=True,
         )
 

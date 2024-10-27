@@ -7,7 +7,7 @@ Utility functions for registering and manipulating colormaps in various ways.
 
 # %% IMPORTS
 # Built-in imports
-import sys
+import os
 from collections import OrderedDict
 from collections.abc import Callable
 from glob import glob
@@ -72,14 +72,16 @@ RGB = list[tuple[RED, GREEN, BLUE]]
 
 # %% HELPER FUNCTIONS
 # Define function for obtaining the sorting order for lightness ranking
-def _get_cmap_lightness_rank(cmap: CMAP) -> tuple[int, int, float, float, float, str]:
+def _get_cmap_lightness_rank(
+    cmap: Colormap,
+) -> tuple[int, int, float, float, float, str]:
     """
     Returns a tuple of objects used for sorting the provided `cmap` based
     on its lightness profile.
 
     Parameters
     ----------
-    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+    cmap : :obj:`~matplotlib.colors.Colormap` object
         The registered name of the colormap in :mod:`matplotlib.cm` or its
         corresponding :obj:`~matplotlib.colors.Colormap` object.
 
@@ -105,9 +107,6 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> tuple[int, int, float, float, float,
 
     """
     # Obtain the colormap
-    if isinstance(cmap, str):
-        cmap = mpl.colormaps[cmap]
-
     cm_type = get_cmap_type(cmap)
 
     # Determine lightness profile stats for sequential/diverging/cyclic
@@ -177,7 +176,7 @@ def _get_cmap_lightness_rank(cmap: CMAP) -> tuple[int, int, float, float, float,
 
 # Define function for obtaining the sorting order for perceptual ranking
 def _get_cmap_perceptual_rank(
-    cmap: CMAP,
+    cmap: Colormap,
 ) -> tuple[int, int, float, float, float, float, str]:
     """
     In addition to returning the lightness rank as given by
@@ -187,7 +186,7 @@ def _get_cmap_perceptual_rank(
 
     Parameters
     ----------
-    cmap : str or :obj:`~matplotlib.colors.Colormap` object
+    cmap : :obj:`~matplotlib.colors.Colormap` object
         The registered name of the colormap in :mod:`matplotlib.cm` or its
         corresponding :obj:`~matplotlib.colors.Colormap` object.
 
@@ -205,9 +204,6 @@ def _get_cmap_perceptual_rank(
 
     """
     # Obtain the colormap
-    if isinstance(cmap, str):
-        cmap = mpl.colormaps[cmap]
-
     cm_type = get_cmap_type(cmap)
 
     # Determine perceptual range for sequential/diverging/cyclic
@@ -342,7 +338,10 @@ def combine_cmaps(
 
 # This function creates a standalone module of a CMasher colormap
 def create_cmap_mod(
-    cmap: str, *, save_dir: str = ".", _copy_name: str | None = None
+    cmap: str,
+    *,
+    save_dir: str | os.PathLike[str] = ".",
+    _copy_name: str | None = None,
 ) -> str:
     """
     Creates a standalone Python module of the provided *CMasher* `cmap` and
@@ -361,7 +360,7 @@ def create_cmap_mod(
 
     Optional
     --------
-    save_dir : str. Default: '.'
+    save_dir: os.PathLike Default: '.'
         The path to the directory where the module must be saved.
         By default, the current directory is used.
 
@@ -911,7 +910,7 @@ def create_cmap_overview(
                     fontsize=10,
                     c=text_color,
                 )
-        else:
+        else:  # pragma: no cover
             raise RuntimeError
 
     # If savefig is not None, save the figure
@@ -1055,7 +1054,7 @@ def get_cmap_type(cmap: CMAP) -> str:
 
     # MISC 1
     # If the colormap has only a single lightness, it is misc
-    elif np.allclose(diff_L, 0):
+    elif np.allclose(diff_L, 0):  # pragma: no cover
         return "misc"
 
     # SEQUENTIAL
@@ -1622,16 +1621,14 @@ def view_cmap(
 
     # If show_grayscale is True, show both plots instead of just one
     if show_grayscale:
-        if isinstance(ax, Axes):
-            # defensive programming
+        if isinstance(ax, Axes):  # pragma: no cover
             raise RuntimeError
         ax[0].imshow(data, cmap=cmap, aspect="auto")
         ax[0].set_axis_off()
         ax[1].imshow(data, cmap=cmap_L, aspect="auto")
         ax[1].set_axis_off()
     else:
-        if not isinstance(ax, Axes):
-            # defensive programming
+        if not isinstance(ax, Axes):  # pragma: no cover
             raise RuntimeError
         ax.imshow(data, cmap=cmap, aspect="auto")
         ax.set_axis_off()
