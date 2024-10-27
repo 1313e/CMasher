@@ -2,12 +2,12 @@
 
 iceburn
 -------
-.. image:: ../../../../cmasher/colormaps/iceburn/iceburn.png
+.. image:: ../../../../src/cmasher/colormaps/iceburn/iceburn.png
     :alt: Visual representation of the *iceburn* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/iceburn/iceburn_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/iceburn/iceburn_viscm.png
     :alt: Statistics of the *iceburn* colormap.
     :width: 100%
     :align: center

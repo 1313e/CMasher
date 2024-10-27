@@ -2,12 +2,12 @@
 
 flamingo
 --------
-.. image:: ../../../../cmasher/colormaps/flamingo/flamingo.png
+.. image:: ../../../../src/cmasher/colormaps/flamingo/flamingo.png
     :alt: Visual representation of the *flamingo* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/flamingo/flamingo_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/flamingo/flamingo_viscm.png
     :alt: Statistics of the *flamingo* colormap.
     :width: 100%
     :align: center

@@ -2,12 +2,12 @@
 
 ember
 -----
-.. image:: ../../../../cmasher/colormaps/ember/ember.png
+.. image:: ../../../../src/cmasher/colormaps/ember/ember.png
     :alt: Visual representation of the *ember* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/ember/ember_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/ember/ember_viscm.png
     :alt: Statistics of the *ember* colormap.
     :width: 100%
     :align: center

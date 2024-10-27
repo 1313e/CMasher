@@ -2,12 +2,12 @@
 
 lavender
 --------
-.. image:: ../../../../cmasher/colormaps/lavender/lavender.png
+.. image:: ../../../../src/cmasher/colormaps/lavender/lavender.png
     :alt: Visual representation of the *lavender* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/lavender/lavender_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/lavender/lavender_viscm.png
     :alt: Statistics of the *lavender* colormap.
     :width: 100%
     :align: center

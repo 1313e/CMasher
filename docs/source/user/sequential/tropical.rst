@@ -2,12 +2,12 @@
 
 tropical
 --------
-.. image:: ../../../../cmasher/colormaps/tropical/tropical.png
+.. image:: ../../../../src/cmasher/colormaps/tropical/tropical.png
     :alt: Visual representation of the *tropical* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/tropical/tropical_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/tropical/tropical_viscm.png
     :alt: Statistics of the *tropical* colormap.
     :width: 100%
     :align: center

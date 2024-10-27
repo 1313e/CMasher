@@ -2,12 +2,12 @@
 
 emergency
 ---------
-.. image:: ../../../../cmasher/colormaps/emergency/emergency.png
+.. image:: ../../../../src/cmasher/colormaps/emergency/emergency.png
     :alt: Visual representation of the *emergency* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/emergency/emergency_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/emergency/emergency_viscm.png
     :alt: Statistics of the *emergency* colormap.
     :width: 100%
     :align: center

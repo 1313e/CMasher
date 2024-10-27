@@ -2,12 +2,12 @@
 
 chroma
 ------
-.. image:: ../../../../cmasher/colormaps/chroma/chroma.png
+.. image:: ../../../../src/cmasher/colormaps/chroma/chroma.png
     :alt: Visual representation of the *chroma* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/chroma/chroma_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/chroma/chroma_viscm.png
     :alt: Statistics of the *chroma* colormap.
     :width: 100%
     :align: center

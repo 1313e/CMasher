@@ -2,12 +2,12 @@
 
 watermelon
 ----------
-.. image:: ../../../../cmasher/colormaps/watermelon/watermelon.png
+.. image:: ../../../../src/cmasher/colormaps/watermelon/watermelon.png
     :alt: Visual representation of the *watermelon* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/watermelon/watermelon_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/watermelon/watermelon_viscm.png
     :alt: Statistics of the *watermelon* colormap.
     :width: 100%
     :align: center

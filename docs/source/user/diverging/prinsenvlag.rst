@@ -2,12 +2,12 @@
 
 prinsenvlag
 -----------
-.. image:: ../../../../cmasher/colormaps/prinsenvlag/prinsenvlag.png
+.. image:: ../../../../src/cmasher/colormaps/prinsenvlag/prinsenvlag.png
     :alt: Visual representation of the *prinsenvlag* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/prinsenvlag/prinsenvlag_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/prinsenvlag/prinsenvlag_viscm.png
     :alt: Statistics of the *prinsenvlag* colormap.
     :width: 100%
     :align: center

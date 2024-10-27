@@ -2,12 +2,12 @@
 
 infinity
 --------
-.. image:: ../../../../cmasher/colormaps/infinity/infinity.png
+.. image:: ../../../../src/cmasher/colormaps/infinity/infinity.png
     :alt: Visual representation of the *infinity* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/infinity/infinity_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/infinity/infinity_viscm.png
     :alt: Statistics of the *infinity* colormap.
     :width: 100%
     :align: center

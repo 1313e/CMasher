@@ -2,12 +2,12 @@
 
 pepper
 ------
-.. image:: ../../../../cmasher/colormaps/pepper/pepper.png
+.. image:: ../../../../src/cmasher/colormaps/pepper/pepper.png
     :alt: Visual representation of the *pepper* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/pepper/pepper_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/pepper/pepper_viscm.png
     :alt: Statistics of the *pepper* colormap.
     :width: 100%
     :align: center

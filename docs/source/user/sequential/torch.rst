@@ -2,12 +2,12 @@
 
 torch
 -----
-.. image:: ../../../../cmasher/colormaps/torch/torch.png
+.. image:: ../../../../src/cmasher/colormaps/torch/torch.png
     :alt: Visual representation of the *torch* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/torch/torch_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/torch/torch_viscm.png
     :alt: Statistics of the *torch* colormap.
     :width: 100%
     :align: center

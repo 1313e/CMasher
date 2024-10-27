@@ -2,12 +2,12 @@
 
 holly
 -----
-.. image:: ../../../../cmasher/colormaps/holly/holly.png
+.. image:: ../../../../src/cmasher/colormaps/holly/holly.png
     :alt: Visual representation of the *holly* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/holly/holly_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/holly/holly_viscm.png
     :alt: Statistics of the *holly* colormap.
     :width: 100%
     :align: center

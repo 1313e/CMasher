@@ -2,12 +2,12 @@
 
 rainforest
 ----------
-.. image:: ../../../../cmasher/colormaps/rainforest/rainforest.png
+.. image:: ../../../../src/cmasher/colormaps/rainforest/rainforest.png
     :alt: Visual representation of the *rainforest* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/rainforest/rainforest_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/rainforest/rainforest_viscm.png
     :alt: Statistics of the *rainforest* colormap.
     :width: 100%
     :align: center

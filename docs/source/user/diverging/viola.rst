@@ -2,12 +2,12 @@
 
 viola
 -----
-.. image:: ../../../../cmasher/colormaps/viola/viola.png
+.. image:: ../../../../src/cmasher/colormaps/viola/viola.png
     :alt: Visual representation of the *viola* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/viola/viola_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/viola/viola_viscm.png
     :alt: Statistics of the *viola* colormap.
     :width: 100%
     :align: center

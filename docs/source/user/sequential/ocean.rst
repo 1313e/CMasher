@@ -2,12 +2,12 @@
 
 ocean
 -----
-.. image:: ../../../../cmasher/colormaps/ocean/ocean.png
+.. image:: ../../../../src/cmasher/colormaps/ocean/ocean.png
     :alt: Visual representation of the *ocean* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/ocean/ocean_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/ocean/ocean_viscm.png
     :alt: Statistics of the *ocean* colormap.
     :width: 100%
     :align: center

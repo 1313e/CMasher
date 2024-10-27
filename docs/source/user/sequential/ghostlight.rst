@@ -2,12 +2,12 @@
 
 ghostlight
 ----------
-.. image:: ../../../../cmasher/colormaps/ghostlight/ghostlight.png
+.. image:: ../../../../src/cmasher/colormaps/ghostlight/ghostlight.png
     :alt: Visual representation of the *ghostlight* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/ghostlight/ghostlight_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/ghostlight/ghostlight_viscm.png
     :alt: Statistics of the *ghostlight* colormap.
     :width: 100%
     :align: center

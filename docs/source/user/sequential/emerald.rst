@@ -2,12 +2,12 @@
 
 emerald
 -------
-.. image:: ../../../../cmasher/colormaps/emerald/emerald.png
+.. image:: ../../../../src/cmasher/colormaps/emerald/emerald.png
     :alt: Visual representation of the *emerald* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/emerald/emerald_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/emerald/emerald_viscm.png
     :alt: Statistics of the *emerald* colormap.
     :width: 100%
     :align: center

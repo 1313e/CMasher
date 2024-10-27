@@ -2,12 +2,12 @@
 
 waterlily
 ---------
-.. image:: ../../../../cmasher/colormaps/waterlily/waterlily.png
+.. image:: ../../../../src/cmasher/colormaps/waterlily/waterlily.png
     :alt: Visual representation of the *waterlily* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/waterlily/waterlily_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/waterlily/waterlily_viscm.png
     :alt: Statistics of the *waterlily* colormap.
     :width: 100%
     :align: center

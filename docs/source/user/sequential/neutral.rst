@@ -2,12 +2,12 @@
 
 neutral
 -------
-.. image:: ../../../../cmasher/colormaps/neutral/neutral.png
+.. image:: ../../../../src/cmasher/colormaps/neutral/neutral.png
     :alt: Visual representation of the *neutral* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/neutral/neutral_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/neutral/neutral_viscm.png
     :alt: Statistics of the *neutral* colormap.
     :width: 100%
     :align: center

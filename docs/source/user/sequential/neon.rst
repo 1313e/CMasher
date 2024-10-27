@@ -2,12 +2,12 @@
 
 neon
 ----
-.. image:: ../../../../cmasher/colormaps/neon/neon.png
+.. image:: ../../../../src/cmasher/colormaps/neon/neon.png
     :alt: Visual representation of the *neon* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/neon/neon_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/neon/neon_viscm.png
     :alt: Statistics of the *neon* colormap.
     :width: 100%
     :align: center

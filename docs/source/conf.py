@@ -12,9 +12,9 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import re
 import sys
 from codecs import open
+from importlib.metadata import version as md_version
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -28,11 +28,7 @@ author = "Ellert van der Velden"
 # The short X.Y version
 version = "latest"
 # The full version, including alpha/beta/rc tags
-with open("../../cmasher/__version__.py", "r") as f:
-    vf = f.read()
-
-# Obtain version from read-in __version__.py file
-version = re.search(r"^_*version_* = ['\"]([^'\"]*)['\"]", vf, re.M).group(1)
+version = md_version("cmasher")
 
 
 # -- General configuration ---------------------------------------------------

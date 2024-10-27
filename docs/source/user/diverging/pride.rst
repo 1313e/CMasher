@@ -2,12 +2,12 @@
 
 pride
 -----
-.. image:: ../../../../cmasher/colormaps/pride/pride.png
+.. image:: ../../../../src/cmasher/colormaps/pride/pride.png
     :alt: Visual representation of the *pride* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/pride/pride_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/pride/pride_viscm.png
     :alt: Statistics of the *pride* colormap.
     :width: 100%
     :align: center

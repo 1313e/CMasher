@@ -2,12 +2,12 @@
 
 toxic
 -----
-.. image:: ../../../../cmasher/colormaps/toxic/toxic.png
+.. image:: ../../../../src/cmasher/colormaps/toxic/toxic.png
     :alt: Visual representation of the *toxic* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/toxic/toxic_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/toxic/toxic_viscm.png
     :alt: Statistics of the *toxic* colormap.
     :width: 100%
     :align: center

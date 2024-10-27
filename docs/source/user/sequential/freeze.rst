@@ -2,12 +2,12 @@
 
 freeze
 ------
-.. image:: ../../../../cmasher/colormaps/freeze/freeze.png
+.. image:: ../../../../src/cmasher/colormaps/freeze/freeze.png
     :alt: Visual representation of the *freeze* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/freeze/freeze_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/freeze/freeze_viscm.png
     :alt: Statistics of the *freeze* colormap.
     :width: 100%
     :align: center

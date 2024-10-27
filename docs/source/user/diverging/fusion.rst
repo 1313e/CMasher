@@ -2,12 +2,12 @@
 
 fusion
 ------
-.. image:: ../../../../cmasher/colormaps/fusion/fusion.png
+.. image:: ../../../../src/cmasher/colormaps/fusion/fusion.png
     :alt: Visual representation of the *fusion* colormap.
     :width: 100%
     :align: center
 
-.. image:: ../../../../cmasher/colormaps/fusion/fusion_viscm.png
+.. image:: ../../../../src/cmasher/colormaps/fusion/fusion_viscm.png
     :alt: Statistics of the *fusion* colormap.
     :width: 100%
     :align: center
