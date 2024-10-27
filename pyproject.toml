@@ -118,7 +118,7 @@ known-first-party = ["cmasher"]
 convention = "numpy"
 
 [tool.ruff.lint.per-file-ignores]
-"cmasher/tests/**" = ["D"]
+"tests/**" = ["D"]
 "_backports.py" = ["D"]
 
 [tool.mypy]

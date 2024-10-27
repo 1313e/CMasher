@@ -64,7 +64,7 @@ jobs:
     - name: Build
       run: |
         uv venv --python ${{ matrix.python-version }}
-        uv pip install -e . ${{ matrix.install-args }}
+        uv pip install . ${{ matrix.install-args }}
         uv pip install -r requirements/dev.txt ${{ matrix.test-args }}
 
     - run: uv pip list

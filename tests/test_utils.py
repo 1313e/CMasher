@@ -53,17 +53,19 @@ def _MPL38_colormap_eq(cmap, other) -> bool:
 
 
 # Save the path to this directory
-dirpath = path.dirname(__file__)
-
+TEST_DIR = Path(__file__).parent
 
 # %% GLOBALS
 # Obtain path to directory with colormaps
-cmap_dir = path.abspath(path.join(dirpath, "../colormaps"))
+CMASHER_DIR = Path(cmr.__file__).parent
+COLORMAPS_DIR = CMASHER_DIR / "colormaps"
 
 # Obtain list of all colormaps defined in CMasher
 # As all colormaps have their own directories, save them instead
 _IGNORED = ["PROJECTS", "__pycache__"]
-cm_names = [_ for _ in sorted(next(os.walk(cmap_dir))[1]) if _ not in _IGNORED]
+cm_names = [
+    p.name for p in sorted(COLORMAPS_DIR.glob("*")) if p.is_dir() and p not in _IGNORED
+]
 
 # Obtain list of all colormaps registered in MPL
 mpl_cmaps = plt.colormaps()
@@ -369,14 +371,14 @@ class Test_import_cmaps:
     # Test if providing a cmap .npy-file works
     def test_cmap_file_npy(self):
         import_cmaps(
-            path.join(dirpath, "../colormaps/cm_rainforest.npy"),
+            COLORMAPS_DIR / "cm_rainforest.npy",
             _skip_registration=True,
         )
 
     def test_resilience(self, tmp_path):
         # check that, in the presence of a npy and a txt,
         # import_cmaps ignores the second
-        src = Path(dirpath).parent.joinpath("colormaps", "cm_rainforest.npy")
+        src = COLORMAPS_DIR / "cm_rainforest.npy"
         shutil.copy(src, tmp_path / "cm_rainforest.npy")
         shutil.copy(src, tmp_path / "cm_rainforest.txt")
 
@@ -387,22 +389,22 @@ class Test_import_cmaps:
 
     # Test if providing a cmap .txt-file with 8-bit values works
     def test_cmap_file_8bit(self):
-        import_cmaps(path.join(dirpath, "data/cm_8bit.txt"))
+        import_cmaps(TEST_DIR / "data" / "cm_8bit.txt")
 
     # Test if providing a cmap .txt-file with HEX values works
     def test_cmap_file_HEX(self):
-        import_cmaps(path.join(dirpath, "data/cm_hex.txt"))
+        import_cmaps(TEST_DIR / "data" / "cm_hex.txt")
 
     # Test if providing a cmap .jscm-file works
     @pytest.mark.skipif(not HAS_VISCM, reason="viscm is required")
     def test_cmap_file_jscm(self):
-        cmap_path = path.join(dirpath, "data/cm_rainforest_jscm.jscm")
+        cmap_path = TEST_DIR / "data" / "cm_rainforest_jscm.jscm"
         import_cmaps(cmap_path)
 
     # Test if providing a cyclic colormap works
     def test_cyclic_cmap(self):
         name = "cyclic"
-        import_cmaps(path.join(dirpath, f"data/cm_{name}.txt"))
+        import_cmaps(TEST_DIR / "data" / f"cm_{name}.txt")
         for cmap in [name, name + "_r", name + "_s", name + "_s_r"]:
             assert "cmr." + cmap in plt.colormaps()
             assert getattr(cmrcm, cmap, None) is not None
@@ -417,17 +419,17 @@ class Test_import_cmaps:
     # Test if providing an invalid cmap file raises an error
     def test_invalid_cmap_file(self):
         with pytest.raises(OSError):
-            import_cmaps(path.join(dirpath, "data/test.txt"))
+            import_cmaps(TEST_DIR / "data" / "test.txt")
 
     # Test if providing an invalid cmap .npy-file raises an error
     def test_invalid_cmap_npy_file(self):
         with pytest.raises(ValueError):
-            import_cmaps(path.join(dirpath, "data/cm_test2.npy"))
+            import_cmaps(TEST_DIR / "data" / "cm_test2.npy")
 
     # Test if providing a custom directory with invalid cmaps raises an error
     def test_invalid_cmap_dir(self):
         with pytest.raises(ValueError):
-            import_cmaps(path.join(dirpath, "data"))
+            import_cmaps(TEST_DIR / "data")
 
 
 # Pytest class for set_cmap_legend_entry()-function
