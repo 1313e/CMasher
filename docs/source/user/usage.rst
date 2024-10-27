@@ -401,4 +401,4 @@ Below are the three different versions of the :ref:`rainforest` colormap one can
 .. _PyPI: https://pypi.org/project/CMasher
 .. _matplotlib: https://github.com/matplotlib/matplotlib
 .. _issue: https://github.com/1313e/CMasher/issues
-.. _cmasher/colormaps: https://github.com/1313e/CMasher/tree/master/cmasher/colormaps
+.. _cmasher/colormaps: https://github.com/1313e/CMasher/tree/master/src/cmasher/colormaps
