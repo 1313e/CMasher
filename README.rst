@@ -21,7 +21,7 @@ Colormap overview
 Below is an overview of all the colormaps that are currently in *CMasher* (made with the ``cmr.create_cmap_overview()`` function).
 For more information, see the `online documentation`_.
 
-.. image:: https://github.com/1313e/CMasher/raw/master/src/cmasher/colormaps/cmap_overview.png
+.. image:: https://github.com/1313e/CMasher/raw/master/static/cmap_overview.png
     :width: 100%
     :align: center
     :target: https://cmasher.readthedocs.io
