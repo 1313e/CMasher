@@ -5,6 +5,7 @@ import shutil
 import sys
 from itertools import zip_longest
 from os import path
+from pathlib import Path
 from textwrap import dedent
 
 import matplotlib.pyplot as plt
@@ -26,15 +27,13 @@ from cmasher.utils import (
 )
 
 # %% GLOBALS
-docs_dir = path.abspath(path.join(path.dirname(__file__), "../../docs/source/user"))
+docs_dir = Path(__file__).parents[2].joinpath("docs", "source", "user").resolve()
 
 
 # %% FUNCTION DEFINITIONS
 def create_cmap_app_overview():
     # Load sequential image data
-    image_seq = np.loadtxt(
-        path.join(path.dirname(__file__), "app_data.txt.gz"), dtype=int
-    )
+    image_seq = np.loadtxt(Path(__file__).parent / "app_data.txt.gz", dtype=int)
 
     # Obtain resolution ratio
     image_ratio = image_seq.shape[0] / image_seq.shape[1]
@@ -162,8 +161,8 @@ def create_cmap_app_overview():
     )
 
     # Obtain figure path
-    fig_path_100 = path.join(docs_dir, "images", "cmr_cmaps_app_100.png")
-    fig_path_250 = path.join(docs_dir, "../_static", "cmr_cmaps_app_250.png")
+    fig_path_100 = docs_dir / "images" / "cmr_cmaps_app_100.png"
+    fig_path_250 = docs_dir.parent / "_static" / "cmr_cmaps_app_250.png"
 
     # Save the figure
     plt.savefig(fig_path_100, dpi=100)
@@ -176,17 +175,17 @@ def create_cmap_app_overview():
 # %% MAIN SCRIPT
 if __name__ == "__main__":
     # Obtain path to .jscm-file
-    jscm_path = path.abspath(sys.argv[1])
+    jscm_path = Path(sys.argv[1]).resolve()
 
     # If this path does not exist, try again with added 'PROJECTS'
-    if not path.exists(jscm_path):
-        jscm_path = path.abspath(path.join("PROJECTS", sys.argv[1]))
+    if not jscm_path.exists():
+        jscm_path = Path("PROJECTS", sys.argv[1])
 
     # Get colormap name
-    name = path.splitext(path.basename(jscm_path))[0]
+    name = jscm_path.stem
 
     # Make a directory for the colormap files
-    os.mkdir(name)
+    Path(name).mkdir()
 
     # Move the .jscm-file to it
     shutil.move(jscm_path, name)
@@ -248,10 +247,10 @@ if __name__ == "__main__":
     # Make new colormap overview
     create_cmap_overview(savefig="cmap_overview.png", sort="lightness")
     create_cmap_overview(
-        savefig=path.join(docs_dir, "images", "cmap_overview.png"), sort="lightness"
+        savefig=docs_dir / "images" / "cmap_overview.png", sort="lightness"
     )
     create_cmap_overview(
-        savefig=path.join(docs_dir, "images", "cmap_overview_perceptual.png"),
+        savefig=docs_dir / "images" / "cmap_overview_perceptual.png",
         sort="perceptual",
         show_info=True,
     )
@@ -259,7 +258,7 @@ if __name__ == "__main__":
         plt.colormaps(),
         plot_profile=True,
         sort="lightness",
-        savefig=path.join(docs_dir, "images", "mpl_cmaps.png"),
+        savefig=docs_dir / "images" / "mpl_cmaps.png",
     )
     create_cmap_app_overview()
 
@@ -296,7 +295,7 @@ if __name__ == "__main__":
         cmaps,
         sort="perceptual",
         use_types=(cmtype == "diverging"),
-        savefig=path.join(docs_dir, "images", f"{cmtype[:3]}_cmaps.png"),
+        savefig=docs_dir / "images" / f"{cmtype[:3]}_cmaps.png",
         title=f"{cmtype.capitalize()} Colormaps",
         show_info=True,
     )
@@ -306,16 +305,16 @@ if __name__ == "__main__":
             cmaps,
             use_types=False,
             title="Sequential MPL Colormaps",
-            savefig=path.join(docs_dir, "images", "seq_mpl_cmaps.png"),
+            savefig=docs_dir / "images" / "seq_mpl_cmaps.png",
         )
 
     # Update Tableau preferences file
-    update_tableau_pref_file(path.join(docs_dir, "../_static"))
+    update_tableau_pref_file(docs_dir.parent / "_static")
 
     # Create docs entry for this colormap if possible
     try:
         # Create docs entry
-        with open(path.join(docs_dir, cmtype, f"{name}.rst"), "x") as f:
+        with docs_dir.joinpath(cmtype, f"{name}.rst").open("x") as f:
             f.write(docs_entry[1:])
     # If this file already exists, then skip
     except FileExistsError:
@@ -323,8 +322,7 @@ if __name__ == "__main__":
     # If the file did not exist yet, add it to the corresponding overview
     else:
         # Read the corresponding docs overview page
-        with open(path.join(docs_dir, f"{cmtype}.rst")) as f:
-            docs_overview = f.read()
+        docs_overview = docs_dir.joinpath(f"{cmtype}.rst").read_text()
 
         # Set the string used to start the toctree with
         toctree_header = ".. toctree::\n    :caption: Individual colormaps\n\n"
@@ -348,8 +346,7 @@ if __name__ == "__main__":
         docs_overview = "".join([desc, toctree_header, toctree])
 
         # Save this as the new docs_overview
-        with open(path.join(docs_dir, f"{cmtype}.rst"), "w") as f:
-            f.write(docs_overview)
+        docs_dir.joinpath(f"{cmtype}.rst").write_text(docs_overview)
 
     # Create viscm output figure
     viscm.gui.main(

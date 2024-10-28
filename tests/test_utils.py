@@ -1,9 +1,7 @@
 # %% IMPORTS
 # Built-in imports
-import os
 import shutil
 from importlib.util import find_spec, module_from_spec, spec_from_file_location
-from os import path
 from pathlib import Path
 
 # Package imports
@@ -290,9 +288,10 @@ class Test_create_cmap_overview:
         create_cmap_overview({"test1": [cmrcm.rainforest], "test2": ["cmr.rainforest"]})
 
     # Test if the figure can be saved
-    def test_savefig(self):
-        create_cmap_overview(savefig="test.png")
-        assert path.exists("./test.png")
+    def test_savefig(self, tmp_path):
+        dst = tmp_path / "test.png"
+        create_cmap_overview(savefig=dst)
+        assert dst.is_file()
 
     # test if providing an invalid sort value raises an error
     def test_invalid_sort_value(self):
@@ -521,8 +520,12 @@ class Test_view_cmap:
         view_cmap("cmr.rainforest")
 
     # Test if the figure can be saved
-    def test_savefig(self):
+    def test_savefig(self, tmp_path):
+        dst = tmp_path / "test.png"
         view_cmap(
-            "cmr.rainforest", show_test=True, show_grayscale=True, savefig="test.png"
+            "cmr.rainforest",
+            show_test=True,
+            show_grayscale=True,
+            savefig=dst,
         )
-        assert path.exists("./test.png")
+        assert dst.is_file()

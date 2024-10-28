@@ -8,8 +8,9 @@ applications.
 
 # %% IMPORTS
 # Built-in imports
+import os
 import re
-from os import path
+from pathlib import Path
 from textwrap import dedent, indent
 
 # Import packages
@@ -21,7 +22,7 @@ __all__ = ["update_tableau_pref_file"]
 
 # %% FUNCTION DEFINITIONS
 # Define function that generates a Tableau properties file with colormaps
-def update_tableau_pref_file(dirname: str = ".") -> None:
+def update_tableau_pref_file(dirname: str | os.PathLike[str] = ".") -> None:
     """
     Update an existing Tableau 'Preferences.tps' file to include colormaps from
     *CMasher*.
@@ -30,7 +31,7 @@ def update_tableau_pref_file(dirname: str = ".") -> None:
 
     Optional
     --------
-    dirname : str. Default: '.'
+    dirname : str or os.PathLike[str] Default: '.'
         The relative or absolute path to the directory where the Tableau
         preferences file should be updated.
         If `dirname` contains an existing file called 'Preferences.tps', it
@@ -89,10 +90,10 @@ def update_tableau_pref_file(dirname: str = ".") -> None:
         entries_dict[cmap.name] = entry_str
 
     # Obtain absolute path to preferences file in provided dirname
-    filename = path.abspath(path.join(dirname, "Preferences.tps"))
+    filename = Path(dirname).joinpath("Preferences.tps").resolve()
 
     # Check if this file already exists
-    if path.exists(filename):
+    if filename.exists():
         # If so, read in the file contents
         with open(filename) as f:
             text = f.read()
@@ -184,5 +185,4 @@ def update_tableau_pref_file(dirname: str = ".") -> None:
         ).format(entries_str)[1:]
 
         # Create this file
-        with open(filename, "w") as f:
-            f.write(pref_file)
+        filename.write_text(pref_file)

@@ -96,6 +96,7 @@ ignore = [
     "E226",
     "F401",
     "F403",
+    "PTH123", # builtin-open
 ]
 select = [
     "E",
@@ -105,11 +106,11 @@ select = [
     "C4",  # flake8-comprehensions
     "B",   # flake8-bugbear
     "YTT", # flake8-2020
+    "PTH", # flake8-use-pathlib
     "I",   # isort
     "UP",  # pyupgrade
     "NPY", # numpy specific rules
 ]
-
 [tool.ruff.lint.isort]
 combine-as-imports = true
 known-first-party = ["cmasher"]
