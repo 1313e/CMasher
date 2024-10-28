@@ -5,8 +5,6 @@ Scientific colormaps for making accessible, informative and *cmashing* plots.
 
 """
 
-# %% IMPORTS AND DECLARATIONS
-# CMasher imports
 from . import app_usage, cm, utils
 from .__version__ import __version__
 from .cm import *

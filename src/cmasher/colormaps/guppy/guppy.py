@@ -1,5 +1,3 @@
-# %% IMPORTS
-# Package imports
 import matplotlib as mpl
 from matplotlib.colors import ListedColormap
 
