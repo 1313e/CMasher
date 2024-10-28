@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.os }}, Python ${{ matrix.python-version }}
+    name: ${{ matrix.os }}, Python ${{ matrix.python-version }} ${{ matrix.viscm-flavor }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -29,7 +29,7 @@ jobs:
         - '3.11'
         - '3.12'
         - '3.13'
-        test-args: [viscm>=0.10]
+        viscm-flavor: ['']
 
         include:
         - os: ubuntu-20.04
@@ -44,8 +44,29 @@ jobs:
         - os: windows-latest
           python-version: '3.13'
 
+        # check with viscm + Python 3.12
+        # note that 3.13 is not usable at the time of writing because
+        # viscm 0.10.0 pin numpy<2, and numpy 1.x doesn't support Python 3.13
+        # see https://github.com/matplotlib/viscm/pull/82
+        - os: ubuntu-latest
+          python-version: '3.12'
+          venv-loc: bin
+          viscm-flavor: Pyside
+        - os: ubuntu-latest
+          python-version: '3.12'
+          venv-loc: bin
+          viscm-flavor: PyQt
+        - os: macos-latest
+          python-version: '3.12'
+          venv-loc: bin
+          viscm-flavor: PyQt
+        - os: windows-latest
+          python-version: '3.12'
+          venv-loc: Scripts
+          viscm-flavor: PyQt
+
     concurrency:
-      group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-build
+      group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.viscm-flavor }}-build
       cancel-in-progress: true
 
     steps:
@@ -64,7 +85,7 @@ jobs:
       run: |
         uv venv --python ${{ matrix.python-version }}
         uv pip install .
-        uv pip install -r requirements/dev.txt ${{ matrix.test-args }}
+        uv pip install -r requirements/dev.txt
 
     - run: uv pip list
 
@@ -83,7 +104,7 @@ jobs:
       if: startsWith( matrix.os , 'ubuntu' )
       uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
       with:
-        name: cmasher_coverage_data-${{ matrix.os }}-${{ matrix.python-version }}${{ matrix.oldestdeps }}
+        name: cmasher_coverage_data-${{ matrix.os }}-${{ matrix.python-version }}${{ matrix.oldestdeps }}-${{ matrix.viscm-flavor }}
         path: .coverage.*
         if-no-files-found: ignore
         include-hidden-files: true
