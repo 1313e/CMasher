@@ -5,6 +5,7 @@ import os
 import re
 import sys
 from importlib import import_module
+from pathlib import Path
 from textwrap import dedent
 
 # Package imports
@@ -220,7 +221,7 @@ def cli_app_usage_tableau():
     cmr.app_usage.update_tableau_pref_file(dirname=ARGS.dir)
 
     # Print on commandline that properties file was created/updated
-    print(f"Created/Updated Tableau preferences file in {os.path.abspath(ARGS.dir)!r}.")
+    print(f"Created/Updated Tableau preferences file in {ARGS.dir.resolve()!r}.")
 
 
 # This function handles the 'lang_usage r' subcommand
@@ -619,7 +620,7 @@ def main():
         help="Path to directory where the module must be saved.",
         action="store",
         default=cmr.create_cmap_mod.__kwdefaults__["save_dir"],
-        type=str,
+        type=Path,
     )
 
     # Set defaults for mk_cmod_parser

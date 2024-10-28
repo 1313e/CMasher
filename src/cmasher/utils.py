@@ -13,6 +13,7 @@ from collections.abc import Callable
 from glob import glob
 from importlib.util import find_spec
 from os import path
+from pathlib import Path
 from textwrap import dedent
 from typing import TYPE_CHECKING, Optional, Union
 
@@ -360,7 +361,7 @@ def create_cmap_mod(
 
     Optional
     --------
-    save_dir: os.PathLike Default: '.'
+    save_dir: str or os.PathLike[str] Default: '.'
         The path to the directory where the module must be saved.
         By default, the current directory is used.
 
@@ -386,7 +387,7 @@ def create_cmap_mod(
 
     """
     # Get absolute value to provided save_dir
-    save_dir = path.abspath(save_dir)
+    save_dir = Path(save_dir).resolve()
 
     # Remove any 'cmr.' prefix from provided cmap
     name = cmap.removeprefix("cmr.")
@@ -469,21 +470,21 @@ def create_cmap_mod(
     )
 
     # Obtain the path to the module
-    cmap_path = path.join(save_dir, f"{_copy_name or name}.py")
+    cmap_path = save_dir / f"{_copy_name or name}.py"
 
     # Create Python module
     with open(cmap_path, "w") as f:
         f.write(cm_py_file[1:])
 
     # Return cmap_path
-    return cmap_path
+    return str(cmap_path.resolve())
 
 
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(
     cmaps: list[CMAP] | dict[str, list[Colormap]] | None = None,
     *,
-    savefig: str | None = None,
+    savefig: str | os.PathLike[str] | None = None,
     use_types: bool = True,
     sort: str | Callable | None = "alphabetical",
     show_grayscale: bool = True,
@@ -505,7 +506,7 @@ def create_cmap_overview(
         A list of all colormaps that must be included in the overview plot.
         If dict of lists, the keys define categories for the colormaps.
         If *None*, all colormaps defined in *CMasher* are used instead.
-    savefig : str or None. Default: None
+    savefig : str, os.PathLike or None. Default: None
         If not *None*, the path where the overview plot must be saved to.
         Else, the plot will simply be shown.
     use_types : bool. Default: True
@@ -915,7 +916,8 @@ def create_cmap_overview(
 
     # If savefig is not None, save the figure
     if savefig is not None:
-        dpi = 100 if (path.splitext(savefig)[1] == ".svg") else 250
+        savefig = Path(savefig)
+        dpi = 100 if (savefig.suffix == ".svg") else 250
         plt.savefig(savefig, dpi=dpi, facecolor=face_color, edgecolor=edge_color)
         plt.close(fig)
 
@@ -1161,7 +1163,11 @@ def get_sub_cmap(cmap: CMAP, start: float, stop: float, *, N: int | None = None)
 
 
 # Function to import all custom colormaps in a file or directory
-def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
+def import_cmaps(
+    cmap_path: str | os.PathLike[str],
+    *,
+    _skip_registration: bool = False,
+) -> None:
     """
     Reads in custom colormaps from a provided file or directory `cmap_path`;
     transforms them into :obj:`~matplotlib.colors.ListedColormap` objects; and
@@ -1174,7 +1180,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
 
     Parameters
     ----------
-    cmap_path : str
+    cmap_path : str or os.PathLike[str]
         Relative or absolute path to a custom colormap file; or directory that
         contains custom colormap files. A colormap file can be a *NumPy* binary
         file ('.npy'); a *viscm* source file ('.jscm'); or any text file.
@@ -1204,24 +1210,29 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
 
     """
     # Obtain path to file or directory with colormaps
-    cmap_path = path.abspath(cmap_path)
+    cmap_path_input = cmap_path
+    cmap_path = Path(cmap_path).resolve()
 
     # Check if provided file or directory exists
-    if not path.exists(cmap_path):
-        raise OSError(
-            f"Input argument 'cmap_path' is a non-existing path ({cmap_path!r})!"
+    if not cmap_path.exists():
+        raise FileNotFoundError(
+            "Input argument 'cmap_path' is a non-existing path "
+            f"({cmap_path_input!r})!"
         )
 
+    cm_files: list[Path]
+
     # Check if cmap_path is a file or directory and act accordingly
-    if path.isfile(cmap_path):
+    if cmap_path.is_file():
         # If file, split cmap_path up into dir and file components
-        cmap_dir, cmap_file = path.split(cmap_path)
+        cmap_dir = cmap_path.parent
+        cmap_file = cmap_path
 
         # Check if its name starts with 'cm_' and raise error if not
-        if not cmap_file.startswith("cm_"):
+        if not cmap_file.stem.startswith("cm_"):
             raise OSError(
                 "Input argument 'cmap_path' does not lead to a file "
-                f"with the 'cm_' prefix ({cmap_path!r})!"
+                f"with the 'cm_' prefix ({cmap_path_input!r})!"
             )
 
         # Set cm_files to be the sole read-in file
@@ -1229,13 +1240,11 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
     else:
         # If directory, obtain the names of all colormap files in cmap_path
         cmap_dir = cmap_path
-        cm_files = list(map(path.basename, glob(f"{cmap_dir}/cm_*")))
-        cm_files.sort()
+        cm_files = sorted(cmap_dir.glob("cm_*"))
 
         def sort_key(name):
             # prioritize binary files over text files because binary loads faster
-            _, ext = path.splitext(name)
-            if ext == ".npy":
+            if (ext := name.suffix) == ".npy":
                 return 0
             if ext == ".txt":
                 return 1
@@ -1244,14 +1253,15 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
         cm_files.sort(key=sort_key)
         del sort_key
 
-    if any(file.endswith(".jscm") for file in cm_files) and not _HAS_VISCM:
+    if any(file.suffix == ".jscm" for file in cm_files) and not _HAS_VISCM:
         raise ValueError("The 'viscm' package is required to read '.jscm' files!")
 
     # Read in all the defined colormaps, transform and register them
     seen: set[str] = set()
     for cm_file in cm_files:
         # Split basename and extension
-        base_str, ext_str = path.splitext(cm_file)
+        base_str = cm_file.stem
+        ext_str = cm_file.suffix
         if base_str in seen:
             continue
         else:
@@ -1259,14 +1269,11 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
 
         cm_name = base_str[3:]
 
-        # Obtain absolute path to colormap data file
-        cm_file_path = path.join(cmap_dir, cm_file)
-
         # Process colormap files
         try:
             # If file is a NumPy binary file
             if ext_str == ".npy":
-                rgb = np.load(cm_file_path)
+                rgb = np.load(cm_file)
 
             # If file is viscm source file
             elif ext_str == ".jscm":
@@ -1274,7 +1281,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
 
                 # Load colormap
                 cmap = viscm.gui.Colormap(None, None, None)
-                cmap.load(cm_file_path)
+                cmap.load(cm_file)
 
                 # Create editor and obtain RGB values
                 v = viscm.viscm_editor(
@@ -1287,9 +1294,7 @@ def import_cmaps(cmap_path: str, *, _skip_registration: bool = False) -> None:
 
             # If file is anything else
             else:
-                rgb = np.genfromtxt(
-                    cm_file_path, dtype=None, comments="//", encoding=None
-                )  # type: ignore [call-overload]
+                rgb = np.genfromtxt(cm_file, dtype=None, comments="//", encoding=None)  # type: ignore [call-overload]
 
             if not _skip_registration:
                 # Register colormap
@@ -1612,7 +1617,7 @@ def view_cmap(
     # Check if show_test is True
     if show_test:
         # If so, use a colormap test data file
-        data = np.load(path.join(path.dirname(__file__), "data/colormaptest.npy"))
+        data = np.load(Path(__file__).parent / "data" / "colormaptest.npy")
     else:
         # If not, just plot the colormap
         data = [np.linspace(0, 1, cmap.N)]
@@ -1646,4 +1651,4 @@ def view_cmap(
 
 # %% IMPORT SCRIPT
 # Import all colormaps defined in './colormaps'
-import_cmaps(path.join(path.dirname(__file__), "colormaps"))
+import_cmaps(Path(__file__).parent / "colormaps")
