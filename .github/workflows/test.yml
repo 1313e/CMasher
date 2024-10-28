@@ -30,25 +30,19 @@ jobs:
         - '3.12'
         - '3.13'
         test-args: [viscm>=0.10]
-        venv-loc: [bin]
 
         include:
         - os: ubuntu-20.04
           python-version: '3.10'
-          venv-loc: bin
           install-args: --resolution=lowest-direct
         - os: windows-latest
           python-version: '3.10'
-          venv-loc: Scripts
         - os: windows-latest
           python-version: '3.11'
-          venv-loc: Scripts
         - os: windows-latest
           python-version: '3.12'
-          venv-loc: Scripts
         - os: windows-latest
           python-version: '3.13'
-          venv-loc: Scripts
 
     concurrency:
       group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-build
@@ -71,16 +65,13 @@ jobs:
 
     - name: Test package (no coverage)
       if: ${{ !startsWith( matrix.os , 'ubuntu' ) }}
-      shell: bash # for windows-compat
-      run: |
-        source .venv/${{matrix.venv-loc}}/activate
-        pytest --color=yes --mpl
+      run: uv run ${{ matrix.install-args }} pytest --color=yes --mpl
 
     - name: Test package (with coverage)
       if: startsWith( matrix.os , 'ubuntu' )
       run: |
-        source .venv/${{matrix.venv-loc}}/activate
-        coverage run --parallel-mode -m pytest --color=yes --mpl
+        uv run ${{ matrix.install-args }} \
+          coverage run --parallel-mode -m pytest --color=yes --mpl
 
     - name: Upload coverage data
       # only using reports from ubuntu because
