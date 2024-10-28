@@ -34,7 +34,7 @@ jobs:
         include:
         - os: ubuntu-20.04
           python-version: '3.10'
-          install-args: --resolution=lowest-direct
+          oldestdeps: true
         - os: windows-latest
           python-version: '3.10'
         - os: windows-latest
@@ -55,23 +55,27 @@ jobs:
         enable-cache: true
         cache-dependency-glob: pyproject.toml
 
+    - name: Set UV_RESOLUTION
+      if: ${{ matrix.oldestdeps }}
+      run: |
+        echo "UV_RESOLUTION=lowest-direct" >> $GITHUB_ENV
+
     - name: Build
       run: |
         uv venv --python ${{ matrix.python-version }}
-        uv pip install . ${{ matrix.install-args }}
+        uv pip install .
         uv pip install -r requirements/dev.txt ${{ matrix.test-args }}
 
     - run: uv pip list
 
     - name: Test package (no coverage)
       if: ${{ !startsWith( matrix.os , 'ubuntu' ) }}
-      run: uv run ${{ matrix.install-args }} pytest --color=yes --mpl
+      run: uv run pytest --color=yes --mpl
 
     - name: Test package (with coverage)
       if: startsWith( matrix.os , 'ubuntu' )
       run: |
-        uv run ${{ matrix.install-args }} \
-          coverage run --parallel-mode -m pytest --color=yes --mpl
+        uv run coverage run --parallel-mode -m pytest --color=yes --mpl
 
     - name: Upload coverage data
       # only using reports from ubuntu because
