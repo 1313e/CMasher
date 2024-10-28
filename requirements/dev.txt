@@ -1,4 +1,4 @@
 coverage[toml]>=7.6.4
 pyqt5>=5.15.6
-pytest>=4.6.0
+pytest>=8.1.1
 pytest-mpl>=0.13.0
