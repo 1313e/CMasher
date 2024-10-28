@@ -1,10 +1,7 @@
-# %% IMPORTS
-# Built-in imports
 import shutil
 from importlib.util import find_spec, module_from_spec, spec_from_file_location
 from pathlib import Path
 
-# Package imports
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,7 +9,6 @@ import pytest
 from matplotlib.colors import ListedColormap as LC
 from matplotlib.legend import Legend
 
-# CMasher imports
 import cmasher as cmr
 from cmasher import cm as cmrcm
 from cmasher.utils import (

@@ -5,11 +5,6 @@ Holds all the different colormaps that are in *CMasher*.
 
 """
 
-
-# %% IMPORTS
-# Built-in imports
-
-# Package imports
 from matplotlib.colors import ListedColormap as LC
 
 # All declaration

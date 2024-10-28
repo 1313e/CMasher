@@ -1,8 +1,5 @@
-# %% IMPORTS
-# Built-in imports
 import sys
 
-# Package imports
 import matplotlib as mpl
 import pytest
 from py.path import local

@@ -6,8 +6,6 @@ applications.
 
 """
 
-# %% IMPORTS
-# Built-in imports
 import os
 import re
 from pathlib import Path

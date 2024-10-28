@@ -5,22 +5,16 @@ Utility functions for registering and manipulating colormaps in various ways.
 
 """
 
-# %% IMPORTS
-# Built-in imports
 import os
 from collections import OrderedDict
 from collections.abc import Callable
-from glob import glob
 from importlib.util import find_spec
-from os import path
 from pathlib import Path
 from textwrap import dedent
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 import matplotlib as mpl
 import numpy as np
-
-# Package imports
 from colorspacious import cspace_converter
 from matplotlib.colors import (
     Colormap,
@@ -30,7 +24,6 @@ from matplotlib.colors import (
     to_rgb,
 )
 
-# CMasher imports
 from cmasher import cm as cmrcm
 
 from ._known_cmap_types import _CMASHER_BUILTIN_MAP_TYPES
@@ -414,8 +407,6 @@ def create_cmap_mod(
     # Create Python module template and add obtained RGB data to it
     cm_py_file = dedent(
         """
-        # %% IMPORTS
-        # Package imports
         import matplotlib as mpl
         from matplotlib.colors import ListedColormap
 

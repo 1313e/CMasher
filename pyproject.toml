@@ -107,6 +107,7 @@ select = [
     "B",   # flake8-bugbear
     "YTT", # flake8-2020
     "PTH", # flake8-use-pathlib
+    "TCH", # flake8-type-checking
     "I",   # isort
     "UP",  # pyupgrade
     "NPY", # numpy specific rules

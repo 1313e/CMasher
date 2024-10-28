@@ -1,23 +1,16 @@
-# %% Imports
-# Built-in imports
-import os
 import shutil
 import sys
 from itertools import zip_longest
-from os import path
 from pathlib import Path
 from textwrap import dedent
 
 import matplotlib.pyplot as plt
 import numpy as np
 import viscm
-
-# Package imports
 from matplotlib.colors import TwoSlopeNorm, to_hex
 
-# CMasher imports
 from cmasher.app_usage import update_tableau_pref_file
-from cmasher.cm import cmap_cd, cmap_d
+from cmasher.cm import cmap_cd
 from cmasher.utils import (
     create_cmap_mod,
     create_cmap_overview,

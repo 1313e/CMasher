@@ -1,5 +1,3 @@
-# %% IMPORTS
-# Built-in imports
 import argparse
 import os
 import re
@@ -8,13 +6,10 @@ from importlib import import_module
 from pathlib import Path
 from textwrap import dedent
 
-# Package imports
 import matplotlib as mpl
 import numpy as np
 
 import cmasher as cmr
-
-# CMasher imports
 from cmasher import __version__
 
 # All declaration
