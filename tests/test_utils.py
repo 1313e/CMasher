@@ -3,10 +3,10 @@ from importlib.util import find_spec, module_from_spec, spec_from_file_location
 from pathlib import Path
 
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 from matplotlib.colors import ListedColormap as LC
+from matplotlib.figure import Figure
 from matplotlib.legend import Legend
 
 import cmasher as cmr
@@ -62,7 +62,7 @@ cm_names = [
 ]
 
 # Obtain list of all colormaps registered in MPL
-mpl_cmaps = plt.colormaps()
+mpl_cmaps = mpl.colormaps()
 mpl_cmaps_as_str: list[str] = list(mpl_cmaps)
 
 
@@ -222,7 +222,7 @@ class Test_create_cmap_mod:
 
         if name == "infinity":
             # Check that the shifted version of infinity also exists
-            assert "cmr.infinity_s" in plt.colormaps()
+            assert "cmr.infinity_s" in mpl.colormaps()
 
     # Test if providing an invalid colormap name fails
     def test_invalid_cmap(self, tmp_path):
@@ -401,7 +401,7 @@ class Test_import_cmaps:
         name = "cyclic"
         import_cmaps(TEST_DIR / "data" / f"cm_{name}.txt")
         for cmap in [name, name + "_r", name + "_s", name + "_s_r"]:
-            assert "cmr." + cmap in plt.colormaps()
+            assert "cmr." + cmap in mpl.colormaps()
             assert getattr(cmrcm, cmap, None) is not None
             assert cmap in cmrcm.cmap_d
             assert cmap in cmrcm.cmap_cd["cyclic"]
@@ -432,7 +432,9 @@ class Test_set_cmap_legend_entry:
     # Test if providing a PathCollection object works
     def test_path_collection(self):
         # Create a small scatter plot
-        plot = plt.scatter([1, 2, 3], [2, 3, 4], c=[3, 4, 5], cmap=cmr.rainforest)
+        fig = Figure()
+        ax = fig.add_subplot()
+        plot = ax.scatter([1, 2, 3], [2, 3, 4], c=[3, 4, 5], cmap=cmr.rainforest)
 
         # Add a cmap legend entry
         set_cmap_legend_entry(plot, "Test")
@@ -441,22 +443,18 @@ class Test_set_cmap_legend_entry:
         assert plot in Legend.get_default_handler_map()
 
         # Create a legend
-        plt.legend()
-
-        # Close the plot
-        plt.close()
+        ax.legend()
 
     # Test if providing a Line2D object does not work
     def test_line2d(self):
         # Create a small line plot
-        plot = plt.plot([1, 2, 3], [2, 3, 4])
+        fig = Figure()
+        ax = fig.add_subplot()
+        plot = ax.plot([1, 2, 3], [2, 3, 4])
 
         # Attempt to add the cmap legend entry
         with pytest.raises(ValueError):
             set_cmap_legend_entry(plot, "Test")
-
-        # Close the plot
-        plt.close()
 
 
 # Pytest class for take_cmap_colors()-function
