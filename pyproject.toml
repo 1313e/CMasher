@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cmasher"
-version = "1.9.0" # keep in sync with __version__
+version = "1.9.1"
 authors = [{name = "Ellert van der Velden", email = "ellert_vandervelden@outlook.com"}]
 description = "Scientific colormaps for making accessible, informative and 'cmashing' plots"
 readme = "README.rst"

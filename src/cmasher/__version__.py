@@ -7,4 +7,7 @@ Stores the different versions of the *CMasher* package.
 
 # %% VERSIONS
 # Default/Latest/Current version
-__version__ = "1.9.0"  # keep in sync with pyproject.toml
+from importlib.metadata import version
+
+__version__ = version("cmasher")
+del version
