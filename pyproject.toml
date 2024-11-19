@@ -45,9 +45,27 @@ Documentation = "https://cmasher.readthedocs.io"
 [project.scripts]
 cmr = "cmasher.cli_tools:main"
 
-[tool.hatch.build]
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/cmasher/*.py",
+  "src/cmasher/*.pyi",
+  "src/cmasher/colormaps/cm_*.npy",
+  "src/cmasher/data/*.npy",
+  "LICENSE",
+  "CITATION",
+  "README.rst",
+  "requirements/*.txt",
+  "conftest.py",
+  "tests",
+]
 exclude = [
+  "docs",
+  "joss_paper",
   "scripts",
+  "static",
+  ".github",
+  "*.yml",
+  "*.yaml",
 ]
 
 [tool.pytest.ini_options]
