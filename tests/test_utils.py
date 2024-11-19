@@ -58,7 +58,9 @@ COLORMAPS_DIR = CMASHER_DIR / "colormaps"
 # As all colormaps have their own directories, save them instead
 _IGNORED = ["PROJECTS", "__pycache__"]
 cm_names = [
-    p.name for p in sorted(COLORMAPS_DIR.glob("*")) if p.is_dir() and p not in _IGNORED
+    p.name
+    for p in sorted(COLORMAPS_DIR.glob("*"))
+    if p.is_dir() and p.name not in _IGNORED
 ]
 
 # Obtain list of all colormaps registered in MPL
