@@ -45,13 +45,30 @@ Documentation = "https://cmasher.readthedocs.io"
 [project.scripts]
 cmr = "cmasher.cli_tools:main"
 
+[dependency-groups]
+covcheck = [
+  "coverage[toml]>=7.6.4",
+]
+test = [
+    "pytest>=8.1.1",
+    "pytest-mpl>=0.13.0",
+    {include-group = "covcheck"},
+]
+typecheck = [
+    "mypy>=1.7.1",
+]
+dev = [
+  {include-group = "test"},
+  {include-group = "typecheck"},
+]
+
 [tool.hatch.build]
 exclude = [
   "scripts",
 ]
 
 [tool.pytest.ini_options]
-addopts = "-v"
+addopts = "-v -ra"
 filterwarnings = [
   "error",
   "ignore:FigureCanvasAgg is non-interactive:UserWarning",
