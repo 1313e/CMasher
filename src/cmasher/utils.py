@@ -428,7 +428,8 @@ def create_cmap_mod(
         cm_data = {1}
 
         # Create ListedColormap object for this colormap
-        cmap = ListedColormap(cm_data, name='cmr.{2}', N={3})
+        assert len(cm_data) == {3}
+        cmap = ListedColormap(cm_data, name='cmr.{2}')
         cmap_r = cmap.reversed()
 
         # Register (reversed) cmap in MPL
