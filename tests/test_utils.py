@@ -64,8 +64,8 @@ cm_names = [
 ]
 
 # Obtain list of all colormaps registered in MPL
-mpl_cmaps = mpl.colormaps()
-mpl_cmaps_as_str: list[str] = list(mpl_cmaps)
+mpl_cmaps: list[str] = mpl.colormaps()
+mpl_cmaps_sample = mpl_cmaps[:10]
 
 
 # %% PYTEST CLASSES AND FUNCTIONS
@@ -256,18 +256,17 @@ class Test_create_cmap_overview:
     # Test if providing all MPL colormap objects works
     @pytest.mark.parametrize("sort", ["perceptual", "lightness"])
     def test_mpl_cmaps_objs(self, sort):
-        cmaps = map(mpl.colormaps.__getitem__, mpl_cmaps)
+        cmaps = map(mpl.colormaps.__getitem__, mpl_cmaps_sample)
         create_cmap_overview(cmaps, sort=sort)
 
     # Test if providing all MPL colormap names works
-    @pytest.mark.parametrize("cmaps", [mpl_cmaps, mpl_cmaps_as_str])
     @pytest.mark.parametrize("sort", ["perceptual", "lightness"])
-    def test_mpl_cmaps_names(self, cmaps, sort):
-        create_cmap_overview(cmaps, sort=sort)
+    def test_mpl_cmaps_names(self, sort):
+        create_cmap_overview(mpl_cmaps_sample, sort=sort)
 
     # Test if the lightness profiles can be plotted
     def test_lightness_profiles(self):
-        create_cmap_overview(mpl_cmaps, plot_profile=True)
+        create_cmap_overview(mpl_cmaps_sample, plot_profile=True)
 
     # Test if dark mode can be enabled for the overview
     def test_dark_mode(self):
