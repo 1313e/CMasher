@@ -32,9 +32,9 @@ keywords = ["cmasher perceptually uniform sequential colormaps plotting python v
 requires-python = ">=3.10, <4"
 
 dependencies = [
-    "colorspacious>=1.1.0",
+    "colorspacious>=1.1.2",
     "matplotlib>=3.5",
-    "numpy>=1.21.2, <2.2.0", # upper bound is temporary
+    "numpy>=1.21.2",
 ]
 
 [project.urls]
@@ -51,19 +51,12 @@ test = [
   "pytest>=8.1.1",
   "pytest-mpl>=0.13.0",
 
+  # TODO: bump requirement and uncomment when the following upstream PR is merged and released:
+  # https://github.com/matplotlib/viscm/pull/82
   # TODO: lift the constraint on python_version:
   # only tests with minimal requirements fail, but that's probably solved by
   # requiring a more recent version of other dependencies (colorspacious or numpy)
-  "viscm>=0.10 ; platform_system != 'Windows' and python_version > '3.10'",
-
-  # TODO: move these constraints to a lockfile
-  # or even drop them if possible
-  # context: PyQt5-Qt5 is a required dependency to pyqt5 but
-  # it only comes in wheels. 5.15.2 is the only version with windows wheels,
-  # and *that* version doesn't have macOS arm64 wheels.
-  # 5.15.14 is the first version with wheels for both Linux and MacOS+arm64
-  "PyQt5-Qt5==5.15.2 ; platform_system == 'Windows'",
-  "PyQt5-Qt5>=5.15.14 ; platform_system != 'Windows'",
+  #"viscm>=0.10 ; platform_system != 'Windows' and python_version > '3.10'",
 ]
 covcheck = [
   "coverage[toml]>=7.6.4 ; python_version < '3.11'",
@@ -110,9 +103,23 @@ filterwarnings = [
   'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
 ]
 
+[tool.coverage.run]
+# branch = true
+source = [
+    "src/cmasher",
+    "tests",
+]
+omit = [
+  "scripts/*",
+  "src/cmasher/__version__*",
+  "src/cmasher/app_usage.py",
+  "src/cmasher/cli_tools.py",
+  "*_test_copy.py",
+]
+
 [tool.coverage.report]
 show_missing = true
-skip_covered = true
+skip_covered = false
 exclude_lines = [
     # a more strict default pragma
     "\\# pragma: no cover\\b",
@@ -125,14 +132,6 @@ exclude_lines = [
     ": \\.\\.\\.(\\s*#.*)?$",
     "^ +\\.\\.\\.$",
     "-> ['\"]?NoReturn['\"]?:",
-]
-
-[tool.coverage.run]
-omit = [
-  "scripts/*",
-  "src/cmasher/__version__*",
-  "src/cmasher/app_usage.py",
-  "*_test_copy.py",
 ]
 
 [tool.ruff.lint]
