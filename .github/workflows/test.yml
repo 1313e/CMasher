@@ -52,6 +52,7 @@ jobs:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
       with:
+        python-version: ${{ matrix.python-version }}
         enable-cache: true
         cache-dependency-glob: pyproject.toml
 
@@ -62,7 +63,7 @@ jobs:
 
     - name: Build
       run: |
-        uv venv --python ${{ matrix.python-version }}
+        uv venv
         uv pip install .
         uv pip install -r requirements/dev.txt ${{ matrix.test-args }}
 
