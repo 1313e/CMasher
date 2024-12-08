@@ -910,7 +910,7 @@ def create_cmap_overview(
     if savefig is not None:
         savefig = Path(savefig)
         dpi = 100 if (savefig.suffix == ".svg") else 250
-        plt.savefig(savefig, dpi=dpi, facecolor=face_color, edgecolor=edge_color)
+        fig.savefig(savefig, dpi=dpi, facecolor=face_color, edgecolor=edge_color)
         plt.close(fig)
 
     # Else, simply show it
@@ -1629,11 +1629,11 @@ def view_cmap(
         ax.set_axis_off()
 
     # Use tight layout
-    plt.tight_layout(pad=0, h_pad=0, w_pad=0)
+    fig.tight_layout(pad=0, h_pad=0, w_pad=0)
 
     # If savefig is not None, save the figure
     if savefig is not None:
-        plt.savefig(savefig, dpi=100, bbox_inches="tight", pad_inches=0)
+        fig.savefig(savefig, dpi=100, bbox_inches="tight", pad_inches=0)
         plt.close(fig)
 
     # Else, simply show it
