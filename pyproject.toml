@@ -82,9 +82,23 @@ filterwarnings = [
   'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
 ]
 
+[tool.coverage.run]
+# branch = true
+source = [
+    "src/cmasher",
+    "tests",
+]
+omit = [
+  "scripts/*",
+  "src/cmasher/__version__*",
+  "src/cmasher/app_usage.py",
+  "src/cmasher/cli_tools.py",
+  "*_test_copy.py",
+]
+
 [tool.coverage.report]
 show_missing = true
-skip_covered = true
+skip_covered = false
 exclude_lines = [
     # a more strict default pragma
     "\\# pragma: no cover\\b",
@@ -97,14 +111,6 @@ exclude_lines = [
     ": \\.\\.\\.(\\s*#.*)?$",
     "^ +\\.\\.\\.$",
     "-> ['\"]?NoReturn['\"]?:",
-]
-
-[tool.coverage.run]
-omit = [
-  "scripts/*",
-  "src/cmasher/__version__*",
-  "src/cmasher/app_usage.py",
-  "*_test_copy.py",
 ]
 
 [tool.ruff.lint]
