@@ -287,7 +287,7 @@ class Test_create_cmap_overview:
     # Test if the figure can be saved
     def test_savefig(self, tmp_path):
         dst = tmp_path / "test.png"
-        create_cmap_overview(savefig=dst)
+        create_cmap_overview(mpl_cmaps_sample, savefig=dst)
         assert dst.is_file()
 
     # test if providing an invalid sort value raises an error
