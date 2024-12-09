@@ -29,7 +29,7 @@ from cmasher import cm as cmrcm
 from ._known_cmap_types import _CMASHER_BUILTIN_MAP_TYPES
 
 if TYPE_CHECKING:
-    from typing import TypeAlias
+    from typing import Any, TypeAlias
 
     from matplotlib.artist import Artist
 
@@ -1534,6 +1534,7 @@ def take_cmap_colors(
     stop = int(np.ceil(cmap_range[1] * cmap.N)) - 1
 
     # Pick colors
+    index: np.ndarray[tuple[int, ...], np.dtype[Any]]
     if N is None:
         index = np.arange(start, stop + 1, dtype=int)
     else:
