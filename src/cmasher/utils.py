@@ -1344,7 +1344,7 @@ def register_cmap(name: str, data: RGB) -> None:
         if cm_data_arr.ndim == 0:
             cm_data = [cm_data_arr.item()]
         else:
-            cm_data = ["#" + x if not x.startswith("#") else x for x in cm_data_arr]
+            cm_data = [f"#{x.removeprefix('#')}" for x in cm_data_arr]
 
         try:
             # Convert all values to floats
