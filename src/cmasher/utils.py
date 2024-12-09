@@ -32,6 +32,7 @@ if TYPE_CHECKING:
     from typing import TypeAlias
 
     from matplotlib.artist import Artist
+    from numpy.typing import NDArray
 
 _HAS_VISCM = find_spec("viscm") is not None
 
@@ -1534,6 +1535,7 @@ def take_cmap_colors(
     stop = int(np.ceil(cmap_range[1] * cmap.N)) - 1
 
     # Pick colors
+    index: NDArray
     if N is None:
         index = np.arange(start, stop + 1, dtype=int)
     else:
