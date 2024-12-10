@@ -1363,7 +1363,8 @@ def register_cmap(name: str, data: RGB) -> None:
             cm_data_arr = cm_data_arr / 255
 
         # Convert cm_data to a list
-        colorlist = cm_data_arr.tolist()
+        # see https://github.com/numpy/numpy/issues/27944
+        colorlist = cm_data_arr.tolist()  # type: ignore[assignment]
 
     # Transform colorlist into a Colormap
     cmap_N = len(colorlist)
