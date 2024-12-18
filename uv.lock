@@ -7,6 +7,12 @@ resolution-markers = [
     "python_full_version >= '3.11' and platform_system != 'Windows'",
 ]
 
+[manifest]
+constraints = [
+    { name = "pyqt5-qt5", marker = "platform_system != 'Windows'", specifier = ">=5.15.14" },
+    { name = "pyqt5-qt5", marker = "platform_system == 'Windows'", specifier = "==5.15.2" },
+]
+
 [[package]]
 name = "cmasher"
 version = "1.9.2"
