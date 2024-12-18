@@ -67,6 +67,16 @@ typecheck = [
     "pytest==8.1.1",
 ]
 
+[tool.uv]
+# see
+# https://github.com/astral-sh/uv/issues/7005
+# https://github.com/astral-sh/uv/issues/9907
+# https://github.com/astral-sh/uv/issues/9711
+constraint-dependencies = [
+  "PyQt5-Qt5==5.15.2 ; platform_system == 'Windows'",
+  "PyQt5-Qt5>=5.15.14 ; platform_system != 'Windows'",
+]
+
 [tool.hatch.build.targets.sdist]
 include = [
   "src/cmasher/*.py",
