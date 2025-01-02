@@ -45,7 +45,6 @@ jobs:
     - uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         python-version: ${{ matrix.python-version }}
-        enable-cache: true
 
     - name: Set UV_RESOLUTION
       if: ${{ matrix.oldestdeps }}
@@ -125,7 +124,6 @@ jobs:
     - uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         python-version: ${{ matrix.python-version }}
-        enable-cache: true
 
     - name: Run mypy
       run: uv run --no-editable --group typecheck mypy src/cmasher
@@ -143,7 +141,6 @@ jobs:
     - uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         python-version: '3.13'
-        enable-cache: true
 
     - name: Build
       run: |
@@ -162,8 +159,6 @@ jobs:
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
-      with:
-        enable-cache: true
     - run: uv build
     - run: uvx twine check dist/*
     - run: uv run scripts/check_dist.py
