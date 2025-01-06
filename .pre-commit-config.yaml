@@ -14,12 +14,12 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.5.8
+  rev: 0.5.14
   hooks:
   - id: uv-lock
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.6.9
+  rev: v0.8.6
   hooks:
   - id: ruff-format
   - id: ruff
