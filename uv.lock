@@ -1,20 +1,17 @@
 version = 1
 requires-python = ">=3.10, <4"
 resolution-markers = [
-    "python_full_version >= '3.11' and platform_system == 'Windows' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and platform_system != 'Windows' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and platform_system == 'Windows' and sys_platform != 'win32'",
-    "python_full_version >= '3.11' and platform_system != 'Windows' and sys_platform != 'win32'",
-    "python_full_version < '3.11' and platform_system == 'Windows' and sys_platform == 'win32'",
-    "python_full_version < '3.11' and platform_system != 'Windows' and sys_platform == 'win32'",
-    "python_full_version < '3.11' and platform_system == 'Windows' and sys_platform != 'win32'",
-    "python_full_version < '3.11' and platform_system != 'Windows' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and sys_platform == 'win32'",
+    "python_version < '0'",
+    "python_full_version >= '3.11' and sys_platform != 'win32'",
+    "python_full_version < '3.11' and sys_platform == 'win32'",
+    "python_full_version < '3.11' and sys_platform != 'win32'",
 ]
 
 [manifest]
 constraints = [
-    { name = "pyqt5-qt5", marker = "platform_system != 'Windows'", specifier = ">=5.15.14" },
-    { name = "pyqt5-qt5", marker = "platform_system == 'Windows'", specifier = "==5.15.2" },
+    { name = "pyqt5-qt5", marker = "sys_platform != 'win32'", specifier = ">=5.15.14" },
+    { name = "pyqt5-qt5", marker = "sys_platform == 'win32'", specifier = "==5.15.2" },
 ]
 
 [[package]]
@@ -189,8 +186,8 @@ test = [
     { name = "pytest-mpl", specifier = ">=0.13.0" },
 ]
 typecheck = [
-    { name = "mypy", specifier = "==1.7.1" },
-    { name = "pytest", specifier = "==8.1.1" },
+    { name = "mypy", specifier = ">=1.7.1" },
+    { name = "pytest", specifier = ">=8.1.1" },
 ]
 
 [[package]]
@@ -863,8 +860,8 @@ name = "pyqt5"
 version = "5.15.11"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pyqt5-qt5", version = "5.15.2", source = { registry = "https://pypi.org/simple" }, marker = "platform_system == 'Windows'" },
-    { name = "pyqt5-qt5", version = "5.15.16", source = { registry = "https://pypi.org/simple" }, marker = "platform_system != 'Windows'" },
+    { name = "pyqt5-qt5", version = "5.15.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'win32'" },
+    { name = "pyqt5-qt5", version = "5.15.16", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'win32'" },
     { name = "pyqt5-sip" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0e/07/c9ed0bd428df6f87183fca565a79fee19fa7c88c7f00a7f011ab4379e77a/PyQt5-5.15.11.tar.gz", hash = "sha256:fda45743ebb4a27b4b1a51c6d8ef455c4c1b5d610c90d2934c7802b5c1557c52", size = 3216775 }
@@ -881,10 +878,8 @@ name = "pyqt5-qt5"
 version = "5.15.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.11' and platform_system == 'Windows' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and platform_system == 'Windows' and sys_platform != 'win32'",
-    "python_full_version < '3.11' and platform_system == 'Windows' and sys_platform == 'win32'",
-    "python_full_version < '3.11' and platform_system == 'Windows' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and sys_platform == 'win32'",
+    "python_full_version < '3.11' and sys_platform == 'win32'",
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1c/7e/ce7c66a541a105fa98b41d6405fe84940564695e29fc7dccf6d9e8c5f898/PyQt5_Qt5-5.15.2-py3-none-win32.whl", hash = "sha256:9cc7a768b1921f4b982ebc00a318ccb38578e44e45316c7a4a850e953e1dd327", size = 43447358 },
@@ -896,10 +891,8 @@ name = "pyqt5-qt5"
 version = "5.15.16"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.11' and platform_system != 'Windows' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and platform_system != 'Windows' and sys_platform != 'win32'",
-    "python_full_version < '3.11' and platform_system != 'Windows' and sys_platform == 'win32'",
-    "python_full_version < '3.11' and platform_system != 'Windows' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and sys_platform != 'win32'",
+    "python_full_version < '3.11' and sys_platform != 'win32'",
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ff/89/65a4b9c6bc89012182ff46bf8e503a8aa5e5570df7cb628211c93012beca/PyQt5_Qt5-5.15.16-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:18b6fec012de60921fcb131cf2a21368171dc29050d43e4b81a64be407a36105", size = 39957063 },
