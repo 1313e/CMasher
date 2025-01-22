@@ -1545,7 +1545,7 @@ def take_cmap_colors(
 
     # Convert colors to proper format
     if return_fmt in ("float", "norm", "int", "8bit"):
-        colors = np.apply_along_axis(to_rgb, 1, colors)  # type: ignore [arg-type]
+        colors = np.apply_along_axis(to_rgb, 1, colors)  # type: ignore [call-overload]
         if return_fmt in ("int", "8bit"):
             colors = np.array(np.rint(colors * 255), dtype=int)
         colors = list(map(tuple, colors))
