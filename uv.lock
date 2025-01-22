@@ -136,6 +136,7 @@ dependencies = [
     { name = "colorspacious" },
     { name = "matplotlib" },
     { name = "numpy" },
+    { name = "typing-extensions", marker = "python_full_version < '3.12'" },
 ]
 
 [package.dev-dependencies]
@@ -165,6 +166,7 @@ requires-dist = [
     { name = "colorspacious", specifier = ">=1.1.2" },
     { name = "matplotlib", specifier = ">=3.5" },
     { name = "numpy", specifier = ">=1.21.2" },
+    { name = "typing-extensions", marker = "python_full_version < '3.12'", specifier = ">=4.4.0" },
 ]
 
 [package.metadata.requires-dev]

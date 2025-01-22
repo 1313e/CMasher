@@ -5,13 +5,14 @@ Utility functions for registering and manipulating colormaps in various ways.
 
 """
 
-import os
-from collections import OrderedDict
-from collections.abc import Callable
+from __future__ import annotations
+
+from collections import defaultdict
 from importlib.util import find_spec
+from itertools import chain
 from pathlib import Path
 from textwrap import dedent
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NewType
 
 import matplotlib as mpl
 import numpy as np
@@ -29,10 +30,26 @@ from cmasher import cm as cmrcm
 from ._known_cmap_types import _CMASHER_BUILTIN_MAP_TYPES
 
 if TYPE_CHECKING:
-    from typing import TypeAlias
+    import os
+    import sys
+    from collections.abc import Callable, Iterator
+    from typing import Literal, Protocol, TypeAlias
 
     from matplotlib.artist import Artist
     from numpy.typing import NDArray
+
+    if sys.version_info >= (3, 12):
+        from typing import Self
+    else:
+        from typing_extensions import Self
+
+    class SupportsDunderLT(Protocol):
+        def __lt__(self, other: Self, /) -> bool: ...
+
+    class SupportsDunderGT(Protocol):
+        def __gt__(self, other: Self, /) -> bool: ...
+
+    SupportsOrdering: TypeAlias = SupportsDunderLT | SupportsDunderGT
 
 _HAS_VISCM = find_spec("viscm") is not None
 
@@ -57,12 +74,16 @@ __all__ = [
 # Obtain the colorspace converter for showing cmaps in gray-scale
 cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 
+# New types
+Category = NewType("Category", str)
+Name = NewType("Name", str)
+
 # Type aliases
-CMAP = str | Colormap
-RED: "TypeAlias" = float
-GREEN: "TypeAlias" = float
-BLUE: "TypeAlias" = float
-RGB = list[tuple[RED, GREEN, BLUE]]
+CMAP: TypeAlias = str | Colormap
+RED: TypeAlias = float
+GREEN: TypeAlias = float
+BLUE: TypeAlias = float
+RGB: TypeAlias = list[tuple[RED, GREEN, BLUE]]
 
 
 # %% HELPER FUNCTIONS
@@ -475,11 +496,12 @@ def create_cmap_mod(
 
 # This function creates an overview plot of all colormaps specified
 def create_cmap_overview(
-    cmaps: list[CMAP] | dict[str, list[Colormap]] | None = None,
+    cmaps: list[Colormap | Name] | dict[Category, list[Colormap | Name]] | None = None,
     *,
     savefig: str | os.PathLike[str] | None = None,
     use_types: bool = True,
-    sort: str | Callable | None = "alphabetical",
+    sort: Literal["alphabetical", "name", "lightness", "perceptual", None]
+    | Callable[[Colormap], SupportsOrdering] = "alphabetical",
     show_grayscale: bool = True,
     show_info: bool = False,
     plot_profile: bool | float = False,
@@ -576,114 +598,58 @@ def create_cmap_overview(
         cmaps = list(cmrcm.cmap_d.values())
 
     # If sort is a string, obtain proper function
+    sort_key: Callable[[Colormap], SupportsOrdering] | None
     if isinstance(sort, str):
-        # Convert sort to lowercase
-        sort = sort.lower()
-
         # Check what string was provided and obtain sorting function
         if sort in ("alphabetical", "name"):
 
-            def sort_key(x):
+            def get_name(x: Colormap) -> str:
                 return x.name
+
+            sort_key = get_name
         elif sort == "lightness":
             sort_key = _get_cmap_lightness_rank
         elif sort == "perceptual":
             sort_key = _get_cmap_perceptual_rank
         else:
             raise ValueError(
-                "Input argument 'sort' has invalid string value " f"{sort!r}!"
+                f"Input argument 'sort' has invalid string value {sort!r}!"
             )
+    elif callable(sort):
+        sort_key = sort
+    else:
+        sort_key = None
 
-    # Create empty list of cmaps
-    cmaps_list: list[Colormap | tuple[str, bool]] = []
-
-    # Define empty dict of colormaps
-    cmaps_dict: OrderedDict[str, list[Colormap]] = OrderedDict()
-
-    # If cmaps is a dict, it has cm_types defined
+    # Streamline cmaps to a homogeneous container type
+    cmaps_iter: Iterator[Colormap | Name]
     if isinstance(cmaps, dict):
-        # Set use_types to True
         use_types = True
-
-        # Save provided cmaps as something else
-        input_cmaps = cmaps
-
-        # Loop over all cm_types
-        for cm_type, maps in input_cmaps.items():
-            # Add empty list of colormaps to cmaps_dict with this cm_type
-            cmaps_dict[cm_type] = []
-
-            # Loop over all cmaps and add their Colormap objects
-            for cmap in maps:
-                if isinstance(cmap, str):
-                    cmaps_dict[cm_type].append(mpl.colormaps[cmap])
-                else:
-                    cmaps_dict[cm_type].append(cmap)
-
-    # Else, it is a list with no cm_types
+        cmaps_iter = chain.from_iterable(cmaps.values())
     else:
-        # If cm_types are requested
-        if use_types:
-            # Define empty dict with the base cm_types
-            cm_types = ["sequential", "diverging", "cyclic", "qualitative", "misc"]
-            cmaps_dict.update({cm_type: [] for cm_type in cm_types})
+        cmaps_iter = iter(cmaps)
 
-            # Loop over all cmaps and add their Colormap objects
-            for cm in cmaps:
-                cm_type = get_cmap_type(cm)
-                if isinstance(cm, str):
-                    cmaps_dict[cm_type].append(mpl.colormaps[cm])
-                else:
-                    cmaps_dict[cm_type].append(cm)
+    cmaps_by_categories: defaultdict[str, list[Colormap]] = defaultdict(list)
+    for cm_candidate in cmaps_iter:
+        cat = get_cmap_type(cm_candidate) if use_types else "all"
+        if isinstance(cm_candidate, str):
+            cm = mpl.colormaps[cm_candidate]
         else:
-            # Loop over all cmaps and add their Colormap objects
-            for cm in cmaps:
-                if isinstance(cm, str):
-                    cmaps_list.append(mpl.colormaps[cm])
-                else:
-                    cmaps_list.append(cm)
+            cm = cm_candidate
+        cmaps_by_categories[cat].append(cm)
 
-    # If use_types is True, a dict is currently used
-    if use_types:
-        # Convert entire cmaps_dict into a list again
-        for key, value in cmaps_dict.items():
-            # If this cm_type has at least 1 colormap, sort and add them
-            if value:
-                # Obtain the names of all colormaps
-                names = [x.name for x in value]
+    # Remove all reversed colormaps that also have their original
+    for cat, cmap_group in cmaps_by_categories.items():
+        names = [cm.name for cm in cmap_group]
+        cmaps_by_categories[cat] = [
+            cm
+            for cm in cmap_group
+            if not (cm.name.endswith("_r") and cm.name[:-2] in names)
+        ]
 
-                # Remove all reversed colormaps that also have their original
-                off_dex = len(names) - 1
-                for i, name in enumerate(reversed(names)):
-                    if name.endswith("_r") and name[:-2] in names:
-                        value.pop(off_dex - i)
-
-                # Sort the colormaps if requested
-                if sort is not None:
-                    value.sort(key=sort_key)
-
-                # Add to list
-                cmaps_list.append((key, False))
-                cmaps_list.extend(value)
-
-    # Else, a list is used
-    else:
-        # Obtain the names of all colormaps
-        names = [x.name for x in cmaps_list if isinstance(x, Colormap)]
-
-        # Remove all reversed colormaps that also have their original
-        off_dex = len(names) - 1
-        for i, name in enumerate(reversed(names)):
-            if name.endswith("_r") and name[:-2] in names:
-                cmaps_list.pop(off_dex - i)
-
-        # Sort the colormaps if requested
-        if sort is not None:
-            cmaps_list.sort(key=sort_key)
-
-    # Add title to cmaps_list if requested
-    if title:
-        cmaps_list.insert(0, (title, True))
+    # Sort the colormaps if requested
+    if sort_key is not None:
+        for cat in cmaps_by_categories:
+            cmaps_by_categories[cat] = sorted(cmaps_by_categories[cat], key=sort_key)
 
     # Check value of show_grayscale
     if show_grayscale:
@@ -717,10 +683,16 @@ def create_cmap_overview(
         text_color = "#000000"
 
     # Create figure instance
-    height = (0.4 * len(cmaps_list) + 0.1) * hscale
+    nplotables = (
+        (1 if title else 0)
+        + len(cmaps_by_categories)
+        + sum(len(_) for _ in cmaps_by_categories.values())
+    )
+    height = (0.4 * nplotables + 0.1) * hscale
+
     fig, axs = plt.subplots(
         figsize=(6.4 * wscale, height),
-        nrows=len(cmaps_list),
+        nrows=nplotables,
         ncols=ncols,
         edgecolor=edge_color,
         facecolor=face_color,
@@ -736,59 +708,64 @@ def create_cmap_overview(
     )
 
     # Narrow axs' type
-    if len(cmaps_list) == 1 or isinstance(axs, Axes):
+    if nplotables == 1 or isinstance(axs, Axes):
         axs = np.array([axs])
 
-    # Loop over all cmaps defined in cmaps list
-    for ax, _cm in zip(axs, cmaps_list, strict=True):
-        # Obtain axes objects and turn them off
-        if show_grayscale:
-            # Obtain Axes objects
-            ax0, ax1 = ax
-
-            # Turn axes off
-            ax0.set_axis_off()
-            ax1.set_axis_off()
+    ### NEW LOGIC
+    for ax in axs:
+        if ncols == 1:
+            ax.set_axis_off()
         else:
-            # Obtain Axes object
-            ax0 = ax
+            for axx in ax:
+                axx.set_axis_off()
 
-            # Turn axis off
-            ax0.set_axis_off()
+    # Add title to cmaps_list if requested
+    if title:
+        ax0 = next(axs.flat)
 
         # Obtain position bbox of ax0
         pos0 = ax0.get_position()
 
-        # If cmap is a tuple, it defines a title or cm_type
-        if isinstance(_cm, tuple):
-            # If it is a title
-            if _cm[1]:
-                # Write the title as text in the correct position
-                fig.text(
-                    title_pos,
-                    pos0.y0 + pos0.height / 2,
-                    _cm[0],
-                    va="center",
-                    ha="center",
-                    fontsize=18,
-                    c=text_color,
-                )
+        # Write the title as text in the correct position
+        fig.text(
+            title_pos,
+            pos0.y0 + pos0.height / 2,
+            title,
+            va="center",
+            ha="center",
+            fontsize=18,
+            c=text_color,
+        )
+        axs_offset = 1
+    else:
+        axs_offset = 0
 
-            # If it is a cm_type
+    next_axs_offset = axs_offset
+    for cat, cmap_group in cmaps_by_categories.items():
+        if ncols == 1:
+            ax0 = axs[next_axs_offset]
+        else:
+            ax0 = axs[next_axs_offset, 0]
+        y0 = ax0.get_position().y0
+        # Write the cm_type as text in the correct position
+        fig.text(
+            title_pos,
+            y0,
+            cat,
+            va="bottom",
+            ha="center",
+            fontsize=14,
+            c=text_color,
+        )
+        axs_offset += 1
+        next_axs_offset = axs_offset + len(cmap_group)
+        for _ax, _cm in zip(axs[axs_offset:next_axs_offset], cmap_group, strict=True):
+            if ncols == 1:
+                ax0 = _ax
             else:
-                # Write the cm_type as text in the correct position
-                fig.text(
-                    title_pos,
-                    pos0.y0,
-                    _cm[0],
-                    va="bottom",
-                    ha="center",
-                    fontsize=14,
-                    c=text_color,
-                )
+                ax0, ax1 = _ax
+            pos0 = ax0.get_position()
 
-        # Else, this is a colormap
-        elif isinstance(_cm, Colormap):
             # Obtain the colormap type
             cm_type = get_cmap_type(_cm)
 
@@ -904,14 +881,18 @@ def create_cmap_overview(
                     fontsize=10,
                     c=text_color,
                 )
-        else:  # pragma: no cover
-            raise RuntimeError
+        axs_offset = next_axs_offset
 
     # If savefig is not None, save the figure
     if savefig is not None:
         savefig = Path(savefig)
         dpi = 100 if (savefig.suffix == ".svg") else 250
-        fig.savefig(savefig, dpi=dpi, facecolor=face_color, edgecolor=edge_color)
+        fig.savefig(
+            savefig,
+            dpi=dpi,
+            facecolor=face_color,
+            edgecolor=edge_color,
+        )
         plt.close(fig)
 
     # Else, simply show it
@@ -1398,7 +1379,7 @@ def register_cmap(name: str, data: RGB) -> None:
 
 
 # Function to set the legend label of an artist that uses a colormap
-def set_cmap_legend_entry(artist: "Artist", label: str) -> None:
+def set_cmap_legend_entry(artist: Artist, label: str) -> None:
     """
     Sets the label of the provided `artist` to `label`, and creates a legend
     entry using a miniature version of the colormap of `artist` as the legend
