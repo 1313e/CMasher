@@ -35,6 +35,7 @@ dependencies = [
     "colorspacious>=1.1.2",
     "matplotlib>=3.5",
     "numpy>=1.21.2",
+    "typing-extensions>=4.4.0 ; python_full_version < '3.12'",
 ]
 
 [project.urls]
