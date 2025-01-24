@@ -131,17 +131,17 @@ def _get_cmap_lightness_rank(
 
         # Get lightness values of colormap
         lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
-        L = lab[:, 0]
+        lightness = lab[:, 0]
 
-        # If cyclic colormap, add first L at the end
+        # If cyclic colormap, add first lightness at the end
         if cm_type == "cyclic":
-            L = np.r_[L, [L[0]]]
+            lightness = np.r_[lightness, [lightness[0]]]
 
         # Determine number of values that will be in deltas
-        N_deltas = len(L) - 1
+        N_deltas = len(lightness) - 1
 
         # Determine the deltas of the lightness profile
-        deltas = np.diff(L)
+        deltas = np.diff(lightness)
         derivs = N_deltas * deltas
 
         # Set lightness profile type to 0
@@ -153,7 +153,7 @@ def _get_cmap_lightness_rank(
             L_rmse = np.around(np.std(derivs), 0)
 
             # Calculate starting lightness value
-            L_start = np.around(L[0], 0)
+            L_start = np.around(lightness[0], 0)
 
             # Determine type of lightness profile
             L_type += (not np.allclose(rgb[0], [0, 0, 0])) * 2
@@ -173,13 +173,13 @@ def _get_cmap_lightness_rank(
             )
 
             # Calculate central lightness value
-            L_start = np.around(np.average(L[central_i]), 0)
+            L_start = np.around(np.average(lightness[central_i]), 0)
 
         # Determine lightness range
-        L_rng = np.around(np.max(L) - np.min(L), 0)
+        L_rng = np.around(np.max(lightness) - np.min(lightness), 0)
 
         # Determine if cmap goes from dark to light or the opposite
-        L_slope = (L_start > L[-1]) * 2 - 1
+        L_slope = (L_start > lightness[-1]) * 2 - 1
 
     # For qualitative/misc colormaps, set all lightness values to zero
     else:
@@ -782,13 +782,13 @@ def create_cmap_overview(
             if show_grayscale:
                 # Get lightness values of colormap
                 lab = cspace_convert(rgb)
-                L = lab[:, 0]
+                lightness = lab[:, 0]
 
                 # Normalize lightness values
-                L /= 99.99871678
+                lightness /= 99.99871678
 
                 # Get RGB values for lightness values using neutral
-                rgb_L = cmrcm.neutral(L)[:, :3]
+                rgb_L = cmrcm.neutral(lightness)[:, :3]
 
                 # Add gray-scale colormap subplot
                 ax1.imshow(rgb_L[np.newaxis, ...], aspect="auto")
@@ -796,11 +796,11 @@ def create_cmap_overview(
                 # Check if the lightness profile was requested
                 if plot_profile and (cm_type != "qualitative"):
                     # Determine the points that need to be plotted
-                    plot_L = -(L - 0.5)
+                    plot_L = -(lightness - 0.5)
                     points = np.stack([x, plot_L], axis=1)
 
                     # Determine the colors that each point must have
-                    # Use black for L >= 0.5 and white for L <= 0.5.
+                    # Use black for lightness >= 0.5 and white for lightness <= 0.5.
                     colors = np.zeros_like(plot_L, dtype=int)
                     colors[plot_L >= 0] = 1
 
@@ -1009,14 +1009,14 @@ def get_cmap_type(cmap: Colormap | Name) -> str:
 
     # Get lightness values of colormap
     lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
-    L = lab[:, 0]
-    diff_L = np.diff(L)
+    lightness = lab[:, 0]
+    diff_L = np.diff(lightness)
 
     # Obtain central values of lightness
     N = cmap.N - 1
     central_i = [int(np.floor(N / 2)), int(np.ceil(N / 2))]
-    diff_L0 = np.diff(L[: central_i[0] + 1])
-    diff_L1 = np.diff(L[central_i[1] :])
+    diff_L0 = np.diff(lightness[: central_i[0] + 1])
+    diff_L1 = np.diff(lightness[central_i[1] :])
 
     # Obtain perceptual differences of last two and first two values
     lab_red = lab[[-2, -1, 0, 1]]
@@ -1578,9 +1578,9 @@ def view_cmap(
     if show_grayscale:
         # If so, create a colormap of cmap in grayscale
         rgb = cmap(np.arange(cmap.N))[:, :3]
-        L = cspace_convert(rgb)[:, 0]
-        L /= 99.99871678
-        rgb_L = cmrcm.neutral(L)[:, :3]
+        lightness = cspace_convert(rgb)[:, 0]
+        lightness /= 99.99871678
+        rgb_L = cmrcm.neutral(lightness)[:, :3]
         cmap_L = LC(rgb_L)
 
         # Set that there are two plots to create
