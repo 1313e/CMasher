@@ -684,7 +684,7 @@ def create_cmap_overview(
     # Create figure instance
     nplotables = (
         (1 if title else 0)
-        + len(cmaps_by_categories)
+        + (len(cmaps_by_categories) if use_types else 0)
         + sum(len(_) for _ in cmaps_by_categories.values())
     )
     height = (0.4 * nplotables + 0.1) * hscale
@@ -741,22 +741,23 @@ def create_cmap_overview(
 
     next_axs_offset = axs_offset
     for cat, cmap_group in cmaps_by_categories.items():
-        if ncols == 1:
-            ax0 = axs[next_axs_offset]
-        else:
-            ax0 = axs[next_axs_offset, 0]
-        y0 = ax0.get_position().y0
-        # Write the cm_type as text in the correct position
-        fig.text(
-            title_pos,
-            y0,
-            cat,
-            va="bottom",
-            ha="center",
-            fontsize=14,
-            c=text_color,
-        )
-        axs_offset += 1
+        if use_types:
+            # Write the cm_type as text in the correct position
+            if ncols == 1:
+                ax0 = axs[next_axs_offset]
+            else:
+                ax0 = axs[next_axs_offset, 0]
+            fig.text(
+                title_pos,
+                ax0.get_position().y0,
+                cat,
+                va="bottom",
+                ha="center",
+                fontsize=14,
+                c=text_color,
+            )
+            axs_offset += 1
+
         next_axs_offset = axs_offset + len(cmap_group)
         for _ax, _cm in zip(axs[axs_offset:next_axs_offset], cmap_group, strict=True):
             if ncols == 1:
