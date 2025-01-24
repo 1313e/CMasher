@@ -759,21 +759,21 @@ def create_cmap_overview(
             axs_offset += 1
 
         next_axs_offset = axs_offset + len(cmap_group)
-        for _ax, _cm in zip(axs[axs_offset:next_axs_offset], cmap_group, strict=True):
+        for ax, cm in zip(axs[axs_offset:next_axs_offset], cmap_group, strict=True):
             if ncols == 1:
-                ax0 = _ax
+                ax0 = ax
             else:
-                ax0, ax1 = _ax
+                ax0, ax1 = ax
             pos0 = ax0.get_position()
 
             # Obtain the colormap type
-            cm_type = get_cmap_type(_cm)
+            cm_type = get_cmap_type(cm)
 
             # Get array of all values for which a colormap value is requested
-            x = np.arange(_cm.N)
+            x = np.arange(cm.N)
 
             # Get RGB values for colormap
-            rgb = _cm(x)[:, :3]
+            rgb = cm(x)[:, :3]
 
             # Add colormap subplot
             ax0.imshow(rgb[np.newaxis, ...], aspect="auto")
@@ -847,13 +847,13 @@ def create_cmap_overview(
             # Check if lightness information was requested for valid cm_type
             if show_info and cm_type in ("sequential", "diverging", "cyclic"):
                 # If so, obtain lightness/perceptual profile information
-                rank = _get_cmap_perceptual_rank(_cm)[0:6]
+                rank = _get_cmap_perceptual_rank(cm)[0:6]
 
                 # Write name of colormap in the correct position
                 fig.text(
                     x_text,
                     y_text,
-                    _cm.name,
+                    cm.name,
                     va="bottom",
                     ha="right",
                     fontsize=10,
@@ -875,7 +875,7 @@ def create_cmap_overview(
                 fig.text(
                     x_text,
                     y_text,
-                    _cm.name,
+                    cm.name,
                     va="center",
                     ha="right",
                     fontsize=10,
