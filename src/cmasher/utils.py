@@ -79,7 +79,6 @@ Category = NewType("Category", str)
 Name = NewType("Name", str)
 
 # Type aliases
-CMAP: TypeAlias = str | Colormap
 RED: TypeAlias = float
 GREEN: TypeAlias = float
 BLUE: TypeAlias = float
@@ -354,7 +353,7 @@ def combine_cmaps(
 
 # This function creates a standalone module of a CMasher colormap
 def create_cmap_mod(
-    cmap: str,
+    cmap: Name,
     *,
     save_dir: str | os.PathLike[str] = ".",
     _copy_name: str | None = None,
@@ -978,7 +977,7 @@ def get_cmap_list(cmap_type: str = "all") -> list[str]:
 
 
 # This function determines the colormap type of a given colormap
-def get_cmap_type(cmap: CMAP) -> str:
+def get_cmap_type(cmap: Colormap | Name) -> str:
     """
     Checks what the colormap type (sequential; diverging; cyclic; qualitative;
     misc) of the provided `cmap` is and returns it.
@@ -1060,7 +1059,9 @@ def get_cmap_type(cmap: CMAP) -> str:
 
 
 # Function create a colormap using a subset of the colors in an existing one
-def get_sub_cmap(cmap: CMAP, start: float, stop: float, *, N: int | None = None) -> LC:
+def get_sub_cmap(
+    cmap: Colormap | Name, start: float, stop: float, *, N: int | None = None
+) -> LC:
     """
     Creates a :obj:`~matplotlib.cm.ListedColormap` object using the colors in
     the range `[start, stop]` of the provided `cmap` and returns it.
@@ -1241,7 +1242,7 @@ def import_cmaps(
         else:
             seen.add(base_str)
 
-        cm_name = base_str[3:]
+        cm_name = Name(base_str.removeprefix("cm_"))
 
         # Process colormap files
         try:
@@ -1276,7 +1277,7 @@ def import_cmaps(
 
             # Check if provided cmap is a cyclic colormap
             # If so, obtain its shifted (reversed) versions as well
-            if get_cmap_type("cmr." + cm_name) == "cyclic":
+            if get_cmap_type(Name("cmr." + cm_name)) == "cyclic":
                 # Determine the central value index of the colormap
                 idx = len(rgb) // 2
 
@@ -1422,7 +1423,7 @@ def set_cmap_legend_entry(artist: Artist, label: str) -> None:
 
 # Function to take N equally spaced colors from a colormap
 def take_cmap_colors(
-    cmap: CMAP,
+    cmap: Colormap | Name,
     N: int | None,
     *,
     cmap_range: tuple[float, float] = (0, 1),
@@ -1539,7 +1540,7 @@ def take_cmap_colors(
 
 # Function to view what a colormap looks like
 def view_cmap(
-    cmap: CMAP,
+    cmap: Colormap | Name,
     *,
     savefig: str | None = None,
     show_test: bool = False,
