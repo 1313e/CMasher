@@ -12,7 +12,7 @@ from importlib.util import find_spec
 from itertools import chain
 from pathlib import Path
 from textwrap import dedent
-from typing import TYPE_CHECKING, NewType
+from typing import TYPE_CHECKING, NewType, overload
 
 import matplotlib as mpl
 import numpy as np
@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     import os
     import sys
     from collections.abc import Callable, Iterator
-    from typing import Literal, Protocol, TypeAlias
+    from typing import Literal, Protocol, TypeAlias, TypeVar
 
     from matplotlib.artist import Artist
     from numpy.typing import NDArray
@@ -43,6 +43,9 @@ if TYPE_CHECKING:
     else:
         from typing_extensions import Self
 
+    T = TypeVar("T", int, float)
+    RGB: TypeAlias = tuple[T, T, T]
+
     class SupportsDunderLT(Protocol):
         def __lt__(self, other: Self, /) -> bool: ...
 
@@ -50,6 +53,7 @@ if TYPE_CHECKING:
         def __gt__(self, other: Self, /) -> bool: ...
 
     SupportsOrdering: TypeAlias = SupportsDunderLT | SupportsDunderGT
+
 
 _HAS_VISCM = find_spec("viscm") is not None
 
@@ -77,12 +81,6 @@ cspace_convert = cspace_converter("sRGB1", "CAM02-UCS")
 # New types
 Category = NewType("Category", str)
 Name = NewType("Name", str)
-
-# Type aliases
-RED: TypeAlias = float
-GREEN: TypeAlias = float
-BLUE: TypeAlias = float
-RGB: TypeAlias = list[tuple[RED, GREEN, BLUE]]
 
 
 # %% HELPER FUNCTIONS
@@ -1436,13 +1434,43 @@ def set_cmap_legend_entry(artist: Artist, label: str) -> None:
 
 
 # Function to take N equally spaced colors from a colormap
+@overload
 def take_cmap_colors(
     cmap: Colormap | Name,
     N: int | None,
     *,
     cmap_range: tuple[float, float] = (0, 1),
-    return_fmt: str = "float",
-) -> RGB:
+    return_fmt: Literal["float", "norm"] = "float",
+) -> RGB[float]: ...
+
+
+@overload
+def take_cmap_colors(
+    cmap: Colormap | Name,
+    N: int | None,
+    *,
+    cmap_range: tuple[float, float] = (0, 1),
+    return_fmt: Literal["int", "8bit"],
+) -> RGB[int]: ...
+
+
+@overload
+def take_cmap_colors(
+    cmap: Colormap | Name,
+    N: int | None,
+    *,
+    cmap_range: tuple[float, float] = (0, 1),
+    return_fmt: Literal["str", "hex"],
+) -> list[str]: ...
+
+
+def take_cmap_colors(
+    cmap: Colormap | Name,
+    N: int | None,
+    *,
+    cmap_range: tuple[float, float] = (0, 1),
+    return_fmt: Literal["float", "norm", "int", "8bit", "str", "hex"] = "float",
+) -> RGB[float] | RGB[int] | list[str]:
     """
     Takes `N` equally spaced colors from the provided colormap `cmap` and
     returns them.
@@ -1514,9 +1542,6 @@ def take_cmap_colors(
     that describe the same property, but have a different initial state.
 
     """
-    # Convert provided fmt to lowercase
-    return_fmt = return_fmt.lower()
-
     # Obtain the colormap
     if isinstance(cmap, str):
         cmap = mpl.colormaps[cmap]
@@ -1544,12 +1569,13 @@ def take_cmap_colors(
         colors = np.apply_along_axis(to_rgb, 1, colors)  # type: ignore [call-overload]
         if return_fmt in ("int", "8bit"):
             colors = np.array(np.rint(colors * 255), dtype=int)
-        colors = list(map(tuple, colors))
+            return [(int(c[0]), int(c[1]), int(c[2])) for c in colors]  # type: ignore [misc]
+        else:
+            return [(float(c[0]), float(c[1]), float(c[2])) for c in colors]  # type: ignore [misc]
+    elif return_fmt in ("str", "hex"):
+        return [to_hex(x).upper() for x in colors]
     else:
-        colors = [to_hex(x).upper() for x in colors]
-
-    # Return colors
-    return colors
+        raise ValueError(return_fmt)
 
 
 # Function to view what a colormap looks like
