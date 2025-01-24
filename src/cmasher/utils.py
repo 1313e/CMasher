@@ -251,7 +251,7 @@ def _get_cmap_perceptual_rank(
 # This function combines multiple colormaps at given nodes
 def combine_cmaps(
     *cmaps: Colormap | str,
-    nodes: list[float] | np.ndarray | None = None,
+    nodes: list[float] | NDArray[np.floating] | None = None,
     n_rgb_levels: int = 256,
     combined_cmap_name: str = "combined_cmap",
 ) -> LinearSegmentedColormap:
@@ -1519,11 +1519,11 @@ def take_cmap_colors(
     stop = int(np.ceil(cmap_range[1] * cmap.N)) - 1
 
     # Pick colors
-    index: NDArray
+    index: NDArray[np.int64]
     if N is None:
-        index = np.arange(start, stop + 1, dtype=int)
+        index = np.arange(start, stop + 1, dtype="int64")
     else:
-        index = np.array(np.rint(np.linspace(start, stop, num=N)), dtype=int)
+        index = np.array(np.rint(np.linspace(start, stop, num=N)), dtype="int64")
     colors = cmap(index)
 
     # Convert colors to proper format
