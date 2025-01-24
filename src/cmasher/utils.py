@@ -940,7 +940,21 @@ def get_bibtex() -> None:
 
 
 # This function returns a list of all colormaps available in CMasher
-def get_cmap_list(cmap_type: str = "all") -> list[str]:
+def get_cmap_list(
+    cmap_type: Literal[
+        "a",
+        "all",
+        "s",
+        "seq",
+        "sequential",
+        "d",
+        "div",
+        "diverging",
+        "c",
+        "cyc",
+        "cyclic",
+    ] = "all",
+) -> list[str]:
     """
     Returns a list with the names of all colormaps available in *CMasher* of
     the given `cmap_type`.
@@ -960,9 +974,6 @@ def get_cmap_list(cmap_type: str = "all") -> list[str]:
         List containing the names of all colormaps available in *CMasher*.
 
     """
-    # Convert cmap_type to lowercase
-    cmap_type = cmap_type.lower()
-
     # Obtain proper list
     if cmap_type in ("a", "all"):
         cmaps = list(cmrcm.cmap_d)
@@ -972,6 +983,8 @@ def get_cmap_list(cmap_type: str = "all") -> list[str]:
         cmaps = list(cmrcm.cmap_cd["diverging"])
     elif cmap_type in ("c", "cyc", "cyclic"):
         cmaps = list(cmrcm.cmap_cd["cyclic"])
+    else:
+        raise ValueError(cmap_type)
 
     # Return cmaps
     return cmaps
