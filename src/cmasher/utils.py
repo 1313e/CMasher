@@ -763,7 +763,7 @@ def create_cmap_overview(
             if ncols == 1:
                 ax0 = ax
             else:
-                ax0, ax1 = ax
+                ax0 = ax[0]
             pos0 = ax0.get_position()
 
             # Obtain the colormap type
@@ -791,7 +791,7 @@ def create_cmap_overview(
                 rgb_L = cmrcm.neutral(lightness)[:, :3]
 
                 # Add gray-scale colormap subplot
-                ax1.imshow(rgb_L[np.newaxis, ...], aspect="auto")
+                ax[1].imshow(rgb_L[np.newaxis, ...], aspect="auto")
 
                 # Check if the lightness profile was requested
                 if plot_profile and (cm_type != "qualitative"):
@@ -838,7 +838,7 @@ def create_cmap_overview(
                     lc.set_array(np.array(s_colors))
 
                     # Add line-collection to this subplot
-                    ax1.add_collection(lc)
+                    ax[1].add_collection(lc)
 
             # Determine positions of colormap name
             x_text = pos0.x0 - spacing
