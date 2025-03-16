@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
 [project]
 name = "cmasher"
@@ -8,11 +8,10 @@ version = "1.9.2"
 authors = [{name = "Ellert van der Velden", email = "ellert_vandervelden@outlook.com"}]
 description = "Scientific colormaps for making accessible, informative and 'cmashing' plots"
 readme = "README.rst"
-license = {text = "BSD-3"}
+license = { file = "LICENSE" }
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Operating System :: MacOS",
     "Operating System :: Microsoft :: Windows",
@@ -85,19 +84,23 @@ constraint-dependencies = [
   "PyQt5-Qt5>=5.15.14 ; platform_system != 'Windows'",
 ]
 
-[tool.hatch.build.targets.sdist]
+[tool.flit.sdist]
 include = [
   "src/cmasher/*.py",
   "src/cmasher/*.pyi",
   "src/cmasher/colormaps/cm_*.npy",
   "src/cmasher/data/*.npy",
-  "LICENSE",
   "CITATION",
   "README.rst",
   "conftest.py",
   "tests",
 ]
 exclude = [
+  "src/cmasher/colormaps/app_data.txt.gz",
+  "src/cmasher/colormaps/**/*.png",
+  "src/cmasher/colormaps/**/*.txt",
+  "src/cmasher/colormaps/**/*.jscm",
+  "src/cmasher/colormaps/**/*.py",
   "docs",
   "joss_paper",
   "scripts",
