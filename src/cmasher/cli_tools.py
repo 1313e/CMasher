@@ -130,7 +130,7 @@ class HelpFormatterWithSubCommands(argparse.ArgumentDefaultsHelpFormatter):
         # Loop over all remaining desc_lines
         for line in desc_lines:
             # Format and add to parts
-            parts.append(f"{' '*help_position}{line}\n")
+            parts.append(f"{' ' * help_position}{line}\n")
 
         # Convert to a single string and return
         return "".join(parts)
@@ -495,8 +495,7 @@ def main():
     take_colors_parent_parser.add_argument(
         "--range",
         help=(
-            "Normalized value range in the colormap from which colors should"
-            " be taken."
+            "Normalized value range in the colormap from which colors should be taken."
         ),
         metavar=("LOWER", "UPPER"),
         action="store",

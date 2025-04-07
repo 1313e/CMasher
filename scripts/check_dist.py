@@ -29,8 +29,8 @@ if __name__ == "__main__":
             total_size += root.joinpath(filename).stat().st_size
 
     print(f"total size: {total_size:_d} bytes", end=" ")
-    print(f"({total_size/1024:.2f} kB)", end=" ")
-    print(f"({total_size/(1024**2):.2f} MB)")
+    print(f"({total_size / 1024:.2f} kB)", end=" ")
+    print(f"({total_size / (1024**2):.2f} MB)")
 
     if total_size / (1024**2) > 1:
         print("total size exceeds limit (1MB)", file=sys.stderr)
