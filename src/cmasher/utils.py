@@ -862,7 +862,7 @@ def create_cmap_overview(
                 fig.text(
                     x_text,
                     y_text,
-                    f"({rank[2]:.3g}, {rank[2]-rank[0]*rank[3]:.3g}, {rank[5]:.3g})",
+                    f"({rank[2]:.3g}, {rank[2] - rank[0] * rank[3]:.3g}, {rank[5]:.3g})",
                     va="top",
                     ha="right",
                     fontsize=10,
@@ -1203,8 +1203,7 @@ def import_cmaps(
     # Check if provided file or directory exists
     if not cmap_path.exists():
         raise FileNotFoundError(
-            "Input argument 'cmap_path' is a non-existing path "
-            f"({cmap_path_input!r})!"
+            f"Input argument 'cmap_path' is a non-existing path ({cmap_path_input!r})!"
         )
 
     cm_files: list[Path]
