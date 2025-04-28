@@ -14,7 +14,7 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.6.12
+  rev: 0.6.17
   hooks:
   - id: uv-lock
 
