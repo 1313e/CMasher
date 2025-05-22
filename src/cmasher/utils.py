@@ -73,6 +73,18 @@ __all__ = [
     "view_cmap",
 ]
 
+"""
+The file provides a comprehensive utility library for advanced colormap manipulation in matplotlib, 
+focusing on sophisticated colormap operations and visualization. It offers functions for combining, registering, and analyzing colormaps 
+across different color spaces and types. Key functionalities include:
+1. Colormap Combination: The `combine_cmaps()` function allows merging multiple colormaps with custom node configurations, supporting flexible color transitions.
+2. Colormap Analysis: Functions like `_get_cmap_lightness_rank()` and `_get_cmap_perceptual_rank()` enable detailed colormap assessment, providing insights into colormap characteristics.
+3. Visualization Utilities: `create_cmap_overview()` generates comprehensive visualizations of colormaps, supporting various sorting methods, type categorization, and customization options.
+4. Colormap Management: `create_cmap_mod()` facilitates creating and saving custom colormap modifications.
+The library includes protocol classes for ordering support and provides robust type checking and error handling. 
+It serves as a powerful tool for researchers, data scientists, and visualization experts seeking advanced colormap manipulation and analysis capabilities within the matplotlib ecosystem.
+"""
+
 
 # %% GLOBALS
 # Obtain the colorspace converter for showing cmaps in gray-scale
