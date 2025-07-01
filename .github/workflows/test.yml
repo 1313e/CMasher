@@ -21,10 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-        - ubuntu-latest
-        - macos-latest
-        - windows-latest
+        os: [ubuntu-latest]
         python-version:
         - '3.10'
         - '3.11'
@@ -33,8 +30,12 @@ jobs:
 
         include:
         - os: ubuntu-22.04
-          python-version: '3.10'
+          python-version: 3.10.0
           oldestdeps: true
+        - os: macos-latest
+          python-version: '3.13'
+        - os: windows-latest
+          python-version: '3.13'
 
     concurrency:
       group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-build
