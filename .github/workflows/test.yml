@@ -52,18 +52,20 @@ jobs:
       run: |
         echo "UV_RESOLUTION=lowest-direct" >> $GITHUB_ENV
 
+    - run: uv sync --group test --compile-bytecode
+
     - name: Test package (no coverage)
       if: ${{ !startsWith( matrix.os , 'ubuntu' ) }}
       shell: bash # windows compat
       run: |
-        uv run --no-editable --group test \
+        uv run --no-sync --no-editable \
           pytest --color=yes --mpl
 
     - name: Test package (with coverage)
       if: startsWith( matrix.os , 'ubuntu' )
       # cannot use --frozen flag here because it would nullify UV_RESOLUTION
       run: |
-        uv run --group test --group covcheck \
+        uv run --group covcheck \
           coverage run --parallel-mode -m pytest --color=yes --mpl
 
     - name: Upload coverage data
