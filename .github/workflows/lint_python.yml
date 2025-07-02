@@ -8,6 +8,6 @@ jobs:
     - uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
       with:
         python-version: '3.13'
-    - run: uv pip compile pyproject.toml | uv pip install -r -
+    - run: uv sync
     - run: shopt -s globstar
     # - run: pip install safety && safety check
