@@ -14,12 +14,12 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.6.12
+  rev: 0.7.18
   hooks:
   - id: uv-lock
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.4
+  rev: v0.12.1
   hooks:
   - id: ruff-format
   - id: ruff
@@ -32,7 +32,7 @@ repos:
     args: [--ignore-words-list, 'mutch, ore']
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.14.0
+  rev: v2.15.0
   hooks:
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
