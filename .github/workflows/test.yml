@@ -27,15 +27,16 @@ jobs:
         - '3.11'
         - '3.12'
         - '3.13'
+        - '3.14'
 
         include:
         - os: ubuntu-22.04
           python-version: 3.10.0
           oldestdeps: true
         - os: macos-latest
-          python-version: '3.13'
+          python-version: '3.14'
         - os: windows-latest
-          python-version: '3.13'
+          python-version: '3.14'
 
     concurrency:
       group: ${{ github.ref }}-${{ matrix.os }}-${{ matrix.python-version }}-build
