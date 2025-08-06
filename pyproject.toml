@@ -27,7 +27,7 @@ classifiers = [
     "Topic :: Utilities",
     "Framework :: Matplotlib",
 ]
-keywords = ["cmasher perceptually uniform sequential colormaps plotting python visualization"]
+keywords = ["cmasher", "perceptually uniform", "sequential colormaps", "plotting", "python" , "visualization"]
 
 requires-python = ">=3.10, <4"
 
