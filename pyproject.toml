@@ -49,9 +49,8 @@ cmr = "cmasher.cli_tools:main"
 [dependency-groups]
 test = [
   "pyqt5>=5.15.6",
-  "pytest>=8.1.1",
+  "pytest>=9.0.0",
   "pytest-mpl>=0.13.0",
-
   # TODO: bump requirement and uncomment when the following upstream PR is merged and released:
   # https://github.com/matplotlib/viscm/pull/82
   # TODO: lift the constraint on python_version:
@@ -76,13 +75,24 @@ docs = [
 ]
 
 [tool.uv]
-# see
-# https://github.com/astral-sh/uv/issues/7005
-# https://github.com/astral-sh/uv/issues/9907
-# https://github.com/astral-sh/uv/issues/9711
+no-build-package = [
+  "numpy",
+  "matplotlib",
+  "pillow",
+  "contourpy",
+  "kiwisolver",
+  "PyQT5-Qt5",
+]
+
 constraint-dependencies = [
+  # see
+  # https://github.com/astral-sh/uv/issues/7005
+  # https://github.com/astral-sh/uv/issues/9907
+  # https://github.com/astral-sh/uv/issues/9711
   "PyQt5-Qt5==5.15.2 ; platform_system == 'Windows'",
   "PyQt5-Qt5>=5.15.14 ; platform_system != 'Windows'",
+  # via matplolib 3.5
+  "setuptools>=61.0",
 ]
 
 [tool.flit.sdist]
@@ -111,8 +121,10 @@ exclude = [
   "*.yaml",
 ]
 
-[tool.pytest.ini_options]
-addopts = "-v"
+[tool.pytest]
+minversion = "9.0"
+strict = true
+addopts = ["-ra"]
 filterwarnings = [
   "error",
   "ignore:FigureCanvasAgg is non-interactive:UserWarning",
@@ -121,7 +133,7 @@ filterwarnings = [
   "ignore: Deprecated. CatmulClark builds nicer splines.:FutureWarning",
   # internal to colorspacious
   "ignore:invalid value encountered in divide:RuntimeWarning",
-# https://github.com/dateutil/dateutil/pull/1285
+  # https://github.com/dateutil/dateutil/pull/1285
   'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
 ]
 
