@@ -51,7 +51,7 @@ jobs:
     - name: Set UV_RESOLUTION
       if: ${{ matrix.oldestdeps }}
       run: |
-        echo "UV_RESOLUTION=lowest-direct" >> $GITHUB_ENV
+        echo "UV_RESOLUTION=lowest" >> $GITHUB_ENV
 
     - run: uv sync --group test --compile-bytecode
 
