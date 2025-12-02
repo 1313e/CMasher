@@ -1,25 +1,23 @@
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
-
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: docs
-  target-branch: master
-  schedule:
-    interval: monthly
-  groups:
-    actions:
-      patterns:
-      - '*'
-
 - package-ecosystem: github-actions
   directory: /.github/workflows
-  target-branch: master
   schedule:
-    interval: monthly
+    interval: quarterly
+  cooldown:
+    default-days: 7
   groups:
-    actions:
-      patterns:
-      - '*'
+    patches:
+      update-types:
+      - patch
+
+- package-ecosystem: uv
+  directory: /
+  schedule:
+    interval: quarterly
+  cooldown:
+    default-days: 7
+  groups:
+    patches:
+      update-types:
+      - patch
