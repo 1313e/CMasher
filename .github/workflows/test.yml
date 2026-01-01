@@ -73,7 +73,7 @@ jobs:
       # only using reports from ubuntu because
       # combining reports from multiple platforms is tricky (or impossible ?)
       if: startsWith( matrix.os , 'ubuntu' )
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: cmasher_coverage_data-${{ matrix.os }}-${{ matrix.python-version }}${{ matrix.oldestdeps }}
         path: .coverage.*
@@ -102,7 +102,7 @@ jobs:
         uv run --no-project coverage report --fail-under=98
 
     - name: Upload HTML report if check failed.
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: cmasher_coverage_report
         path: htmlcov
@@ -151,7 +151,7 @@ jobs:
         uv run --frozen --group docs --compile-bytecode \
           sphinx-build -M html docs/source site -W
     - name: Upload artifacts
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: site
         path: site
@@ -168,7 +168,7 @@ jobs:
     - run: uv run scripts/check_dist.py
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: dist
         path: dist
