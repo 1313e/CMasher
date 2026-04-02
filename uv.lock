@@ -1400,7 +1400,7 @@ wheels = [
 
 [[package]]
 name = "pytest-mpl"
-version = "0.18.0"
+version = "0.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
@@ -1409,9 +1409,9 @@ dependencies = [
     { name = "pillow" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/40/ba3caed7a54a6a5fe035ecc62dbb473f6f41ecade2ea3e0474f7e8e65c5c/pytest_mpl-0.18.0.tar.gz", hash = "sha256:04c949ea1278a38ca3d8d675871f6c5a0958bfedfaf4fd8bfd4e25e5861759a7", size = 880354, upload-time = "2025-11-15T13:54:52.69Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/c1/d5347e8aff4f6306f33caac80e1527831f733788ca98a6d58cfa0d40999c/pytest_mpl-0.19.0.tar.gz", hash = "sha256:c08e7b51ba4c98eed77ac3f3c6e336ed6163647d9e27ea1d928f79b542178cbe", size = 881884, upload-time = "2026-03-25T10:12:35.992Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/01/f9128b75808840fc070042c57168c800da57d2d80b97071dc6f07c793d58/pytest_mpl-0.18.0-py3-none-any.whl", hash = "sha256:e474b7676957c521104dbe351df937da5e582231cd34daeb43b9d1ecc048e5c0", size = 28063, upload-time = "2025-11-15T13:54:51.147Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/f9/60a6c3da23525e600131eae9e17cad738e2e820335ab45e1ea78ec8df4cb/pytest_mpl-0.19.0-py3-none-any.whl", hash = "sha256:ceb6f7201587b07af82ba8892631a29a4716fdc84306db3ec1b4ef3758f0507d", size = 28139, upload-time = "2026-03-25T10:12:34.966Z" },
 ]
 
 [[package]]
