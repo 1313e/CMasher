@@ -14,25 +14,25 @@ repos:
   - id: check-toml
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.9.21
+  rev: 0.11.3
   hooks:
   - id: uv-lock
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.10
+  rev: v0.15.9
   hooks:
   - id: ruff-format
   - id: ruff-check
     args: [--fix, --show-fixes]
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.4.1
+  rev: v2.4.2
   hooks:
   - id: codespell
     args: [--ignore-words-list, 'mutch, ore']
 
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.15.0
+  rev: v2.16.0
   hooks:
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
