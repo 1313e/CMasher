@@ -137,6 +137,13 @@ filterwarnings = [
   'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning',
 ]
 
+[tool.coverage.paths]
+source = [
+    "/home/runner/work/cmasher", # Ubuntu
+    "/Users/runner/work/cmasher", # macOS
+    "d:\\a\\cmasher", # Windows
+]
+
 [tool.coverage.run]
 # branch = true
 source = [
