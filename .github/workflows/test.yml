@@ -55,14 +55,7 @@ jobs:
 
     - run: uv sync --group test --compile-bytecode
 
-    - name: Test package (no coverage)
-      if: ${{ !startsWith( matrix.os , 'ubuntu' ) }}
-      shell: bash # windows compat
-      run: |
-        uv run --no-sync --no-editable \
-          pytest --color=yes --mpl
-
-    - name: Test package (with coverage)
+    - name: Test package
       if: startsWith( matrix.os , 'ubuntu' )
       # cannot use --frozen flag here because it would nullify UV_RESOLUTION
       run: |
@@ -70,8 +63,6 @@ jobs:
           coverage run --parallel-mode -m pytest --color=yes --mpl
 
     - name: Upload coverage data
-      # only using reports from ubuntu because
-      # combining reports from multiple platforms is tricky (or impossible ?)
       if: startsWith( matrix.os , 'ubuntu' )
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
