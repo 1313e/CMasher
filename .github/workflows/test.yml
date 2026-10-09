@@ -23,7 +23,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version:
-        - '3.10'
         - '3.11'
         - '3.12'
         - '3.13'
@@ -31,7 +30,7 @@ jobs:
 
         include:
         - os: ubuntu-22.04
-          python-version: 3.10.0
+          python-version: '3.11'
           oldestdeps: true
         - os: macos-latest
           python-version: '3.14'
@@ -105,7 +104,7 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - '3.10'
+        - '3.11'
         - '3.13'
 
     runs-on: ubuntu-latest

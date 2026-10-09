@@ -18,7 +18,6 @@ classifiers = [
     "Operating System :: Unix",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -29,7 +28,7 @@ classifiers = [
 ]
 keywords = ["cmasher", "perceptually uniform", "sequential colormaps", "plotting", "python" , "visualization"]
 
-requires-python = ">=3.10, <4"
+requires-python = ">=3.11, <4"
 
 dependencies = [
     "colorspacious>=1.1.2",
@@ -53,14 +52,10 @@ test = [
   "pytest-mpl>=0.13.0",
   # TODO: bump requirement and uncomment when the following upstream PR is merged and released:
   # https://github.com/matplotlib/viscm/pull/82
-  # TODO: lift the constraint on python_version:
-  # only tests with minimal requirements fail, but that's probably solved by
-  # requiring a more recent version of other dependencies (colorspacious or numpy)
-  #"viscm>=0.10 ; platform_system != 'Windows' and python_version > '3.10'",
+  #"viscm>=0.10 ; platform_system != 'Windows'",
 ]
 covcheck = [
-  "coverage[toml]>=7.6.4 ; python_version < '3.11'",
-  "coverage>=7.6.4 ; python_version >= '3.11'",
+  "coverage>=7.6.4",
 ]
 typecheck = [
     "mypy>=1.7.1",
@@ -213,7 +208,7 @@ convention = "numpy"
 "_backports.py" = ["D"]
 
 [tool.mypy]
-python_version = '3.10'
+python_version = '3.11'
 show_error_codes = true
 warn_unused_configs = true
 warn_unused_ignores = true
