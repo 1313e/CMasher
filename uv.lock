@@ -14,6 +14,7 @@ resolution-markers = [
 constraints = [
     { name = "pyqt5-qt5", marker = "sys_platform != 'win32'", specifier = ">=5.15.14" },
     { name = "pyqt5-qt5", marker = "sys_platform == 'win32'", specifier = "==5.15.2" },
+    { name = "pyqt5-sip", specifier = ">=12.11.0" },
     { name = "setuptools", specifier = ">=61.0" },
 ]
 

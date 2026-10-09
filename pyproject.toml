@@ -81,7 +81,7 @@ no-build-package = [
   "numpy",
   "pillow",
   "PyQT5-Qt5",
-  "PyQT5-sip",
+  # "PyQT5-sip", # temporarily allowed for cp315
 ]
 
 constraint-dependencies = [
@@ -91,6 +91,7 @@ constraint-dependencies = [
   # https://github.com/astral-sh/uv/issues/9711
   "PyQt5-Qt5==5.15.2 ; platform_system == 'Windows'",
   "PyQt5-Qt5>=5.15.14 ; platform_system != 'Windows'",
+  "PyQT5-sip>=12.11.0",
   # via matplolib 3.5
   "setuptools>=61.0",
 ]
