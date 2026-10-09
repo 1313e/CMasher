@@ -3,9 +3,8 @@
 # dependencies = []
 # ///
 import sys
-from pathlib import Path
-
 import tomllib
+from pathlib import Path
 
 REPO_DIR = Path(__file__).parents[1]
 DIST_DIR = REPO_DIR / "dist"

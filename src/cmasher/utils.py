@@ -31,17 +31,11 @@ from ._known_cmap_types import _CMASHER_BUILTIN_MAP_TYPES
 
 if TYPE_CHECKING:
     import os
-    import sys
     from collections.abc import Callable, Iterator
-    from typing import Literal, Protocol, TypeAlias, TypeVar
+    from typing import Literal, Protocol, Self, TypeAlias, TypeVar
 
     from matplotlib.artist import Artist
     from numpy.typing import NDArray
-
-    if sys.version_info >= (3, 12):
-        from typing import Self
-    else:
-        from typing_extensions import Self
 
     T = TypeVar("T", int, float)
     RGB: TypeAlias = tuple[T, T, T]
