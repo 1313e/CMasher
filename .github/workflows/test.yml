@@ -56,7 +56,7 @@ jobs:
     - run: uv sync --group test --compile-bytecode
 
     - name: Test package
-      if: startsWith( matrix.os , 'ubuntu' )
+      shell: bash
       # cannot use --frozen flag here because it would nullify UV_RESOLUTION
       run: |
         uv run --group covcheck \
