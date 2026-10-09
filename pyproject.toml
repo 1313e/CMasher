@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "cmasher"
-version = "1.9.3"
+version = "1.9.4"
 authors = [{name = "Ellert van der Velden", email = "ellert_vandervelden@outlook.com"}]
 description = "Scientific colormaps for making accessible, informative and 'cmashing' plots"
 readme = "README.rst"
