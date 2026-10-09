@@ -76,11 +76,14 @@ docs = [
 
 [tool.uv]
 no-build-package = [
-  "numpy",
-  "matplotlib",
-  "pillow",
+  "ast-serialize",
   "contourpy",
   "kiwisolver",
+  "librt",
+  "matplotlib",
+  "mypy",
+  "numpy",
+  "pillow",
   "PyQT5-Qt5",
 ]
 
