@@ -445,9 +445,9 @@ def create_cmap_mod(
 
         # RGB-values of this colormap
         cm_data = {1}
+        assert len(cm_data) == {3}
 
         # Create ListedColormap object for this colormap
-        assert len(cm_data) == {3}
         cmap = ListedColormap(cm_data, name='cmr.{2}')
         cmap_r = cmap.reversed()
 
@@ -464,9 +464,10 @@ def create_cmap_mod(
             # Shift the entire colormap by half of its length
             cm_data_s = list(cm_data[{4}:])
             cm_data_s.extend(cm_data[:{4}])
+            assert len(cm_data_s) == {3}
 
             # Create ListedColormap object for this shifted version
-            cmap_s = ListedColormap(cm_data_s, name='cmr.{2}_s', N={3})
+            cmap_s = ListedColormap(cm_data_s, name='cmr.{2}_s')
             cmap_s_r = cmap_s.reversed()
 
             # Register shifted versions in MPL as well
@@ -1143,7 +1144,7 @@ def get_sub_cmap(
     colors = take_cmap_colors(cmap, N, cmap_range=(start, stop))
 
     # Create new colormap
-    sub_cmap = LC(colors, cmap.name + suffix, N=len(colors))
+    sub_cmap = LC(colors, cmap.name + suffix)
 
     # Return sub_cmap
     return sub_cmap
@@ -1360,9 +1361,8 @@ def register_cmap(name: str, data: RGB) -> None:
         colorlist = cm_data_arr.tolist()
 
     # Transform colorlist into a Colormap
-    cmap_N = len(colorlist)
-    cmap_mpl = LC(colorlist, "cmr." + name, N=cmap_N)
-    cmap_cmr = LC(colorlist, name, N=cmap_N)
+    cmap_mpl = LC(colorlist, f"cmr.{name}")
+    cmap_cmr = LC(colorlist, name)
     cmap_mpl_r = cmap_mpl.reversed()
     cmap_cmr_r = cmap_cmr.reversed()
 

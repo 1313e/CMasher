@@ -529,9 +529,10 @@ cm_data = [
     [0.95946267, 0.86669168, 0.26506089],
     [0.96076719, 0.87253909, 0.26935799],
 ]
+assert len(cm_data) == 511
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name="cmr.iceburn", N=511)
+cmap = ListedColormap(cm_data, name="cmr.iceburn")
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL

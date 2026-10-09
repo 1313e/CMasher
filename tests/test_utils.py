@@ -128,10 +128,8 @@ class Test_combine_cmaps:
 
     # Test if invalid colormap name raise an error
     def test_invalid_cmap_name(self):
-        with pytest.raises(
-            KeyError,
-            match="'fake_cmap' is not a known colormap name",
-        ):
+        with pytest.raises(KeyError):
+            # the exact error message is controlled by matplotlib, don't match it
             combine_cmaps("fake_cmap", "Blues")
 
     # Test if invalid colormap types raise an error

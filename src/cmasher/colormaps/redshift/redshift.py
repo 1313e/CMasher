@@ -529,9 +529,10 @@ cm_data = [
     [0.98464455, 0.79786238, 0.98316775],
     [0.98669804, 0.80332910, 0.98859321],
 ]
+assert len(cm_data) == 511
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name="cmr.redshift", N=511)
+cmap = ListedColormap(cm_data, name="cmr.redshift")
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL
