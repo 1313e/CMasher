@@ -44,7 +44,4 @@ def clean_registration():
     yield
     new = set(mpl.colormaps.keys())
     for name in new - old:
-        if mpl.__version_info__ >= (3, 6):
-            mpl.colormaps.unregister(name)
-        else:
-            mpl.cm.unregister_cmap(name)
+        mpl.colormaps.unregister(name)

@@ -315,8 +315,8 @@ typecheck = [
 [package.metadata]
 requires-dist = [
     { name = "colorspacious", specifier = ">=1.1.2" },
-    { name = "matplotlib", specifier = ">=3.5" },
-    { name = "numpy", specifier = ">=1.21.2" },
+    { name = "matplotlib", specifier = ">=3.6.0" },
+    { name = "numpy", specifier = ">=1.23.2" },
     { name = "typing-extensions", marker = "python_full_version < '3.12'", specifier = ">=4.4.0" },
 ]
 
@@ -336,7 +336,7 @@ test = [
 ]
 typecheck = [
     { name = "mypy", specifier = ">=1.7.1" },
-    { name = "pytest", specifier = ">=8.1.1" },
+    { name = "pytest", specifier = ">=9.0.0" },
 ]
 
 [[package]]
