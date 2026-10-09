@@ -59,7 +59,8 @@ jobs:
       # cannot use --frozen flag here because it would nullify UV_RESOLUTION
       run: |
         uv run --group covcheck \
-          coverage run --parallel-mode -m pytest --color=yes --mpl
+          coverage run --parallel-mode -m pytest --color=yes --mpl \
+          ${{ case( matrix.oldestdeps == true , '-Wdefault', '' ) }}
 
     - name: Upload coverage data
       if: startsWith( matrix.os , 'ubuntu' )
