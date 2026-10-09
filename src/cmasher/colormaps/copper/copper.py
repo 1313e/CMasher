@@ -528,9 +528,10 @@ cm_data = [
     [0.00082481, 0.00069938, 0.00082428],
     [0.00023535, 0.00020285, 0.00023387],
 ]
+assert len(cm_data) == 511
 
 # Create ListedColormap object for this colormap
-cmap = ListedColormap(cm_data, name="cmr.copper", N=510)
+cmap = ListedColormap(cm_data, name="cmr.copper")
 cmap_r = cmap.reversed()
 
 # Register (reversed) cmap in MPL
@@ -540,9 +541,10 @@ mpl.colormaps.register(cmap=cmap_r)
 # Shift the entire colormap by half of its length
 cm_data_s = list(cm_data[255:])
 cm_data_s.extend(cm_data[:255])
+assert len(cm_data_s) == 511
 
 # Create ListedColormap object for this shifted version
-cmap_s = ListedColormap(cm_data_s, name="cmr.copper_s", N=510)
+cmap_s = ListedColormap(cm_data_s, name="cmr.copper_s")
 cmap_s_r = cmap_s.reversed()
 
 # Register shifted versions in MPL as well
