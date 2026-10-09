@@ -80,6 +80,7 @@ no-build-package = [
   "numpy",
   "pillow",
   "PyQT5-Qt5",
+  "PyQT5-sip",
 ]
 
 constraint-dependencies = [
